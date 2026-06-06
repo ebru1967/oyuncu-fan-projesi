@@ -1527,57 +1527,125 @@
   background: none;
   border: none;
 }
-/* --- MOBİL UYUMLU FİNAL CSS --- */
+
+/* Mobil */
 @media (max-width: 768px) {
-  /* 1. Navbar'ı düzelt */
-  .navbar {
-    padding: 0.8rem 1rem !important;
-    position: sticky;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+
+  html,
+  body {
+    overflow-x: hidden;
   }
-  
+
+  .navbar {
+    padding: 1.2rem 1.5rem;
+    position: relative;
+  }
+
+  .nav-logo {
+    max-width: 75%;
+  }
+
+  .nav-logo a {
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+  }
+
   .hamburger {
-    display: block !important;
-    order: 2; /* Logodan sonra gelmesi için */
+    display: block;
+    position: absolute;
+    right: 1.5rem;
+    top: 1rem;
+    z-index: 1100;
   }
 
   .nav-links {
-    position: absolute;
-    top: 60px;
-    left: 0;
-    width: 100%;
-    background: var(--bg-main);
+    display: none;
     flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--bg-main);
     padding: 1rem 0;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    display: none; /* JS ile .active eklendiğinde açılacak */
+    box-shadow: 0 10px 20px rgba(84, 107, 65, 0.1);
+    border-top: 1px solid rgba(84, 107, 65, 0.1);
+    z-index: 1000;
+    gap: 0;
   }
-  
+
   .nav-links.active {
-    display: flex !important;
+    display: flex;
   }
 
-  /* 2. Container ve İçerik Boşlukları */
-  .container {
-    padding: 1.5rem 1rem !important;
+  .nav-links .dropdown,
+  .nav-links .nav-item-link {
+    width: 100%;
+    margin: 0;
+    padding: 0.8rem 1.5rem;
+    text-align: left;
   }
 
-  /* 3. Başlık ve Metin boyutları */
-  .editorial-title { font-size: 1.6rem !important; }
-  .hero-main-title { font-size: 2.2rem !important; }
-  p, .editorial-bio-paragraph, .press-card-summary {
-    font-size: 0.9rem !important;
-    line-height: 1.5 !important;
+  .dropdown {
+    width: 100%;
   }
 
-  /* 4. Grid'leri tek sütuna düşür */
-  .hero-grid-container, .editorial-magazine-layout, .registry-grid, .contact-grid {
-    grid-template-columns: 1fr !important;
+  .dropdown-trigger {
+    display: block;
+    width: 100%;
   }
 
-  /* 5. Hero ve Mag düzeni */
-  .editorial-hero { min-height: 40vh !important; padding: 1rem !important; }
-  .mag-preview-box { height: 200px !important; }
+  .dropdown-menu {
+    position: static;
+    transform: none;
+    min-width: unset;
+    width: 100%;
+    margin-top: 0.5rem;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+    padding-left: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dropdown-menu a {
+    padding: 0.7rem 1rem;
+    font-size: 0.75rem;
+  }
+
+  .hero-grid-container,
+  .bio-grid-container,
+  .registry-grid,
+  .contact-grid,
+  .editorial-magazine-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .editorial-hero,
+  .bio-editorial-section {
+    padding: 2rem 1.5rem;
+  }
+
+  .manifesto-container {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .manifesto-divider {
+    display: none;
+  }
+
+  .footer-container {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-brand,
+  .footer-links {
+    text-align: center;
+  }
+
+  .footer-social-icons {
+    justify-content: center;
+  }
 }
