@@ -1514,53 +1514,102 @@
   justify-content: center; 
   margin-bottom: 1rem;
 }/* ==========================================
-  /* --- TEK VE KAPSAYICI MOBİL DÜZENLEME --- */
+   15. MOBİL UYUM (RESPONSIVE) VE HAMBURGER MENÜ
+   ========================================== */
+
+/* 1. BİLGİSAYARDA İKONU GİZLE */
+.hamburger {
+  display: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: var(--accent-dark);
+}
+
+/* 2. TELEFON EKRANLARI İÇİN AYARLAR */
 @media (max-width: 768px) {
   
-  /* 1. Navbar Düzeni */
+  /* --- HAMBURGER MENÜ AYARLARI --- */
   .navbar {
-    padding: 0.8rem 1rem;
-    flex-wrap: wrap; /* Elemanların alt alta geçmesini sağlar */
+    padding: 1.2rem 1.5rem;
+  }
+
+  .hamburger {
+    display: block;
+    position: absolute;
+    right: 1.5rem;
+    top: 1.2rem;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
     width: 100%;
-    box-sizing: border-box;
+    position: absolute;
+    top: 65px;
+    left: 0;
+    background-color: var(--bg-main);
+    padding: 1rem 0;
+    box-shadow: 0 10px 20px rgba(84, 107, 65, 0.1);
+    z-index: 1000;
   }
 
-  /* 2. Genel Konteyner ve Taşmaları Engelleme */
-  .container {
-    padding: 1rem 0.8rem;
-    width: 100%;
-    box-sizing: border-box;
-    overflow-x: hidden; /* Yan kaydırmayı engeller */
+  .nav-links.active {
+    display: flex;
   }
 
-  /* 3. Başlık Optimizasyonu */
-  .editorial-title, .bio-main-title { font-size: 1.5rem; line-height: 1.2; }
-  .hero-main-title { font-size: 2rem; }
-  .mag-text-content h3 { font-size: 1.3rem; }
-  .chronicle-details h4 { font-size: 1.1rem; }
-  .editorial-subtitle { font-size: 0.9rem; }
-
-  /* 4. Metin ve İçerik */
-  p, .editorial-bio-paragraph, .press-card-summary, .manifesto-title {
-    font-size: 0.95rem;
-    line-height: 1.6;
-    word-break: break-word; /* Çok uzun kelimeleri böler */
+  .nav-links .dropdown, 
+  .nav-links .nav-item-link {
+    margin: 0.5rem 1.5rem;
+    text-align: left;
   }
 
-  /* 5. Izgara (Grid/Flex) Yapıları - Tek Sütun */
-  .gallery-grid, 
-  .inventory-list-full {
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: 1rem !important;
+  .dropdown-menu {
+    position: static;
+    box-shadow: none;
+    background: transparent;
+    padding-left: 1rem;
+    display: none; 
+    border: none;
   }
 
-  /* 6. Kart ve Hero Düzenlemeleri */
-  .editorial-hero { min-height: 40vh; padding: 1.5rem 1rem; }
-  .record-card { gap: 1rem; padding: 1rem 0; }
-  .mag-preview-box { height: 180px; width: 100%; object-fit: cover; }
-  
-  .mag-row-major, .sidebar-mag-card {
-    padding: 1rem;
+  .dropdown:hover .dropdown-menu,
+  .dropdown:active .dropdown-menu {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-grid-container,
+  .bio-grid-container,
+  .registry-grid,
+  .contact-grid,
+  .editorial-magazine-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .editorial-hero,
+  .bio-editorial-section {
+    padding: 2rem 1.5rem;
+  }
+
+  .manifesto-container {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .manifesto-divider {
+    display: none;
+  }
+
+  .footer-container {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-brand,
+  .footer-links {
+    text-align: center;
+  }
+
+  .footer-social-icons {
+    justify-content: center;
   }
 }
