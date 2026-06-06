@@ -34,3 +34,15 @@ body {
 * {
   box-sizing: border-box;
 }
+/* Masaüstü (Default) Ayarları */
+.hamburger {
+  display: none; /* Bu satır masaüstünde görünmemesini sağlar */
+}
+
+/* Mevcut mobil medya sorgunuzun içindeki kısım ise zaten bunu 'block' yapıyordu */
+@media (max-width: 768px) {
+  .hamburger {
+    display: block; /* Sadece mobilte görünür */
+  }
+  /* ... diğer mobil kodlarınız ... */
+}
