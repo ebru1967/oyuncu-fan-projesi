@@ -1609,44 +1609,71 @@
     line-height:1.2;
   }
 
-  /* HERO - GÜNCELLENMİŞ MOBİL DÜZEN */
-  .hero-grid-container{
-    display: grid !important;
-    grid-template-columns: 1fr 0.8fr !important; /* Yan yana tutar */
-    gap: 0.5rem !important;
-    align-items: center;
-    padding: 0 10px !important;
-  }
+  /* HERO */
+.editorial-hero{
+  padding:2rem 1rem !important;
+  min-height:auto;
+}
 
-  .hero-left-editorial{
-    text-align:left;
-  }
+.hero-grid-container{
+  display:grid !important;
+  grid-template-columns:60% 40% !important;
+  gap:1rem !important;
+  align-items:center;
+  padding:0 !important;
+}
 
-  .hero-right-display{
-    justify-content:center;
-    display: flex;
-  }
+.hero-left-editorial{
+  min-width:0;
+  overflow:hidden;
+  text-align:left;
+}
 
-  .hero-right-display img,
-  .hero-portrait{
-    max-width: 100% !important; /* Kapsayıcıya sığar */
-    height: auto;
-  }
+.hero-right-display{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
 
-  .hero-main-title{
-    font-size: 1.1rem !important; /* Küçültüldü */
-    line-height: 1.1;
-  }
+.hero-main-title{
+  font-size:1.4rem !important;
+  line-height:1;
+  letter-spacing:-1px;
+  margin-bottom:1rem;
+}
 
-  .hero-editorial-footer{
-    gap:.5rem;
-  }
+.hero-statement{
+  max-width:100%;
+  font-size:0.8rem;
+  line-height:1.5;
+  margin-bottom:1rem;
+  word-break:break-word;
+}
 
-  .hero-statement{
-    max-width:100%;
-    font-size: 0.85rem; /* Yazı çok uzunsa küçülttük */
-  }
+.hero-editorial-footer{
+  flex-direction:column;
+  gap:.3rem;
+  font-size:.65rem;
+}
 
+.archive-badge{
+  font-size:.55rem;
+  letter-spacing:1px;
+}
+
+.canvas-frame{
+  max-width:140px !important;
+  height:220px !important;
+  padding:.5rem !important;
+}
+
+.canvas-inner{
+  padding:.5rem !important;
+}
+
+.canvas-tag{
+  font-size:.55rem;
+}
   /* MANIFESTO */
   .manifesto-container{
     display:flex;
@@ -1752,4 +1779,35 @@
     min-width:auto;
     text-align:center;
   }
+}
+@media (max-width:480px){
+
+  .hero-grid-container{
+    grid-template-columns:1fr !important;
+  }
+
+  .hero-left-editorial{
+    order:2;
+    text-align:center;
+  }
+
+  .hero-right-display{
+    order:1;
+    margin-bottom:1rem;
+  }
+
+  .canvas-frame{
+    max-width:180px !important;
+    height:240px !important;
+    margin:auto;
+  }
+
+  .hero-statement{
+    text-align:center;
+  }
+
+  .hero-editorial-footer{
+    align-items:center;
+  }
+
 }
