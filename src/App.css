@@ -1578,6 +1578,7 @@
     flex-direction: column;
   }
 
+  /* --- SENİN MEVCUT DİĞER MOBİL AYARLARIN (Bozulmaması için korundu) --- */
   .hero-grid-container,
   .bio-grid-container,
   .registry-grid,
