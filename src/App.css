@@ -1515,10 +1515,11 @@
   margin-bottom: 1rem;
 }/* ==========================================
   /* ==========================================
-   15. MOBİL UYUM (RESPONSIVE) VE HAMBURGER MENÜ
+   MOBİL UYUM (RESPONSIVE) FINAL
+   NAVBAR + TYPOGRAPHY + LAYOUT
    ========================================== */
 
-/* Bilgisayarda hamburger gizli */
+/* Desktop: hamburger gizli */
 .hamburger {
   display: none;
   font-size: 1.8rem;
@@ -1528,16 +1529,24 @@
   border: none;
 }
 
-/* Mobil */
+/* =========================
+   MOBİL (768px)
+   ========================= */
 @media (max-width: 768px) {
 
+  /* ===== GENEL ===== */
   html,
   body {
     overflow-x: hidden;
   }
 
+  .container {
+    padding: 1.5rem 1rem !important;
+  }
+
+  /* ===== NAVBAR ===== */
   .navbar {
-    padding: 1.2rem 1.5rem;
+    padding: 0.8rem 1rem !important;
     position: relative;
   }
 
@@ -1553,8 +1562,8 @@
   .hamburger {
     display: block;
     position: absolute;
-    right: 1.5rem;
-    top: 1rem;
+    right: 1rem;
+    top: 0.8rem;
     z-index: 1100;
   }
 
@@ -1598,9 +1607,7 @@
   .dropdown-menu {
     position: static;
     transform: none;
-    min-width: unset;
     width: 100%;
-    margin-top: 0.5rem;
     box-shadow: none;
     border: none;
     background: transparent;
@@ -1614,17 +1621,61 @@
     font-size: 0.75rem;
   }
 
+  /* ===== TYPOGRAPHY (EN KRİTİK KISIM) ===== */
+  .editorial-title { font-size: 1.6rem !important; }
+  .hero-main-title { font-size: 2.5rem !important; }
+  .mag-text-content h3 { font-size: 1.4rem !important; }
+  .chronicle-details h4 { font-size: 1.2rem !important; }
+
+  p,
+  .editorial-bio-paragraph,
+  .press-card-summary,
+  .manifesto-title {
+    font-size: 0.9rem !important;
+    line-height: 1.6 !important;
+
+    /* 🔥 okuma düzeltmesi */
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  /* uzun kart yazılarını sınırlı göster */
+  .mag-text-content p,
+  .sidebar-mag-card p {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .hero-statement {
+    padding: 0 0.5rem;
+  }
+
+  /* ===== HERO ===== */
+  .editorial-hero {
+    min-height: 50vh !important;
+    padding: 2rem 1rem !important;
+  }
+
+  /* ===== KARTLAR ===== */
+  .mag-row-major,
+  .sidebar-mag-card {
+    padding: 1.5rem !important;
+  }
+
+  .mag-preview-box {
+    height: 200px !important;
+  }
+
+  /* ===== GRID ===== */
   .hero-grid-container,
   .bio-grid-container,
   .registry-grid,
   .contact-grid,
   .editorial-magazine-layout {
     grid-template-columns: 1fr;
-  }
-
-  .editorial-hero,
-  .bio-editorial-section {
-    padding: 2rem 1.5rem;
   }
 
   .manifesto-container {
@@ -1636,6 +1687,7 @@
     display: none;
   }
 
+  /* ===== FOOTER ===== */
   .footer-container {
     grid-template-columns: 1fr;
   }
