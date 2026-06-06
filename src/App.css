@@ -1914,7 +1914,42 @@
     padding: 1rem;
     background: rgba(84,107,65,0.03); /* Görsel bir kutu hissi verir */
   }
+/* HANGMAN MOBILE */
 
+.word-display{
+  width:100%;
+  display:flex !important;
+  flex-wrap:wrap !important;
+  justify-content:center;
+  gap:.4rem !important;
+}
+
+.word-letter{
+  width:28px !important;
+  height:38px !important;
+  font-size:.9rem !important;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.keyboard{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:.35rem;
+}
+
+.key-btn{
+  width:38px;
+  height:38px;
+  font-size:.8rem;
+  padding:0;
+}
+
+.game-container{
+  overflow:hidden;
+}
 }
 
 @media (max-width:480px){
