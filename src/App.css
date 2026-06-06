@@ -1518,125 +1518,57 @@
    15. MOBİL UYUM (RESPONSIVE) VE HAMBURGER MENÜ
    ========================================== */
 
-/* 1. BİLGİSAYARDA İKONU GİZLE */
 .hamburger {
   display: none;
-  font-size: 1.8rem;
+  font-size: 1.2rem;
   cursor: pointer;
-  color: var(--accent-dark);
+  background: var(--accent-dark);
+  color: var(--bg-main);
+  padding: 8px 15px;
+  border-radius: 4px;
 }
 
-/* 2. TELEFON EKRANLARI İÇİN AYARLAR */
 @media (max-width: 768px) {
-  
-  /* --- HAMBURGER MENÜ AYARLARI --- */
-  .navbar {
-    padding: 1.2rem 1.5rem;
-  }
+  .hamburger { display: block; position: absolute; right: 1rem; top: 15px; }
 
-  .hamburger {
-    display: block;
-    position: absolute;
-    right: 1.5rem;
-    top: 1.2rem;
-  }
+  .navbar { padding: 0.8rem 1rem !important; height: 60px; }
 
   .nav-links {
     display: none;
     flex-direction: column;
-    width: 100%;
-    position: absolute;
-    top: 65px;
+    position: fixed;
+    top: 60px;
     left: 0;
+    width: 100%;
+    height: calc(100vh - 60px);
     background-color: var(--bg-main);
-    padding: 1rem 0;
-    box-shadow: 0 10px 20px rgba(84, 107, 65, 0.1);
+    padding: 2rem 1rem;
+    gap: 1.5rem;
     z-index: 1000;
+    white-space: normal !important;
   }
 
-  .nav-links.active {
-    display: flex;
+  .nav-links.active { display: flex; align-items: center; }
+
+  /* İçerik Düzenlemeleri */
+  .container, .editorial-hero, .bio-editorial-section { padding: 2rem 1rem !important; }
+
+  .hero-grid-container, .bio-grid-container, .registry-grid, .contact-grid, .editorial-magazine-layout {
+    grid-template-columns: 1fr !important;
   }
 
-  .nav-links .dropdown, 
-  .nav-links .nav-item-link {
-    margin: 0.5rem 1.5rem;
-    text-align: left;
+  .hero-main-title { font-size: clamp(2rem, 8vw, 3rem) !important; line-height: 1.1 !important; }
+
+  .canvas-frame, .sidebar-canvas-frame, .record-media {
+    width: 100% !important; max-width: 100% !important; height: auto !important;
   }
 
-  .dropdown-menu {
-    position: static;
-    box-shadow: none;
-    background: transparent;
-    padding-left: 1rem;
-    display: none; 
-    border: none;
-  }
+  .chronicle-row { grid-template-columns: 1fr !important; gap: 0.5rem !important; padding: 1.5rem 0 !important; }
+  .chronicle-details p { max-width: 100% !important; font-size: 1rem !important; }
 
-  .dropdown:hover .dropdown-menu,
-  .dropdown:active .dropdown-menu {
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* --- DİĞER MOBİL DÜZENLEMELER --- */
-  .hero-grid-container,
-  .bio-grid-container,
-  .registry-grid,
-  .contact-grid,
-  .editorial-magazine-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .editorial-hero,
-  .bio-editorial-section {
-    padding: 2rem 1.5rem;
-  }
-
-  .manifesto-container {
-    flex-direction: column;
-    gap: 2rem;
-  }
-
-  .manifesto-divider {
-    display: none;
-  }
-
-  .footer-container {
-    grid-template-columns: 1fr;
-  }
-
-  .footer-brand,
-  .footer-links {
-    text-align: center;
-  }
-
-  .footer-social-icons {
-    justify-content: center;
-  }
-
-  /* --- EK MOBİL DÜZELTMELERİ --- */
-  .container {
-    padding: 3rem 1rem !important; 
-  }
-
-  .hero-main-title {
-    font-size: clamp(2rem, 10vw, 3rem) !important;
-    letter-spacing: -1px !important;
-  }
-
-  .canvas-frame, .sidebar-canvas-frame {
-    width: 90% !important;
-    height: auto !important;
-    margin: 0 auto !important;
-  }
-
-  .hero-statement {
-    font-size: 1rem !important;
-    margin-bottom: 2rem !important;
-  }
-
-  .nav-logo a {
-    font-size: 0.9rem !important;
-  }
+  .footer-container { grid-template-columns: 1fr; text-align: center; }
+  
+  /* Menü içi dropdown'lar */
+  .nav-links .dropdown, .nav-links .nav-item-link { margin: 0 !important; font-size: 1rem !important; }
+  .dropdown-menu { display: none; background: rgba(84, 107, 65, 0.05); width: 100%; padding: 0.5rem; margin-top: 0.5rem; }
 }
