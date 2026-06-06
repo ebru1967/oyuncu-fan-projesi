@@ -1514,61 +1514,207 @@
   justify-content: center; 
   margin-bottom: 1rem;
 }
-/* ==========================================
-   15. MOBİL UYUM (RESPONSIVE) VE HAMBURGER MENÜ
-   ========================================== */
+@media (max-width:768px){
 
-.hamburger {
-  display: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-  background: var(--accent-dark);
-  color: var(--bg-main);
-  padding: 8px 15px;
-  border-radius: 4px;
+  /* NAVBAR */
+  .navbar{
+    padding:1rem !important;
+    min-height:70px;
+    position:sticky;
+    justify-content:space-between;
+  align-items:center;
+
+  }
+
+  .nav-logo{
+    width:75%;
+  }
+
+  .nav-logo a{
+    font-size:.8rem;
+    white-space:normal;
+    line-height:1.2;
+    display:block;
+  }
+
+  .hamburger{
+    display:block;
+    position:absolute;
+    right:1rem;
+    top:50%;
+    transform:translateY(-50%);
+    z-index:1002;
+  }
+
+  .nav-links{
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    position:fixed;
+    top:70px;
+    left:0;
+    width:100%;
+    height:calc(100vh - 70px);
+    overflow-y:auto;
+    background:var(--bg-main);
+    padding:2rem 1rem 4rem;
+    gap:1rem;
+  }
+
+  .nav-links.active{
+    display:flex;
+  }
+
+  /* DROPDOWN */
+  .dropdown{
+    width:100%;
+    text-align:center;
+  }
+
+  .dropdown-trigger{
+    display:block;
+    width:100%;
+    padding:.8rem;
+  }
+
+  .dropdown-menu{
+  display:none;
+  position:static;
+  left:auto;
+  transform:none;
+  width:100%;
+  min-width:unset;
+  margin-top:.5rem;
+  box-shadow:none;
+  border:1px solid rgba(84,107,65,.1);
+  background:rgba(84,107,65,.04);
 }
 
-@media (max-width: 768px) {
-  .hamburger { display: block; position: absolute; right: 1rem; top: 15px; }
-
-  .navbar { padding: 0.8rem 1rem !important; height: 60px; }
-
-  .nav-links {
-    display: none;
-    flex-direction: column;
-    position: fixed;
-    top: 60px;
-    left: 0;
-    width: 100%;
-    height: calc(100vh - 60px);
-    background-color: var(--bg-main);
-    padding: 2rem 1rem;
-    gap: 1.5rem;
-    z-index: 1000;
-    white-space: normal !important;
+  /* HERO */
+  .hero-grid-container{
+    display:flex;
+    flex-direction:column;
+    gap:2rem;
+    text-align:center;
   }
 
-  .nav-links.active { display: flex; align-items: center; }
-
-  /* İçerik Düzenlemeleri */
-  .container, .editorial-hero, .bio-editorial-section { padding: 2rem 1rem !important; }
-
-  .hero-grid-container, .bio-grid-container, .registry-grid, .contact-grid, .editorial-magazine-layout {
-    grid-template-columns: 1fr !important;
+  .hero-left-editorial{
+    text-align:center;
   }
 
-  .hero-main-title { font-size: clamp(2rem, 8vw, 3rem) !important; line-height: 1.1 !important; }
-
-  .canvas-frame, .sidebar-canvas-frame, .record-media {
-    width: 100% !important; max-width: 100% !important; height: auto !important;
+  .hero-right-display{
+    justify-content:center;
   }
 
-  .chronicle-row { grid-template-columns: 1fr !important; gap: 0.5rem !important; padding: 1.5rem 0 !important; }
-  .chronicle-details p { max-width: 100% !important; font-size: 1rem !important; }
+  .hero-editorial-footer{
+    flex-direction:column;
+    gap:.8rem;
+  }
 
-  .footer-container { grid-template-columns: 1fr; text-align: center; }
-  
-  /* Menü içi dropdown'lar */
-  .nav-links .dropdown, .nav-links .nav-item-link { margin: 0 !important; font-size: 1rem !important; }
-  .dropdown-menu { display: none; background: rgba(84, 107, 65, 0.05); width: 100%; padding: 0.5rem; margin-top: 0.5rem; }
+  .hero-statement{
+    max-width:100%;
+  }
+
+  /* MANIFESTO */
+  .manifesto-container{
+    flex-direction:column;
+    gap:2rem;
+    padding:0 1rem;
+  }
+
+  .manifesto-divider{
+    display:none;
+  }
+
+  .manifesto-item{
+    text-align:center;
+  }
+
+  /* MAGAZINE */
+  .editorial-magazine-layout{
+    grid-template-columns:1fr !important;
+  }
+
+  .mag-row-major{
+    position:static;
+  }
+
+  .mag-text-content{
+    padding:1.5rem;
+  }
+
+  /* BIO */
+  .bio-grid-container{
+    display:flex;
+    flex-direction:column;
+    gap:2rem;
+  }
+
+  .bio-right-sidebar{
+    align-items:center;
+  }
+
+  /* CHRONICLE */
+  .chronicle-row{
+    grid-template-columns:1fr !important;
+    gap:.5rem !important;
+  }
+
+  /* RECORDS */
+  .record-card{
+    flex-direction:column;
+    gap:1rem;
+  }
+
+  .record-year{
+    min-width:auto;
+  }
+
+  .record-media{
+    height:220px;
+  }
+
+  /* CONTACT */
+  .contact-grid{
+    grid-template-columns:1fr;
+  }
+
+  /* FOOTER */
+  .footer-container{
+    grid-template-columns:1fr;
+    text-align:center;
+  }
+
+  .footer-social-icons{
+    justify-content:center;
+  }
+
+  .footer-links{
+    text-align:center;
+  }
+
+  /* QUIZ */
+  .game-container{
+    padding:1.5rem;
+  }
+
+  .quiz-question{
+    font-size:1.3rem;
+  }
+
+  .score-display{
+    font-size:3rem;
+  }
+
+  /* COUNTDOWN */
+  .countdown-ticker{
+    flex-direction:column;
+    gap:.2rem;
+    padding:.8rem;
+  }
+
+  .ticker-time{
+    min-width:auto;
+    text-align:center;
+  }
 }
