@@ -1527,125 +1527,200 @@
   background: none;
   border: none;
 }
+/* ==========================================
+   📱 MOBILE RESPONSIVE (CLEAN VERSION)
+========================================== */
 
-/* Mobil */
 @media (max-width: 768px) {
 
-  html,
-  body {
+  html, body {
     overflow-x: hidden;
   }
 
-  .navbar {
-    padding: 1.2rem 1.5rem;
-    position: relative;
+  /* =========================
+     GENERAL SPACING FIX
+  ========================= */
+
+  .container {
+    padding: 2rem 1.2rem;
   }
 
-  .nav-logo {
-    max-width: 75%;
+  section {
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
+  }
+
+  /* =========================
+     NAVBAR MOBILE
+  ========================= */
+
+  .navbar {
+    padding: 1rem 1.2rem;
   }
 
   .nav-logo a {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     letter-spacing: 1px;
   }
 
-  .hamburger {
-    display: block;
-    position: absolute;
-    right: 1.5rem;
-    top: 1rem;
-    z-index: 1100;
+  /* =========================
+     HERO SECTION
+  ========================= */
+
+  .editorial-hero {
+    padding: 2rem 1.2rem;
+    min-height: auto;
   }
 
-  .nav-links {
-    display: none;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: var(--bg-main);
-    padding: 1rem 0;
-    box-shadow: 0 10px 20px rgba(84, 107, 65, 0.1);
-    border-top: 1px solid rgba(84, 107, 65, 0.1);
-    z-index: 1000;
-    gap: 0;
-  }
-
-  .nav-links.active {
-    display: flex;
-  }
-
-  .nav-links .dropdown,
-  .nav-links .nav-item-link {
-    width: 100%;
-    margin: 0;
-    padding: 0.8rem 1.5rem;
-    text-align: left;
-  }
-
-  .dropdown {
-    width: 100%;
-  }
-
-  .dropdown-trigger {
-    display: block;
-    width: 100%;
-  }
-
-  .dropdown-menu {
-    position: static;
-    transform: none;
-    min-width: unset;
-    width: 100%;
-    margin-top: 0.5rem;
-    box-shadow: none;
-    border: none;
-    background: transparent;
-    padding-left: 1rem;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .dropdown-menu a {
-    padding: 0.7rem 1rem;
-    font-size: 0.75rem;
-  }
-
-  .hero-grid-container,
-  .bio-grid-container,
-  .registry-grid,
-  .contact-grid,
-  .editorial-magazine-layout {
+  .hero-grid-container {
     grid-template-columns: 1fr;
+    gap: 2rem;
   }
 
-  .editorial-hero,
-  .bio-editorial-section {
-    padding: 2rem 1.5rem;
+  .hero-main-title {
+    font-size: 2.2rem;
+    line-height: 1.05;
+    letter-spacing: -1px;
   }
+
+  .hero-statement {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+
+  .canvas-frame {
+    height: 320px;
+    max-width: 100%;
+  }
+
+  /* =========================
+     MANIFESTO BAR
+  ========================= */
 
   .manifesto-container {
     flex-direction: column;
     gap: 2rem;
+    padding: 0 1.2rem;
   }
 
   .manifesto-divider {
     display: none;
   }
 
-  .footer-container {
-    grid-template-columns: 1fr;
-  }
-
-  .footer-brand,
-  .footer-links {
+  .manifesto-item {
     text-align: center;
+    max-width: 100%;
   }
 
-  .footer-social-icons {
-    justify-content: center;
+  /* =========================
+     MAGAZINE / RECORDS
+  ========================= */
+
+  .editorial-magazine-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
   }
+
+  .mag-preview-box {
+    height: 220px;
+  }
+
+  .mag-text-content {
+    padding: 1.5rem;
+  }
+
+  .mag-text-content h3 {
+    font-size: 1.3rem;
+  }
+
+  .mag-text-content p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .mag-row-major {
+    position: relative;
+    top: auto;
+  }
+
+  /* =========================
+     SIDEBAR CARDS
+  ========================= */
+
+  .sidebar-mag-card {
+    padding: 1.5rem;
+  }
+
+  .sidebar-mag-card h4 {
+    font-size: 1.1rem;
+  }
+
+  /* =========================
+     CHRONICLE (TİMELINE)
+  ========================= */
+
+  .chronicle-row {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+    padding: 1.5rem 0;
+  }
+
+  .chronicle-year {
+    font-size: 1.1rem;
+  }
+
+  .chronicle-details h4 {
+    font-size: 1.1rem;
+  }
+
+  .chronicle-details p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  /* =========================
+     REGISTRY (SOCIAL AREA)
+  ========================= */
+
+  .registry-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .registry-title {
+    font-size: 1.3rem;
+  }
+
+  .registry-social-link {
+    font-size: 0.9rem;
+    padding: 1rem 0;
+  }
+
+  /* =========================
+     TEXT OPTIMIZATION
+  ========================= */
+
+  p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+  }
+
+  /* =========================
+     IMAGE / CARD FIX
+  ========================= */
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
 }
