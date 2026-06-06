@@ -1513,7 +1513,8 @@
   align-items: center; 
   justify-content: center; 
   margin-bottom: 1rem;
-}/* ==========================================
+}
+/* ==========================================
    15. MOBİL UYUM (RESPONSIVE) VE HAMBURGER MENÜ
    ========================================== */
 
@@ -1578,7 +1579,7 @@
     flex-direction: column;
   }
 
-  /* --- SENİN MEVCUT DİĞER MOBİL AYARLARIN (Bozulmaması için korundu) --- */
+  /* --- DİĞER MOBİL DÜZENLEMELER --- */
   .hero-grid-container,
   .bio-grid-container,
   .registry-grid,
@@ -1612,5 +1613,30 @@
 
   .footer-social-icons {
     justify-content: center;
+  }
+
+  /* --- EK MOBİL DÜZELTMELERİ --- */
+  .container {
+    padding: 3rem 1rem !important; 
+  }
+
+  .hero-main-title {
+    font-size: clamp(2rem, 10vw, 3rem) !important;
+    letter-spacing: -1px !important;
+  }
+
+  .canvas-frame, .sidebar-canvas-frame {
+    width: 90% !important;
+    height: auto !important;
+    margin: 0 auto !important;
+  }
+
+  .hero-statement {
+    font-size: 1rem !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .nav-logo a {
+    font-size: 0.9rem !important;
   }
 }

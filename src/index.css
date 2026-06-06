@@ -37,3 +37,35 @@ html, body {
 * {
   box-sizing: border-box;
 }
+
+/* ==========================================
+   MOBİL İÇİN EK DÜZELTMELER (index.css sonuna ekleyin)
+   ========================================== */
+
+@media (max-width: 768px) {
+  /* Başlıkların mobilde satır taşmasını engellemek için */
+  .hero-main-title {
+    font-size: clamp(2.5rem, 8vw, 4rem) !important;
+    line-height: 1.1 !important;
+  }
+
+  /* Kartların ekran genişliğine sığması için */
+  .canvas-frame, 
+  .sidebar-canvas-frame,
+  .record-media {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16/9; /* Gerekirse orantılı kalması için */
+  }
+
+  /* Navigasyonun mobilde taşmasını engelle */
+  .nav-links {
+    white-space: normal !important;
+  }
+
+  .nav-links a, 
+  .dropdown-trigger {
+    font-size: 0.9rem !important; /* Mobil için bir tık daha okunabilir */
+  }
+}
