@@ -1514,115 +1514,111 @@
   justify-content: center; 
   margin-bottom: 1rem;
 }/* ==========================================
-  /* ==========================================
-   15. MOBİL UYUM (RESPONSIVE) - BİRLEŞTİRİLMİŞ
-   ========================================== */
+  /* =========================
+   MOBİL UYUMLULUK (FINAL)
+   ========================= */
 
 @media (max-width: 768px) {
-  
-  /* --- GENEL AYARLAR --- */
-  html, body {
-    overflow-x: hidden;
+
+  /* -------------------------
+     1. GENEL SAYFA AYARLARI
+  -------------------------- */
+  .container {
+    padding: 1.2rem 1rem !important;
   }
 
-  .container {
+  p,
+  .editorial-bio-paragraph,
+  .press-card-summary,
+  .manifesto-title {
+    font-size: 0.9rem !important;
+    line-height: 1.5 !important;
+    word-break: break-word;
+  }
+
+  /* -------------------------
+     2. BAŞLIKLAR
+  -------------------------- */
+  .hero-main-title {
+    font-size: 2rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .editorial-title,
+  .bio-main-title {
+    font-size: 1.5rem !important;
+    letter-spacing: 0 !important;
+  }
+
+  .mag-text-content h3 {
+    font-size: 1.2rem !important;
+  }
+
+  .chronicle-details h4 {
+    font-size: 1.1rem !important;
+  }
+
+  .editorial-subtitle {
+    font-size: 0.85rem !important;
+  }
+
+  /* -------------------------
+     3. HERO ALANI
+  -------------------------- */
+  .editorial-hero {
+    min-height: 45vh !important;
     padding: 1.5rem 1rem !important;
   }
 
-  /* --- NAVBAR & HAMBURGER --- */
+  /* -------------------------
+     4. NAVBAR (KRİTİK DÜZELTME)
+  -------------------------- */
   .navbar {
-    padding: 0.8rem 1rem !important; /* Birleştirildi */
-    position: relative;
+    padding: 0.6rem 1rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: wrap !important;
   }
 
-  .hamburger {
-    display: block;
-    position: absolute;
-    right: 1.5rem;
-    top: 1rem;
-    z-index: 1100;
-    font-size: 1.8rem;
-    cursor: pointer;
-    color: var(--accent-dark);
-    background: none;
-    border: none;
+  .navbar a,
+  .navbar li {
+    font-size: 0.85rem !important;
   }
 
-  .nav-links {
-    display: none;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: var(--bg-main);
-    padding: 1rem 0;
-    box-shadow: 0 10px 20px rgba(84, 107, 65, 0.1);
-    border-top: 1px solid rgba(84, 107, 65, 0.1);
-    z-index: 1000;
+  /* navbar taşma engeli */
+  .navbar-menu {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    gap: 0.5rem !important;
   }
 
-  .nav-links.active {
-    display: flex;
+  /* -------------------------
+     5. KART & BLOK YAPILARI
+  -------------------------- */
+  .record-card {
+    gap: 1rem !important;
+    padding: 1rem 0 !important;
   }
 
-  .nav-links .dropdown, .nav-links .nav-item-link {
-    width: 100%;
-    padding: 0.8rem 1.5rem;
+  .mag-row-major,
+  .sidebar-mag-card {
+    padding: 1rem !important;
   }
 
-  .dropdown-menu {
-    position: static;
-    width: 100%;
-    background: transparent;
-    padding-left: 1rem;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* --- TİPOGRAFİ (Yazı Boyutları) --- */
-  .editorial-title { font-size: 1.6rem !important; }
-  .hero-main-title { font-size: 2.5rem !important; }
-  .mag-text-content h3 { font-size: 1.4rem !important; }
-  .chronicle-details h4 { font-size: 1.2rem !important; }
-  
-  p, .editorial-bio-paragraph, .press-card-summary, .manifesto-title {
-    font-size: 0.9rem !important;
-    line-height: 1.5 !important;
-  }
-
-  /* --- HERO & GRID YAPISI --- */
-  .editorial-hero {
-    min-height: 50vh !important;
-    padding: 2rem 1rem !important;
-  }
-
-  .hero-grid-container,
-  .bio-grid-container,
-  .registry-grid,
-  .contact-grid,
-  .editorial-magazine-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .mag-row-major, .sidebar-mag-card {
-    padding: 1.5rem !important;
-  }
-  
   .mag-preview-box {
-    height: 200px !important;
+    height: 180px !important;
   }
 
-  .manifesto-container {
-    flex-direction: column;
-    gap: 2rem;
+  /* -------------------------
+     6. GRID YAPILARI (TEK SÜTUN)
+  -------------------------- */
+  .gallery-grid,
+  .inventory-list-full {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
   }
 
-  .manifesto-divider { display: none; }
-
-  /* --- FOOTER --- */
-  .footer-container { grid-template-columns: 1fr; }
-  .footer-brand, .footer-links { text-align: center; }
-  .footer-social-icons { justify-content: center; }
 }
