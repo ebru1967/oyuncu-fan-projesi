@@ -1554,13 +1554,14 @@
     top:70px;
     left:0;
     width:100%;
-    height:calc(100vh - 70px);
+    right:0;
+    bottom:0;
     overflow-y:auto;
     background:var(--bg-main);
     padding:.5rem;
     gap:0 !important;
     -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
+    overscroll-behavior: contain;
   }
 
   .nav-links.active{
