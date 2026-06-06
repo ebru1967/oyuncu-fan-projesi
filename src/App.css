@@ -1514,111 +1514,53 @@
   justify-content: center; 
   margin-bottom: 1rem;
 }/* ==========================================
-  /* =========================
-   MOBİL UYUMLULUK (FINAL)
-   ========================= */
-
+  /* --- TEK VE KAPSAYICI MOBİL DÜZENLEME --- */
 @media (max-width: 768px) {
-
-  /* -------------------------
-     1. GENEL SAYFA AYARLARI
-  -------------------------- */
-  .container {
-    padding: 1.2rem 1rem !important;
-  }
-
-  p,
-  .editorial-bio-paragraph,
-  .press-card-summary,
-  .manifesto-title {
-    font-size: 0.9rem !important;
-    line-height: 1.5 !important;
-    word-break: break-word;
-  }
-
-  /* -------------------------
-     2. BAŞLIKLAR
-  -------------------------- */
-  .hero-main-title {
-    font-size: 2rem !important;
-    line-height: 1.2 !important;
-  }
-
-  .editorial-title,
-  .bio-main-title {
-    font-size: 1.5rem !important;
-    letter-spacing: 0 !important;
-  }
-
-  .mag-text-content h3 {
-    font-size: 1.2rem !important;
-  }
-
-  .chronicle-details h4 {
-    font-size: 1.1rem !important;
-  }
-
-  .editorial-subtitle {
-    font-size: 0.85rem !important;
-  }
-
-  /* -------------------------
-     3. HERO ALANI
-  -------------------------- */
-  .editorial-hero {
-    min-height: 45vh !important;
-    padding: 1.5rem 1rem !important;
-  }
-
-  /* -------------------------
-     4. NAVBAR (KRİTİK DÜZELTME)
-  -------------------------- */
+  
+  /* 1. Navbar Düzeni */
   .navbar {
-    padding: 0.6rem 1rem !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    flex-wrap: wrap !important;
+    padding: 0.8rem 1rem;
+    flex-wrap: wrap; /* Elemanların alt alta geçmesini sağlar */
+    width: 100%;
+    box-sizing: border-box;
   }
 
-  .navbar a,
-  .navbar li {
-    font-size: 0.85rem !important;
+  /* 2. Genel Konteyner ve Taşmaları Engelleme */
+  .container {
+    padding: 1rem 0.8rem;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden; /* Yan kaydırmayı engeller */
   }
 
-  /* navbar taşma engeli */
-  .navbar-menu {
-    width: 100% !important;
-    display: flex !important;
-    justify-content: center !important;
-    flex-wrap: wrap !important;
-    gap: 0.5rem !important;
+  /* 3. Başlık Optimizasyonu */
+  .editorial-title, .bio-main-title { font-size: 1.5rem; line-height: 1.2; }
+  .hero-main-title { font-size: 2rem; }
+  .mag-text-content h3 { font-size: 1.3rem; }
+  .chronicle-details h4 { font-size: 1.1rem; }
+  .editorial-subtitle { font-size: 0.9rem; }
+
+  /* 4. Metin ve İçerik */
+  p, .editorial-bio-paragraph, .press-card-summary, .manifesto-title {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    word-break: break-word; /* Çok uzun kelimeleri böler */
   }
 
-  /* -------------------------
-     5. KART & BLOK YAPILARI
-  -------------------------- */
-  .record-card {
-    gap: 1rem !important;
-    padding: 1rem 0 !important;
-  }
-
-  .mag-row-major,
-  .sidebar-mag-card {
-    padding: 1rem !important;
-  }
-
-  .mag-preview-box {
-    height: 180px !important;
-  }
-
-  /* -------------------------
-     6. GRID YAPILARI (TEK SÜTUN)
-  -------------------------- */
-  .gallery-grid,
+  /* 5. Izgara (Grid/Flex) Yapıları - Tek Sütun */
+  .gallery-grid, 
   .inventory-list-full {
+    display: grid !important;
     grid-template-columns: 1fr !important;
     gap: 1rem !important;
   }
 
+  /* 6. Kart ve Hero Düzenlemeleri */
+  .editorial-hero { min-height: 40vh; padding: 1.5rem 1rem; }
+  .record-card { gap: 1rem; padding: 1rem 0; }
+  .mag-preview-box { height: 180px; width: 100%; object-fit: cover; }
+  
+  .mag-row-major, .sidebar-mag-card {
+    padding: 1rem;
+  }
 }
