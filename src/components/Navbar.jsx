@@ -1,22 +1,35 @@
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 function Navbar() {
+  // Mobil menünün açık/kapalı durumunu tutan state
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Linke tıklandığında menüyü kapatan fonksiyon
+  const closeMenu = () => setIsOpen(false);
+
   return (
     <nav className="navbar">
       <div className="nav-logo">
-        <Link to="/">AYTEK SAYAN OFFICIAL FC</Link>
+        <Link to="/" onClick={closeMenu}>AYTEK SAYAN OFFICIAL FC</Link>
       </div>
       
-      <div className="nav-links">
-        <Link to="/" className="nav-item-link">ANA SAYFA</Link>
+      {/* Mobil Hamburger Butonu */}
+      <div className="hamburger" onClick={() => setIsOpen(!isOpen)}>
+        {isOpen ? '✕' : '☰'}
+      </div>
+      
+      {/* isOpen state'ine göre 'active' class'ı ekleniyor */}
+      <div className={`nav-links ${isOpen ? 'active' : ''}`}>
+        <Link to="/" className="nav-item-link" onClick={closeMenu}>ANA SAYFA</Link>
         
         {/* AKTÖR PROFİLİ */}
         <div className="dropdown">
           <span className="dropdown-trigger">PROFIL ▾</span>
           <div className="dropdown-menu">
-            <Link to="/biyografi">DETAYLI BİYOGRAFİ</Link>
-            <Link to="/#kronoloji">KRONOLOJİK TARİHÇE</Link>
-            <Link to="/basin">BASIN & SÖYLEŞİLER</Link>
+            <Link to="/biyografi" onClick={closeMenu}>DETAYLI BİYOGRAFİ</Link>
+            <Link to="/#kronoloji" onClick={closeMenu}>KRONOLOJİK TARİHÇE</Link>
+            <Link to="/basin" onClick={closeMenu}>BASIN & SÖYLEŞİLER</Link>
           </div>
         </div>
 
@@ -24,9 +37,9 @@ function Navbar() {
         <div className="dropdown">
           <span className="dropdown-trigger">SANAT & KARİYER ▾</span>
           <div className="dropdown-menu">
-            <Link to="/tiyatro">TİYATRO ENVANTERİ</Link>
-            <Link to="/filmografi">DİZİ & FİLMOGRAFİ</Link>
-            <Link to="/oduller">ÖDÜLLER & ADAYLIKLAR</Link>
+            <Link to="/tiyatro" onClick={closeMenu}>TİYATRO ENVANTERİ</Link>
+            <Link to="/filmografi" onClick={closeMenu}>DİZİ & FİLMOGRAFİ</Link>
+            <Link to="/oduller" onClick={closeMenu}>ÖDÜLLER & ADAYLIKLAR</Link>
           </div>
         </div>
 
@@ -34,14 +47,14 @@ function Navbar() {
         <div className="dropdown">
           <span className="dropdown-trigger">MEDYA DEPOSU ▾</span>
           <div className="dropdown-menu">
-            <Link to="/medya-deposu#karakter-kesitleri">KARAKTER KESİTLERİ</Link>
-            <Link to="/medya-deposu#fotograflar">FOTOĞRAF ARŞİVİ</Link>
-            <Link to="/medya-deposu#wallpapers">DUVAR KAĞITLARI</Link>
-            <Link to="/medya-deposu#profil-fotograflari">PROFİL FOTOĞRAFLARI</Link>
-            <Link to="/medya-deposu#headers">HEADER GÖRSELLERİ</Link>
-            <Link to="/medya-deposu#kamera-arkasi">KAMERA ARKASI & DOĞAL HALLER</Link>
-            <Link to="/medya-deposu#mimikler">İKONİK MİMİKLER & BAKIŞLAR</Link>
-            <Link to="/medya-deposu#sticker">STICKER ARCHIVE</Link>
+            <Link to="/medya-deposu#karakter-kesitleri" onClick={closeMenu}>KARAKTER KESİTLERİ</Link>
+            <Link to="/medya-deposu#fotograflar" onClick={closeMenu}>FOTOĞRAF ARŞİVİ</Link>
+            <Link to="/medya-deposu#wallpapers" onClick={closeMenu}>DUVAR KAĞITLARI</Link>
+            <Link to="/medya-deposu#profil-fotograflari" onClick={closeMenu}>PROFİL FOTOĞRAFLARI</Link>
+            <Link to="/medya-deposu#headers" onClick={closeMenu}>HEADER GÖRSELLERİ</Link>
+            <Link to="/medya-deposu#kamera-arkasi" onClick={closeMenu}>KAMERA ARKASI & DOĞAL HALLER</Link>
+            <Link to="/medya-deposu#mimikler" onClick={closeMenu}>İKONİK MİMİKLER & BAKIŞLAR</Link>
+            <Link to="/medya-deposu#sticker" onClick={closeMenu}>STICKER ARCHIVE</Link>
           </div>
         </div>
 
@@ -49,14 +62,14 @@ function Navbar() {
         <div className="dropdown">
           <span className="dropdown-trigger">İNTERAKTİF ▾</span>
           <div className="dropdown-menu">
-            <Link to="/adam-asmaca">ŞİFRE ÇÖZÜMÜ (ADAM ASMACA)</Link>
-            <Link to="/quiz">QUİZ</Link>
-            <Link to="/gunun-repligi">GÜNÜN REPLİĞİ</Link>
-            <Link to="/cuval-terapi">ÇUVAL TERAPİSİ (SAYAÇ)</Link>
-            <Link to="/jim-carrey-pixel">PİKSEL BOYAMA</Link>
-            <Link to="/penalti">PENALTI ATIŞI</Link>
-            <Link to="/puzzle">ARŞİV PUZZLE</Link>
-            <Link to="/bulmaca">KARE BULMACA</Link>
+            <Link to="/adam-asmaca" onClick={closeMenu}>ŞİFRE ÇÖZÜMÜ (ADAM ASMACA)</Link>
+            <Link to="/quiz" onClick={closeMenu}>QUİZ</Link>
+            <Link to="/gunun-repligi" onClick={closeMenu}>GÜNÜN REPLİĞİ</Link>
+            <Link to="/cuval-terapi" onClick={closeMenu}>ÇUVAL TERAPİSİ (SAYAÇ)</Link>
+            <Link to="/jim-carrey-pixel" onClick={closeMenu}>PİKSEL BOYAMA</Link>
+            <Link to="/penalti" onClick={closeMenu}>PENALTI ATIŞI</Link>
+            <Link to="/puzzle" onClick={closeMenu}>ARŞİV PUZZLE</Link>
+            <Link to="/bulmaca" onClick={closeMenu}>KARE BULMACA</Link>
           </div>
         </div>
 
@@ -64,14 +77,13 @@ function Navbar() {
         <div className="dropdown">
            <span className="dropdown-trigger">FC TOPLULUĞU ▾</span>
            <div className="dropdown-menu">
-             <Link to="/fc-hesaplar">X OFFICIAL KANALLAR</Link>
-           {/* <Link to="/haber-bulteni">FC HABER BÜLTENİ</Link>*/}
-             <Link to="/proje-destek">PROJEYE DESTEK OL</Link>
-             <Link to="/fan-gonderileri">FAN ESERLERİ GALERİSİ</Link>
+             <Link to="/fc-hesaplar" onClick={closeMenu}>X OFFICIAL KANALLAR</Link>
+             <Link to="/proje-destek" onClick={closeMenu}>PROJEYE DESTEK OL</Link>
+             <Link to="/fan-gonderileri" onClick={closeMenu}>FAN ESERLERİ GALERİSİ</Link>
            </div>
         </div>
 
-        <Link to="/iletisim" className="nav-item-link">İLETİŞİM</Link>
+        <Link to="/iletisim" className="nav-item-link" onClick={closeMenu}>İLETİŞİM</Link>
       </div>
     </nav>
   );
