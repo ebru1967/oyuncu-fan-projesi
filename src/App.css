@@ -1527,43 +1527,57 @@
   background: none;
   border: none;
 }
-/* --- MOBİL UYUMLULUK: FINAL DÜZENLEME --- */
-
+/* --- MOBİL UYUMLU FİNAL CSS --- */
 @media (max-width: 768px) {
-  /* 1. Tüm sayfa genişliğini kısıtla ve boşlukları daralt */
+  /* 1. Navbar'ı düzelt */
+  .navbar {
+    padding: 0.8rem 1rem !important;
+    position: sticky;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .hamburger {
+    display: block !important;
+    order: 2; /* Logodan sonra gelmesi için */
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background: var(--bg-main);
+    flex-direction: column;
+    padding: 1rem 0;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    display: none; /* JS ile .active eklendiğinde açılacak */
+  }
+  
+  .nav-links.active {
+    display: flex !important;
+  }
+
+  /* 2. Container ve İçerik Boşlukları */
   .container {
     padding: 1.5rem 1rem !important;
   }
 
-  /* 2. Başlıkları telefona göre küçült (H1, H2, H3, H4) */
+  /* 3. Başlık ve Metin boyutları */
   .editorial-title { font-size: 1.6rem !important; }
-  .hero-main-title { font-size: 2.5rem !important; }
-  .mag-text-content h3 { font-size: 1.4rem !important; }
-  .chronicle-details h4 { font-size: 1.2rem !important; }
-  
-  /* 3. Paragraf ve içerik metinlerini küçült */
-  p, .editorial-bio-paragraph, .press-card-summary, .manifesto-title {
+  .hero-main-title { font-size: 2.2rem !important; }
+  p, .editorial-bio-paragraph, .press-card-summary {
     font-size: 0.9rem !important;
     line-height: 1.5 !important;
   }
 
-  /* 4. Hero bölümünü (Giriş) dikey sığdır */
-  .editorial-hero {
-    min-height: 50vh !important;
-    padding: 2rem 1rem !important;
+  /* 4. Grid'leri tek sütuna düşür */
+  .hero-grid-container, .editorial-magazine-layout, .registry-grid, .contact-grid {
+    grid-template-columns: 1fr !important;
   }
 
-  /* 5. Kartların içindeki resim/içerik oranını düzelt */
-  .mag-row-major, .sidebar-mag-card {
-    padding: 1.5rem !important;
-  }
-  
-  .mag-preview-box {
-    height: 200px !important;
-  }
-
-  /* 6. Navbar'ı mobilde sabitle */
-  .navbar {
-    padding: 0.8rem 1rem !important;
-  }
+  /* 5. Hero ve Mag düzeni */
+  .editorial-hero { min-height: 40vh !important; padding: 1rem !important; }
+  .mag-preview-box { height: 200px !important; }
 }
