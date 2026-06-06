@@ -1,42 +1,39 @@
-/* --- MOBİL UYUMLULUK (RESPONSIVE) İÇİN FİNAL DÜZENLEMELER --- */
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&family=Montserrat:wght@600;700;800&family=Inter:wght@400;500&display=swap');
 
-@media (max-width: 768px) {
-  /* 1. Tüm sayfalardaki gereksiz boşlukları (padding) küçült */
-  .container {
-    padding: 1.5rem 1rem !important;
-  }
+:root {
+  /* Renk Paleti */
+  --bg-main: #FFF8EC;       
+  --bg-card: #DCCCAC;       
+  --accent-light: #99AD7A;  
+  --accent-dark: #546B41;   
+  --text-main: #546B41;     
 
-  /* 2. Başlıkları telefona sığacak şekilde küçült */
-  .editorial-title, .bio-main-title {
-    font-size: 1.6rem !important;
-    letter-spacing: 0 !important;
-  }
+  /* Fontlar */
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-bio: 'Caveat', cursive;
+}
 
-  .editorial-subtitle {
-    font-size: 0.9rem !important;
-  }
+/* Tüm tarayıcı hatalarını sıfırlayan kök ayarlar */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
 
-  /* 3. Kart yapılarındaki devasa boşlukları daralt */
-  .record-card {
-    gap: 1rem !important;
-    padding: 1.5rem 0 !important;
-  }
+/* Vite'ın default olarak getirdiği çakışma yaratan elementi sıfırlama */
+#root {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
 
-  /* 4. Filmografi ve Medya galeri ızgaralarını tek sütuna indir */
-  .gallery-grid, .inventory-list-full {
-    grid-template-columns: 1fr !important;
-    gap: 1.5rem !important;
-  }
-
-  /* 5. Metin taşmalarını engelle (Kelimeyi bölmez, olduğu gibi sığdırır) */
-  p, .editorial-bio-paragraph, .press-card-summary {
-    font-size: 0.9rem !important;
-    line-height: 1.5 !important;
-    word-wrap: break-word !important;
-  }
-
-  /* 6. Navbar'ın mobilde düzgün durması için */
-  .navbar {
-    padding: 0.8rem !important;
-  }
+* {
+  box-sizing: border-box;
 }

@@ -1514,68 +1514,104 @@
   justify-content: center; 
   margin-bottom: 1rem;
 }/* ==========================================
+  /* ==========================================
    15. MOBİL UYUM (RESPONSIVE) VE HAMBURGER MENÜ
    ========================================== */
 
-/* 1. BİLGİSAYARDA İKONU GİZLE */
+/* Bilgisayarda hamburger gizli */
 .hamburger {
   display: none;
   font-size: 1.8rem;
   cursor: pointer;
   color: var(--accent-dark);
+  background: none;
+  border: none;
 }
 
-/* 2. TELEFON EKRANLARI İÇİN AYARLAR */
+/* Mobil */
 @media (max-width: 768px) {
-  
-  /* --- HAMBURGER MENÜ AYARLARI --- */
+
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
   .navbar {
     padding: 1.2rem 1.5rem;
+    position: relative;
+  }
+
+  .nav-logo {
+    max-width: 75%;
+  }
+
+  .nav-logo a {
+    font-size: 0.8rem;
+    letter-spacing: 1px;
   }
 
   .hamburger {
     display: block;
     position: absolute;
     right: 1.5rem;
-    top: 1.2rem;
+    top: 1rem;
+    z-index: 1100;
   }
 
   .nav-links {
     display: none;
     flex-direction: column;
+    align-items: flex-start;
     width: 100%;
     position: absolute;
-    top: 65px;
+    top: 100%;
     left: 0;
     background-color: var(--bg-main);
     padding: 1rem 0;
     box-shadow: 0 10px 20px rgba(84, 107, 65, 0.1);
+    border-top: 1px solid rgba(84, 107, 65, 0.1);
     z-index: 1000;
+    gap: 0;
   }
 
   .nav-links.active {
     display: flex;
   }
 
-  .nav-links .dropdown, 
+  .nav-links .dropdown,
   .nav-links .nav-item-link {
-    margin: 0.5rem 1.5rem;
+    width: 100%;
+    margin: 0;
+    padding: 0.8rem 1.5rem;
     text-align: left;
+  }
+
+  .dropdown {
+    width: 100%;
+  }
+
+  .dropdown-trigger {
+    display: block;
+    width: 100%;
   }
 
   .dropdown-menu {
     position: static;
+    transform: none;
+    min-width: unset;
+    width: 100%;
+    margin-top: 0.5rem;
     box-shadow: none;
+    border: none;
     background: transparent;
     padding-left: 1rem;
-    display: none; 
-    border: none;
-  }
-
-  .dropdown:hover .dropdown-menu,
-  .dropdown:active .dropdown-menu {
     display: flex;
     flex-direction: column;
+  }
+
+  .dropdown-menu a {
+    padding: 0.7rem 1rem;
+    font-size: 0.75rem;
   }
 
   .hero-grid-container,
