@@ -1515,28 +1515,13 @@
   margin-bottom: 1rem;
 }/* ==========================================
   /* ==========================================
-   MOBİL UYUM (RESPONSIVE) FINAL
-   NAVBAR + TYPOGRAPHY + LAYOUT
+   15. MOBİL UYUM (RESPONSIVE) - BİRLEŞTİRİLMİŞ
    ========================================== */
 
-/* Desktop: hamburger gizli */
-.hamburger {
-  display: none;
-  font-size: 1.8rem;
-  cursor: pointer;
-  color: var(--accent-dark);
-  background: none;
-  border: none;
-}
-
-/* =========================
-   MOBİL (768px)
-   ========================= */
 @media (max-width: 768px) {
-
-  /* ===== GENEL ===== */
-  html,
-  body {
+  
+  /* --- GENEL AYARLAR --- */
+  html, body {
     overflow-x: hidden;
   }
 
@@ -1544,27 +1529,23 @@
     padding: 1.5rem 1rem !important;
   }
 
-  /* ===== NAVBAR ===== */
+  /* --- NAVBAR & HAMBURGER --- */
   .navbar {
-    padding: 0.8rem 1rem !important;
+    padding: 0.8rem 1rem !important; /* Birleştirildi */
     position: relative;
-  }
-
-  .nav-logo {
-    max-width: 75%;
-  }
-
-  .nav-logo a {
-    font-size: 0.8rem;
-    letter-spacing: 1px;
   }
 
   .hamburger {
     display: block;
     position: absolute;
-    right: 1rem;
-    top: 0.8rem;
+    right: 1.5rem;
+    top: 1rem;
     z-index: 1100;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: var(--accent-dark);
+    background: none;
+    border: none;
   }
 
   .nav-links {
@@ -1580,96 +1561,43 @@
     box-shadow: 0 10px 20px rgba(84, 107, 65, 0.1);
     border-top: 1px solid rgba(84, 107, 65, 0.1);
     z-index: 1000;
-    gap: 0;
   }
 
   .nav-links.active {
     display: flex;
   }
 
-  .nav-links .dropdown,
-  .nav-links .nav-item-link {
+  .nav-links .dropdown, .nav-links .nav-item-link {
     width: 100%;
-    margin: 0;
     padding: 0.8rem 1.5rem;
-    text-align: left;
-  }
-
-  .dropdown {
-    width: 100%;
-  }
-
-  .dropdown-trigger {
-    display: block;
-    width: 100%;
   }
 
   .dropdown-menu {
     position: static;
-    transform: none;
     width: 100%;
-    box-shadow: none;
-    border: none;
     background: transparent;
     padding-left: 1rem;
     display: flex;
     flex-direction: column;
   }
 
-  .dropdown-menu a {
-    padding: 0.7rem 1rem;
-    font-size: 0.75rem;
-  }
-
-  /* ===== TYPOGRAPHY (EN KRİTİK KISIM) ===== */
+  /* --- TİPOGRAFİ (Yazı Boyutları) --- */
   .editorial-title { font-size: 1.6rem !important; }
   .hero-main-title { font-size: 2.5rem !important; }
   .mag-text-content h3 { font-size: 1.4rem !important; }
   .chronicle-details h4 { font-size: 1.2rem !important; }
-
-  p,
-  .editorial-bio-paragraph,
-  .press-card-summary,
-  .manifesto-title {
+  
+  p, .editorial-bio-paragraph, .press-card-summary, .manifesto-title {
     font-size: 0.9rem !important;
-    line-height: 1.6 !important;
-
-    /* 🔥 okuma düzeltmesi */
-    word-break: break-word;
-    overflow-wrap: break-word;
-    hyphens: auto;
+    line-height: 1.5 !important;
   }
 
-  /* uzun kart yazılarını sınırlı göster */
-  .mag-text-content p,
-  .sidebar-mag-card p {
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .hero-statement {
-    padding: 0 0.5rem;
-  }
-
-  /* ===== HERO ===== */
+  /* --- HERO & GRID YAPISI --- */
   .editorial-hero {
     min-height: 50vh !important;
     padding: 2rem 1rem !important;
   }
 
-  /* ===== KARTLAR ===== */
-  .mag-row-major,
-  .sidebar-mag-card {
-    padding: 1.5rem !important;
-  }
-
-  .mag-preview-box {
-    height: 200px !important;
-  }
-
-  /* ===== GRID ===== */
   .hero-grid-container,
   .bio-grid-container,
   .registry-grid,
@@ -1678,26 +1606,23 @@
     grid-template-columns: 1fr;
   }
 
+  .mag-row-major, .sidebar-mag-card {
+    padding: 1.5rem !important;
+  }
+  
+  .mag-preview-box {
+    height: 200px !important;
+  }
+
   .manifesto-container {
     flex-direction: column;
     gap: 2rem;
   }
 
-  .manifesto-divider {
-    display: none;
-  }
+  .manifesto-divider { display: none; }
 
-  /* ===== FOOTER ===== */
-  .footer-container {
-    grid-template-columns: 1fr;
-  }
-
-  .footer-brand,
-  .footer-links {
-    text-align: center;
-  }
-
-  .footer-social-icons {
-    justify-content: center;
-  }
+  /* --- FOOTER --- */
+  .footer-container { grid-template-columns: 1fr; }
+  .footer-brand, .footer-links { text-align: center; }
+  .footer-social-icons { justify-content: center; }
 }
