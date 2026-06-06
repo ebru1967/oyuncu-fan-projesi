@@ -1513,241 +1513,130 @@
   align-items: center; 
   justify-content: center; 
   margin-bottom: 1rem;
-}@media (max-width:768px){
-
+}
+@media (max-width: 768px) {
   /* NAVBAR */
-  .navbar{
-    padding:1rem !important;
-    min-height:70px;
-    position:sticky;
-    justify-content:space-between;
-    align-items:center;
+  .navbar {
+    padding: 1rem !important;
+    min-height: 70px;
+    position: sticky;
+    justify-content: space-between;
+    align-items: center;
   }
 
-  .nav-logo{
-    width:75%;
+  .hamburger {
+    display: block !important; /* Mobilde görünür yap */
   }
 
-  .nav-logo a{
-    font-size:.85rem;
-    white-space:normal;
-    line-height:1.2;
-    display:block;
+  .nav-logo {
+    width: 75%;
   }
 
-  .hamburger{
-    display:block;
-    position:absolute;
-    right:1rem;
-    top:50%;
-    transform:translateY(-50%);
-    z-index:1002;
+  .nav-logo a {
+    font-size: 0.85rem;
+    white-space: normal;
+    line-height: 1.2;
+    display: block;
   }
 
-  .nav-links{
-    display:none;
-    flex-direction:column;
-    align-items:stretch;
-    position:fixed;
-    top:70px;
-    left:0;
-    width:100%;
-    height:calc(100vh - 70px);
-    overflow-y:auto;
-    background:var(--bg-main);
-    padding:.5rem;
-    gap:0 !important;
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 70px);
+    overflow-y: auto;
+    background: var(--bg-main);
+    padding: 0.5rem;
+    gap: 0 !important;
   }
 
-  .nav-links.active{
-    display:flex;
+  .nav-links.active {
+    display: flex;
   }
 
   .nav-item-link,
-  .dropdown-trigger{
-    width:100%;
-    padding:.8rem 1rem !important;
-    margin:0 !important;
-    text-align:left;
-    border-bottom:1px solid rgba(84,107,65,.12);
+  .dropdown-trigger {
+    width: 100%;
+    padding: 0.8rem 1rem !important;
+    margin: 0 !important;
+    text-align: left;
+    border-bottom: 1px solid rgba(84, 107, 65, 0.12);
   }
 
-  /* DROPDOWN */
-  .dropdown{
-    width:100%;
-  }
-
-  .dropdown-trigger{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    cursor:pointer;
-  }
-
-  .dropdown-menu{
-    position:static;
-    left:auto;
-    transform:none;
-    width:100%;
-    min-width:unset;
-    margin:0 !important;
-    padding:.25rem !important;
-    gap:0 !important;
-    border-radius:10px;
-    border:1px solid rgba(84,107,65,.08);
-    background:rgba(84,107,65,.04);
-    box-shadow:none;
-  }
-
-  .dropdown-menu a{
-    display:block;
-    padding:.55rem .75rem !important;
-    margin:0 !important;
-    border-radius:6px;
-    line-height:1.2;
-  }
-
-  /* HERO - GÜNCELLENMİŞ MOBİL DÜZEN */
-  .hero-grid-container{
+  /* HERO - MOBİL YAN YANA DÜZEN */
+  .hero-grid-container {
     display: grid !important;
-    grid-template-columns: 1fr 0.8fr !important; /* Yan yana tutar */
+    grid-template-columns: 1fr 100px !important; /* Yazı ve görsel yan yana */
     gap: 0.5rem !important;
     align-items: center;
     padding: 0 10px !important;
   }
 
-  .hero-left-editorial{
-    text-align:left;
+  .hero-main-title {
+    font-size: 1rem !important; /* Yazılar küçültüldü */
+    line-height: 1.1;
+    margin: 0;
   }
 
-  .hero-right-display{
-    justify-content:center;
-    display: flex;
+  .hero-statement {
+    font-size: 0.75rem !important; /* Yazılar küçültüldü */
+    line-height: 1.3;
+    margin-top: 0.5rem;
   }
 
   .hero-right-display img,
-  .hero-portrait{
-    max-width: 100% !important; /* Kapsayıcıya sığar */
+  .hero-portrait {
+    max-width: 100px !important; /* Görsel boyutlandırıldı */
     height: auto;
   }
 
-  .hero-main-title{
-    font-size: 1.1rem !important; /* Küçültüldü */
-    line-height: 1.1;
+  /* MANIFESTO / KANALLAR - İKİ SÜTUN */
+  .manifesto-container {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.5rem !important;
+    padding: 0 10px !important;
   }
 
-  .hero-editorial-footer{
-    gap:.5rem;
+  .manifesto-item h2 {
+    font-size: 0.85rem !important;
   }
 
-  .hero-statement{
-    max-width:100%;
-    font-size: 0.85rem; /* Yazı çok uzunsa küçülttük */
+  .manifesto-item p,
+  .manifesto-item a {
+    font-size: 0.7rem !important; /* Yazıların sığması için küçültüldü */
   }
 
-  /* MANIFESTO */
-  .manifesto-container{
-    display:flex;
-    flex-direction:row !important;
-    align-items:center;
-    gap:1rem;
-    padding:0 1rem;
+  /* DİĞER MOBİL AYARLAR */
+  .editorial-magazine-layout {
+    grid-template-columns: 1fr !important;
   }
 
-  .manifesto-item{
-    flex:1;
-    text-align:left;
+  .bio-grid-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
   }
 
-  .manifesto-divider{
-    display:none;
+  .chronicle-row {
+    grid-template-columns: 1fr !important;
+    gap: 0.5rem !important;
   }
 
-  /* MAGAZINE */
-  .editorial-magazine-layout{
-    grid-template-columns:1fr !important;
+  .contact-grid {
+    grid-template-columns: 1fr;
   }
 
-  .mag-row-major{
-    position:static;
+  .footer-container {
+    grid-template-columns: 1fr;
+    text-align: center;
   }
 
-  .mag-text-content{
-    padding:1.5rem;
-  }
-
-  /* BIO */
-  .bio-grid-container{
-    display:flex;
-    flex-direction:column;
-    gap:2rem;
-  }
-
-  .bio-right-sidebar{
-    align-items:center;
-  }
-
-  /* CHRONICLE */
-  .chronicle-row{
-    grid-template-columns:1fr !important;
-    gap:.5rem !important;
-  }
-
-  /* RECORDS */
-  .record-card{
-    flex-direction:column;
-    gap:1rem;
-  }
-
-  .record-year{
-    min-width:auto;
-  }
-
-  .record-media{
-    height:220px;
-  }
-
-  /* CONTACT */
-  .contact-grid{
-    grid-template-columns:1fr;
-  }
-
-  /* FOOTER */
-  .footer-container{
-    grid-template-columns:1fr;
-    text-align:center;
-  }
-
-  .footer-social-icons{
-    justify-content:center;
-  }
-
-  .footer-links{
-    text-align:center;
-  }
-
-  /* QUIZ */
-  .game-container{
-    padding:1.5rem;
-  }
-
-  .quiz-question{
-    font-size:1.3rem;
-  }
-
-  .score-display{
-    font-size:3rem;
-  }
-
-  /* COUNTDOWN */
-  .countdown-ticker{
-    flex-direction:column;
-    gap:.2rem;
-    padding:.8rem;
-  }
-
-  .ticker-time{
-    min-width:auto;
-    text-align:center;
+  .quiz-question {
+    font-size: 1rem !important;
   }
 }
