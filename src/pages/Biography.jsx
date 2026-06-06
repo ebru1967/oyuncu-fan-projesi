@@ -58,7 +58,7 @@ function Biography() {
             </div>
 
             {/* Dinamik Değişen Cilt İçerikleri */}
-            <div className="bio-editorial-body">
+            <div className="bio-editorial-body" style={{ width: '100%' }}>
               
               {/* CİLT 1: KÖKLER & İZMİR HAFIZASI */}
               {activePage === 1 && (
@@ -160,30 +160,19 @@ function Biography() {
             </div>
           </div>
           
-         {/* SAĞ ALAN: PORTRE ÇERÇEVESİ VE DÖKÜMAN KÜNYESİ */}
+          {/* SAĞ ALAN: PORTRE ÇERÇEVESİ VE DÖKÜMAN KÜNYESİ */}
           <div className="bio-right-sidebar">
-            
-            {/* Dış çerçeve kalıyor, içini dikey hiza (column) yapıyoruz */}
             <div className="sidebar-canvas-frame" style={{ display: 'flex', flexDirection: 'column' }}>
-              
-              {/* Resim İçin Çerçeve Alanı */}
               <div style={{ flex: 1, width: '100%', overflow: 'hidden', marginBottom: '1rem', border: '1px solid rgba(84,107,65,0.1)' }}>
                 <img 
                   src="/portreicin.jpeg" 
                   alt="Aytek Şayan Portre"
-                  style={{ 
-                    width: '100%', 
-                    height: '100%', 
-                    objectFit: 'cover', 
-                    display: 'block' 
-                  }} 
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} 
                 />
               </div>
-
               <span className="canvas-tag" style={{ color: 'var(--accent-dark)', opacity: 0.8, textAlign: 'left', width: '100%' }}>
                 ARŞİV FOTOĞRAFI #089
               </span>
-              
             </div>
             
             <div className="dossier-spec-box" style={{ marginTop: '1.5rem' }}>

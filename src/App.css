@@ -1886,7 +1886,34 @@
     font-size:0.75rem !important;
     line-height:1.4;
   }
+/* BIO DÜZENLEMELERİ */
+  .bio-grid-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2rem;
+    padding: 0 1rem; /* Yanlardan nefes alması için */
+  }
 
+  .editorial-bio-paragraph {
+    font-size: 1rem !important; /* Bir tık büyüttük okunabilirlik için */
+    line-height: 1.6 !important;
+    text-align: justify; /* Dağılmayı engeller, blok yapar */
+    word-break: break-word;
+    hyphens: auto; /* Kelimeleri daha estetik böler */
+    margin-bottom: 1.2rem;
+  }
+
+  .sidebar-canvas-frame {
+    width: 100% !important;
+    max-width: 300px !important;
+    margin: 0 auto 2rem auto !important; /* Resim ve metin arasına boşluk */
+  }
+
+  .dossier-spec-box {
+    width: 100% !important;
+    padding: 1rem;
+    background: rgba(84,107,65,0.03); /* Görsel bir kutu hissi verir */
+  }
 
 }
 
