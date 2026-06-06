@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&family=Montserrat:wght@600;700;800&family=Inter:wght@400;500&display=swap');
+
+:root {
+  /* Renk Paleti */
+  --bg-main: #FFF8EC;       
+  --bg-card: #DCCCAC;       
+  --accent-light: #99AD7A;  
+  --accent-dark: #546B41;   
+  --text-main: #546B41;     
+
+  /* Fontlar */
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-bio: 'Caveat', cursive;
+}
+
+/* Tüm tarayıcı hatalarını sıfırlayan kök ayarlar */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  scroll-behavior: smooth;
+}
+
+/* Vite'ın default olarak getirdiği çakışma yaratan elementi sıfırlama */
+#root {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
