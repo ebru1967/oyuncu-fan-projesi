@@ -37,35 +37,47 @@ html, body {
 * {
   box-sizing: border-box;
 }
-
 /* ==========================================
-   MOBİL İÇİN EK DÜZELTMELER (index.css sonuna ekleyin)
+   MOBİL İÇİN DÜZELTMELER (GÜNCELLENMİŞ)
    ========================================== */
-
 @media (max-width: 768px) {
-  /* Başlıkların mobilde satır taşmasını engellemek için */
+  
+  /* 1. Genel Padding Düzeltmesi (Sayfaların kenarlara yapışmaması için) */
+  .container, 
+  .bio-editorial-section,
+  .editorial-hero {
+    padding: 2rem 1rem !important; 
+  }
+
+  /* 2. Başlıkların mobilde taşmasını engelle */
   .hero-main-title {
-    font-size: clamp(2.5rem, 8vw, 4rem) !important;
+    font-size: clamp(2rem, 8vw, 3rem) !important;
     line-height: 1.1 !important;
   }
 
-  /* Kartların ekran genişliğine sığması için */
+  /* 3. Kartların ekran genişliğine sığması */
   .canvas-frame, 
   .sidebar-canvas-frame,
   .record-media {
     width: 100% !important;
     max-width: 100% !important;
     height: auto !important;
-    aspect-ratio: 16/9; /* Gerekirse orantılı kalması için */
   }
 
-  /* Navigasyonun mobilde taşmasını engelle */
+  /* 4. SENİN GÖRSELDEKİ SORUNUN ÇÖZÜMÜ: Kronoloji Satırı */
+  .chronicle-row {
+    grid-template-columns: 1fr !important; /* Yıl ve detayları alt alta al */
+    gap: 0.5rem !important;
+    padding: 1.5rem 0 !important;
+  }
+  
+  .chronicle-details p {
+    max-width: 100% !important; /* Yazının tüm alanı kullanmasını sağla */
+    font-size: 1rem !important;
+  }
+
+  /* 5. Navigasyon Düzeltmesi */
   .nav-links {
     white-space: normal !important;
-  }
-
-  .nav-links a, 
-  .dropdown-trigger {
-    font-size: 0.9rem !important; /* Mobil için bir tık daha okunabilir */
   }
 }
