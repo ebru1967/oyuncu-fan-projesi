@@ -11,8 +11,8 @@ const filmographyList = [
     image: "/attila.jpeg", 
     summary: "Tarihin akışını değiştiren efsanevi liderlerin anlatıldığı docudrama (yarı belgesel yarı drama) formatındaki yapımın Attila bölümünde yer alarak, Hun İmparatorluğu'nun güç savaşları arasındaki tarihi bir figüre hayat vermiştir.",
     urls: [
-      { label: "1. BÖLÜM İZLE ↗", link: "https://youtu.be/aD-7bHQg1SQ" },
-      { label: "2. BÖLÜM İZLE ↗", link: "https://youtu.be/DvnuitwWBOY" } 
+      { label: "9. BÖLÜM İZLE ↗", link: "https://youtu.be/aD-7bHQg1SQ" },
+      { label: "10. BÖLÜM İZLE ↗", link: "https://youtu.be/DvnuitwWBOY" } 
     ]
   },
   { 
@@ -173,51 +173,74 @@ function Filmography() {
                 </p>
 
                 {/* DİNAMİK LİNK/BUTON MANTIĞI */}
-                {project.url && project.url !== "#" ? (
-                  <a 
-                    href={project.url} 
-                    target="_blank" 
-                    rel="noreferrer" 
-                    style={{ 
-                      display: 'inline-block',
-                      backgroundColor: 'transparent', 
-                      border: '1px solid var(--accent-dark)', 
-                      padding: '0.6rem 1.2rem', 
-                      fontFamily: 'var(--font-heading)', 
-                      fontSize: '0.75rem', 
-                      fontWeight: 700, 
-                      color: 'var(--accent-dark)', 
-                      cursor: 'pointer', 
-                      transition: 'all 0.3s',
-                      textDecoration: 'none',
-                      textAlign: 'center'
-                    }} 
-                    onMouseOver={(e) => {e.target.style.background = 'var(--accent-dark)'; e.target.style.color = '#fff'}} 
-                    onMouseOut={(e) => {e.target.style.background = 'transparent'; e.target.style.color = 'var(--accent-dark)'}}
-                  >
-                    İZLEME LİNKİ & DETAYLAR ↗
-                  </a>
-                ) : (
-                  <button 
-                    disabled 
-                    style={{ 
-                      backgroundColor: 'transparent', 
-                      border: '1px dashed rgba(84, 107, 65, 0.3)', 
-                      padding: '0.6rem 1.2rem', 
-                      fontFamily: 'var(--font-heading)', 
-                      fontSize: '0.75rem', 
-                      fontWeight: 700, 
-                      color: 'rgba(84, 107, 65, 0.5)', 
-                      cursor: 'not-allowed', 
-                      transition: 'all 0.3s',
-                      width: '100%',
-                      textAlign: 'left'
-                    }}
-                  >
-                    LİNK YAKINDA EKLENECEK
-                  </button>
-                )}
-
+<div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+  {project.urls && project.urls.length > 0 ? (
+    project.urls.map((u, index) => (
+      <a 
+        key={index}
+        href={u.link} 
+        target="_blank" 
+        rel="noreferrer" 
+        style={{ 
+          display: 'inline-block',
+          backgroundColor: 'transparent', 
+          border: '1px solid var(--accent-dark)', 
+          padding: '0.6rem 1.2rem', 
+          fontFamily: 'var(--font-heading)', 
+          fontSize: '0.75rem', 
+          fontWeight: 700, 
+          color: 'var(--accent-dark)', 
+          cursor: 'pointer', 
+          textDecoration: 'none',
+          textAlign: 'center'
+        }}
+      >
+        {u.label}
+      </a>
+    ))
+  ) : project.url && project.url !== "#" ? (
+    
+    <a 
+      href={project.url} 
+      target="_blank" 
+      rel="noreferrer" 
+      style={{ 
+        display: 'inline-block',
+        backgroundColor: 'transparent', 
+        border: '1px solid var(--accent-dark)', 
+        padding: '0.6rem 1.2rem', 
+        fontFamily: 'var(--font-heading)', 
+        fontSize: '0.75rem', 
+        fontWeight: 700, 
+        color: 'var(--accent-dark)', 
+        cursor: 'pointer', 
+        textDecoration: 'none',
+        textAlign: 'center'
+      }}
+    >
+      İZLEME LİNKİ & DETAYLAR ↗
+    </a>
+  ) : (
+    // Link yoksa
+    <button 
+      disabled 
+      style={{ 
+        backgroundColor: 'transparent', 
+        border: '1px dashed rgba(84, 107, 65, 0.3)', 
+        padding: '0.6rem 1.2rem', 
+        fontFamily: 'var(--font-heading)', 
+        fontSize: '0.75rem', 
+        fontWeight: 700, 
+        color: 'rgba(84, 107, 65, 0.5)', 
+        cursor: 'not-allowed', 
+        width: '100%',
+        textAlign: 'center'
+      }}
+    >
+      LİNK YAKINDA EKLENECEK
+    </button>
+  )}
+</div>
               </div>
             </div>
           ))}
