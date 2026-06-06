@@ -1715,9 +1715,38 @@
     gap:2rem;
   }
 
-  .bio-right-sidebar{
-    align-items:center;
-  }
+  .bio-left-content{
+  width:100%;
+}
+
+.bio-right-sidebar{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.sidebar-canvas-frame{
+  max-width:280px;
+  width:100%;
+  margin:0 auto;
+}
+
+.bio-main-title{
+  font-size:2rem !important;
+}
+
+.bio-index-nav{
+  display:flex;
+  flex-direction:column;
+  gap:.5rem;
+}
+
+.index-link{
+  width:100%;
+  font-size:.8rem;
+  text-align:left;
+}
 
   /* CHRONICLE */
   .chronicle-row{
