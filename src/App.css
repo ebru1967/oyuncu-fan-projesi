@@ -1950,7 +1950,14 @@
 .game-container{
   overflow:hidden;
 }
+
+
+  .cinematic-quote-box p{
+    font-size:1rem !important;
+  }
+
 }
+
 
 @media (max-width:480px){
 
