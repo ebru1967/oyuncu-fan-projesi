@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { FaInstagram, FaTwitter, FaEnvelope } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Biography from './pages/Biography';
@@ -150,6 +151,7 @@ function App() {
           </div>
         </footer>
       </div>
+      <Analytics />
     </Router>
   );
 }
