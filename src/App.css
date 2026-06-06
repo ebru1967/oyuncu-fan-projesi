@@ -1527,200 +1527,43 @@
   background: none;
   border: none;
 }
-/* ==========================================
-   📱 MOBILE RESPONSIVE (CLEAN VERSION)
-========================================== */
+/* --- MOBİL UYUMLULUK: FINAL DÜZENLEME --- */
 
 @media (max-width: 768px) {
-
-  html, body {
-    overflow-x: hidden;
-  }
-
-  /* =========================
-     GENERAL SPACING FIX
-  ========================= */
-
+  /* 1. Tüm sayfa genişliğini kısıtla ve boşlukları daralt */
   .container {
-    padding: 2rem 1.2rem;
+    padding: 1.5rem 1rem !important;
   }
 
-  section {
-    padding-left: 1.2rem;
-    padding-right: 1.2rem;
+  /* 2. Başlıkları telefona göre küçült (H1, H2, H3, H4) */
+  .editorial-title { font-size: 1.6rem !important; }
+  .hero-main-title { font-size: 2.5rem !important; }
+  .mag-text-content h3 { font-size: 1.4rem !important; }
+  .chronicle-details h4 { font-size: 1.2rem !important; }
+  
+  /* 3. Paragraf ve içerik metinlerini küçült */
+  p, .editorial-bio-paragraph, .press-card-summary, .manifesto-title {
+    font-size: 0.9rem !important;
+    line-height: 1.5 !important;
   }
 
-  /* =========================
-     NAVBAR MOBILE
-  ========================= */
-
-  .navbar {
-    padding: 1rem 1.2rem;
-  }
-
-  .nav-logo a {
-    font-size: 0.85rem;
-    letter-spacing: 1px;
-  }
-
-  /* =========================
-     HERO SECTION
-  ========================= */
-
+  /* 4. Hero bölümünü (Giriş) dikey sığdır */
   .editorial-hero {
-    padding: 2rem 1.2rem;
-    min-height: auto;
+    min-height: 50vh !important;
+    padding: 2rem 1rem !important;
   }
 
-  .hero-grid-container {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+  /* 5. Kartların içindeki resim/içerik oranını düzelt */
+  .mag-row-major, .sidebar-mag-card {
+    padding: 1.5rem !important;
   }
-
-  .hero-main-title {
-    font-size: 2.2rem;
-    line-height: 1.05;
-    letter-spacing: -1px;
-  }
-
-  .hero-statement {
-    font-size: 1rem;
-    line-height: 1.6;
-    margin-bottom: 2rem;
-  }
-
-  .canvas-frame {
-    height: 320px;
-    max-width: 100%;
-  }
-
-  /* =========================
-     MANIFESTO BAR
-  ========================= */
-
-  .manifesto-container {
-    flex-direction: column;
-    gap: 2rem;
-    padding: 0 1.2rem;
-  }
-
-  .manifesto-divider {
-    display: none;
-  }
-
-  .manifesto-item {
-    text-align: center;
-    max-width: 100%;
-  }
-
-  /* =========================
-     MAGAZINE / RECORDS
-  ========================= */
-
-  .editorial-magazine-layout {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-
+  
   .mag-preview-box {
-    height: 220px;
+    height: 200px !important;
   }
 
-  .mag-text-content {
-    padding: 1.5rem;
+  /* 6. Navbar'ı mobilde sabitle */
+  .navbar {
+    padding: 0.8rem 1rem !important;
   }
-
-  .mag-text-content h3 {
-    font-size: 1.3rem;
-  }
-
-  .mag-text-content p {
-    font-size: 0.95rem;
-    line-height: 1.6;
-  }
-
-  .mag-row-major {
-    position: relative;
-    top: auto;
-  }
-
-  /* =========================
-     SIDEBAR CARDS
-  ========================= */
-
-  .sidebar-mag-card {
-    padding: 1.5rem;
-  }
-
-  .sidebar-mag-card h4 {
-    font-size: 1.1rem;
-  }
-
-  /* =========================
-     CHRONICLE (TİMELINE)
-  ========================= */
-
-  .chronicle-row {
-    grid-template-columns: 1fr;
-    gap: 0.8rem;
-    padding: 1.5rem 0;
-  }
-
-  .chronicle-year {
-    font-size: 1.1rem;
-  }
-
-  .chronicle-details h4 {
-    font-size: 1.1rem;
-  }
-
-  .chronicle-details p {
-    font-size: 0.95rem;
-    line-height: 1.6;
-  }
-
-  /* =========================
-     REGISTRY (SOCIAL AREA)
-  ========================= */
-
-  .registry-grid {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-  }
-
-  .registry-title {
-    font-size: 1.3rem;
-  }
-
-  .registry-social-link {
-    font-size: 0.9rem;
-    padding: 1rem 0;
-  }
-
-  /* =========================
-     TEXT OPTIMIZATION
-  ========================= */
-
-  p {
-    font-size: 0.95rem;
-    line-height: 1.6;
-  }
-
-  h2 {
-    font-size: 1.4rem;
-  }
-
-  h3 {
-    font-size: 1.2rem;
-  }
-
-  /* =========================
-     IMAGE / CARD FIX
-  ========================= */
-
-  img {
-    max-width: 100%;
-    height: auto;
-  }
-
 }
