@@ -298,22 +298,23 @@ function MediaArchive() {
       ))}
 
       {btsVideos && btsVideos.map(video => (
-        <div key={video.id} style={{ 
-          marginBottom: '1.5rem', 
-          borderRadius: '8px', 
-          overflow: 'hidden', 
-          border: '1px solid rgba(84, 107, 65, 0.2)', 
-          backgroundColor: '#000',
-          breakInside: 'avoid'
-        }}>
-          <video 
-            src={`${video.url}#t=0.1`} 
-            controls 
-            preload="metadata" 
-            style={{ width: '100%', height: 'auto', display: 'block' }} 
-          />
-        </div>
-      ))}
+                <div key={video.id} style={{ 
+                  marginBottom: '1.5rem', 
+                  borderRadius: '8px', 
+                  overflow: 'hidden', 
+                  border: '1px solid rgba(84, 107, 65, 0.2)', 
+                  backgroundColor: '#000',
+                  breakInside: 'avoid'
+                }}>
+                  <video 
+                    src={`${video.url}#t=0.1`} 
+                    controls 
+                    preload="none" 
+                    playsInline 
+                    style={{ width: '100%', height: 'auto', display: 'block' }} 
+                  />
+                </div>
+              ))}
 
     </div>
   </div>
