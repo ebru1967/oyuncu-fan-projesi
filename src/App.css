@@ -2005,6 +2005,15 @@
     line-height: 1.5 !important;
     padding: 1rem !important;
   }
+  /* --- TİYATRO BUTONLARI MOBİL KÜÇÜLTMESİ --- */
+  
+  .record-action-link {
+    font-size: 0.7rem !important; 
+    padding: 0.5rem 1rem !important; 
+    white-space: normal !important; 
+    text-align: center !important;
+    width: 100% !important; 
+  }
 }
 
 
