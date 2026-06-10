@@ -8,7 +8,7 @@ const theaterList = [
     role: "PROJE TASARIM", 
     meta: "Kısalar Festivali & DasDas Sahne // Performans // 60 dk. // Sahnede", 
     summary: "Kısalar Festivali, 20 dakikanın altında üreten tüm performansçıları görünür kılmayı, yeni şeyler deneme cesaretini ve yaratma hevesini taşıyan sanatçıları desteklemeyi amaçlayan bir üretim alanıdır. Festival, yalnızca sahne sunmakla kalmaz; aynı zamanda sanatçılara sınırları zorlayabilecekleri, yenilik peşinde koşabilecekleri kolektif bir çalışma iklimi açmayı hedefler. Bu yıl festivalden seçilen üç kısa oyun, tam da bu anlayışın somut bir çıktısı olarak, birlikte düşünme, üretme ve deneme süreçleriyle şekillenmiştir. Kısalar Festivali’nin üretim ruhundan doğan ÜÇ KISA, yirmi dakikanın altındaki performanslarla özgürlük fikrini sahneye taşıyor. Denemeye cesaret eden, sınırları zorlayan ve birlikte üretmenin gücüne inanan sanatçıların buluştuğu bu seçkide üç kısa oyun tek bir sese dönüşüyor. Kafes: Kendi isteğiyle kafese girmiş bir kuşun hikayesi… Kosmokrator: Bir adam, bir savunma, bir suç. “Kosmokrator” suç, güç ve manipülasyonun iç içe geçtiği bir oyun. İç Ses: Kusurlarıyla yüzleşerek bakış açısını dönüştürmeye çabalayan bir performansçı.", 
-    link: "#", // Sahnede ama henüz link yok
+    link: "https://biletinial.com/tr-tr/tiyatro/uc-kisa", 
     photos: [
       "/uckisa.jpeg", 
       "/uckisa2.jpeg",
