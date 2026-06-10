@@ -57,23 +57,30 @@ const DOWN_CLUES = [
 
 function Crossword() {
   const [inputs, setInputs] = useState({});
+  // YENİ EKLENTİ: Inputları hafızada tutmak için useRef kullanıyoruz. 
+  // Böylece otomatik odaklanma (focus) yapabileceğiz.
   const inputRefs = useRef({}); 
 
   const handleInputChange = (r, c, value) => {
     const char = value.toLocaleUpperCase('tr-TR').replace(/[^A-ZÇĞİÖŞÜI]/g, '').slice(-1);
     setInputs(prev => ({ ...prev, [`${r}-${c}`]: char }));
 
+    // YENİ EKLENTİ: Harf girildiğinde eğer sağında veya altında boş bir kutu varsa otomatik olarak oraya geç
     if (char) {
       if (GRID[r][c + 1] && GRID[r][c + 1] !== '.') {
+        // Sağa geç
         inputRefs.current[`${r}-${c + 1}`]?.focus();
       } else if (GRID[r + 1] && GRID[r + 1][c] !== '.') {
+        // Sağa gidemiyorsa aşağı geç
         inputRefs.current[`${r + 1}-${c}`]?.focus();
       }
     }
   };
 
+  // YENİ EKLENTİ: Yön tuşları ve silme (Backspace) desteği
   const handleKeyDown = (e, r, c) => {
     if (e.key === 'Backspace' && !inputs[`${r}-${c}`]) {
+      // Kutucuk zaten boşken silmeye basılırsa bir önceki kutuya (sola veya yukarı) geri dön
       if (GRID[r][c - 1] && GRID[r][c - 1] !== '.') {
         inputRefs.current[`${r}-${c - 1}`]?.focus();
       } else if (GRID[r - 1] && GRID[r - 1][c] !== '.') {
@@ -110,31 +117,13 @@ function Crossword() {
     <div className="press-editorial-wrapper animate-fade" style={{ padding: '0.5rem 0 4rem 0', minHeight: '80vh' }}>
       
       <style>{`
-        /* BİLGİSAYAR İÇİN STANDART BOYUTLAR */
-        .cw-grid-container {
-          display: grid;
-          grid-template-columns: repeat(17, 35px);
-          gap: 1px;
-          background: var(--accent-dark);
-          border: 2px solid var(--accent-dark);
-          padding: 2px;
-        }
-        .cw-cell-box {
-          width: 35px;
-          height: 35px;
-          position: relative;
-        }
-        .cw-num-label {
-          position: absolute; top: 2px; left: 2px; font-size: 10px; 
-          font-family: var(--font-heading); color: rgba(84, 107, 65, 0.7); z-index: 2; pointer-events: none;
-        }
         .cw-input {
           width: 100%; height: 100%; border: none; background: transparent; text-align: center;
           font-family: var(--font-heading); font-size: 1.2rem; font-weight: bold; outline: none;
           color: var(--accent-dark); transition: background 0.2s;
         }
         .cw-input:focus { background: rgba(84, 107, 65, 0.15); box-shadow: inset 0 0 10px rgba(84, 107, 65, 0.3); }
-        .cw-cell-box.won .cw-input { color: #2ecc71; }
+        .cw-cell.won .cw-input { color: #2ecc71; }
         .correct-input { background: #d4edda !important; color: #155724 !important; }
         .clues-container h3 {
           font-family: var(--font-heading); color: var(--accent-dark);
@@ -146,25 +135,6 @@ function Crossword() {
           display: inline-block; background: var(--accent-dark); color: var(--bg-main);
           width: 22px; height: 22px; text-align: center; line-height: 22px; border-radius: 50%;
           font-weight: bold; font-size: 0.75rem; margin-right: 0.5rem;
-        }
-
-        /* MOBİL İÇİN KÜÇÜLTME (SİHİRLİ DOKUNUŞ) */
-        @media (max-width: 768px) {
-          .cw-grid-container {
-            grid-template-columns: repeat(17, 20px); /* 35px'ten 20px'e düştü */
-          }
-          .cw-cell-box {
-            width: 20px;
-            height: 20px;
-          }
-          .cw-input {
-            font-size: 0.85rem; /* Yazılar küçüldü */
-          }
-          .cw-num-label {
-            font-size: 7px; /* Köşedeki minik ipucu numaraları küçüldü */
-            top: 1px;
-            left: 1px;
-          }
         }
       `}</style>
 
@@ -183,30 +153,35 @@ function Crossword() {
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', justifyContent: 'center', alignItems: 'flex-start' }}>
           
-          <div style={{ flex: '1 1 100%', overflowX: 'auto', display: 'flex', justifyContent: 'center', padding: '0.5rem 0' }}>
-            <div className="cw-grid-container">
+          <div style={{ flex: '1 1 500px', overflowX: 'auto', display: 'flex', justifyContent: 'center', padding: '0.5rem 0' }}>
+            <div style={{ 
+              display: 'grid', gridTemplateColumns: `repeat(17, 35px)`, gap: '1px', 
+              background: 'var(--accent-dark)', border: '2px solid var(--accent-dark)', padding: '2px' 
+            }}>
               {GRID.map((row, r) => row.map((cell, c) => {
                 const isPlayable = cell !== '.';
                 const num = NUMBERS[`${r}-${c}`];
                 const isCellCorrect = inputs[`${r}-${c}`] === cell;
                 
                 return (
-                  <div key={`${r}-${c}`} className={`cw-cell-box ${isWon ? 'won' : ''}`} style={{
-                    background: isPlayable ? 'var(--bg-main)' : 'transparent'
+                  <div key={`${r}-${c}`} className={`cw-cell ${isWon ? 'won' : ''}`} style={{
+                    width: '35px', height: '35px',
+                    background: isPlayable ? 'var(--bg-main)' : 'transparent',
+                    position: 'relative'
                   }}>
                     {isPlayable && (
                       <>
                         {num && (
-                          <span className="cw-num-label">
+                          <span style={{ position: 'absolute', top: '2px', left: '2px', fontSize: '10px', fontFamily: 'var(--font-heading)', color: 'rgba(84, 107, 65, 0.7)', zIndex: 2, pointerEvents: 'none' }}>
                             {num}
                           </span>
                         )}
                         <input
                           type="text"
-                          ref={el => inputRefs.current[`${r}-${c}`] = el}
+                          ref={el => inputRefs.current[`${r}-${c}`] = el} // Referansı hafızaya kaydettik
                           value={inputs[`${r}-${c}`] || ''}
                           onChange={(e) => handleInputChange(r, c, e.target.value)}
-                          onKeyDown={(e) => handleKeyDown(e, r, c)}
+                          onKeyDown={(e) => handleKeyDown(e, r, c)} // Yön tuşları desteği
                           className={`cw-input ${isCellCorrect ? 'correct-input' : ''}`}
                           disabled={isWon}
                         />
@@ -238,7 +213,7 @@ function Crossword() {
             </div>
             
             {!isWon && (
-              <button onClick={() => setInputs({})} className="editorial-link-btn-anchor" style={{ marginTop: '2.5rem', width: '100%', textAlign: 'center', background: 'transparent', border: '1px dashed var(--accent-dark)', cursor: 'pointer', padding: '1rem', fontFamily: 'var(--font-heading)', color: 'var(--accent-dark)', fontWeight: 'bold' }}>
+              <button onClick={() => setInputs({})} className="editorial-link-btn-anchor" style={{ marginTop: '2.5rem', width: '100%', textAlign: 'center', background: 'transparent', border: '1px dashed var(--accent-dark)' }}>
                 BULMACAYI TEMİZLE ⟲
               </button>
             )}
