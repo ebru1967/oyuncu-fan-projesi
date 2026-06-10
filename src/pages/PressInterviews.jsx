@@ -408,6 +408,50 @@ function PressInterviews() {
       title: '"Kübra" Dizisi Özel Ekip Röportajı',
       summary: 'Dizinin felsefi boyutları, sokak isyanı sahnelerinin kamera arkası ve oyuncuların kendi karakterleriyle kurdukları bağlar üzerine detaylı sinema/dizi platformu sohbeti.',
       videoUrl: 'https://youtu.be/5ikXStztLec?si=Oy2VREAzEdJF1d6P'
+    },
+    {
+      id: 15, 
+      type: 'written',
+      source: 'ÖZEL SÖYLEŞİ',
+      date: '9 HAZİRAN 2026', 
+      title: 'Şerif\'in Psikolojisi, Karadeniz\'in Zorlu Şartları',
+      summary: 'Aytek Şayan, "Taşacak Bu Deniz" dizisinde canlandırdığı karakterin derinliğini, Karadeniz coğrafyasının zorlu ama etkileyici set koşullarını, rol arkadaşlarıyla olan güçlü bağını ve Brezilya kültürüne duyduğu merakı anlatıyor.',
+      qaList: [
+        {
+          q: "Dizideki karakterinizin (Şerif) oldukça karanlık ve karmaşık bir yapısı var. Bu karakteri inşa ederken kötülük kavramına nasıl yaklaştınız?",
+          a: "Amacım kötü bir adamı iyi göstermek ya da onun bir ‘insani yönü’ olduğunu söylemek değil. Ama şu soruyla yüzleşmemiz gerekiyor: Biz kötü mü doğuyoruz, yoksa sonradan mı kötü oluyoruz? Bir kötü karakterin insani tarafını göstermeye çalışmıyorum. Ben daha çok karakterlerin nasıl karikatürize edildiğiyle ilgileniyorum… ve aşırı derecede zalim olarak sunulmalarıyla. Yani böyle bir kötü karakter yaratmaya çalışmıyorum. Gerçek hayatta böyle insanlar yok. Aslında ‘kötü’ dediğimiz şey her zaman hemen fark edilebilen bir şey değildir. Bizi aldatan ve manipüle eden insanlar gerçekten kötüyse… onları gerçek hayatta tanımak zordur."
+        },
+        {
+          q: "Dizinin görsel atmosferi ve mekanları sahnelerin hissiyatını inanılmaz artırıyor. Bu zorlu coğrafyada çalışmak süreci nasıl etkiliyor?",
+          a: "Sürekli çok ağır sahneler çekiyoruz. Ayrıca çekim yaptığımız bölgenin doğal koşulları da her şeyi oldukça zorlaştırıyor. Ama tam da bu özellikler diziyi bu kadar etkileyici kılıyor. Bölgenin coğrafyası gerçekten büyük bir ağırlık taşıyor. Bazen çok zor oluyor; yamaçlarda, çamurun içinde çalışıyoruz. Yakın zamanda dört gün boyunca çok yoğun çalıştım. Birçok sahne örneği verebilirim ama geçen gün altı buçuk saat boyunca denizin içinde çekim yapmak zorunda kaldık. Bu günlerde çektiğimiz sahneler oldukça ağırdı."
+        },
+        {
+          q: "Kamera önündeki bu ağır ve gerilimli atmosfere rağmen, set ortamınız ve oyuncu kadrosuyla aranızdaki dinamik nasıl?",
+          a: "Birbirimizi çok seviyor ve saygı duyuyoruz. Ayrıca fırsat buldukça kamera arkasında da çok eğleniyoruz. İyi ki bu arkadaşlarla birlikteyim. Mesela Ulaş’ı ilk andan itibaren çok sevdim. Zaten onu önceden de çok seviyordum ve fırsat buldukça görüşüyorduk. Deniz’i tanıdığıma da çok memnunum. Sonuçta günümün büyük kısmını onunla, Abdü’yle geçiriyorum. Sürekli birlikteyiz, gerçekten hiç kavga etmeden. Bu arkadaşlarla burada çalıştığım için çok mutluyum."
+        },
+        {
+          q: "Son olarak, uluslararası alanda, özellikle Brezilya'dan da çok tutkulu bir hayran kitleniz oluştu. Brezilya ve oradaki izleyiciler hakkında ne düşünüyorsunuz?",
+          a: "Beni çok meraklandıran bir yer. Uzaktan gördüğüm kadarıyla insanlar çok sıcakkanlı görünüyor. Eğlenmeyi seviyorlar. Bir şekilde dünya siyasetini de biraz takip ediyorum ve yaşadıkları zorlukları görüyorum. Toplumdaki ayrışmaları, gruplar arasındaki uçurumları fark edebiliyorum. Ekonomik açıdan da bunu görebiliyorum. Bu yüzden merakımı uyandıran, ilginç ve farklı kültürlere sahip bir yer. Brezilya’ya gitmeyi gerçekten çok istiyorum."
+        }
+      ]
+    },
+    {
+      id: 16, 
+      type: 'video',
+      source: 'YOUTUBE // PORTAL ENTRETETİZEİ',
+      date: '9 HAZİRAN 2026', 
+      title: 'Şerif\'in Psikolojisi, Set Ortamı ve Brezilya Hayali',
+      summary: 'Aytek Şayan\'ın; Şerif karakterinin kötülük felsefesini, Karadeniz\'in zorlu çekim koşullarını, rol arkadaşlarıyla olan eğlenceli dinamiklerini ve Brezilya kültürüne duyduğu merakı anlattığı özel video röportajı.',
+      videoUrl: 'https://youtu.be/dHMEj6ao7_M?si=u0ppuZQAKmMrbRHL'
+    },
+    {
+      id: 17, 
+      type: 'video',
+      source: 'YOUTUBE // FRAGMAGAZIN',
+      date: '6 HAZİRAN 2026', 
+      title: 'Konser Heyecanı ve Sezon Finali',
+      summary: 'Katıldığı bir konser öncesinde magazin basınının sorularını yanıtlayan Aytek Şayan; rol arkadaşı Burcu Cavrar\'ı sahnede izleme heyecanını ve dizinin başarılı geçen sezon finali hakkındaki düşüncelerini paylaşıyor.',
+      videoUrl: 'https://youtu.be/tMWRDI4zsiY?si=z_QYqHT_k0rsLthm'
     }
   ];
 
