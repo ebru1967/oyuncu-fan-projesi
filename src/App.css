@@ -1967,24 +1967,29 @@
   overflow:hidden;
 }
 /* --- RÖPORTAJ & SÖYLEŞİ MOBİL DÜZENLEMELERİ --- */
+  /* --- RÖPORTAJ & SÖYLEŞİ MOBİL DÜZENLEMELERİ --- */
   
-  /* Soru kutusunun gereksiz sağ/sol boşluklarını kaldır */
+  /* 1. ASIL SUÇLU: Ana kartın mobildeki gereksiz dev boşluklarını daralt */
+  .press-archive-card {
+    padding: 1.5rem 1rem !important; 
+  }
+
+  /* 2. Soru kutusunu genişlet ve yazıyı küçült */
   .interview-question {
-    padding: 1rem 1rem !important; 
-    font-size: 0.95rem !important;
-    line-height: 1.5 !important;
+    padding: 0.8rem !important; 
+    font-size: 0.85rem !important; /* Bir tık daha küçülttük */
+    line-height: 1.4 !important;
     margin-bottom: 1rem !important;
   }
 
-  /* Cevap metninin boşluklarını kaldırarak ekrana yayılmasını sağla */
+  /* 3. Cevap metnini genişlet ve yazıyı küçült */
   .interview-answer {
-    padding: 0 0.5rem !important; 
-    font-size: 0.95rem !important;
-    line-height: 1.6 !important;
-    text-align: left; /* Metni sola hizala, gereksiz dağılmayı önle */
+    padding: 0 !important; /* Boşlukları tamamen sıfırladık, ekrana yayılsın */
+    font-size: 0.85rem !important; /* Bir tık daha küçülttük */
+    line-height: 1.5 !important;
+    text-align: left;
   }
 
-  /* Röportajı genişleten düğmenin altındaki alanın dış boşluklarını sıfırla */
   .press-full-text-area {
     padding-top: 1.5rem !important;
     margin-top: 1.5rem !important;
