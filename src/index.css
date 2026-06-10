@@ -12,62 +12,62 @@
   --font-bio: 'Caveat', cursive;
 }
 
-/* --- KARANLIK MOD (DARK MODE) ANA RENKLERİ --- */
+/* --- YENİ EKLENEN: KARANLIK MOD (SİYAH/BEYAZ) RENKLERİ --- */
 body.dark-mode {
-  --bg-main: #141612;       
-  --bg-card: #22261E;       
-  --text-main: #EAE6DB;     
-  --accent-dark: #C9D4B3;   
-  --accent-light: #6C8255;  
+  --bg-main: #000000;       /* Saf Siyah Arka Plan */
+  --bg-card: #111111;       /* Kartlar için çok koyu, belli belirsiz gri */
+  --text-main: #FFFFFF;     /* Metinler için Saf Beyaz */
+  --accent-dark: #FFFFFF;   /* Başlıklar ve Vurgular için Beyaz */
+  --accent-light: #999999;  /* İkincil detaylar ve çizgiler için gri */
 }
 
+/* Siyah arka planda resimler çok patlamasın diye parlaklıklarını hafif kıstık */
 body.dark-mode img, body.dark-mode video {
-  filter: brightness(0.9);
+  filter: brightness(0.85); 
   transition: filter 0.3s ease;
 }
 
 body.dark-mode .dropdown-menu {
   background-color: var(--bg-card);
+  border: 1px solid #333333;
 }
 
 /* --- KARANLIK MOD ÖZEL BÖLÜM DÜZELTMELERİ --- */
-/* Normalde koyu yeşil arka planlı olan şeritleri karanlık modda derin antrasite çevir */
 body.dark-mode .countdown-ticker,
 body.dark-mode .archive-manifesto-bar,
 body.dark-mode .footer,
 body.dark-mode .canvas-inner {
-  background-color: #0b0d09 !important; 
-  color: var(--text-main) !important;
-  border-top: 1px solid rgba(201, 212, 179, 0.1);
-  border-bottom: 1px solid rgba(201, 212, 179, 0.1);
+  background-color: #080808 !important; 
+  color: #FFFFFF !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-/* Şeritlerin içindeki vurgu yazılarını ve etiketleri parlat */
 body.dark-mode .ticker-label,
 body.dark-mode .manifesto-tag {
-  color: var(--accent-dark) !important; 
+  color: #CCCCCC !important; /* Beyazın yanında çok hafif gri kalsın ki göz yormasın */
 }
 
-/* Butonları transparan ve şık bir çizgiyle belirginleştir */
+/* Butonlar transparan zemin ve beyaz çizgi */
 body.dark-mode .record-action-link,
 body.dark-mode .editorial-link-btn-anchor {
   background-color: transparent !important; 
-  border: 1px solid var(--accent-dark) !important;
-  color: var(--accent-dark) !important;
+  border: 1px solid #FFFFFF !important;
+  color: #FFFFFF !important;
 }
 
+/* Butonun üzerine gelince beyaz dolsun, içindeki yazı siyah olsun */
 body.dark-mode .record-action-link:hover,
 body.dark-mode .editorial-link-btn-anchor:hover {
-  background-color: var(--accent-dark) !important;
-  color: #141612 !important;
+  background-color: #FFFFFF !important;
+  color: #000000 !important; 
 }
 
 body.dark-mode .manifesto-title strong {
-  color: var(--accent-dark) !important;
+  color: #FFFFFF !important;
 }
 /* ------------------------------------------- */
 
-/* --- GENEL SIFIRLAMALAR VE AYARLAR --- */
 html,
 body {
   margin: 0;
@@ -79,7 +79,6 @@ body {
   font-family: var(--font-body);
   scroll-behavior: smooth;
   overflow-x: hidden;
-  /* Gece/Gündüz tuşuna basıldığında renklerin aniden patlamaması için yumuşak bir geçiş ekledik */
   transition: background-color 0.3s ease, color 0.3s ease; 
 }
 
@@ -95,12 +94,12 @@ body {
 
 /* Masaüstü (Default) Ayarları */
 .hamburger {
-  display: none; /* Masaüstünde gizle */
+  display: none; 
 }
 
 /* Mobil Ayarları */
 @media (max-width: 768px) {
   .hamburger {
-    display: block; /* Mobilde göster */
+    display: block; 
   }
 }
