@@ -3,22 +3,47 @@ import { Link } from 'react-router-dom';
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false); // YENİ: Karanlık mod durumu
 
   const closeMenu = () => setIsOpen(false);
-  useEffect(() => {
-  if (isOpen) {
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
-  } else {
-    document.body.style.overflow = "auto";
-    document.documentElement.style.overflow = "auto";
-  }
 
-  return () => {
-    document.body.style.overflow = "auto";
-    document.documentElement.style.overflow = "auto";
+  // Mobil menü açıldığında alttaki sayfanın kaymasını engeller
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+      document.documentElement.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+      document.documentElement.style.overflow = "auto";
+    };
+  }, [isOpen]);
+
+  // YENİ: Sayfa ilk açıldığında hafızada dark mode var mı kontrol et
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      setIsDarkMode(true);
+      document.body.classList.add('dark-mode');
+    }
+  }, []);
+
+  // YENİ: Tuşa basıldığında temayı değiştiren fonksiyon
+  const toggleTheme = () => {
+    if (isDarkMode) {
+      document.body.classList.remove('dark-mode');
+      localStorage.setItem('theme', 'light');
+      setIsDarkMode(false);
+    } else {
+      document.body.classList.add('dark-mode');
+      localStorage.setItem('theme', 'dark');
+      setIsDarkMode(true);
+    }
   };
-}, [isOpen]);
 
   return (
     <nav className="navbar">
@@ -153,6 +178,29 @@ function Navbar() {
         >
           İLETİŞİM
         </Link>
+
+        {/* YENİ: GECE/GÜNDÜZ TUŞU */}
+        <button 
+          onClick={() => { toggleTheme(); closeMenu(); }} 
+          style={{
+            background: 'transparent', 
+            border: '1px solid var(--accent-dark)', 
+            color: 'var(--accent-dark)', 
+            padding: '0.4rem 1rem', 
+            borderRadius: '30px', 
+            cursor: 'pointer', 
+            fontFamily: 'var(--font-heading)', 
+            fontWeight: 'bold',
+            margin: '0.5rem 1rem', 
+            display: 'inline-flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            width: 'max-content'
+          }}
+        >
+          {isDarkMode ? '☀ GÜNDÜZ' : '☾ GECE'}
+        </button>
+
       </div>
     </nav>
   );

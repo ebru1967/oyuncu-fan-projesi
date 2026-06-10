@@ -12,6 +12,25 @@
   --font-bio: 'Caveat', cursive;
 }
 
+/* --- YENİ EKLENEN: KARANLIK MOD RENKLERİ --- */
+body.dark-mode {
+  --bg-main: #141612;       
+  --bg-card: #22261E;       
+  --text-main: #EAE6DB;     
+  --accent-dark: #C9D4B3;   
+  --accent-light: #6C8255;  
+}
+
+body.dark-mode img, body.dark-mode video {
+  filter: brightness(0.9);
+  transition: filter 0.3s ease;
+}
+
+body.dark-mode .dropdown-menu {
+  background-color: var(--bg-card);
+}
+/* ------------------------------------------- */
+
 html,
 body {
   margin: 0;
@@ -34,6 +53,7 @@ body {
 * {
   box-sizing: border-box;
 }
+
 /* Masaüstü (Default) Ayarları */
 .hamburger {
   display: none; /* Bu satır masaüstünde görünmemesini sağlar */
@@ -44,5 +64,4 @@ body {
   .hamburger {
     display: block; /* Sadece mobilte görünür */
   }
-  /* ... diğer mobil kodlarınız ... */
 }
