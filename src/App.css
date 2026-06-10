@@ -1967,25 +1967,20 @@
   overflow:hidden;
 }
 /* --- RÖPORTAJ & SÖYLEŞİ MOBİL DÜZENLEMELERİ --- */
-  /* --- RÖPORTAJ & SÖYLEŞİ MOBİL DÜZENLEMELERİ --- */
-  
-  /* 1. ASIL SUÇLU: Ana kartın mobildeki gereksiz dev boşluklarını daralt */
   .press-archive-card {
     padding: 1.5rem 1rem !important; 
   }
 
-  /* 2. Soru kutusunu genişlet ve yazıyı küçült */
   .interview-question {
     padding: 0.8rem !important; 
-    font-size: 0.85rem !important; /* Bir tık daha küçülttük */
+    font-size: 0.85rem !important; 
     line-height: 1.4 !important;
     margin-bottom: 1rem !important;
   }
 
-  /* 3. Cevap metnini genişlet ve yazıyı küçült */
   .interview-answer {
-    padding: 0 !important; /* Boşlukları tamamen sıfırladık, ekrana yayılsın */
-    font-size: 0.85rem !important; /* Bir tık daha küçülttük */
+    padding: 0 !important;
+    font-size: 0.85rem !important; 
     line-height: 1.5 !important;
     text-align: left;
   }
@@ -1995,6 +1990,20 @@
     margin-top: 1.5rem !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
+  }
+  /* --- TİYATRO SAYFASI MOBİL METİN KÜÇÜLTMESİ --- */
+  
+  .record-summary {
+    font-size: 0.85rem !important; 
+    line-height: 1.5 !important;
+    padding: 1rem !important; 
+    margin-top: 1rem !important;
+  }
+
+  .award-reason {
+    font-size: 0.85rem !important;
+    line-height: 1.5 !important;
+    padding: 1rem !important;
   }
 }
 
