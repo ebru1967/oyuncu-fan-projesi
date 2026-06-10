@@ -21,7 +21,6 @@ body.dark-mode {
   --accent-light: #999999;  /* İkincil detaylar ve çizgiler için gri */
 }
 
-/* Siyah arka planda resimler çok patlamasın diye parlaklıklarını hafif kıstık */
 body.dark-mode img, body.dark-mode video {
   filter: brightness(0.85); 
   transition: filter 0.3s ease;
@@ -45,10 +44,9 @@ body.dark-mode .canvas-inner {
 
 body.dark-mode .ticker-label,
 body.dark-mode .manifesto-tag {
-  color: #CCCCCC !important; /* Beyazın yanında çok hafif gri kalsın ki göz yormasın */
+  color: #CCCCCC !important; 
 }
 
-/* Butonlar transparan zemin ve beyaz çizgi */
 body.dark-mode .record-action-link,
 body.dark-mode .editorial-link-btn-anchor {
   background-color: transparent !important; 
@@ -56,7 +54,6 @@ body.dark-mode .editorial-link-btn-anchor {
   color: #FFFFFF !important;
 }
 
-/* Butonun üzerine gelince beyaz dolsun, içindeki yazı siyah olsun */
 body.dark-mode .record-action-link:hover,
 body.dark-mode .editorial-link-btn-anchor:hover {
   background-color: #FFFFFF !important;
