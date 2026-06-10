@@ -1966,6 +1966,31 @@
   width:100%;
   overflow:hidden;
 }
+/* --- RÖPORTAJ & SÖYLEŞİ MOBİL DÜZENLEMELERİ --- */
+  
+  /* Soru kutusunun gereksiz sağ/sol boşluklarını kaldır */
+  .interview-question {
+    padding: 1rem 1rem !important; 
+    font-size: 0.95rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 1rem !important;
+  }
+
+  /* Cevap metninin boşluklarını kaldırarak ekrana yayılmasını sağla */
+  .interview-answer {
+    padding: 0 0.5rem !important; 
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
+    text-align: left; /* Metni sola hizala, gereksiz dağılmayı önle */
+  }
+
+  /* Röportajı genişleten düğmenin altındaki alanın dış boşluklarını sıfırla */
+  .press-full-text-area {
+    padding-top: 1.5rem !important;
+    margin-top: 1.5rem !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
 }
 
 
