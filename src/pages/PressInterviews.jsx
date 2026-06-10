@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 function PressInterviews() {
   const [filter, setFilter] = useState('all'); 
@@ -185,7 +185,7 @@ function PressInterviews() {
         },
         {
           q: "Sinema ve dizi sektörü hızla dijitalleşiyor. Siz bir oyuncu olarak bu hıza nasıl ayak uyduruyorsunuz?",
-          a: "Bu hızın içinde kalmanın yolu, değişime direnmek yerine onu anlamaya çalışmak. Dijitalleşme aslında oyunculuk açısından yeni anlatım biçimleri ve daha geniş bir izleyiciyle buluşma imkânı demek. Benim için önemli olan, teknolojinin getirdiği yenilikleri takip ederken hikâye anlatma özünü kaybetmemek. Kamera değişiyor, platform değişiyor ama karakteri doğru kurmak, sahici kalmak hâlâ en temel şey. O dengeyi korumaya çalışıyorum."
+          a: "Bu hızın içinde kalmanın yolu, değişime direnmek yerine onu anlamaya çalışmak. Dijitalleşme aslında oyunculuk açısından yeni anlatım biçimleri ve daha geniş izleyiciyle buluşma imkânı demek. Benim için önemli olan, teknolojinin getirdiği yenilikleri takip ederken hikâye anlatma özünü kaybetmemek. Kamera değişiyor, platform değişiyor ama karakteri doğru kurmak, sahici kalmak hâlâ en temel şey. O dengeyi korumaya çalışıyorum."
         },
         {
           q: "Gelecekte bir gün \"bu hikâyeyi ben anlatmalıyım\" diyerek kamera arkasına geçme planınız var mı?",
@@ -247,7 +247,6 @@ function PressInterviews() {
         }
       ]
     },
-
     {
       id: 4,
       type: 'written',
@@ -318,7 +317,6 @@ function PressInterviews() {
         }
       ]
     },
-
     {
       id: 5,
       type: 'video',
@@ -455,10 +453,30 @@ function PressInterviews() {
     }
   ];
 
-  const filteredInterviews = interviewData.filter(item => {
-    if (filter === 'all') return true;
-    return item.type === filter;
-  });
+  // Ayları JavaScript'in anlayacağı bir sayıya çeviren yardımcı fonksiyon
+  const parseDate = (dateString) => {
+    if (!dateString) return new Date(); // Eğer tarih yoksa en üste at
+    const months = {
+      'OCAK': 0, 'ŞUBAT': 1, 'MART': 2, 'NİSAN': 3, 'MAYIS': 4, 'HAZİRAN': 5,
+      'TEMMUZ': 6, 'AĞUSTOS': 7, 'EYLÜL': 8, 'EKİM': 9, 'KASIM': 10, 'ARALIK': 11
+    };
+    const parts = dateString.split(' ');
+    if (parts.length === 3) {
+      const day = parseInt(parts[0], 10);
+      const month = months[parts[1].toUpperCase()];
+      const year = parseInt(parts[2], 10);
+      return new Date(year, month, day);
+    }
+    return new Date(0); // Format uyuşmazsa en sona at
+  };
+
+  // Önce filtrele, sonra tarihe göre (en yeni en üstte) sırala
+  const filteredInterviews = interviewData
+    .filter(item => {
+      if (filter === 'all') return true;
+      return item.type === filter;
+    })
+    .sort((a, b) => parseDate(b.date) - parseDate(a.date));
 
   const toggleExpand = (id) => {
     setExpandedId(expandedId === id ? null : id);
