@@ -12,7 +12,7 @@
   --font-bio: 'Caveat', cursive;
 }
 
-/* --- YENİ EKLENEN: KARANLIK MOD RENKLERİ --- */
+/* --- KARANLIK MOD (DARK MODE) ANA RENKLERİ --- */
 body.dark-mode {
   --bg-main: #141612;       
   --bg-card: #22261E;       
@@ -29,8 +29,45 @@ body.dark-mode img, body.dark-mode video {
 body.dark-mode .dropdown-menu {
   background-color: var(--bg-card);
 }
+
+/* --- KARANLIK MOD ÖZEL BÖLÜM DÜZELTMELERİ --- */
+/* Normalde koyu yeşil arka planlı olan şeritleri karanlık modda derin antrasite çevir */
+body.dark-mode .countdown-ticker,
+body.dark-mode .archive-manifesto-bar,
+body.dark-mode .footer,
+body.dark-mode .canvas-inner {
+  background-color: #0b0d09 !important; 
+  color: var(--text-main) !important;
+  border-top: 1px solid rgba(201, 212, 179, 0.1);
+  border-bottom: 1px solid rgba(201, 212, 179, 0.1);
+}
+
+/* Şeritlerin içindeki vurgu yazılarını ve etiketleri parlat */
+body.dark-mode .ticker-label,
+body.dark-mode .manifesto-tag {
+  color: var(--accent-dark) !important; 
+}
+
+/* Butonları transparan ve şık bir çizgiyle belirginleştir */
+body.dark-mode .record-action-link,
+body.dark-mode .editorial-link-btn-anchor {
+  background-color: transparent !important; 
+  border: 1px solid var(--accent-dark) !important;
+  color: var(--accent-dark) !important;
+}
+
+body.dark-mode .record-action-link:hover,
+body.dark-mode .editorial-link-btn-anchor:hover {
+  background-color: var(--accent-dark) !important;
+  color: #141612 !important;
+}
+
+body.dark-mode .manifesto-title strong {
+  color: var(--accent-dark) !important;
+}
 /* ------------------------------------------- */
 
+/* --- GENEL SIFIRLAMALAR VE AYARLAR --- */
 html,
 body {
   margin: 0;
@@ -42,6 +79,8 @@ body {
   font-family: var(--font-body);
   scroll-behavior: smooth;
   overflow-x: hidden;
+  /* Gece/Gündüz tuşuna basıldığında renklerin aniden patlamaması için yumuşak bir geçiş ekledik */
+  transition: background-color 0.3s ease, color 0.3s ease; 
 }
 
 #root {
@@ -56,12 +95,12 @@ body {
 
 /* Masaüstü (Default) Ayarları */
 .hamburger {
-  display: none; /* Bu satır masaüstünde görünmemesini sağlar */
+  display: none; /* Masaüstünde gizle */
 }
 
-/* Mevcut mobil medya sorgunuzun içindeki kısım ise zaten bunu 'block' yapıyordu */
+/* Mobil Ayarları */
 @media (max-width: 768px) {
   .hamburger {
-    display: block; /* Sadece mobilte görünür */
+    display: block; /* Mobilde göster */
   }
 }
