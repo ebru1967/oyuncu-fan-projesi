@@ -18,8 +18,8 @@ function Home() {
     }
   }, [location]);
 
-  const mainArticle = activeNews[0]; 
-  const sideArticles = activeNews.slice(1); 
+ const mainArticle = activeNews[0]; 
+  const sideArticles = activeNews.slice(1, 3);
 
   const newsCoverImages = {
     6: '/gallery/h1 (137).jpeg', 
@@ -128,51 +128,32 @@ function Home() {
 
           <div className="editorial-magazine-layout">
             
+            {/* MANŞET HABER BLOĞU (editorial-magazine-layout'un İÇİNE aldık) */}
             <div className="mag-row-major">
               <div className="mag-preview-box" style={{ padding: 0, overflow: 'hidden', backgroundColor: 'transparent', position: 'relative' }}>
-                
                 {newsCoverImages[mainArticle?.id] ? (
                   <img 
                     src={newsCoverImages[mainArticle.id]} 
                     alt={mainArticle?.title || "Aktif Proje Detayı"} 
-                    style={{ 
-                      width: '100%', 
-                      height: '100%', 
-                      objectFit: 'cover', 
-                      display: 'block',
-                      position: 'relative', 
-                      zIndex: 20,          
-                      opacity: 1 
-                    }} 
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', position: 'relative', zIndex: 20, opacity: 1 }} 
                   />
                 ) : (
-
-                  <div style={{ 
-                    width: '100%', height: '100%', display: 'flex', alignItems: 'center', 
-                    justifyContent: 'center', backgroundColor: 'var(--bg-card)', 
-                    fontFamily: 'var(--font-heading)', color: 'var(--accent-dark)', opacity: 0.5 
-                  }}>
+                  <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-card)', fontFamily: 'var(--font-heading)', color: 'var(--accent-dark)', opacity: 0.5 }}>
                     GÖRSEL BEKLENİYOR
                   </div>
                 )}
-
               </div>
-
-              {/* YENİ DÜZENLEME: Manşet Metin Alanı Daha Sıkı ve Derli Toplu */}
               <div className="mag-text-content" style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', padding: '1.5rem' }}>
                 <div className="meta-row" style={{ display: 'flex', gap: '1rem', marginBottom: '0.2rem' }}>
                   <span className="card-category" style={{ fontSize: '0.75rem', fontWeight: 'bold' }}>{mainArticle?.category}</span>
                   <span className="card-id" style={{ fontSize: '0.75rem', opacity: 0.7 }}>{mainArticle?.regCode}</span>
                 </div>
-                
                 <h3 className="mag-title" style={{ fontSize: '1.6rem', lineHeight: '1.1', margin: '0' }}>
                   {mainArticle?.title?.toLocaleUpperCase('tr-TR')}
                 </h3>
-                
                 <p style={{ margin: '0', fontSize: '0.9rem', lineHeight: '1.6', textAlign: 'justify', opacity: 0.85 }}>
                   {mainArticle?.summary}
                 </p>
-                
                 <div style={{ marginTop: '0.5rem' }}>
                   <Link to={mainArticle?.linkUrl || "/"} className="editorial-link" style={{ display: 'inline-block' }}>
                     {mainArticle?.linkText}
@@ -181,20 +162,29 @@ function Home() {
               </div>
             </div>
 
+            {/* YAN HABERLER */}
             <div className="mag-sidebar-column">
               {sideArticles.map((article) => (
                 <div className="sidebar-mag-card" key={article.id}>
                   <span className="card-category">{article.category}</span>
-                  <h4>
-                    {article.title.toLocaleUpperCase('tr-TR')}
-                  </h4>
+                  <h4>{article.title.toLocaleUpperCase('tr-TR')}</h4>
                   <p>{article.summary}</p>
                   <Link to={article.linkUrl} className="editorial-link">{article.linkText}</Link>
                 </div>
               ))}
             </div>
 
-          </div>
+          </div> {/* editorial-magazine-layout sonu */}
+
+          {/* TÜMÜNÜ GÖRÜNTÜLE BUTONU */}
+          {activeNews.length > 3 && (
+            <div style={{ textAlign: 'center', marginTop: '3rem' }}>
+              <Link to="/arsiv" className="editorial-link" style={{ display: 'inline-block', fontSize: '0.9rem', padding: '0.8rem 2rem', border: '1px solid var(--accent-dark)' }}>
+                TÜM ARŞİV KAYITLARINI GÖRÜNTÜLE ↗
+              </Link>
+            </div>
+          )}
+
         </div>
       </section>
 

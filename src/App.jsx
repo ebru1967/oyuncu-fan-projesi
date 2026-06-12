@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Biography from './pages/Biography';
 import PressInterviews from './pages/PressInterviews'; 
+import Archive from './pages/Archive'; 
 import Theater from './pages/Theater';
 import Filmography from './pages/Filmography';
 import Awards from './pages/Awards';
@@ -105,6 +106,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/biyografi" element={<Biography />} />
+            <Route path="/arsiv" element={<Archive />} />
             <Route path="/basin" element={<PressInterviews />} />
             <Route path="/tiyatro" element={<Theater />} />
             <Route path="/filmografi" element={<Filmography />} />
