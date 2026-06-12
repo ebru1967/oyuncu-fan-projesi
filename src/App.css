@@ -1608,7 +1608,9 @@
 .back-to-top:hover {
   transform: scale(1.1);
 }
-
+.mag-row-major img {
+  object-position: center top !important; 
+}
 
 /* --- MOBİL AYARLARI (SADECE EKRAN KÜÇÜLÜNCE ÇALIŞIR) --- */
 @media (max-width: 768px) {
