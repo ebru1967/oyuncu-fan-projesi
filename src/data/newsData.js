@@ -34,5 +34,14 @@ export const activeNews = [
     summary: "Hürriyet'e verdiği son röportajda Şerif karakteri yüzünden sokakta aldığı ilginç tepkileri anlatan başarılı aktör, mesleki duruşunu şu sözlerle özetledi: 'Oyunculuk yolunu çok ciddiye alıyorum ve o ciddiyet bazen beni yoruyor. Tiyatroyla bir şeyler üreterek kalıcı olmaya çalışıyorum.'",
     linkText: "RÖPORTAJI OKU ↗",
     linkUrl: "https://www.hurriyet.com.tr/kelebek/hurriyet-cumartesi/intikam-almakla-hic-ugrasamam-43153248"
+  },
+  {
+    id: 5,
+    regCode: "KAYIT #2026-06E",
+    category: "GÜNCEL // ONUR NİŞANI",
+    title: "Sürmene'den Aytek Şayan'a Fahri Hemşehrilik Ünvanı",
+    summary: "'Taşacak Bu Deniz' dizisinin çekimleri sebebiyle uzun süredir Trabzon'da bulunan ve Karadeniz halkıyla kurduğu samimi bağla takdir toplayan Aytek Şayan'a, Sürmene Belediye Başkanı tarafından 'Fahri Hemşehrilik' beratı takdim edildi. Bölge kültürüne olan ilgisi ve saygısıyla bilinen başarılı oyuncu, bu anlamlı jest karşısında büyük bir onur duyduğunu belirtti.",
+    linkText: "HABERİN DETAYI ↗",
+    linkUrl: "https://www.kuzeyekspres.com.tr/haber/27788232/trabzon-gunlerinde-tasacak-bu-deniz-ruzgari", 
   }
 ];

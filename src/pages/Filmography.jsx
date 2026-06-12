@@ -106,9 +106,9 @@ const filmographyList = [
   },
   { 
     id: 1, year: "2023", title: "Su Yüzü", character: "Fırat", 
-    episodes: "Kısa Film", platform: "Bağımsız", image: "/fırat.jpeg", 
+    episodes: "Kısa Film", platform: "TV+", image: "/fırat.jpeg", 
     summary: "Fırat, kasabada fotoğrafçılık yapan, özellikle düğün fotoğrafları çeken ve kasabanın duygusal atmosferini yansıtan bir karakterdir.",
-    url: "#" 
+    url: "https://tvplus.com.tr/film-izle/su-yuzu--215988411" 
   }
 ];
 
