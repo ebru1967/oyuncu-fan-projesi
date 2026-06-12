@@ -120,7 +120,51 @@ body {
 .hamburger {
   display: none; 
 }
+/* --- İNTERAKTİF ARENA (PİKSEL OYUNU) KARANLIK MOD DÜZELTMELERİ --- */
 
+/* Tuval Arka Planı */
+body.dark-mode .pixel-board {
+  background-color: #111111 !important; 
+  border-color: #444444 !important;
+  box-shadow: 0 10px 30px rgba(255,255,255,0.05);
+}
+
+/* Hücre çizgileri ve ipucu sayıları */
+body.dark-mode .pixel-cell {
+  border-color: rgba(255, 255, 255, 0.15) !important; 
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Seviye Seçim Butonları  */
+body.dark-mode .level-btn {
+  background-color: transparent !important;
+  border-color: #555555 !important;
+  color: #FFFFFF !important;
+}
+
+/* Aktif Seviye Butonu  */
+body.dark-mode .level-btn.active,
+body.dark-mode .level-btn:hover {
+  background-color: #FFFFFF !important;
+  color: #000000 !important; /* Arka plan beyaz olunca yazı SİYAH olacak  */
+  border-color: #FFFFFF !important;
+}
+
+/* Renk paletindeki "Silgi" butonu */
+body.dark-mode .palette-btn[title="Silgi"] {
+  background-color: #222222 !important;
+  border-color: #555555 !important;
+  color: #FFFFFF !important;
+}
+
+body.dark-mode .palette-btn[title="Silgi"].active {
+  border-color: #FFFFFF !important;
+}
+
+/* 3D Kartın Çevrildiği Arka Yüz */
+body.dark-mode .reveal-back {
+  border-color: #FFFFFF !important;
+}
 /* Mobil Ayarları */
 @media (max-width: 768px) {
   .hamburger {
