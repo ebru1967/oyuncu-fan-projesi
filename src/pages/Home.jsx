@@ -118,7 +118,6 @@ function Home() {
         </div>
       </section>
       
-      {/* AKTİF MANŞETLER & KAYITLAR */}
       <section className="curated-records">
         <div className="container">
           <div className="section-header-editorial">
@@ -128,7 +127,6 @@ function Home() {
 
           <div className="editorial-magazine-layout">
             
-            {/* MANŞET HABER BLOĞU (editorial-magazine-layout'un İÇİNE aldık) */}
             <div className="mag-row-major">
               <div className="mag-preview-box" style={{ padding: 0, overflow: 'hidden', backgroundColor: 'transparent', position: 'relative' }}>
                 {newsCoverImages[mainArticle?.id] ? (
@@ -162,7 +160,6 @@ function Home() {
               </div>
             </div>
 
-            {/* YAN HABERLER */}
             <div className="mag-sidebar-column">
               {sideArticles.map((article) => (
                 <div className="sidebar-mag-card" key={article.id}>
@@ -174,9 +171,8 @@ function Home() {
               ))}
             </div>
 
-          </div> {/* editorial-magazine-layout sonu */}
+          </div> 
 
-          {/* TÜMÜNÜ GÖRÜNTÜLE BUTONU */}
           {activeNews.length > 3 && (
             <div style={{ textAlign: 'center', marginTop: '3rem' }}>
               <Link to="/arsiv" className="editorial-link" style={{ display: 'inline-block', fontSize: '0.9rem', padding: '0.8rem 2rem', border: '1px solid var(--accent-dark)' }}>
