@@ -1694,18 +1694,31 @@
   .manifesto-divider{
     display:none;
   }
-
-  /* MAGAZINE */
-  .editorial-magazine-layout{
-    grid-template-columns:1fr !important;
+/* MAGAZINE */
+  .editorial-magazine-layout {
+    grid-template-columns: 1fr !important;
   }
 
-  .mag-row-major{
-    position:static;
+  .mag-row-major {
+    position: static;
   }
 
-  .mag-text-content{
-    padding:1.5rem;
+  .mag-text-content {
+    padding: 1.5rem !important;
+  }
+
+  /* HABER METNİNİN MOBİLDE DÜZGÜN GÖRÜNMESİ İÇİN EKLEMEN GEREKENLER */
+  .mag-text-content h3 {
+    font-size: 1.4rem !important;
+    line-height: 1.2 !important;
+    margin-bottom: 0.8rem !important;
+  }
+
+  .mag-text-content p {
+    text-align: left !important; 
+    word-break: normal !important; 
+    overflow-wrap: break-word !important; 
+    line-height: 1.6 !important;
   }
 
 /* BIO */
