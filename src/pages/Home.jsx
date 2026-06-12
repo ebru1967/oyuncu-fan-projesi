@@ -176,7 +176,7 @@ function Home() {
           {activeNews.length > 3 && (
             <div style={{ textAlign: 'center', marginTop: '3rem' }}>
               <Link to="/arsiv" className="editorial-link" style={{ display: 'inline-block', fontSize: '0.9rem', padding: '0.8rem 2rem', border: '1px solid var(--accent-dark)' }}>
-                TÜM ARŞİV KAYITLARINI GÖRÜNTÜLE ↗
+                TÜM ARŞİV KAYITLARINI GÖRÜNTÜLE 
               </Link>
             </div>
           )}
