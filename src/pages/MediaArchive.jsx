@@ -49,7 +49,8 @@ function MediaArchive() {
     { id: 27, bolum: "27. Bölüm", sure: "7:04", url: "https://x.com/chicolw/status/2052872532533911657?s=46" },
     { id: 28, bolum: "28. Bölüm", sure: "18:25", url: "https://x.com/chicolw/status/2055412309099467166?s=46" },
     { id: 29, bolum: "29. Bölüm", sure: "25:43", url: "https://x.com/chicolw/status/2057960836216258841?s=46" },
-    { id: 30, bolum: "30. Bölüm", sure: "9:52", url: "https://x.com/chicolw/status/2060476085939187770?s=46" }
+    { id: 30, bolum: "30. Bölüm", sure: "9:52", url: "https://x.com/chicolw/status/2060476085939187770?s=46" },
+    { id: 31, bolum: "31. Bölüm", sure: "11:50", url: "https://x.com/chicolw/status/2063197647431712938?s=46" }
   ];
 
   const dizi2Kesitleri = [
