@@ -9,6 +9,16 @@ export const activeNews = [
     linkUrl: "https://www.kanald.com.tr/arda-ile-omuz-omuza" 
   },
   {
+    id: 7, 
+    regCode: "KAYIT #2026-06G",
+    category: "BASIN // RÖPORTAJ",
+    title: "Şerif\'in Psikolojisi, Set Ortamı ve Brezilya Hayali", 
+    summary: "Aytek Şayan\'ın; Şerif karakterinin kötülük felsefesini, Karadeniz\'in zorlu çekim koşullarını, rol arkadaşlarıyla olan eğlenceli dinamiklerini ve Brezilya kültürüne duyduğu merakı anlattığı özel video röportajı.",
+    linkText: "RÖPORTAJIN TAMAMINI İZLE ↗",
+    linkUrl: "/basin", 
+    /*imageUrl: "/gallery/yeni_roportaj_gorseli.jpeg" */
+  },
+  {
     id: 5,
     regCode: "KAYIT #2026-06E",
     category: "GÜNCEL // ONUR NİŞANI",
