@@ -22,7 +22,7 @@ function Home() {
   const sideArticles = activeNews.slice(1); 
 
   const newsCoverImages = {
-    6: '/gallery/h1(137).jpeg', 
+    6: '/gallery/h1 (137).jpeg', 
   };
 
   const today = new Date();
