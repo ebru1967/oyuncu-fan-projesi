@@ -193,6 +193,20 @@ function AytekPenalty() {
           margin-bottom: 1rem;
           font-weight: bold;
         }
+        :global(body.dark-mode) .score-board {
+          background-color: #222222 !important; /* Çok koyu gri arka plan */
+          color: #FFFFFF !important; /* Beyaz yazı */
+          border: 1px solid #444444; /* Şık bir sınır çizgisi */
+        }
+
+        :global(body.dark-mode) .message-box {
+          color: #FFFFFF !important; /* Mesaj yazısı da beyaz olsun */
+        }
+        
+        :global(body.dark-mode) .stadium-bg {
+          background-color: #0b0d09 !important; /* Ana arka planı da karanlığa uyumlu yap */
+          border-color: #333333 !important; /* Kenarlığı yumuşat */
+        }
       `}</style>
 
       <div className="section-header-editorial" style={{ textAlign: 'center', marginBottom: '2rem' }}>
