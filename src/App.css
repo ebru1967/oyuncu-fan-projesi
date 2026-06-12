@@ -1585,6 +1585,30 @@
   font-family: var(--font-heading);
   font-weight: bold;
 }
+/* --- YUKARI ÇIK BUTONU (GENEL) --- */
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: var(--accent-dark);
+  color: #fff;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  z-index: 9999; /* En üstte durmasını sağlar */
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.back-to-top:hover {
+  transform: scale(1.1);
+}
+
 
 /* --- MOBİL AYARLARI (SADECE EKRAN KÜÇÜLÜNCE ÇALIŞIR) --- */
 @media (max-width: 768px) {
