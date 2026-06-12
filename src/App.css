@@ -1876,15 +1876,39 @@
     text-align:center;
   }
 
-
-  /* SOCIAL REGISTRY */
-  .registry-title{
-    font-size:1.2rem !important;
+/* --- SOSYAL SİCİL (REGISTRY) MOBİL DÜZELTMELERİ --- */
+  .registry-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important; /* İki sütunu yan yana değil, alt alta dizer */
+    gap: 2rem !important; /* İki kutu arasına nefes alacak boşluk koyar */
   }
 
-  .registry-desc{
-    font-size:0.75rem !important;
-    line-height:1.4;
+  .registry-column {
+    padding: 1.5rem 1rem !important; /* Kutuların iç boşluğunu mobilde dengeler */
+  }
+
+  .registry-title {
+    font-size: 1.2rem !important;
+  }
+
+  .registry-desc {
+    font-size: 0.85rem !important;
+    line-height: 1.5;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .social-links-list {
+    display: flex !important;
+    flex-direction: column !important; /* Linkleri yan yana değil alt alta sıralar */
+    gap: 0.8rem !important;
+  }
+
+  .registry-social-link {
+    width: 100% !important; /* Butonlar mobilde ekranı tam kaplasın */
+    display: flex !important;
+    justify-content: space-between !important; /* Yazı solda, ok işareti sağda şık dursun */
+    padding: 0.8rem 1rem !important;
+    font-size: 0.85rem !important;
   }
 /* BIO DÜZENLEMELERİ */
   .bio-grid-container {
