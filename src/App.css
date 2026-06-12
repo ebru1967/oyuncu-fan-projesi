@@ -1546,7 +1546,56 @@
   background-color: var(--accent-dark);
   color: white;
 }
+/* --- XOX OYUNU GÖRSEL STİLİ (HER ZAMAN GEÇERLİ) --- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  gap: 8px;
+  margin-top: 2rem;
+  justify-content: center; /* Web'de ortalı durması için */
+}
 
+.cell {
+  width: 100px;
+  height: 100px;
+  background-color: var(--bg-card);
+  border: 2px solid var(--accent-dark);
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.3s;
+  background-size: cover;
+  background-position: center;
+}
+
+.cell:hover:not(:disabled) {
+  border-color: #fff;
+  transform: scale(1.05);
+}
+
+.cell:disabled {
+  cursor: default;
+}
+
+.reset-btn {
+  margin-top: 2rem;
+  padding: 0.8rem 2rem;
+  background: var(--accent-dark);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-heading);
+  font-weight: bold;
+}
+
+/* --- MOBİL AYARLARI (SADECE EKRAN KÜÇÜLÜNCE ÇALIŞIR) --- */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(3, 25vw);
+  }
+  .cell {
+    width: 25vw;
+    height: 25vw;
+  }
+}
 @media (max-width:768px){
 
   /* NAVBAR */
@@ -2104,52 +2153,7 @@
 .back-to-top:hover {
   transform: scale(1.1);
 }
-/* XOX OYUNU GÖRSEL STİLİ */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, 100px);
-  gap: 8px;
-  margin-top: 2rem;
-}
 
-.cell {
-  width: 100px;
-  height: 100px;
-  background-color: var(--bg-card);
-  border: 2px solid var(--accent-dark);
-  cursor: pointer;
-  transition: transform 0.2s, border-color 0.3s;
-}
-
-.cell:hover:not(:disabled) {
-  border-color: #fff;
-  transform: scale(1.05);
-}
-
-.cell:disabled {
-  cursor: default;
-}
-
-.reset-btn {
-  margin-top: 2rem;
-  padding: 0.8rem 2rem;
-  background: var(--accent-dark);
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-family: var(--font-heading);
-  font-weight: bold;
-}
-
-@media (max-width: 768px) {
-  .grid {
-    grid-template-columns: repeat(3, 25vw);
-  }
-  .cell {
-    width: 25vw;
-    height: 25vw;
-  }
-}
 /* ARŞİV SAYFASI MOBİL DÜZENİ */
 @media (max-width: 768px) {
   .chronicle-row {
