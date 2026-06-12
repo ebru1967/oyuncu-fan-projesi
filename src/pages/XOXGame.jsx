@@ -27,19 +27,23 @@ function XOXGame() {
       [0, 4, 8], [2, 4, 6]
     ];
 
+    // 1. Kazanacak hamle var mı?
     for (let pattern of winPatterns) {
       const [a, b, c] = pattern;
       if (currentBoard[a] === 'O' && currentBoard[b] === 'O' && !currentBoard[c]) return c;
       if (currentBoard[a] === 'O' && currentBoard[c] === 'O' && !currentBoard[b]) return b;
       if (currentBoard[b] === 'O' && currentBoard[c] === 'O' && !currentBoard[a]) return a;
     }
+    // 2. Engelleme hamlesi
     for (let pattern of winPatterns) {
       const [a, b, c] = pattern;
       if (currentBoard[a] === 'X' && currentBoard[b] === 'X' && !currentBoard[c]) return c;
       if (currentBoard[a] === 'X' && currentBoard[c] === 'X' && !currentBoard[b]) return b;
       if (currentBoard[b] === 'X' && currentBoard[c] === 'X' && !currentBoard[a]) return a;
     }
+    // 3. Merkeze odaklan
     if (!currentBoard[4]) return 4;
+    // 4. Rastgele hamle
     const emptyIndices = currentBoard.map((val, idx) => val === null ? idx : null).filter(val => val !== null);
     return emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
   };
@@ -83,12 +87,22 @@ function XOXGame() {
       <h3>{winner ? (winner === 'Berabere' ? 'SONUÇ: BERABERE!' : (winner === 'X' ? 'TEBRİKLER, KAZANDIN!' : 'ŞERİF KAZANDI!')) : 'ŞERİF vs SEN'}</h3>
       <div className="grid">
         {board.map((cell, idx) => (
-          <button key={idx} onClick={() => handleClick(idx)} className="cell" disabled={!!winner}>
-            {cell === 'X' ? '👤' : cell === 'O' ? '💼' : ''}
+          <button 
+            key={idx} 
+            onClick={() => handleClick(idx)} 
+            className="cell" 
+            disabled={!!winner || cell !== null}
+            style={{
+              backgroundImage: cell === 'X' ? "url('/gallery/user.jpg')" : 
+                               cell === 'O' ? "url('/gallery/serif.jpg')" : "none",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
+            }}
+          >
           </button>
         ))}
       </div>
-      {winner && <button onClick={resetGame} style={{marginTop: '2rem'}}>YENİ OYUN</button>}
+      {winner && <button onClick={resetGame} className="reset-btn">YENİ OYUN</button>}
     </div>
   );
 }
