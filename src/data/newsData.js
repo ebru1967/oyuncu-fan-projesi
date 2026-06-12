@@ -1,5 +1,23 @@
 export const activeNews = [
   {
+    id: 6,
+    regCode: "KAYIT #2026-06F",
+    category: "TELEVİZYON // DUYURU",
+    title: "Yakın Dostlar Mutfakta: Aytek Şayan ve Burak Yörük 'Arda ile Omuz Omuza'da!",
+    summary: "'Taşacak Bu Deniz' dizisindeki partnerliklerinin yanı sıra set dışındaki yakın dostluklarıyla da bilinen Aytek Şayan ve Burak Yörük, bu kez eğlenceli bir rekabet için mutfağa giriyor. Sevilen şef Arda Türkmen'in 'Arda ile Omuz Omuza' programına konuk olan ikili, şefin talimatlarını sadece duyarak uygulayıp en iyi tabağı çıkarmaya çalışacak. İkilinin set dışındaki enerjisini ve samimi rekabetini ekranlara taşıyacak olan bu bölüm, izleyiciler tarafından merakla bekleniyor.",
+    linkText: "PROGRAM SAYFASI (KANAL D) ↗",
+    linkUrl: "https://www.kanald.com.tr/arda-ile-omuz-omuza" 
+  },
+  {
+    id: 5,
+    regCode: "KAYIT #2026-06E",
+    category: "GÜNCEL // ONUR NİŞANI",
+    title: "Sürmene'den Aytek Şayan'a Fahri Hemşehrilik Ünvanı",
+    summary: "'Taşacak Bu Deniz' dizisinin çekimleri sebebiyle uzun süredir Trabzon'da bulunan ve Karadeniz halkıyla kurduğu samimi bağla takdir toplayan Aytek Şayan'a, Sürmene Belediye Başkanı tarafından 'Fahri Hemşehrilik' beratı takdim edildi. Bölge kültürüne olan ilgisi ve saygısıyla bilinen başarılı oyuncu, bu anlamlı jest karşısında büyük bir onur duyduğunu belirtti.",
+    linkText: "HABERİN DETAYI ↗",
+    linkUrl: "https://www.kuzeyekspres.com.tr/haber/27788232/trabzon-gunlerinde-tasacak-bu-deniz-ruzgari", 
+  },
+  {
     id: 1,
     regCode: "KAYIT #2026-06A",
     category: "TELEVİZYON // İNCELEME",
@@ -7,15 +25,6 @@ export const activeNews = [
     summary: "'Taşacak Bu Deniz' dizisinde hayat verdiği Şerif karakteriyle Aytek Şayan, sıradan kötü adam klişelerini tamamen yıkıyor. Karakterin olaylara duygulardan arınmış bir satranç ustası gibi yaklaşmasını büyük bir ustalıkla ekrana taşıyan oyuncu, hem eleştirmenlerden tam not alıyor hem de sosyal medyada izleyicilerin yoğun etkileşimiyle sezonun en çok konuşulan performanslarından birine imza atıyor.",
     linkText: "ŞERİF'İN SAHNELERİNİ İZLE ↗",
     linkUrl: "https://youtube.com/playlist?list=PLkowzc1JKWSj-LXZoBKue22W-RIPiIPiW" 
-  },
-  {
-    id: 2,
-    regCode: "KAYIT #2025-11B",
-    category: "TİYATRO // ÖDÜL",
-    title: "25. Direklerarası Ödülleri'nde 'En İyi Erkek Oyuncu' Zaferi",
-    summary: "DasDas sahnesinde kapalı gişe oynayan distopik tiyatro oyunu 'Ayna'daki çarpıcı performansı, Aytek Şayan'a 25. Direklerarası Seyirci Ödülleri'nde 'En İyi Erkek Oyuncu' ödülünü getirdi. Şayan, sansür ve otosansür konularını işleyen bu cesur metindeki performansıyla jüriden tam not aldı.",
-    linkText: "TİYATROLAR SAYFASI ↗",
-    linkUrl: "https://tiyatrolar.com.tr/m/aytek-sayan"
   },
   {
     id: 3,
@@ -36,12 +45,12 @@ export const activeNews = [
     linkUrl: "https://www.hurriyet.com.tr/kelebek/hurriyet-cumartesi/intikam-almakla-hic-ugrasamam-43153248"
   },
   {
-    id: 5,
-    regCode: "KAYIT #2026-06E",
-    category: "GÜNCEL // ONUR NİŞANI",
-    title: "Sürmene'den Aytek Şayan'a Fahri Hemşehrilik Ünvanı",
-    summary: "'Taşacak Bu Deniz' dizisinin çekimleri sebebiyle uzun süredir Trabzon'da bulunan ve Karadeniz halkıyla kurduğu samimi bağla takdir toplayan Aytek Şayan'a, Sürmene Belediye Başkanı tarafından 'Fahri Hemşehrilik' beratı takdim edildi. Bölge kültürüne olan ilgisi ve saygısıyla bilinen başarılı oyuncu, bu anlamlı jest karşısında büyük bir onur duyduğunu belirtti.",
-    linkText: "HABERİN DETAYI ↗",
-    linkUrl: "https://www.kuzeyekspres.com.tr/haber/27788232/trabzon-gunlerinde-tasacak-bu-deniz-ruzgari", 
+    id: 2,
+    regCode: "KAYIT #2025-11B",
+    category: "TİYATRO // ÖDÜL",
+    title: "25. Direklerarası Ödülleri'nde 'En İyi Erkek Oyuncu' Zaferi",
+    summary: "DasDas sahnesinde kapalı gişe oynayan distopik tiyatro oyunu 'Ayna'daki çarpıcı performansı, Aytek Şayan'a 25. Direklerarası Seyirci Ödülleri'nde 'En İyi Erkek Oyuncu' ödülünü getirdi. Şayan, sansür ve otosansür konularını işleyen bu cesur metindeki performansıyla jüriden tam not aldı.",
+    linkText: "TİYATROLAR SAYFASI ↗",
+    linkUrl: "https://tiyatrolar.com.tr/m/aytek-sayan"
   }
 ];
