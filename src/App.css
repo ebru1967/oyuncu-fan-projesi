@@ -1514,6 +1514,38 @@
   justify-content: center; 
   margin-bottom: 1rem;
 }
+/* XOX OYUNU STİLİ */
+.xox-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4rem 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 80px); /* 3 sütunlu ızgara */
+  gap: 10px;
+  margin-top: 2rem;
+}
+
+.cell {
+  width: 80px;
+  height: 80px;
+  font-size: 2rem;
+  background-color: var(--bg-card);
+  border: 1px solid var(--accent-dark);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s;
+}
+
+.cell:hover {
+  background-color: var(--accent-dark);
+  color: white;
+}
 
 @media (max-width:768px){
 
@@ -2072,6 +2104,18 @@
 .back-to-top:hover {
   transform: scale(1.1);
 }
+.grid {
+    /* 80px yerine ekranın %25'i kadar olsun, böylece her telefonda sığar */
+    grid-template-columns: repeat(3, 25vw); 
+    gap: 8px;
+  }
+
+  .cell {
+    /* Hücreler de ekran genişliğine göre orantılı olsun */
+    width: 25vw;
+    height: 25vw;
+    font-size: 1.5rem;
+  }
 /* ARŞİV SAYFASI MOBİL DÜZENİ */
 @media (max-width: 768px) {
   .chronicle-row {

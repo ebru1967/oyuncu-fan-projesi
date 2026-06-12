@@ -156,6 +156,9 @@ function Navbar() {
             <Link to="/bulmaca" onClick={closeMenu}>
               KARE BULMACA
             </Link>
+            <Link to="/xox-oyunu" onClick={closeMenu}>
+      XOX
+    </Link>
           </div>
         </div>
 

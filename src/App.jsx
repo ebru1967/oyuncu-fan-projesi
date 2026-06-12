@@ -19,6 +19,7 @@ import JimCarreyPixel from './pages/JimCarreyPixel';
 import AytekPenalty from "./pages/AytekPenalty";
 import PhotoPuzzle from './pages/PhotoPuzzle';
 import Crossword from './pages/Crossword';
+import XOXGame from './pages/XOXGame';
 import Contact from './pages/Contact'; 
 import FCChannels from './pages/FCChannels';
 import FanArtGallery from './pages/FanArtGallery';
@@ -120,6 +121,7 @@ function App() {
             <Route path="/penalti" element={<AytekPenalty />} />
             <Route path="/puzzle" element={<PhotoPuzzle />} />
             <Route path="/bulmaca" element={<Crossword />} />
+            <Route path="/xox-oyunu" element={<XOXGame />} />
             <Route path="/fc-hesaplar" element={<FCChannels />} />
             <Route path="/fan-gonderileri" element={<FanArtGallery />} />
             <Route path="/haber-bulteni" element={<Newsletter />} />
