@@ -3,8 +3,8 @@ export const activeNews = [
     id: 6,
     regCode: "KAYIT #2026-06F",
     category: "TELEVİZYON // DUYURU",
-    title: "Yakın Dostlar Mutfakta: Aytek Şayan ve Burak Yörük 'Arda ile Omuz Omuza'da!",
-    summary: "'Taşacak Bu Deniz' dizisindeki partnerliklerinin yanı sıra set dışındaki yakın dostluklarıyla da bilinen Aytek Şayan ve Burak Yörük, bu kez eğlenceli bir rekabet için mutfağa giriyor. Sevilen şef Arda Türkmen'in 'Arda ile Omuz Omuza' programına konuk olan ikili, şefin talimatlarını sadece duyarak uygulayıp en iyi tabağı çıkarmaya çalışacak. İkilinin set dışındaki enerjisini ve samimi rekabetini ekranlara taşıyacak olan bu bölüm, izleyiciler tarafından merakla bekleniyor.",
+    title: "Sezon Finalinde Büyük Rekabet: Aytek Şayan ve Burak Yörük 'Arda ile Omuz Omuza'da!",
+    summary: "Türkiye’nin sevilen şeflerinden Arda Türkmen’in ünlü konukları ağırladığı 'Arda ile Omuz Omuza' programı, nefes kesen bir sezon finali bölümüyle ekrana geliyor. 'Taşacak Bu Deniz' dizisinin başarılı oyuncuları Aytek Şayan ve Burak Yörük, bu özel bölümde mutfakta adeta ter döküyor. Arda Şef'in talimatlarıyla omuz omuza vererek en lezzetli Tavuklu Burger Sandviç'i hazırlamaya çalışan ikilinin set dışındaki harika enerjisi ve eğlenceli mutfak macerası izleyicilerle buluşuyor.",
     linkText: "PROGRAM SAYFASI (KANAL D) ↗",
     linkUrl: "https://www.kanald.com.tr/arda-ile-omuz-omuza" 
   },
