@@ -171,3 +171,14 @@ body.dark-mode .reveal-back {
     display: block; 
   }
 }
+/* --- XOX OYUNU "YENİ OYUN" BUTONU KARANLIK MOD DÜZELTMESİ --- */
+body.dark-mode .reset-btn {
+  background-color: transparent !important;
+  color: #FFFFFF !important;
+  border: 1px solid #FFFFFF !important;
+}
+
+body.dark-mode .reset-btn:hover {
+  background-color: #FFFFFF !important;
+  color: #000000 !important; /* Üzerine gelince yazı siyah, arka plan beyaz olur */
+}
