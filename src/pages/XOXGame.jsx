@@ -93,8 +93,8 @@ function XOXGame() {
             className="cell" 
             disabled={!!winner || cell !== null}
             style={{
-              backgroundImage: cell === 'X' ? "url('/gallery/user.jpg')" : 
-                               cell === 'O' ? "url('/gallery/serif.jpg')" : "none",
+              backgroundImage: cell === 'X' ? "url('/gallery/h1 (160).jpeg')" : 
+                               cell === 'O' ? "url('/gallery/h1 (165).jpeg')" : "none",
               backgroundSize: 'cover',
               backgroundPosition: 'center'
             }}
