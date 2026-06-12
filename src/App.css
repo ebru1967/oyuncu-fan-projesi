@@ -1899,14 +1899,14 @@
 
   .social-links-list {
     display: flex !important;
-    flex-direction: column !important; /* Linkleri yan yana değil alt alta sıralar */
+    flex-direction: column !important; 
     gap: 0.8rem !important;
   }
 
   .registry-social-link {
-    width: 100% !important; /* Butonlar mobilde ekranı tam kaplasın */
+    width: 100% !important; 
     display: flex !important;
-    justify-content: space-between !important; /* Yazı solda, ok işareti sağda şık dursun */
+    justify-content: space-between !important; 
     padding: 0.8rem 1rem !important;
     font-size: 0.85rem !important;
   }
@@ -1915,15 +1915,15 @@
     display: flex !important;
     flex-direction: column !important;
     gap: 2rem;
-    padding: 0 1rem; /* Yanlardan nefes alması için */
+    padding: 0 1rem; 
   }
 
   .editorial-bio-paragraph {
-    font-size: 1rem !important; /* Bir tık büyüttük okunabilirlik için */
+    font-size: 1rem !important; 
     line-height: 1.6 !important;
-    text-align: justify; /* Dağılmayı engeller, blok yapar */
+    text-align: justify; 
     word-break: break-word;
-    hyphens: auto; /* Kelimeleri daha estetik böler */
+    hyphens: auto;-
     margin-bottom: 1.2rem;
   }
 

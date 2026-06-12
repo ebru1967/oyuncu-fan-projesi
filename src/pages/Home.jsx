@@ -157,16 +157,27 @@ function Home() {
                 )}
 
               </div>
-              <div className="mag-text-content">
-                <div className="meta-row">
-                  <span className="card-category">{mainArticle?.category}</span>
-                  <span className="card-id">{mainArticle?.regCode}</span>
+
+              {/* YENİ DÜZENLEME: Manşet Metin Alanı Daha Sıkı ve Derli Toplu */}
+              <div className="mag-text-content" style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', padding: '1.5rem' }}>
+                <div className="meta-row" style={{ display: 'flex', gap: '1rem', marginBottom: '0.2rem' }}>
+                  <span className="card-category" style={{ fontSize: '0.75rem', fontWeight: 'bold' }}>{mainArticle?.category}</span>
+                  <span className="card-id" style={{ fontSize: '0.75rem', opacity: 0.7 }}>{mainArticle?.regCode}</span>
                 </div>
-                <h3 className="mag-title">
+                
+                <h3 className="mag-title" style={{ fontSize: '1.6rem', lineHeight: '1.1', margin: '0' }}>
                   {mainArticle?.title?.toLocaleUpperCase('tr-TR')}
                 </h3>
-                <p>{mainArticle?.summary}</p>
-                <Link to={mainArticle?.linkUrl || "/"} className="editorial-link">{mainArticle?.linkText}</Link>
+                
+                <p style={{ margin: '0', fontSize: '0.9rem', lineHeight: '1.6', textAlign: 'justify', opacity: 0.85 }}>
+                  {mainArticle?.summary}
+                </p>
+                
+                <div style={{ marginTop: '0.5rem' }}>
+                  <Link to={mainArticle?.linkUrl || "/"} className="editorial-link" style={{ display: 'inline-block' }}>
+                    {mainArticle?.linkText}
+                  </Link>
+                </div>
               </div>
             </div>
 
