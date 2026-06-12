@@ -131,7 +131,6 @@ function Home() {
             <div className="mag-row-major">
               <div className="mag-preview-box" style={{ padding: 0, overflow: 'hidden', backgroundColor: 'transparent', position: 'relative' }}>
                 
-                {/* GÜNCELLENEN KISIM: Manşet haberi için resim varsa gösterir, yoksa placeholder gösterir */}
                 {newsCoverImages[mainArticle?.id] ? (
                   <img 
                     src={newsCoverImages[mainArticle.id]} 
@@ -147,7 +146,7 @@ function Home() {
                     }} 
                   />
                 ) : (
-                  // Resim yoksa (senin istediğin gibi diğer haberler için)
+
                   <div style={{ 
                     width: '100%', height: '100%', display: 'flex', alignItems: 'center', 
                     justifyContent: 'center', backgroundColor: 'var(--bg-card)', 
