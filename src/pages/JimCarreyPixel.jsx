@@ -275,6 +275,43 @@ function JimCarreyPixel() {
           0% { transform: scale(0.8); opacity: 0; }
           100% { transform: scale(1); opacity: 1; }
         }
+          /* KARANLIK MOD (DARK MODE) DESTEĞİ İÇİN DÜZELTMELER */
+        :global(body.dark-mode) .pixel-board {
+          background-color: #111111 !important; /* Tuval arka planı çok koyu gri */
+          border-color: #333333 !important;
+          box-shadow: 0 10px 30px rgba(255,255,255,0.05);
+        }
+
+        :global(body.dark-mode) .pixel-cell {
+          border-color: rgba(255, 255, 255, 0.1) !important; /* Hücre çizgileri beyaz/şeffaf */
+          color: rgba(255, 255, 255, 0.4) !important; /* İpucu sayıları açık gri */
+        }
+
+        :global(body.dark-mode) .level-btn {
+          border-color: #555555 !important;
+          color: #FFFFFF !important;
+        }
+
+        :global(body.dark-mode) .level-btn.active {
+          background-color: #FFFFFF !important;
+          color: #000000 !important;
+          border-color: #FFFFFF !important;
+        }
+
+        /* Renk paletindeki "Silgi" butonu karanlık modda beyaz değil gri/siyah olsun ki patlamasın */
+        :global(body.dark-mode) .palette-btn[title="Silgi"] {
+          background-color: #222222 !important;
+          border-color: #555555 !important;
+          color: #FFFFFF !important;
+        }
+
+        :global(body.dark-mode) .palette-btn[title="Silgi"].active {
+          border-color: #FFFFFF !important;
+        }
+
+        :global(body.dark-mode) .reveal-back {
+          border-color: #FFFFFF !important; /* Çevrilen fotoğrafın çerçevesi beyaz */
+        }
       `}</style>
       <div className="section-header-editorial" style={{ textAlign: 'center', marginBottom: '2rem' }}>
         <span className="archive-badge">// DİJİTAL TUVAL</span>
