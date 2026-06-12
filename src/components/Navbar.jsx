@@ -75,6 +75,9 @@ function Navbar() {
             <Link to="/#kronoloji" onClick={closeMenu}>
               KRONOLOJİK TARİHÇE
             </Link>
+            <Link to="/arsiv" onClick={closeMenu}>
+              ARŞİV KAYITLARI
+            </Link>
             <Link to="/basin" onClick={closeMenu}>
               BASIN & SÖYLEŞİLER
             </Link>
