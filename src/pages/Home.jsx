@@ -17,19 +17,24 @@ function Home() {
       window.scrollTo(0, 0);
     }
   }, [location]);
+
   const mainArticle = activeNews[0]; 
   const sideArticles = activeNews.slice(1); 
 
+  const newsCoverImages = {
+    6: '/gallery/h1(137).jpeg', 
+  };
+
   const today = new Date();
-const nextBirthday = new Date(today.getFullYear(), 9, 9); 
+  const nextBirthday = new Date(today.getFullYear(), 9, 9); 
 
-if (today > nextBirthday) {
-  nextBirthday.setFullYear(today.getFullYear() + 1);
-}
+  if (today > nextBirthday) {
+    nextBirthday.setFullYear(today.getFullYear() + 1);
+  }
 
-const daysLeft = Math.ceil(
-  (nextBirthday - today) / (1000 * 60 * 60 * 24)
-);
+  const daysLeft = Math.ceil(
+    (nextBirthday - today) / (1000 * 60 * 60 * 24)
+  );
 
   return (
     <div className="home-wrapper animate-fade">
@@ -40,23 +45,23 @@ const daysLeft = Math.ceil(
           
           <div className="hero-left-editorial">
 
-  <div
-    style={{
-      display: 'flex',
-      gap: '0.8rem',
-      alignItems: 'center',
-      flexWrap: 'wrap',
-      marginBottom: '1rem'
-    }}
-  >
-    <span className="archive-badge">
-      // DIGITAL MEMORY PROJECT
-    </span>
+            <div
+              style={{
+                display: 'flex',
+                gap: '0.8rem',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                marginBottom: '1rem'
+              }}
+            >
+              <span className="archive-badge">
+                // DIGITAL MEMORY PROJECT
+              </span>
 
-    <span className="archive-badge">
-      🎂 {daysLeft} GÜN KALDI
-    </span>
-  </div>
+              <span className="archive-badge">
+                🎂 {daysLeft} GÜN KALDI
+              </span>
+            </div>
             <h1 className="hero-main-title">AYTEK ŞAYAN</h1>
             <p className="hero-statement">
               "Başka bir dünya mümkün." Hayal etmeye, üretmeye devam edin. İnsana ve doğaya değer verin, saygı duyun. Ve mutlaka bir kere Don Kişot'u okuyun.
@@ -113,7 +118,6 @@ const daysLeft = Math.ceil(
         </div>
       </section>
       
-
       {/* AKTİF MANŞETLER & KAYITLAR */}
       <section className="curated-records">
         <div className="container">
@@ -126,19 +130,33 @@ const daysLeft = Math.ceil(
             
             <div className="mag-row-major">
               <div className="mag-preview-box" style={{ padding: 0, overflow: 'hidden', backgroundColor: 'transparent', position: 'relative' }}>
-                <img 
-                  src="/şerif2.jpeg" 
-                  alt={mainArticle?.title || "Aktif Proje Detayı"} 
-                  style={{ 
-                    width: '100%', 
-                    height: '100%', 
-                    objectFit: 'cover', 
-                    display: 'block',
-                    position: 'relative', 
-                    zIndex: 20,          
-                    opacity: 1 
-                  }} 
-                />
+                
+                {/* GÜNCELLENEN KISIM: Manşet haberi için resim varsa gösterir, yoksa placeholder gösterir */}
+                {newsCoverImages[mainArticle?.id] ? (
+                  <img 
+                    src={newsCoverImages[mainArticle.id]} 
+                    alt={mainArticle?.title || "Aktif Proje Detayı"} 
+                    style={{ 
+                      width: '100%', 
+                      height: '100%', 
+                      objectFit: 'cover', 
+                      display: 'block',
+                      position: 'relative', 
+                      zIndex: 20,          
+                      opacity: 1 
+                    }} 
+                  />
+                ) : (
+                  // Resim yoksa (senin istediğin gibi diğer haberler için)
+                  <div style={{ 
+                    width: '100%', height: '100%', display: 'flex', alignItems: 'center', 
+                    justifyContent: 'center', backgroundColor: 'var(--bg-card)', 
+                    fontFamily: 'var(--font-heading)', color: 'var(--accent-dark)', opacity: 0.5 
+                  }}>
+                    GÖRSEL BEKLENİYOR
+                  </div>
+                )}
+
               </div>
               <div className="mag-text-content">
                 <div className="meta-row">
@@ -158,8 +176,8 @@ const daysLeft = Math.ceil(
                 <div className="sidebar-mag-card" key={article.id}>
                   <span className="card-category">{article.category}</span>
                   <h4>
-  {article.title.toLocaleUpperCase('tr-TR')}
-</h4>
+                    {article.title.toLocaleUpperCase('tr-TR')}
+                  </h4>
                   <p>{article.summary}</p>
                   <Link to={article.linkUrl} className="editorial-link">{article.linkText}</Link>
                 </div>
