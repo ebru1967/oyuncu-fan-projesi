@@ -1706,8 +1706,6 @@
   .mag-text-content {
     padding: 1.5rem !important;
   }
-
-  /* HABER METNİNİN MOBİLDE DÜZGÜN GÖRÜNMESİ İÇİN EKLEMEN GEREKENLER */
   .mag-text-content h3 {
     font-size: 1.4rem !important;
     line-height: 1.2 !important;
@@ -2051,6 +2049,29 @@
     text-align: center !important;
     width: 100% !important; 
   }
+  /* YUKARI ÇIK BUTONU */
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: var(--accent-dark);
+  color: #fff;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  z-index: 9999;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.back-to-top:hover {
+  transform: scale(1.1);
+}
 }
 
 

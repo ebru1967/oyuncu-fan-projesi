@@ -23,6 +23,7 @@ import FCChannels from './pages/FCChannels';
 import FanArtGallery from './pages/FanArtGallery';
 import Newsletter from './pages/Newsletter';
 import Support from './pages/Support';
+import BackToTop from './components/BackToTop';
 import ScrollToTop from './components/ScrollToTop';
 import './App.css';
 
@@ -124,7 +125,7 @@ function App() {
             <Route path="/iletisim" element={<Contact />} /> 
           </Routes>
         </main>
-
+<BackToTop />
         <footer className="footer">
           <div className="footer-container">
             
