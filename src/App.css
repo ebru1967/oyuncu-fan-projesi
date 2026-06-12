@@ -2072,6 +2072,19 @@
 .back-to-top:hover {
   transform: scale(1.1);
 }
+/* ARŞİV SAYFASI MOBİL DÜZENİ */
+@media (max-width: 768px) {
+  .chronicle-row {
+    grid-template-columns: 1fr !important; 
+    gap: 0.5rem !important;
+  }
+  
+  .chronicle-year {
+    font-size: 1rem !important; 
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+  }
+}
 }
 
 
