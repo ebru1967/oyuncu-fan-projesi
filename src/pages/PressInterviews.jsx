@@ -6,6 +6,65 @@ function PressInterviews() {
 
   const interviewData = [
     {
+      id: 18,
+      type: 'written',
+      source: 'RÖPORTAJ // GÜLSEREN ÜST POLAT',
+      date: '12 HAZİRAN 2026',
+      title: 'Tiyatro bir ritüeldir',
+      originalLink: 'https://www.hafta.com.tr/tiyatro-bir-ritueldir-80918',
+      summary: 'Genç sanatçılara görünür olabilecekleri bir alan açan ‘Kısalar Festivali’ne sayılı günler kaldı. Kısa formatı bir süre kısıtı değil, yeni bir anlatı imkânı olarak gören oyuncu Aytek Şayan da festivalin mimarlarından. “Herkesin aslında 10 dakikalık bir fikri var” diyen oyuncu; tiyatronun deneyimle, merakla ve soru sormakla kurduğu ilişkiyi ve oyunculuk anlayışını anlattı.',
+      qaList: [
+        {
+          q: "Kısalar Festivali’ni doğuran o temel düşünce, ‘bu işi yapmalıyız’ dedirten motivasyon neydi?",
+          a: "Ben konservatuar tiyatro bölümü mezunuyum ama esasen amatör tiyatro çıkışlı olarak görüyorum kendimi. Uludağ Üniversitesi’nde Veterinerlik okurken, tiyatro topluluğunda 4-5 yıl çalıştım. Çok da iyi eğitim alıyorduk. Sene sonunda öğrendiklerimizi uygulamamız için kısa oyunlar sahneliyorduk ve sahneye koyuş biçimimizle kendimizi ifade ediyorduk. Tiyatro topluluğunun en güzel yanı ile konservatuarın en kötü yanı aynı aslında. Tiyatro topluluğunda oyunculuk ikinci, üçüncü planda, diğerinde birinci planda. Oyunculuk birinci planda olduğunda tiyatroyla değil, kendiyle ilgilenen bir nesil yaratmanız yüksek ihtimal ama eğer oyunculuk ikinci, üçüncü planda olursa neden tiyatro yaptığını anlayan ve bunun bir öğesinin de oyunculuk olduğunu düşünen bir nesil yaratmanız muhtemel. Üniversitedeki bu yaklaşım benim aklımda kalan bir şeydi. En güzel tarafı, biri sana “gel şunu oyna” demiyor. Biri sana bir şey öğretiyor ve sen ne yapmak istediğine öğrendiklerin dahilinde karar veriyorsun."
+        },
+        {
+          q: "Ve bu düşünceden yürüdünüz…",
+          a: "Herkesin aslında 10 dakikalık bir fikri var bu işle ilgili. Ama satamam diye düşünüyor. Kendini göstereceği, öğrendiklerini, fikrini, vizyonunu göstereceği en önemli örneği belki hiç bir zaman deneyemeyecek ve çalışamayacak onun üzerine. Biz de 20-30 yaş arasında, konservatuarın 3 ya da 4. sınıf öğrencilerine ya da yıllardır profesyonel olarak çalışan ama profesyonelliğin içine girdikten sonra fikrinin üstünü örtmek zorunda kalanlara o 10 dakikalık fikrini hatırla; gel şimdi onu basit, özgün şekilde yap diyoruz. Çok ve yanlış çalışılmış olacağına az çalışılmış, ama fikrin daha görünür olduğu bir şey olsun istiyoruz."
+        },
+        {
+          q: "“Sadece oyun izlenen bir alan değil bu festival” diye bir ifadeniz var. Biraz bunu açar mısınız? Burada asıl kelime ‘deneyim’ mi?",
+          a: "Bugünün dertlerinin artistik bir şekilde anlatıldığı bir alanda, hep beraber romantik bir dört gün geçirmek bizim niyetimiz. Temalara karar veriyoruz ama festivale gelecek oyunların ne olduğuna karar vermiyoruz. Tüm bunlar olmasa dahi bizim seyirci için yaşattığımız deneyim kısmı söyleşiler. “Sen de bir şey söyle” diyoruz. İzleyici sorsun: Ne anlatmak istedin? Hangi yöntemlerle çalıştın? Oyunu oynayan kişinin de “Ben bu fikri geliştirmeye devam edeyim mi” sorusunun yanıtını görebilmesi için olabildiğince nitelikli seyirci alanı yaratmaya çalışıyoruz. Tiyatronun bir deneyim olduğunu unuttuğumuz 1000 yıl geçirmiş durumdayız ne yazık ki."
+        },
+        {
+          q: "Nasıl yani?",
+          a: "Tiyatro, salonlara hapsedilen, bir yazarın bir başka üst akıl tarafından “şunu insanlara anlatsana” dediği bir şey değildir. Tiyatro Antonin Artaud’un dediği gibi esasında bir ritüeldir, deneyimdir. Tiyatro canlı oynanan bir şey. Biz ‘Kısalar’da kendi adımıza bir deneyim yaşatmaya çalışıyoruz insanlara. İnsanlara nitelikli bir şey öğreten ortam yaratalım... Seyirci de ileride kötü bir şey izlemek istemiyorsa buraya gelmeli bence. Benim için sanatta iyi, kötü, güzel, çirkin diye şeyler yok. Enteresan diye bir şey var. O da deneyimle ilintili zaten. Biz enteresan olmak, ilgi çekici olmak zorundayız. Cazibeli olmak zorundayız."
+        },
+        {
+          q: "Anladığım kadarıyla ‘kısalar’ fikrini sadece bir festival formatı olarak görmüyorsunuz, yeni bir dil yaratma çabası sanırım.",
+          a: "Tabii, onun arayışı içerisindeyiz."
+        },
+        {
+          q: "Festival başvuruları bitti. Bu yıl festivale ilgi nasıldı, seçimler neye göre yapıldı?",
+          a: "Biz elemeyi sevmiyoruz. İnanmıyoruz da. Yarışmaktan, elenme usulünden nefret ederim. Bizim yaptığımız ‘arayı’ bulmaya çalışmak. Temalarımız var ve o temalar özelinde gelen başvuruların olabildiğince homojen bir şekilde dağılmasını sağladık. Yine gençlere alan açmaya çalıştık seçim yaparken."
+        },
+        {
+          q: "Festival seçkisini oluştururken sizi en çok hangi işler heyecanlandırıyor: anlatısını güçlü kuranlar mı, sahne dilini zorlayanlar mı, yoksa bu ikisi arasında yeni bir alan açabilenler mi?",
+          a: "Bir kere ben söze inanmıyorum. Dil benim için müthiş bir bariyer. İş sahneye aktarma kısmına gelince ben fiziksel olana daha fazla inanıyorum. Yani sahne dilini zorlayan diyebilirim. Benim en çok ilgilendiğim şey şu oluyor: Neyi öğrenmek için, kendine ne katmak için yola çıkmış? Mesela bir arkadaşımız trapez öğrenmek istemiş ve sirklerde çalışan arkadaşlardan eğitim almış. Sonra da bu öğrendiği şeye bir tekst bulmuş. Bizim oyuncu olarak hayattaki görevimiz bu. En güzel konuşan olmak gibi sorumluluğumuz yok bizim."
+        },
+        {
+          q: "‘Kırılgan Köprüler’, ‘Çevresel Kıyamet’, ‘Modern Oburluk’, ‘Kimlik ve Aidiyet’ ile ‘Neşeli Direniş’... Bu temalar sadece bir seçki çerçevesi mi, yoksa sanatçıları düşünsel olarak provoke eden bir başlangıç noktası diyebilir miyiz?",
+          a: "Evet öyle. Biz dünyadaki fonları araştırıyoruz, başka festivalleri araştırıyoruz. İstiyoruz ki, katılımcılar bu festivale çalışmış ve burada da bir karşılık bulmuşsa, yaptığı işle gidip başka bir fona da başvurabilsin. Başka bir açıdan da Kısalar Festivali ile bir sosyoloğun da psikoloğun da ilgilenmesi gerektiğini düşünüyorum. Çünkü 20-30 yaş arasındaki gençlerin bu temalar bağlamında kendileri ve dünyayla ilintili ne düşündükleriyle ilgili de bir röntgen çekme şansı buluyoruz. Biraz günlüğe dönen işler de oluyor."
+        },
+        {
+          q: "Festivaller doğal olarak birkaç günle sınırlı kalıyor. Bunun hem mekana hem zamana yayılmasıyla ilgili planlar var mı?",
+          a: "Tabii ki. Ama bu ne kadar kaynağımız olduğu ile de alakalı oluyor. Alternatif workshop planlarımız da var. Geçen sene de 3 tane kısayı seçtik. Onları devam ettirip ayda bir oynattık. Bu noktada mekan destekçisi olarak DasDas’ı unutmamak lazım. Hem Mert’in (Fırat) hem İlksen’in (Başarır) çok destekleri oluyor. Bu çok anlamlı bir proje sektörümüz için."
+        },
+        {
+          q: "20 dakika sınırı, bir hikâyeyi “eksiltmeye” mi zorlar, yoksa onu daha keskin bir dile mi iter? Bir sanatçının yaratım refleksini nasıl değiştirir?",
+          a: "Festivalde deneyimlediğimiz en ilginç şey şuydu: 20 dakika aslında o kadar uzun ki. Siz iki saatlik bir oyuna gittiğinizde “25 dakika zaten sıkılacağım” diye kabul ederek gidiyorsunuz. Ama 20 dakikalık bir oyunun 3 dakikası boş geçtiğinde, deli gibi sıkılmaya başlıyorsun. Aslında burada bence sanatçıyı keskinleştirmeye yönelik bir amaç var. Benim aslında insanlara tavsiyem kısa oyunları okumaları. Kısa öykü okumak ya da şiir okumak gibi."
+        },
+        {
+          q: "Bilet fiyatları ve ekonomik koşullar malum… İnsanlar hesap kitap yapmak zorunda kalıyor. Kısa süreli oyunlar ya da sahne performansları insanlara “20 dakika için değer mi” dedirtir mi?",
+          a: "Biz tiyatrocuların kabul etmediği bir şey var; o da bizim de bazen üstüne az çalışılmış, yeterli özeni göstermediğimiz işler yaptığımız. Bir kere öncelikle bizim ‘neyi anlatalım, ne yapalım’ araştırmasına girmemiz lazım. Ben insanlara, “bir saat yol gelecek, bilet satacağım, 20 dakika oyun izleyecek ve gidecek” de demiyorum. Bunu da geliştirerek bir konsept bulabiliriz. Mesela açık alanda yapalım. İnsanlar 20 dakikalık bir oyun izlemez ama bir deneyim yaşar, birkaç tane 20 dakikalık iş izler mesela…"
+        },
+        {
+          q: "Bir karakteri canlandırırken en zor kırılma noktası sizce nerede başlıyor: Karakteri “anlamakta” mı, yoksa onu “bırakabilmekte” mi? Oyuncu olarak kontrolü kaybetmeye ne kadar izin veriyorsunuz?",
+          a: "Kişisel olarak masa başı çalışmasına yani dramaturji çalışmasına çok inanan biriyim. Ben neyin anlatıldığı bir şeyin içindeyim, bunun hangi ögesiyim? Yaşı, fiziksel özellikleri, psikolojik durumu, içinde bulunduğu sosyoloji… Bunlara bakarım. ‘Bırakabilmek’ kısmında sanırım benim en önemsediğim şu: Ben oynarken bile soru soruyorum, cevap vermiyorum. Benim için enteresan olan, izleyenlerin de soru sorduğumu fark etmeden, soru sormaya başlamalarını sağlamak. Gitmek istediğim yer tabii ki belli ama bir yandan da hala cümlelerle, eylemlerle bir oluş halinde… O kaotik durumu gözler önüne sermek benim niyetim. O yüzden, kontrolü bırakmaya inanıyorum. Öyle de oynamaya çalışıyorum."
+        }
+      ]
+    },
+    {
       id: 1,
       type: 'written',
       source: 'HÜRRİYET',
@@ -530,6 +589,13 @@ function PressInterviews() {
                           </div>
                         </div>
                       ))}
+                      {item.originalLink && (
+                        <div style={{ marginTop: '2rem', textAlign: 'right' }}>
+                          <a href={item.originalLink} target="_blank" rel="noreferrer" className="editorial-link" style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>
+                          KAYNAĞA GİT ↗
+                          </a>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

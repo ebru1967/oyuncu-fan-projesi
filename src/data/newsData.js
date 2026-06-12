@@ -9,6 +9,15 @@ export const activeNews = [
     linkUrl: "https://www.kanald.com.tr/arda-ile-omuz-omuza" 
   },
   {
+    id: 8,
+    regCode: "KAYIT #2026-06H",
+    category: "BASIN // RÖPORTAJ",
+    title: "Tiyatro bir ritüeldir: Aytek Şayan ile Kısalar Festivali Üzerine",
+    summary: "Genç sanatçılara görünür olabilecekleri bir alan açan ‘Kısalar Festivali’ne sayılı günler kala Aytek Şayan; tiyatronun bir deneyim ve ritüel olduğunu, kısa anlatıların gücünü ve kendi oyunculuk anlayışını anlatıyor.",
+    linkText: "RÖPORTAJI OKU ↗",
+    linkUrl: "/basin#yeni-roportaj" 
+  },
+  {
     id: 7, 
     regCode: "KAYIT #2026-06G",
     category: "BASIN // RÖPORTAJ",
