@@ -1,29 +1,20 @@
 import React, { useState, useEffect } from 'react';
 
 function AytekBulmaca() {
-  // Oyun durumları: 'idle' (başlamadı), 'showing' (fotoğrafı gösteriyor), 'shuffling' (karışıyor), 'guessing' (tahmin bekleniyor), 'gameover' (yandı)
   const [gameState, setGameState] = useState('idle');
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
   
-  // 3 kartımız var. targetCard: Aytek'in olduğu kartın ID'si (0, 1 veya 2)
   const [targetCard, setTargetCard] = useState(1); 
-  
-  // Kartların ekrandaki sırası. Örneğin [0, 1, 2] veya karışmış hali [2, 0, 1]
   const [positions, setPositions] = useState([0, 1, 2]); 
-  
-  // Karıştırma hızı (Skor arttıkça düşecek, yani hızlanacak)
   const [shuffleSpeed, setShuffleSpeed] = useState(500);
 
-  // Oyunu Başlat veya Sonraki Tura Geç
   const startRound = () => {
     setGameState('showing');
-    // Aytek'in fotoğrafını rastgele bir karta koy
     const newTarget = Math.floor(Math.random() * 3);
     setTargetCard(newTarget);
-    setPositions([0, 1, 2]); // Pozisyonları sıfırla
+    setPositions([0, 1, 2]); 
 
-    // 1.5 saniye fotoğrafı göster, sonra kapat ve karıştırmaya başla
     setTimeout(() => {
       setGameState('shuffling');
       startShuffling();
@@ -32,17 +23,13 @@ function AytekBulmaca() {
 
   const startShuffling = () => {
     let shuffleCount = 0;
-    // Skor arttıkça karıştırma sayısı da artsın (Zorluk seviyesi)
     const maxShuffles = 5 + Math.floor(score / 2); 
-    
-    // Hız, skor arttıkça hızlansın (Minimum 150ms'ye kadar düşsün)
     const currentSpeed = Math.max(150, 500 - (score * 30)); 
     setShuffleSpeed(currentSpeed);
 
     const interval = setInterval(() => {
       setPositions((prev) => {
         const newPos = [...prev];
-        // Rastgele iki kartın yerini değiştir
         const idx1 = Math.floor(Math.random() * 3);
         let idx2 = Math.floor(Math.random() * 3);
         while (idx1 === idx2) {
@@ -66,18 +53,15 @@ function AytekBulmaca() {
     if (gameState !== 'guessing') return;
 
     if (cardId === targetCard) {
-      // DOĞRU BİLDİ!
       const newScore = score + 1;
       setScore(newScore);
       if (newScore > highScore) setHighScore(newScore);
       
-      // Kısa bir tebrik arası, sonra oyun hızlanarak devam eder
       setGameState('showing');
       setTimeout(() => {
         startRound();
       }, 1000);
     } else {
-      // YANLIŞ BİLDİ - OYUN BİTTİ
       setGameState('gameover');
     }
   };
@@ -88,19 +72,29 @@ function AytekBulmaca() {
   };
 
   return (
-    <div className="game-container" style={{ textAlign: 'center', padding: '2rem', backgroundColor: '#111', color: '#fff', borderRadius: '12px', marginTop: '2rem' }}>
-      <h2 style={{ color: '#d4af37', marginBottom: '0.5rem' }}>DİJİTAL HAFIZA OYUNU</h2>
-      <p style={{ opacity: 0.8, marginBottom: '2rem' }}>Aytek'in fotoğrafını gözlerinle takip et. Yanlış yapana kadar devam!</p>
+    <div className="game-container" style={{ 
+      textAlign: 'center', 
+      padding: '3rem 1rem', 
+      backgroundColor: 'var(--bg-main)', 
+      color: 'var(--text-main)', 
+      fontFamily: 'var(--font-heading)',
+      minHeight: '70vh'
+    }}>
+      <div className="section-header-editorial" style={{ marginBottom: '2rem' }}>
+        <span className="archive-badge">// İNTERAKTİF ARENA</span>
+        <h2 className="editorial-title" style={{ marginTop: '0.5rem' }}>GÖRSEL ODAK TESTİ</h2>
+        <p className="editorial-subtitle" style={{ opacity: 0.8, maxWidth: '600px', margin: '0 auto' }}>
+          Hedef portreyi gözlerinle takip et. En yüksek konsantrasyon rekorunu kırana kadar devam!
+        </p>
+      </div>
       
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginBottom: '1rem' }}>
-        <div style={{ fontSize: '1.2rem' }}>SKOR: <strong>{score}</strong></div>
-        <div style={{ fontSize: '1.2rem', color: '#d4af37' }}>EN İYİ: <strong>{highScore}</strong></div>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '3rem', marginBottom: '3rem', fontFamily: 'var(--font-body)', fontWeight: 'bold' }}>
+        <div style={{ fontSize: '1.1rem', letterSpacing: '1px' }}>SKOR: <span style={{ fontSize: '1.4rem' }}>{score}</span></div>
+        <div style={{ fontSize: '1.1rem', letterSpacing: '1px', color: 'var(--accent-dark)' }}>EN İYİ: <span style={{ fontSize: '1.4rem' }}>{highScore}</span></div>
       </div>
 
-      {/* KARTLARIN OLDUĞU ALAN */}
-      <div style={{ position: 'relative', height: '200px', width: '340px', margin: '0 auto 2rem auto' }}>
+      <div style={{ position: 'relative', height: '220px', width: '100%', maxWidth: '420px', margin: '0 auto 3rem auto' }}>
         {[0, 1, 2].map((cardId) => {
-          // Kartın şu anki görsel pozisyonunu bul
           const currentPosIndex = positions.indexOf(cardId);
           
           return (
@@ -109,55 +103,63 @@ function AytekBulmaca() {
               onClick={() => handleCardClick(cardId)}
               style={{
                 position: 'absolute',
-                width: '100px',
-                height: '140px',
-                left: `${currentPosIndex * 120}px`, // 0px, 120px veya 240px
+                width: '120px',
+                height: '160px',
+                // Responsive olması için yüzde hesabı kullandım
+                left: `calc(50% - 60px + ${(currentPosIndex - 1) * 140}px)`, 
                 transition: `left ${shuffleSpeed / 1000}s ease-in-out`,
-                backgroundColor: '#222',
-                border: '2px solid #444',
-                borderRadius: '8px',
+                backgroundColor: 'var(--bg-card)',
+                border: '1px solid var(--accent-dark)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: gameState === 'guessing' ? 'pointer' : 'default',
                 overflow: 'hidden',
-                boxShadow: gameState === 'guessing' ? '0 0 10px rgba(212, 175, 55, 0.3)' : 'none'
+                boxShadow: gameState === 'guessing' ? '0 4px 15px rgba(0,0,0,0.1)' : 'none'
               }}
             >
-              {/* Sadece showing veya gameover durumundaysa ve bu kart target ise fotoğrafı göster */}
               {(gameState === 'showing' || gameState === 'gameover') && cardId === targetCard ? (
                 <img 
-                  src="/portreicin.jpeg" 
-                  alt="Aytek" 
+                  src="/portre_tw.jpeg" 
+                  alt="Hedef" 
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                 />
               ) : (
-                <div style={{ fontSize: '3rem', opacity: 0.2 }}>?</div>
+                <div style={{ fontSize: '3rem', opacity: 0.3, color: 'var(--accent-dark)' }}>?</div>
               )}
             </div>
           );
         })}
       </div>
 
-      {/* KONTROL BUTONLARI VE MESAJLAR */}
-      {gameState === 'idle' && (
-        <button onClick={startRound} style={{ padding: '10px 24px', fontSize: '1.1rem', backgroundColor: '#d4af37', color: '#000', border: 'none', cursor: 'pointer', borderRadius: '4px', fontWeight: 'bold' }}>
-          OYUNU BAŞLAT
-        </button>
-      )}
-
-      {gameState === 'shuffling' && <p style={{ color: '#d4af37', letterSpacing: '2px' }}>KARIŞTIRILIYOR...</p>}
-      
-      {gameState === 'guessing' && <p style={{ color: '#4caf50', fontSize: '1.2rem', fontWeight: 'bold' }}>FOTOĞRAF HANGİSİNDE?</p>}
-
-      {gameState === 'gameover' && (
-        <div className="animate-fade">
-          <p style={{ color: '#f44336', fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '1rem' }}>YANLIŞ KART!</p>
-          <button onClick={resetGame} style={{ padding: '10px 24px', fontSize: '1.1rem', backgroundColor: '#333', color: '#fff', border: '1px solid #666', cursor: 'pointer', borderRadius: '4px' }}>
-            YENİDEN DENE
+      <div style={{ minHeight: '80px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        {gameState === 'idle' && (
+          <button onClick={startRound} className="editorial-link" style={{ padding: '0.8rem 2rem', border: '1px solid var(--accent-dark)', backgroundColor: 'transparent', color: 'var(--text-main)', cursor: 'pointer', fontWeight: 'bold' }}>
+            TESTİ BAŞLAT
           </button>
-        </div>
-      )}
+        )}
+
+        {gameState === 'shuffling' && <p style={{ fontSize: '1.1rem', letterSpacing: '2px', animation: 'pulse 1s infinite' }}>KARTLAR KARIŞTIRILIYOR...</p>}
+        
+        {gameState === 'guessing' && <p style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>HEDEF PORTRE HANGİSİNDE?</p>}
+
+        {gameState === 'gameover' && (
+          <div className="animate-fade">
+            <p style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '1.5rem', opacity: 0.8 }}>YANLIŞ SEÇİM. ODAK KAYBEDİLDİ.</p>
+            <button onClick={resetGame} className="editorial-link" style={{ padding: '0.8rem 2rem', border: '1px solid var(--accent-dark)', backgroundColor: 'var(--text-main)', color: 'var(--bg-main)', cursor: 'pointer', fontWeight: 'bold' }}>
+              YENİDEN DENE
+            </button>
+          </div>
+        )}
+      </div>
+      
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes pulse {
+          0% { opacity: 0.5; }
+          50% { opacity: 1; }
+          100% { opacity: 0.5; }
+        }
+      `}} />
     </div>
   );
 }
