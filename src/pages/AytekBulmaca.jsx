@@ -125,7 +125,7 @@ function AytekBulmaca() {
             >
               {(gameState === 'showing' || gameState === 'gameover') && cardId === targetCard ? (
                 <img 
-                  src="/portre_tw.jpeg" 
+                  src="/gallery/h1 (114).jpg"
                   alt="Hedef" 
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                 />
@@ -177,7 +177,7 @@ function AytekBulmaca() {
           }
         }
 
-        /* Küçük Ekranlı Telefonlar (iPhone SE vb.) İçin */
+        /* Küçük Ekranlı Telefonlar İçin */
         @media (max-width: 360px) {
           .game-container {
             --card-w: 80px;
