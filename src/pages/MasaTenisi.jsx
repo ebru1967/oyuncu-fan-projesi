@@ -8,13 +8,21 @@ function MasaTenisi() {
 
   const gameAreaRef = useRef(null);
   const requestRef = useRef(null);
-  
-  // HIZ KONTROLÜ: Başlangıç hızı düşürüldü
+
+  // --- EKRAN YENİLEME HIZI DENGELEYİCİSİ ---
+  // Bilgisayarlar (144Hz) çok hızlı, telefonlar (60Hz) daha yavaş çalıştığı için
+  // iki cihaza özel hız profilleri oluşturuyoruz.
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const initialSpeed = isMobile ? 1.4 : 0.7; // Mobilde 2 kat hızlı başlat
+  const maxSpeed = isMobile ? 3.2 : 2.0;     // Mobilde üst hız limitini artır
+  const speedInc = isMobile ? 0.2 : 0.12;    // Çarpışma başı hızlanma ivmesi
+  const botStep = isMobile ? 0.9 : 0.5;      // Botun hareket hızı
+
   const state = useRef({
-    ball: { x: 50, y: 50, dx: 0.6, dy: 0.4, speed: 0.8 },
+    ball: { x: 50, y: 50, dx: 0.8, dy: 0.5, speed: initialSpeed },
     playerY: 50,
     botY: 50,
-    paddleHeight: window.innerWidth < 768 ? 15 : 20,
+    paddleHeight: isMobile ? 15 : 20,
     paddleWidth: 2
   });
 
@@ -26,9 +34,9 @@ function MasaTenisi() {
   const resetBall = (scorer) => {
     state.current.ball = {
       x: 50, y: 50,
-      dx: scorer === 'player' ? 0.6 : -0.6,
-      dy: (Math.random() > 0.5 ? 1 : -1) * 0.4,
-      speed: 0.8 // Her sayıda hız normale döner
+      dx: scorer === 'player' ? 0.8 : -0.8,
+      dy: (Math.random() > 0.5 ? 1 : -1) * 0.5,
+      speed: initialSpeed // Sayı olunca hız o cihaza uygun şekilde sıfırlanır
     };
   };
 
@@ -44,12 +52,12 @@ function MasaTenisi() {
       ball.y = ball.y <= 0 ? 0 : 100;
     }
 
-    // BOT YAPAY ZEKASI: Daha yavaş ve insancıl
+    // BOT YAPAY ZEKASI (Cihaza özel hız)
     const botCenter = state.current.botY;
     const target = ball.y;
     
-    if (botCenter < target - 2) state.current.botY += 0.5;
-    else if (botCenter > target + 2) state.current.botY -= 0.5;
+    if (botCenter < target - 2) state.current.botY += botStep;
+    else if (botCenter > target + 2) state.current.botY -= botStep;
 
     if (state.current.botY < paddleHeight / 2) state.current.botY = paddleHeight / 2;
     if (state.current.botY > 100 - paddleHeight / 2) state.current.botY = 100 - paddleHeight / 2;
@@ -59,8 +67,7 @@ function MasaTenisi() {
       if (ball.y >= state.current.playerY - paddleHeight / 2 && ball.y <= state.current.playerY + paddleHeight / 2) {
         ball.dx *= -1;
         ball.x = 5 + paddleWidth;
-        // HIZ SINIRI EKLENDİ (Maksimum 2.2 hızına çıkabilir)
-        ball.speed = Math.min(ball.speed + 0.15, 2.2);
+        ball.speed = Math.min(ball.speed + speedInc, maxSpeed); // Cihaza özel limit
         let hitPoint = (ball.y - state.current.playerY) / (paddleHeight / 2);
         ball.dy = hitPoint * 0.8;
       }
@@ -71,7 +78,7 @@ function MasaTenisi() {
       if (ball.y >= state.current.botY - paddleHeight / 2 && ball.y <= state.current.botY + paddleHeight / 2) {
         ball.dx *= -1;
         ball.x = 95 - paddleWidth;
-        ball.speed = Math.min(ball.speed + 0.15, 2.2);
+        ball.speed = Math.min(ball.speed + speedInc, maxSpeed); // Cihaza özel limit
         let hitPoint = (ball.y - state.current.botY) / (paddleHeight / 2);
         ball.dy = hitPoint * 0.8;
       }
@@ -91,6 +98,7 @@ function MasaTenisi() {
       resetBall('player');
     }
 
+    // DOM GÜNCELLEMESİ
     if (ballRef.current) {
       ballRef.current.style.left = `${ball.x}%`;
       ballRef.current.style.top = `${ball.y}%`;
