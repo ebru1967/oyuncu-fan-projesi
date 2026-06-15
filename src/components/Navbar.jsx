@@ -162,6 +162,15 @@ function Navbar() {
     <Link to="/oyun" onClick={closeMenu}>
               ODAK TESTİ
             </Link>
+            <Link to="/gorsel-hafiza" onClick={closeMenu}>
+              GÖRSEL HAFIZA
+            </Link>
+            <Link to="/masa-tenisi" onClick={closeMenu}>
+              MASA TENİSİ 
+            </Link>
+            <Link to="/serifin-satranci" onClick={closeMenu}>
+              SATRANÇ
+            </Link>
           </div>
         </div>
 
