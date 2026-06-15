@@ -20,6 +20,7 @@ import AytekPenalty from "./pages/AytekPenalty";
 import PhotoPuzzle from './pages/PhotoPuzzle';
 import Crossword from './pages/Crossword';
 import XOXGame from './pages/XOXGame';
+import AytekBulmaca from './pages/AytekBulmaca';
 import Contact from './pages/Contact'; 
 import FCChannels from './pages/FCChannels';
 import FanArtGallery from './pages/FanArtGallery';
@@ -122,6 +123,7 @@ function App() {
             <Route path="/puzzle" element={<PhotoPuzzle />} />
             <Route path="/bulmaca" element={<Crossword />} />
             <Route path="/xox-oyunu" element={<XOXGame />} />
+            <Route path="/oyun" element={<AytekBulmaca />} />
             <Route path="/fc-hesaplar" element={<FCChannels />} />
             <Route path="/fan-gonderileri" element={<FanArtGallery />} />
             <Route path="/haber-bulteni" element={<Newsletter />} />

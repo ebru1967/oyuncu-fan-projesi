@@ -159,6 +159,9 @@ function Navbar() {
             <Link to="/xox-oyunu" onClick={closeMenu}>
       XOX
     </Link>
+    <Link to="/oyun" className="editorial-link">
+  → DİJİTAL HAFIZA OYUNUNU BAŞLAT ↗
+</Link>
           </div>
         </div>
 
