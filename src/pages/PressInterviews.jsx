@@ -5,6 +5,70 @@ function PressInterviews() {
   const [expandedId, setExpandedId] = useState(null); 
 
   const interviewData = [
+   {
+      id: 20,
+      type: 'written',
+      source: 'MİLLİYET // SEYHAN AKINCI',
+      date: '14 HAZİRAN 2026',
+      title: 'Aytek Şayan: "Bu yolculuk kendimize doğru"',
+      summary: 'Milliyet Gazetesi\'nden Seyhan Akıncı\'ya konuşan Aytek Şayan; veterinerlikten vazgeçiş sürecini, İstanbul\'daki ilk yıllarında yaşadığı ekonomik zorlukları ve "Kısalar Festivali"nin çıkış noktasını anlatıyor. Dizilerdeki ölüm sahnelerinin kendisine ölümü değil "kirayı" düşündürdüğünü samimiyetle itiraf eden Şayan, aidiyet duygusu ve tiyatro felsefesi üzerine derin açıklamalarda bulunuyor.',
+      originalLink: 'https://www.milliyet.com.tr/pazar/aytek-sayan-bu-yolculuk-kendimize-dogru-7604424',
+      qaList: [
+        {
+          q: "Kısalar Festivali’nin ikinci edisyonuna hazırlanıyorsunuz, bu yıl nasıl bir festival bekliyor seyircileri?",
+          a: "Bir kere ikincisini yapıyor olmaktan dolayı çok mutluyuz. Geçen sene 2200 tekil seyircimiz vardı. 4 bin kişi oyun izledi. Oyun izleyen 4 bin kişiyi görünce festivalde tiyatroyla dolu romantik dört günün geçtiğini anlamıştık. Geçen sene 167 başvuru vardı, bu sene 245 başvuru aldık. Sahne sanatlarına emek vermiş başka ekiplerin de bizlerle beraber olmak istediğini fark ettik başvurularda. Biz de ona göre bir seçki yapmak istedik. Geçen sene 64 oyun sergilenmişti. Bu sene içeriğin kalitesini yükseltmek için sayıyı azalttık."
+        },
+        {
+          q: "Bu yılki festivalin temalarından biri ‘Kimlik ve Aidiyet’... Sizin için aidiyet mekân mıdır duygu mu?",
+          a: "Bence bir duygu. Bir amaç dahilinde hareket ederken harcanan emeğin getirdiği bir hissiyat bence aidiyet. O yüzden hayatta da emek arkadaşlığına inanırım. Ve kendimi de aileme ve arkadaşlarıma ait hissetmeye çalışırım. Arkadaş olmak için de eylemler bulmaya çalışan bir insanım. Kısalar Festivali de o eylemlerden biri. Aidiyet bir amaç uğruna eyleme geçip üretimde bulunurken hissedilen duygu."
+        },
+        {
+          q: "İzmir, Düzce, Bursa, Ankara, İstanbul gibi farklı yerlerde yaşadınız. Bunların arasında en çok iz bırakan yer neresi?",
+          a: "Ben yemeği bile yerken dilimin dört farklı yerindeki reseptörde gezdirip hepsinin tadını almaya çalışırım. Hissederek yaşamaya çalışan biriyim. O yüzden hepsiyle ilgili bir şey anlatabilirim. Ama Düzce benim için çok önemli. Çünkü İzmir’de çok güzel ve steril bir hayatımız vardı. Babam öğretim üyesi, profesör. Sekiz yaşımdan itibaren hayatımda jimnastik, yüzme, masa tenisi, folklor, Çerkez’im zaten bütün oyunları bilirim. Futbol, tekvando yaptım 9 yıl. Düzce’ye gittiğimde dayılarımın güzel delikanlılıklarını dinleyerek, ağaçtan meyve toplayarak, sokak kültürüyle, kalabalık aileyle beraber büyüdüm."
+        },
+        {
+          q: "Bunlar kalabalık aileyle bir arada olmayı seven bir fotoğraf getiriyor gözümün önüne...",
+          a: "18 yaşıma kadar hep öyleydi hayatımız. Tiyatroyla tanıştığım andan itibaren hayatım değişti o anlamda. Bir yolculuğa çıktığımı ve o yolculukta biraz da kendi ailemi yaratmaya yöneldiğimi fark ettim. Bir sene Boğaziçi Üniversitesi’ndeki arkadaşlarımla kalmıştım. Pakistanlı bir arkadaşımız “Yazın nereye gideceksiniz?” diye sordu bizlere. Herkes diyor ki “Memlekete annemlerin yanına gideceğim.” O da “Neden kendini tanıyacağın başka eylemlerin içine atmıyorsun?” dedi. Adamlar 18 yaşında çocuğu “sokağa atıyorlar.” Bizde “Bakarım” durumu var. Ben de öyle biriyim. Bana 32 yaşıma kadar babam baktı İstanbul’a gelip dizide oynamaya başlayana kadar. Çünkü seçtiğimiz yolda para yoktu. Herhalde 21 yaşımdaydım onu duyduğumda. Kendimi başka tecrübeler edinecek durumların içine atmaya çalıştım ve tiyatroya çok vakit ayırdım. Öyle bir alışverişe girdim hayatla."
+        },
+        {
+          q: "Mesleğiniz yüksek konsantrasyon isteyen oldukça stresli bir alan. Bu süreçleri nasıl yönetiyorsunuz?",
+          a: "Neden bu mesleği yaptığınızı bilmek çok yardımcı oluyor. Ama sektörde şu anda gördüğüm, yaşanan birçok şeye binaen de bazen veterinerliği bırakmasaydım dediğim oluyor. Çok daha romantik bir yerde kalmak isterdim. Ama tabii insanoğlunun en büyük mücadelesi bence kıskanma duygusu. Sen bir sürü emek harcarken başka bir arkadaşın senin de hayal ettiğin şeylere ulaşabiliyor. Ben de bu duyguları hissettim ve bunu kendime itiraf etmekten kaçınmadım. Hepimizin ihtiyacı olduğu zaman psikoloğa gitmesi gerektiğini düşünüyorum ama ben hep arkadaşlarımı arar ne yaşıyorsam anlatırım. Annemi arar, akıl alırım. Yüzleşmek için elimden geleni yaparım. İnsanların önüne atarım kendimi, duygularımı, düşüncelerimi. Eleştirmelerine veya bana yardımcı olmalarına izin veririm."
+        },
+        {
+          q: "Enteresan, bizim gibi toplumlarda erkekler biraz daha duygularını içeride yaşar...",
+          a: "Ben çok öyle değilim. Çoğu arkadaşımın kafasını şişirdim dertlerimle. Onların da benimkini şişirmesine izin veririm. Arkadaşlığın bu olduğunu düşünüyorum. Bir de hayatın bana yardımcı olduğuna inanıyorum. Bir keresinde uzun soluklu olacağını söyledikleri bir işle anlaşmıştım. Ev bakmaya başladım. Çok param da yoktu. Evi tuttum. Annem diyor “Tutma, biraz aksın gitsin.” 29 yaşındayım, İstanbul’dayım. Makyözümüz vardı “Bak altıncı bölümde ölürsün” dedi. “Hayır ölmeyeceğim, sezon sonuna kadar anlaştık” dedim. Altıda öldürdüler beni. O kadar güzel bir evim var ki. Haberi aldım, oturdum ve “Zaten hak etmiyordun ki, o yüzden oldu” dedim. Bir hafta sonra “Kuzgun”da çok daha iyi bir rolüm oldu. Belki de hayatın “Hak ediyorsun” cevabıydı. Bunlarla mücadele eden 20’li, 30’lu yaşlarında çok arkadaşım olduğunu biliyorum. Bu yolculuğun kendimize doğru olduğunu unutmamak lazım. Ben veterinerliği bıraktım. Bilkent’te son aşamada sınava gelip kapıyı açmadan önce içeri alınacağımı biliyordum. Şunu dedim kendime “Oğlum çok uzun bir süre para kazanamayacaksın.” Az önce anlattığım anıyı yaşadığımda okuldan mezun olalı dört yıl olmuştu. Ben kendime para kazanamayacaksın diye sene biçerken belki 9-10 yıldır demiştim. “Hazır mısın?” dediğimde “Hazırım” demiştim ama hazır değilsin işte."
+        },
+        {
+          q: "Dizilerde rol gereği ölüyorsunuz ama bu ölümü daha çok düşündürtüyor mu?",
+          a: "Dizilerdeki ölüm hikâyesi sadece evin kirasını düşündürtüyor. Benim hâlâ kafam öyle çalışıyor. “Şu kadar bölüm oynadım, tamam bir yıllık kiram çıktı” diye bakıyorum. Tiyatroda ölüm üzerine düşünmemi gerektiren bir rolüm vardı. Bir de dijitalde “Kübra” Yağmur-Durul Taylan’la çalıştığımız. Orada başka bir karakterin ölümü üzerinden düşündüm. Ama dediğim gibi genelde dizilerdeki ölüm sahneleri, ölümü değil kirayı düşündürtüyor."
+        },
+        {
+          q: "Bu yaz nasıl bir rotanız var?",
+          a: "Bu yaz tekrar Avrupa’da dolaşmak istiyorum. İspanya’da gitmediğim yerler var. İspanya’ya gitmişken Portekiz’e geçmek. Ama asıl temmuzda bir aya yakın ABD’ye vakit ayırmak istiyorum. Amerika’nın ilgimi çeken yönü çok uluslu oluşu. O dokuyu görmeye gidiyorum."
+        },
+        {
+          q: "ABD, Dünya Kupası ev sahiplerinden biri. Futbolla aranız nasıl?",
+          a: "Oyuncu olmasam futbolcu olacaktım. Babam bir kere yanlışlıkla Galatasaray maçına götürseydi o stadın içine küçükken girseydim kaçış olmazdı. Galiba 21 yaşımda gittim ilk Galatasaray maçına. Melo bir gol atmıştı. 55 bin kişinin enerjisi içinden geçiyor. Biraz da kabiliyetli olduğuma inandığım bir alan. Futbolcu olmak isterdim."
+        },
+        {
+          q: "40’lı yaşları nasıl tecrübe ediyorsunuz?",
+          a: "Eylem hâlinde olduğum için üzerine çok düşünmüyorum. Daha doğrusu yaşa böyle bir yerden bakmıyorum. Evlenmek istiyor muyum? Çocuk sahibi olmak istiyor muyum? Kendi aileni öyle bir yerden kurmakla alakalı, biyolojiyle alakalı konular üzerinde birazcık sıkışmış hissettiğim oluyor. Ama mesleğimle alakalı öyle bir hissim yok. Ben hep nedense “Beni geç bulsun diye dua etmiş biriyim.”"
+        },
+        {
+          q: "Hiç “Geç oldu” demiyor musunuz?",
+          a: "Yoo hiç demiyorum. Küçükken de öyleydi. Nedense önemli olan varmak değil, yolda olmak hissi bende hep vardı. Bu aslında bitsin istememek gibi bir şey. Mesela para kazanırsın ama kazandığın parayı nasıl harcarsın? Biraz onu gördüğüm yerler oluyor kendimde. Çünkü hobilerimden yıllar içerisinde vazgeçtiğimi, çalışmaya odaklı bir yere döndüğümü fark ediyorum."
+        }
+      ]
+    },
+      {
+      id: 19, 
+      type: 'video',
+      source: 'YOUTUBE // TEKE TEK SANAT',
+      date: '12 HAZİRAN 2026', 
+      title: '"Dilden Çok Eylemin Kuvvetine İnanıyorum"',
+      summary: 'Bedia Ceylan Güzelce\'nin sunduğu Teke Tek Sanat programına konuk olan Aytek Şayan; Trabzon\'da çekilen popüler dizi "Taşacak Bu Deniz"in setindeki deneyimlerini ve veterinerlikten oyunculuğa uzanan yolculuğunu anlatıyor. Ayrıca kurucularından olduğu "Kısalar Festivali"nin vizyonunu, bağımsız tiyatroyu ve sahnedeki "eylemin gücü" felsefesini detaylarıyla izleyicilere aktarıyor.',
+      videoUrl: 'https://youtu.be/vYxmFneVEQI?si=MdOSHXTq-4f1HWGP'
+    },
     {
       id: 18,
       type: 'written',

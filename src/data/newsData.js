@@ -1,5 +1,23 @@
 export const activeNews = [
   {
+    id: 10,
+    regCode: "KAYIT #2026-06J",
+    category: "BASIN // RÖPORTAJ",
+    title: "Milliyet Özel: 'Bu yolculuk kendimize doğru'",
+    summary: "Seyhan Akıncı'ya konuşan Aytek Şayan; veterinerlikten oyunculuğa uzanan yolculuğunu, İstanbul'daki ilk yıllarında yaşadığı zorlukları ve aidiyet hissini anlatıyor. Başarılı oyuncu, dizilerdeki ölüm sahnelerinin kendisine ölümü değil, 'kirayı' düşündürdüğünü tüm samimiyetiyle paylaşıyor.",
+    linkText: "RÖPORTAJI OKU ↗",
+    linkUrl: "/basin" 
+  },
+  {
+    id: 9,
+    regCode: "KAYIT #2026-06I",
+    category: "TELEVİZYON // SÖYLEŞİ",
+    title: "Teke Tek Sanat: 'Dilden Çok Eylemin Kuvvetine İnanıyorum'",
+    summary: "Bedia Ceylan Güzelce'nin sunduğu Teke Tek Sanat programında derinlikli bir sohbete imza atan Aytek Şayan; sahnede sözden ziyade eylemin gücüne inandığını belirterek, Kısalar Festivali'nin tiyatroyu nasıl ritüelistik bir 'deneyim' alanına dönüştürdüğünü anlatıyor.",
+    linkText: "SÖYLEŞİYİ İZLE ↗",
+    linkUrl: "/basin" 
+  },
+  {
     id: 6,
     regCode: "KAYIT #2026-06F",
     category: "TELEVİZYON // DUYURU",
@@ -15,7 +33,7 @@ export const activeNews = [
     title: "Tiyatro bir ritüeldir: Aytek Şayan ile Kısalar Festivali Üzerine",
     summary: "Genç sanatçılara görünür olabilecekleri bir alan açan ‘Kısalar Festivali’ne sayılı günler kala Aytek Şayan; tiyatronun bir deneyim ve ritüel olduğunu, kısa anlatıların gücünü ve kendi oyunculuk anlayışını anlatıyor.",
     linkText: "RÖPORTAJI OKU ↗",
-    linkUrl: "/basin#yeni-roportaj" 
+    linkUrl: "/basin" 
   },
   {
     id: 7, 
@@ -24,8 +42,7 @@ export const activeNews = [
     title: "Şerif\'in Psikolojisi, Set Ortamı ve Brezilya Hayali", 
     summary: "Aytek Şayan\'ın; Şerif karakterinin kötülük felsefesini, Karadeniz\'in zorlu çekim koşullarını, rol arkadaşlarıyla olan eğlenceli dinamiklerini ve Brezilya kültürüne duyduğu merakı anlattığı özel video röportajı.",
     linkText: "RÖPORTAJIN TAMAMINI İZLE ↗",
-    linkUrl: "/basin", 
-    /*imageUrl: "/gallery/yeni_roportaj_gorseli.jpeg" */
+    linkUrl: "/basin"
   },
   {
     id: 5,
@@ -34,7 +51,7 @@ export const activeNews = [
     title: "Sürmene'den Aytek Şayan'a Fahri Hemşehrilik Ünvanı",
     summary: "'Taşacak Bu Deniz' dizisinin çekimleri sebebiyle uzun süredir Trabzon'da bulunan ve Karadeniz halkıyla kurduğu samimi bağla takdir toplayan Aytek Şayan'a, Sürmene Belediye Başkanı tarafından 'Fahri Hemşehrilik' beratı takdim edildi. Bölge kültürüne olan ilgisi ve saygısıyla bilinen başarılı oyuncu, bu anlamlı jest karşısında büyük bir onur duyduğunu belirtti.",
     linkText: "HABERİN DETAYI ↗",
-    linkUrl: "https://www.kuzeyekspres.com.tr/haber/27788232/trabzon-gunlerinde-tasacak-bu-deniz-ruzgari", 
+    linkUrl: "https://www.kuzeyekspres.com.tr/haber/27788232/trabzon-gunlerinde-tasacak-bu-deniz-ruzgari"
   },
   {
     id: 1,
