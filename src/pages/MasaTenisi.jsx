@@ -12,10 +12,10 @@ function MasaTenisi() {
   
   // İç Koordinat Sistemi (0 - 100 Yüzde)
   const state = useRef({
-    ball: { x: 50, y: 50, dx: 0.6, dy: 0.4, speed: 0.8 },
+    ball: { x: 50, y: 50, dx: 1, dy: 0.7, speed: 2 },
     playerY: 50,
     botY: 50,
-    paddleHeight: 20, // %20 ekran yüksekliği
+    paddleHeight: window.innerWidth < 768 ? 15 : 20,
     paddleWidth: 2
   });
 
@@ -27,14 +27,14 @@ function MasaTenisi() {
   const WINNING_SCORE = 5;
 
   const resetBall = (scorer) => {
-    state.current.ball = {
-      x: 50,
-      y: 50,
-      dx: scorer === 'player' ? 0.6 : -0.6,
-      dy: (Math.random() > 0.5 ? 1 : -1) * 0.4,
-      speed: 0.8
-    };
+  state.current.ball = {
+    x: 50,
+    y: 50,
+    dx: scorer === 'player' ? 1 : -1,
+    dy: (Math.random() > 0.5 ? 1 : -1) * 0.7,
+    speed: 2
   };
+};
 
   const updateGame = useCallback(() => {
     if (gameState !== 'playing') return;
@@ -52,37 +52,52 @@ function MasaTenisi() {
       ball.y = ball.y <= 0 ? 0 : 100;
     }
 
-    // BOT YAPAY ZEKASI 
-    const botCenter = state.current.botY;
-    if (botCenter < ball.y - 2) state.current.botY += 0.5;
-    else if (botCenter > ball.y + 2) state.current.botY -= 0.5;
+    // BOT YAPAY ZEKASI
+const botCenter = state.current.botY;
+const target = ball.y + (Math.random() * 4 - 2);
+
+if (botCenter < target - 1) state.current.botY += 0.8;
+else if (botCenter > target + 1) state.current.botY -= 0.8;
 
     // Sınırlandırmalar
     if (state.current.botY < paddleHeight / 2) state.current.botY = paddleHeight / 2;
     if (state.current.botY > 100 - paddleHeight / 2) state.current.botY = 100 - paddleHeight / 2;
 
     // OYUNCU (SOL) ÇARPIŞMASI
-    if (ball.x <= 5 + paddleWidth && ball.x >= 5) {
-      if (ball.y >= state.current.playerY - paddleHeight / 2 && ball.y <= state.current.playerY + paddleHeight / 2) {
-        ball.dx *= -1;
-        ball.x = 5 + paddleWidth; // İçeri girmesini engelle
-        ball.speed += 0.1; // Her vuruşta hızlan
-        // Vuruş açısını değiştir
-        let hitPoint = (ball.y - state.current.playerY) / (paddleHeight / 2);
-        ball.dy = hitPoint * 0.8;
-      }
-    }
+if (ball.x <= 5 + paddleWidth && ball.x >= 5) {
+  if (
+    ball.y >= state.current.playerY - paddleHeight / 2 &&
+    ball.y <= state.current.playerY + paddleHeight / 2
+  ) {
+    ball.dx *= -1;
+    ball.x = 5 + paddleWidth;
+
+    ball.speed = Math.min(ball.speed + 0.2, 6);
+
+    let hitPoint =
+      (ball.y - state.current.playerY) / (paddleHeight / 2);
+
+    ball.dy = hitPoint * 0.8;
+  }
+}
 
     // BOT (SAĞ) ÇARPIŞMASI
-    if (ball.x >= 95 - paddleWidth && ball.x <= 95) {
-      if (ball.y >= state.current.botY - paddleHeight / 2 && ball.y <= state.current.botY + paddleHeight / 2) {
-        ball.dx *= -1;
-        ball.x = 95 - paddleWidth;
-        ball.speed += 0.1;
-        let hitPoint = (ball.y - state.current.botY) / (paddleHeight / 2);
-        ball.dy = hitPoint * 0.8;
-      }
-    }
+if (ball.x >= 95 - paddleWidth && ball.x <= 95) {
+  if (
+    ball.y >= state.current.botY - paddleHeight / 2 &&
+    ball.y <= state.current.botY + paddleHeight / 2
+  ) {
+    ball.dx *= -1;
+    ball.x = 95 - paddleWidth;
+
+    ball.speed = Math.min(ball.speed + 0.2, 6);
+
+    let hitPoint =
+      (ball.y - state.current.botY) / (paddleHeight / 2);
+
+    ball.dy = hitPoint * 0.8;
+  }
+}
 
     // SKOR KONTROLÜ
     if (ball.x < 0) {
@@ -183,7 +198,7 @@ function MasaTenisi() {
         onMouseMove={onMouseMove}
         onTouchMove={onTouchMove}
         style={{
-          position: 'relative', width: '100%', maxWidth: '600px', height: '400px',
+          position: 'relative', width: '100%', maxWidth: '600px', height: 'clamp(250px, 50vh, 400px)',
           backgroundColor: 'var(--bg-card)', border: '4px solid var(--accent-dark)',
           overflow: 'hidden', cursor: 'none', touchAction: 'none',
           boxShadow: 'inset 0 0 20px rgba(0,0,0,0.1)'
@@ -197,14 +212,14 @@ function MasaTenisi() {
 
         {/* OYUNCU RAKETİ */}
         <div ref={playerRef} style={{
-          position: 'absolute', left: '5%', top: '50%', width: '12px', height: '20%',
+          position: 'absolute', left: '5%', top: '50%', width: '12px', height: `${state.current.paddleHeight}%`,
           backgroundColor: 'var(--text-main)', transform: 'translate(-50%, -50%)',
           borderRadius: '4px', boxShadow: '0 0 10px rgba(0,0,0,0.2)'
         }} />
 
         {/* AYTEK BOT RAKETİ */}
         <div ref={botRef} style={{
-          position: 'absolute', left: '95%', top: '50%', width: '12px', height: '20%',
+          position: 'absolute', left: '95%', top: '50%', width: '12px', height: `${state.current.paddleHeight}%`,
           backgroundColor: 'var(--accent-dark)', transform: 'translate(-50%, -50%)',
           borderRadius: '4px', boxShadow: '0 0 10px rgba(0,0,0,0.2)'
         }} />

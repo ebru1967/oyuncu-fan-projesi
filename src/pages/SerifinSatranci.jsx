@@ -1,242 +1,161 @@
 import React, { useState, useEffect } from 'react';
 
-// Şerif'in psikolojik baskı replikleri
+const SIZE = 5; 
 const serifQuotes = [
-  "Duyguların seni zayıf yapıyor.",
-  "Sonraki üç hamleni biliyorum.",
-  "Çırpınışların sadece sonu geciktiriyor.",
-  "Bana karşı kazanabileceğini mi sandın?",
-  "Oyun bittiğinde masadan kalkan ben olacağım.",
-  "Satrançta piyonlar her zaman ilk feda edilenlerdir."
+  "Daha fazlasını düşünmelisin.",
+  "Zayıflığın hareketlerinde belli.",
+  "Bu oyunun kurallarını ben yazdım.",
+  "Duygusuzluk en iyi stratejidir.",
+  "Hata payın kalmadı.",
+  "Satrançta piyonlar her zaman feda edilir."
 ];
 
 function SerifinSatranci() {
-  // P = Sen (Beyaz Piyonlar), S = Şerif (Siyah Piyonlar)
-  const initialBoard = ['S', 'S', 'S', null, null, null, 'P', 'P', 'P'];
-  
-  const [board, setBoard] = useState(initialBoard);
+  const createBoard = () => {
+    let board = Array(SIZE * SIZE).fill(null);
+    for (let i = 0; i < SIZE; i++) { board[i] = 'S'; board[SIZE * (SIZE - 1) + i] = 'P'; }
+    return board;
+  };
+
+  const [board, setBoard] = useState(createBoard());
   const [isPlayerTurn, setIsPlayerTurn] = useState(true);
   const [winner, setWinner] = useState(null);
-  const [quote, setQuote] = useState("Hamleni yap. Sadece sonucu geciktireceksin.");
+  const [selectedPiece, setSelectedPiece] = useState(null);
+  const [validMoves, setValidMoves] = useState([]);
   const [isThinking, setIsThinking] = useState(false);
-  const [selectedPiece, setSelectedPiece] = useState(null); // Seçilen piyonun index'i
-  const [validMoves, setValidMoves] = useState([]); // Seçilen piyonun gidebileceği yerler
+  const [quote, setQuote] = useState("Hamleni yap. Sadece sonucu geciktireceksin.");
 
-  // Olası hamleleri hesaplayan fonksiyon
   const getMoves = (currBoard, player) => {
     const moves = [];
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < SIZE * SIZE; i++) {
       if (currBoard[i] === player) {
-        const c = i % 3;
-        if (player === 'P') {
-          // İleri gitme (Boşsa)
-          if (i - 3 >= 0 && currBoard[i - 3] === null) moves.push({ from: i, to: i - 3 });
-          // Çapraz yeme (Sol)
-          if (c > 0 && currBoard[i - 4] === 'S') moves.push({ from: i, to: i - 4 });
-          // Çapraz yeme (Sağ)
-          if (c < 2 && currBoard[i - 2] === 'S') moves.push({ from: i, to: i - 2 });
-        } else {
-          // Şerif'in hamleleri ('S')
-          if (i + 3 <= 8 && currBoard[i + 3] === null) moves.push({ from: i, to: i + 3 });
-          if (c > 0 && currBoard[i + 2] === 'P') moves.push({ from: i, to: i + 2 });
-          if (c < 2 && currBoard[i + 4] === 'P') moves.push({ from: i, to: i + 4 });
-        }
+        const row = Math.floor(i / SIZE);
+        const col = i % SIZE;
+        const dir = player === 'P' ? -1 : 1; 
+
+        if (currBoard[i + dir * SIZE] === null) moves.push({ from: i, to: i + dir * SIZE });
+        if (col > 0 && currBoard[i + dir * SIZE - 1] && currBoard[i + dir * SIZE - 1] !== player) moves.push({ from: i, to: i + dir * SIZE - 1 });
+        if (col < SIZE - 1 && currBoard[i + dir * SIZE + 1] && currBoard[i + dir * SIZE + 1] !== player) moves.push({ from: i, to: i + dir * SIZE + 1 });
       }
     }
     return moves;
   };
 
-  // Kazananı veya oyunun bitip bitmediğini kontrol eden fonksiyon
-  const checkWinner = (currBoard, nextPlayer) => {
-    // Karşı tarafa ulaşma durumu
-    if (currBoard[0] === 'P' || currBoard[1] === 'P' || currBoard[2] === 'P') return 'P';
-    if (currBoard[6] === 'S' || currBoard[7] === 'S' || currBoard[8] === 'S') return 'S';
-
-    // Sıradaki oyuncunun hamlesi kalmadıysa, diğeri kazanır
-    const moves = getMoves(currBoard, nextPlayer);
-    if (moves.length === 0) return nextPlayer === 'P' ? 'S' : 'P';
-
+  const checkWinner = (currBoard) => {
+    if (currBoard.slice(0, SIZE).includes('P')) return 'P';
+    if (currBoard.slice(SIZE * (SIZE - 1)).includes('S')) return 'S';
+    if (getMoves(currBoard, 'P').length === 0) return 'S';
+    if (getMoves(currBoard, 'S').length === 0) return 'P';
     return null;
   };
 
-  // MİNİMAX ALGORİTMASI: Şerif tüm ihtimalleri hesaplar
-  const minimax = (currBoard, isMaximizing, depth) => {
-    const currentWinner = checkWinner(currBoard, isMaximizing ? 'S' : 'P');
-    if (currentWinner === 'S') return 10 - depth;
-    if (currentWinner === 'P') return depth - 10;
+  const minimax = (currBoard, depth, alpha, beta, isMaximizing) => {
+    const win = checkWinner(currBoard);
+    if (win === 'S') return 100 + depth;
+    if (win === 'P') return -100 - depth;
+    if (depth === 5) return 0;
 
     if (isMaximizing) {
-      let bestScore = -Infinity;
-      const moves = getMoves(currBoard, 'S');
-      for (let m of moves) {
-        const newBoard = [...currBoard];
-        newBoard[m.to] = newBoard[m.from];
-        newBoard[m.from] = null;
-        bestScore = Math.max(bestScore, minimax(newBoard, false, depth + 1));
+      let maxEval = -Infinity;
+      for (let m of getMoves(currBoard, 'S')) {
+        const next = [...currBoard];
+        next[m.to] = next[m.from]; next[m.from] = null;
+        let evalVal = minimax(next, depth + 1, alpha, beta, false);
+        maxEval = Math.max(maxEval, evalVal);
+        alpha = Math.max(alpha, evalVal);
+        if (beta <= alpha) break;
       }
-      return bestScore;
+      return maxEval;
     } else {
-      let bestScore = Infinity;
-      const moves = getMoves(currBoard, 'P');
-      for (let m of moves) {
-        const newBoard = [...currBoard];
-        newBoard[m.to] = newBoard[m.from];
-        newBoard[m.from] = null;
-        bestScore = Math.min(bestScore, minimax(newBoard, true, depth + 1));
+      let minEval = Infinity;
+      for (let m of getMoves(currBoard, 'P')) {
+        const next = [...currBoard];
+        next[m.to] = next[m.from]; next[m.from] = null;
+        let evalVal = minimax(next, depth + 1, alpha, beta, true);
+        minEval = Math.min(minEval, evalVal);
+        beta = Math.min(beta, evalVal);
+        if (beta <= alpha) break;
       }
-      return bestScore;
+      return minEval;
     }
   };
 
-  // Şerif'in Hamlesi (AI)
   useEffect(() => {
     if (!isPlayerTurn && !winner) {
       setIsThinking(true);
-      
-      // Psikolojik etki: Şerif 1 saniye hesaplama yapar
       setTimeout(() => {
         const moves = getMoves(board, 'S');
         let bestScore = -Infinity;
         let bestMove = null;
-
         for (let m of moves) {
-          const newBoard = [...board];
-          newBoard[m.to] = newBoard[m.from];
-          newBoard[m.from] = null;
-          let score = minimax(newBoard, false, 1);
-          if (score > bestScore) {
-            bestScore = score;
-            bestMove = m;
-          }
+          const next = [...board];
+          next[m.to] = next[m.from]; next[m.from] = null;
+          let score = minimax(next, 0, -Infinity, Infinity, false);
+          if (score > bestScore) { bestScore = score; bestMove = m; }
         }
-
         if (bestMove) {
-          const newBoard = [...board];
-          newBoard[bestMove.to] = newBoard[bestMove.from];
-          newBoard[bestMove.from] = null;
-          
-          setBoard(newBoard);
+          const next = [...board];
+          next[bestMove.to] = next[bestMove.from]; next[bestMove.from] = null;
+          setBoard(next);
           setQuote(serifQuotes[Math.floor(Math.random() * serifQuotes.length)]);
-          
-          const gameWinner = checkWinner(newBoard, 'P');
+          const gameWinner = checkWinner(next);
           if (gameWinner) setWinner(gameWinner);
           else setIsPlayerTurn(true);
         }
         setIsThinking(false);
-      }, 1000);
+      }, 800);
     }
-  }, [isPlayerTurn, board, winner]);
+  }, [isPlayerTurn]);
 
-  // Oyuncunun piyon seçmesi veya hareket ettirmesi
-  const handleCellClick = (index) => {
+  const handleCellClick = (idx) => {
     if (winner || !isPlayerTurn || isThinking) return;
-
-    // Kendi piyonumuzu seçiyoruz
-    if (board[index] === 'P') {
-      const moves = getMoves(board, 'P').filter(m => m.from === index);
-      setSelectedPiece(index);
-      setValidMoves(moves.map(m => m.to));
-    } 
-    // Seçilen piyonu geçerli bir kareye hareket ettiriyoruz
-    else if (selectedPiece !== null && validMoves.includes(index)) {
-      const newBoard = [...board];
-      newBoard[index] = 'P';
-      newBoard[selectedPiece] = null;
-      
-      setBoard(newBoard);
-      setSelectedPiece(null);
-      setValidMoves([]);
-
-      const gameWinner = checkWinner(newBoard, 'S');
-      if (gameWinner) setWinner(gameWinner);
-      else setIsPlayerTurn(false);
-    } 
-    // Boş veya geçersiz bir yere tıklandıysa seçimi iptal et
-    else {
-      setSelectedPiece(null);
-      setValidMoves([]);
+    if (board[idx] === 'P') {
+      setSelectedPiece(idx);
+      setValidMoves(getMoves(board, 'P').filter(m => m.from === idx).map(m => m.to));
+    } else if (selectedPiece !== null && validMoves.includes(idx)) {
+      const next = [...board];
+      next[idx] = 'P'; next[selectedPiece] = null;
+      setBoard(next); setSelectedPiece(null); setValidMoves([]);
+      const gameWinner = checkWinner(next);
+      if (gameWinner) setWinner(gameWinner); else setIsPlayerTurn(false);
     }
   };
 
-  // Oyunu Sıfırla
   const resetGame = () => {
-    setBoard(initialBoard);
+    setBoard(createBoard());
     setIsPlayerTurn(true);
     setWinner(null);
     setSelectedPiece(null);
     setValidMoves([]);
-    setQuote("Yeniden denemek cesaret ister. Hamleni yap.");
   };
 
   return (
-    <div className="game-container animate-fade" style={{
-      textAlign: 'center', padding: '3rem 1rem', backgroundColor: 'var(--bg-main)', color: 'var(--text-main)',
-      fontFamily: 'var(--font-heading)', minHeight: '80vh', display: 'flex', flexDirection: 'column', alignItems: 'center'
-    }}>
-      <div className="section-header-editorial" style={{ marginBottom: '1rem', width: '100%' }}>
-        <span className="archive-badge" style={{ color: 'var(--accent-dark)' }}>// ŞERİF FURTUNA ALGORİTMASI</span>
-        <h2 className="editorial-title" style={{ marginTop: '0.5rem', fontSize: 'clamp(1.5rem, 5vw, 2.5rem)' }}>KUSURSUZ ZİHİN</h2>
-        <p className="editorial-subtitle" style={{ opacity: 0.8, maxWidth: '600px', margin: '0 auto', fontSize: 'clamp(0.85rem, 3vw, 1rem)' }}>
-          3x3 Piyon Satrancı. Piyonlar ileri veya çapraz (yiyerek) hareket eder. Karşı köşeye ilk ulaşan veya rakibini kilitleyen kazanır. Şerif'i yenmek imkansızdır.
+    <div className="game-container" style={{ padding: '3rem 1rem', textAlign: 'center', backgroundColor: 'var(--bg-main)', color: 'var(--text-main)', minHeight: '80vh' }}>
+      <div className="section-header-editorial">
+        <span className="archive-badge">// ŞERİF FURTUNA ALGORİTMASI</span>
+        <h2 className="editorial-title">KUSURSUZ ZİHİN</h2>
+        <p className="editorial-subtitle">Piyonları hedef hatlarına taşı. Şerif asla hata yapmaz.</p>
+      </div>
+
+      <div style={{ backgroundColor: 'var(--bg-card)', padding: '1rem', margin: '2rem auto', maxWidth: '400px', borderLeft: '4px solid var(--accent-dark)' }}>
+        <p style={{ fontStyle: 'italic', color: 'var(--accent-dark)', fontWeight: 'bold' }}>
+          {winner ? (winner === 'S' ? 'Mat. Duygular her zaman kaybettirir.' : 'İmkansız. Kazandın.') : isThinking ? 'Şerif hesaplıyor...' : quote}
         </p>
       </div>
 
-      {/* Şerif'in Replik Kutusu */}
-      <div style={{
-        backgroundColor: 'var(--bg-card)', borderLeft: '4px solid var(--accent-dark)', padding: '1rem 2rem',
-        margin: '1rem 0 2rem 0', minHeight: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center',
-        maxWidth: '500px', width: '100%', boxShadow: '0 4px 15px rgba(0,0,0,0.05)'
-      }}>
-        <p style={{ margin: 0, fontStyle: 'italic', fontWeight: '600', fontSize: '1.1rem', color: 'var(--accent-dark)' }}>
-          "{winner === 'S' ? 'Mat. Duygular her zaman kaybettirir.' : winner === 'P' ? 'Bir hata yaptım... İmkansız.' : isThinking ? 'Şerif hamlesini hesaplıyor...' : quote}"
-        </p>
+      <div style={{ display: 'grid', gridTemplateColumns: `repeat(${SIZE}, 1fr)`, width: '300px', margin: 'auto', border: '5px solid var(--accent-dark)' }}>
+        {board.map((cell, i) => (
+          <div key={i} onClick={() => handleCellClick(i)} style={{ 
+            aspectRatio: '1/1', border: '1px solid #333', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '2rem', cursor: (!winner && isPlayerTurn) ? 'pointer' : 'default',
+            backgroundColor: validMoves.includes(i) ? 'var(--accent-light)' : (Math.floor(i/SIZE)+i)%2===0 ? 'var(--bg-card)' : 'var(--bg-main)'
+          }}>
+            {cell === 'S' ? '♟' : cell === 'P' ? '♙' : ''}
+          </div>
+        ))}
       </div>
 
-      {/* 3x3 Satranç Tahtası */}
-      <div style={{
-        display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '4px', width: '100%', maxWidth: '350px',
-        margin: '0 auto 2rem auto', border: '4px solid var(--accent-dark)', backgroundColor: 'var(--accent-dark)', padding: '4px'
-      }}>
-        {board.map((cell, index) => {
-          // Satranç tahtası kare (siyah-beyaz) görünümü
-          const row = Math.floor(index / 3);
-          const col = index % 3;
-          const isDarkSquare = (row + col) % 2 === 1;
-          const isSelected = selectedPiece === index;
-          const isValidMove = validMoves.includes(index);
-
-          return (
-            <div
-              key={index}
-              onClick={() => handleCellClick(index)}
-              style={{
-                aspectRatio: '1/1',
-                backgroundColor: isSelected ? 'rgba(84, 107, 65, 0.5)' : isValidMove ? 'rgba(153, 173, 122, 0.6)' : isDarkSquare ? 'var(--bg-card)' : 'var(--bg-main)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '3.5rem', cursor: (!winner && isPlayerTurn) ? 'pointer' : 'default',
-                transition: 'all 0.2s ease', position: 'relative'
-              }}
-            >
-              {cell === 'S' && <span style={{ color: '#000', textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>♟</span>}
-              {cell === 'P' && <span style={{ color: '#fff', textShadow: '0 2px 4px rgba(0,0,0,0.6)' }}>♙</span>}
-              
-              {/* Geçerli hamle noktası göstergesi */}
-              {isValidMove && <div style={{ position: 'absolute', width: '15px', height: '15px', borderRadius: '50%', backgroundColor: 'var(--accent-dark)', opacity: 0.5 }} />}
-            </div>
-          );
-        })}
-      </div>
-
-      {winner && (
-        <div className="animate-fade" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
-          <h3 style={{ fontSize: '1.5rem', color: winner === 'S' ? '#b22222' : 'var(--text-main)' }}>
-            {winner === 'S' ? 'ŞERİF KAZANDI.' : 'İMKANSIZI BAŞARDIN.'}
-          </h3>
-          <button onClick={resetGame} className="editorial-link" style={{ padding: '0.8rem 2rem', border: '1px solid var(--accent-dark)', backgroundColor: 'transparent', color: 'var(--text-main)', cursor: 'pointer', fontWeight: 'bold' }}>
-            YENİDEN YÜZLEŞ
-          </button>
-        </div>
-      )}
+      {winner && <button onClick={resetGame} className="editorial-link" style={{ marginTop: '2rem' }}>YENİDEN YÜZLEŞ</button>}
     </div>
   );
 }

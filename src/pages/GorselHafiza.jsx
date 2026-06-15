@@ -164,7 +164,7 @@ function GorselHafiza() {
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   boxShadow: '0 4px 10px rgba(0,0,0,0.1)'
                 }}>
-                  <span style={{ color: 'var(--accent-dark)', fontWeight: '900', fontSize: 'clamp(1rem, 3vw, 1.5rem)', opacity: 0.5 }}>// AS</span>
+                  <div style={{ width: '2px', height: '40%', backgroundColor: 'var(--accent-dark)', opacity: 0.3 }}></div>
                 </div>
               </div>
             </div>
