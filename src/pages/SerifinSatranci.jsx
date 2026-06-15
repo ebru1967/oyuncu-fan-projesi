@@ -1,161 +1,158 @@
 import React, { useState, useEffect } from 'react';
+import { Chess } from 'chess.js';
+import { Chessboard } from 'react-chessboard';
 
-const SIZE = 5; 
+// Şerif'in psikolojik baskı replikleri
 const serifQuotes = [
-  "Daha fazlasını düşünmelisin.",
-  "Zayıflığın hareketlerinde belli.",
-  "Bu oyunun kurallarını ben yazdım.",
-  "Duygusuzluk en iyi stratejidir.",
-  "Hata payın kalmadı.",
-  "Satrançta piyonlar her zaman feda edilir."
+  "Duyguların seni zayıf yapıyor.",
+  "Sonraki üç hamleni biliyorum.",
+  "Çırpınışların sadece sonu geciktiriyor.",
+  "Bana karşı kazanabileceğini mi sandın?",
+  "Oyun bittiğinde masadan kalkan ben olacağım.",
+  "Vezirini korumak için neleri feda edeceksin?",
+  "Şah çekildiğinde gerçek karakter ortaya çıkar.",
+  "Hata yapmanı beklemiyorum, yapmaya zorluyorum."
 ];
 
 function SerifinSatranci() {
-  const createBoard = () => {
-    let board = Array(SIZE * SIZE).fill(null);
-    for (let i = 0; i < SIZE; i++) { board[i] = 'S'; board[SIZE * (SIZE - 1) + i] = 'P'; }
-    return board;
-  };
-
-  const [board, setBoard] = useState(createBoard());
-  const [isPlayerTurn, setIsPlayerTurn] = useState(true);
-  const [winner, setWinner] = useState(null);
-  const [selectedPiece, setSelectedPiece] = useState(null);
-  const [validMoves, setValidMoves] = useState([]);
-  const [isThinking, setIsThinking] = useState(false);
+  const [game, setGame] = useState(new Chess());
   const [quote, setQuote] = useState("Hamleni yap. Sadece sonucu geciktireceksin.");
+  const [isThinking, setIsThinking] = useState(false);
+  const [gameStatus, setGameStatus] = useState("playing"); // playing, checkmate, draw
 
-  const getMoves = (currBoard, player) => {
-    const moves = [];
-    for (let i = 0; i < SIZE * SIZE; i++) {
-      if (currBoard[i] === player) {
-        const row = Math.floor(i / SIZE);
-        const col = i % SIZE;
-        const dir = player === 'P' ? -1 : 1; 
-
-        if (currBoard[i + dir * SIZE] === null) moves.push({ from: i, to: i + dir * SIZE });
-        if (col > 0 && currBoard[i + dir * SIZE - 1] && currBoard[i + dir * SIZE - 1] !== player) moves.push({ from: i, to: i + dir * SIZE - 1 });
-        if (col < SIZE - 1 && currBoard[i + dir * SIZE + 1] && currBoard[i + dir * SIZE + 1] !== player) moves.push({ from: i, to: i + dir * SIZE + 1 });
-      }
-    }
-    return moves;
-  };
-
-  const checkWinner = (currBoard) => {
-    if (currBoard.slice(0, SIZE).includes('P')) return 'P';
-    if (currBoard.slice(SIZE * (SIZE - 1)).includes('S')) return 'S';
-    if (getMoves(currBoard, 'P').length === 0) return 'S';
-    if (getMoves(currBoard, 'S').length === 0) return 'P';
-    return null;
-  };
-
-  const minimax = (currBoard, depth, alpha, beta, isMaximizing) => {
-    const win = checkWinner(currBoard);
-    if (win === 'S') return 100 + depth;
-    if (win === 'P') return -100 - depth;
-    if (depth === 5) return 0;
-
-    if (isMaximizing) {
-      let maxEval = -Infinity;
-      for (let m of getMoves(currBoard, 'S')) {
-        const next = [...currBoard];
-        next[m.to] = next[m.from]; next[m.from] = null;
-        let evalVal = minimax(next, depth + 1, alpha, beta, false);
-        maxEval = Math.max(maxEval, evalVal);
-        alpha = Math.max(alpha, evalVal);
-        if (beta <= alpha) break;
-      }
-      return maxEval;
-    } else {
-      let minEval = Infinity;
-      for (let m of getMoves(currBoard, 'P')) {
-        const next = [...currBoard];
-        next[m.to] = next[m.from]; next[m.from] = null;
-        let evalVal = minimax(next, depth + 1, alpha, beta, true);
-        minEval = Math.min(minEval, evalVal);
-        beta = Math.min(beta, evalVal);
-        if (beta <= alpha) break;
-      }
-      return minEval;
-    }
-  };
-
+  // Şerif'in (Siyah) Hamlesi (Basit Yapay Zeka)
   useEffect(() => {
-    if (!isPlayerTurn && !winner) {
-      setIsThinking(true);
-      setTimeout(() => {
-        const moves = getMoves(board, 'S');
-        let bestScore = -Infinity;
-        let bestMove = null;
-        for (let m of moves) {
-          const next = [...board];
-          next[m.to] = next[m.from]; next[m.from] = null;
-          let score = minimax(next, 0, -Infinity, Infinity, false);
-          if (score > bestScore) { bestScore = score; bestMove = m; }
-        }
-        if (bestMove) {
-          const next = [...board];
-          next[bestMove.to] = next[bestMove.from]; next[bestMove.from] = null;
-          setBoard(next);
-          setQuote(serifQuotes[Math.floor(Math.random() * serifQuotes.length)]);
-          const gameWinner = checkWinner(next);
-          if (gameWinner) setWinner(gameWinner);
-          else setIsPlayerTurn(true);
-        }
-        setIsThinking(false);
-      }, 800);
+    // Oyun bitmişse veya sıra beyazdaysa çık
+    if (game.isGameOver() || game.turn() === 'w') {
+      checkGameEnd();
+      return;
     }
-  }, [isPlayerTurn]);
 
-  const handleCellClick = (idx) => {
-    if (winner || !isPlayerTurn || isThinking) return;
-    if (board[idx] === 'P') {
-      setSelectedPiece(idx);
-      setValidMoves(getMoves(board, 'P').filter(m => m.from === idx).map(m => m.to));
-    } else if (selectedPiece !== null && validMoves.includes(idx)) {
-      const next = [...board];
-      next[idx] = 'P'; next[selectedPiece] = null;
-      setBoard(next); setSelectedPiece(null); setValidMoves([]);
-      const gameWinner = checkWinner(next);
-      if (gameWinner) setWinner(gameWinner); else setIsPlayerTurn(false);
+    setIsThinking(true);
+
+    // Psikolojik etki: Şerif 1 saniye düşünür
+    const timer = setTimeout(() => {
+      const possibleMoves = game.moves();
+      
+      // Eğer hamle yoksa oyun biter
+      if (possibleMoves.length === 0) {
+        checkGameEnd();
+        setIsThinking(false);
+        return;
+      }
+
+      // Şerif rastgele (ama geçerli) bir hamle seçer. 
+      // Not: Bunu Stockfish API'sine bağlayarak "yenilmez" yapabiliriz ama tarayıcıda bu haliyle hızlıdır.
+      const randomIndex = Math.floor(Math.random() * possibleMoves.length);
+      const move = possibleMoves[randomIndex];
+
+      const gameCopy = new Chess(game.fen());
+      gameCopy.move(move);
+      
+      setGame(gameCopy);
+      setQuote(serifQuotes[Math.floor(Math.random() * serifQuotes.length)]);
+      setIsThinking(false);
+      checkGameEnd();
+
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [game]);
+
+  // Oyunun bitip bitmediğini kontrol et
+  const checkGameEnd = () => {
+    if (game.isCheckmate()) {
+      setGameStatus("checkmate");
+      setQuote(game.turn() === 'w' ? "Mat. Duygular her zaman kaybettirir." : "Bir hata yaptım... İmkansız.");
+    } else if (game.isDraw() || game.isStalemate() || game.isThreefoldRepetition()) {
+      setGameStatus("draw");
+      setQuote("Berabere. Beklediğimden daha inatçısın.");
+    } else if (game.inCheck()) {
+      setQuote("Şah. Çember daralıyor.");
     }
   };
 
+  // Oyuncunun (Beyaz) Hamlesi
+  const onDrop = (sourceSquare, targetSquare) => {
+    if (gameStatus !== "playing" || game.turn() === 'b') return false;
+
+    try {
+      const gameCopy = new Chess(game.fen());
+      // Terfi (promotion) durumu varsa otomatik vezir ('q') yapar
+      const move = gameCopy.move({
+        from: sourceSquare,
+        to: targetSquare,
+        promotion: 'q', 
+      });
+
+      // Geçersiz hamleyse reddet
+      if (move === null) return false;
+
+      // Geçerliyse tahtayı güncelle
+      setGame(gameCopy);
+      checkGameEnd();
+      return true;
+    } catch (e) {
+      return false; // Hatalı hamle girişini engelle
+    }
+  };
+
+  // Oyunu Sıfırla
   const resetGame = () => {
-    setBoard(createBoard());
-    setIsPlayerTurn(true);
-    setWinner(null);
-    setSelectedPiece(null);
-    setValidMoves([]);
+    setGame(new Chess());
+    setGameStatus("playing");
+    setQuote("Yeniden denemek cesaret ister. Hamleni yap.");
   };
 
   return (
-    <div className="game-container" style={{ padding: '3rem 1rem', textAlign: 'center', backgroundColor: 'var(--bg-main)', color: 'var(--text-main)', minHeight: '80vh' }}>
-      <div className="section-header-editorial">
-        <span className="archive-badge">// ŞERİF FURTUNA ALGORİTMASI</span>
-        <h2 className="editorial-title">KUSURSUZ ZİHİN</h2>
-        <p className="editorial-subtitle">Piyonları hedef hatlarına taşı. Şerif asla hata yapmaz.</p>
-      </div>
-
-      <div style={{ backgroundColor: 'var(--bg-card)', padding: '1rem', margin: '2rem auto', maxWidth: '400px', borderLeft: '4px solid var(--accent-dark)' }}>
-        <p style={{ fontStyle: 'italic', color: 'var(--accent-dark)', fontWeight: 'bold' }}>
-          {winner ? (winner === 'S' ? 'Mat. Duygular her zaman kaybettirir.' : 'İmkansız. Kazandın.') : isThinking ? 'Şerif hesaplıyor...' : quote}
+    <div className="game-container animate-fade" style={{
+      textAlign: 'center', padding: '3rem 1rem', backgroundColor: 'var(--bg-main)', color: 'var(--text-main)',
+      fontFamily: 'var(--font-heading)', minHeight: '80vh', display: 'flex', flexDirection: 'column', alignItems: 'center'
+    }}>
+      <div className="section-header-editorial" style={{ marginBottom: '1rem', width: '100%' }}>
+        <span className="archive-badge" style={{ color: 'var(--accent-dark)' }}>// ŞERİF FURTUNA ALGORİTMASI</span>
+        <h2 className="editorial-title" style={{ marginTop: '0.5rem', fontSize: 'clamp(1.5rem, 5vw, 2.5rem)' }}>KUSURSUZ ZİHİN</h2>
+        <p className="editorial-subtitle" style={{ opacity: 0.8, maxWidth: '600px', margin: '0 auto', fontSize: 'clamp(0.85rem, 3vw, 1rem)' }}>
+          Tam teşekküllü satranç düellosu. Şerif Furtuna (Siyah) sana karşı.
         </p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: `repeat(${SIZE}, 1fr)`, width: '300px', margin: 'auto', border: '5px solid var(--accent-dark)' }}>
-        {board.map((cell, i) => (
-          <div key={i} onClick={() => handleCellClick(i)} style={{ 
-            aspectRatio: '1/1', border: '1px solid #333', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '2rem', cursor: (!winner && isPlayerTurn) ? 'pointer' : 'default',
-            backgroundColor: validMoves.includes(i) ? 'var(--accent-light)' : (Math.floor(i/SIZE)+i)%2===0 ? 'var(--bg-card)' : 'var(--bg-main)'
-          }}>
-            {cell === 'S' ? '♟' : cell === 'P' ? '♙' : ''}
-          </div>
-        ))}
+      {/* Şerif'in Replik Kutusu */}
+      <div style={{
+        backgroundColor: 'var(--bg-card)', borderLeft: '4px solid var(--accent-dark)', padding: '1rem 2rem',
+        margin: '1rem 0 2rem 0', minHeight: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+        maxWidth: '500px', width: '100%', boxShadow: '0 4px 15px rgba(0,0,0,0.05)'
+      }}>
+        <p style={{ margin: 0, fontStyle: 'italic', fontWeight: '600', fontSize: '1.1rem', color: 'var(--accent-dark)' }}>
+          "{isThinking ? 'Şerif hamlesini hesaplıyor...' : quote}"
+        </p>
       </div>
 
-      {winner && <button onClick={resetGame} className="editorial-link" style={{ marginTop: '2rem' }}>YENİDEN YÜZLEŞ</button>}
+      {/* KLASİK SATRANÇ TAHTASI (react-chessboard) */}
+      <div style={{
+        width: '100%', maxWidth: '400px', margin: '0 auto 2rem auto', 
+        border: '4px solid var(--accent-dark)', padding: '4px', backgroundColor: 'var(--bg-card)',
+        boxShadow: '0 10px 30px rgba(0,0,0,0.1)'
+      }}>
+        <Chessboard 
+          position={game.fen()} 
+          onPieceDrop={onDrop}
+          boardOrientation="white"
+          customDarkSquareStyle={{ backgroundColor: 'var(--accent-dark)' }}
+          customLightSquareStyle={{ backgroundColor: 'var(--bg-card)' }}
+        />
+      </div>
+
+      {gameStatus !== "playing" && (
+        <div className="animate-fade" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+          <h3 style={{ fontSize: '1.5rem', color: gameStatus === "checkmate" && game.turn() === 'w' ? '#b22222' : 'var(--text-main)' }}>
+            {gameStatus === "checkmate" ? (game.turn() === 'w' ? 'ŞERİF KAZANDI.' : 'İMKANSIZI BAŞARDIN.') : 'BERABERLİK.'}
+          </h3>
+          <button onClick={resetGame} className="editorial-link" style={{ padding: '0.8rem 2rem', border: '1px solid var(--accent-dark)', backgroundColor: 'transparent', color: 'var(--text-main)', cursor: 'pointer', fontWeight: 'bold' }}>
+            YENİDEN YÜZLEŞ
+          </button>
+        </div>
+      )}
     </div>
   );
 }
