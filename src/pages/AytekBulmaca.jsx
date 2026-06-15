@@ -74,26 +74,30 @@ function AytekBulmaca() {
   return (
     <div className="game-container" style={{ 
       textAlign: 'center', 
-      padding: '3rem 1rem', 
+      padding: '2rem 1rem', 
       backgroundColor: 'var(--bg-main)', 
       color: 'var(--text-main)', 
       fontFamily: 'var(--font-heading)',
-      minHeight: '70vh'
+      minHeight: '70vh',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center'
     }}>
-      <div className="section-header-editorial" style={{ marginBottom: '2rem' }}>
+      <div className="section-header-editorial" style={{ marginBottom: '1.5rem', width: '100%' }}>
         <span className="archive-badge">// İNTERAKTİF ARENA</span>
-        <h2 className="editorial-title" style={{ marginTop: '0.5rem' }}>GÖRSEL ODAK TESTİ</h2>
-        <p className="editorial-subtitle" style={{ opacity: 0.8, maxWidth: '600px', margin: '0 auto' }}>
+        <h2 className="editorial-title" style={{ marginTop: '0.5rem', fontSize: 'clamp(1.5rem, 5vw, 2.5rem)' }}>GÖRSEL ODAK TESTİ</h2>
+        <p className="editorial-subtitle" style={{ opacity: 0.8, maxWidth: '600px', margin: '0 auto', fontSize: 'clamp(0.85rem, 3vw, 1rem)' }}>
           Hedef portreyi gözlerinle takip et. En yüksek konsantrasyon rekorunu kırana kadar devam!
         </p>
       </div>
       
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '3rem', marginBottom: '3rem', fontFamily: 'var(--font-body)', fontWeight: 'bold' }}>
-        <div style={{ fontSize: '1.1rem', letterSpacing: '1px' }}>SKOR: <span style={{ fontSize: '1.4rem' }}>{score}</span></div>
-        <div style={{ fontSize: '1.1rem', letterSpacing: '1px', color: 'var(--accent-dark)' }}>EN İYİ: <span style={{ fontSize: '1.4rem' }}>{highScore}</span></div>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginBottom: '2.5rem', fontFamily: 'var(--font-body)', fontWeight: 'bold' }}>
+        <div style={{ fontSize: 'clamp(1rem, 4vw, 1.2rem)', letterSpacing: '1px' }}>SKOR: <span style={{ fontSize: 'clamp(1.2rem, 5vw, 1.5rem)' }}>{score}</span></div>
+        <div style={{ fontSize: 'clamp(1rem, 4vw, 1.2rem)', letterSpacing: '1px', color: 'var(--accent-dark)' }}>EN İYİ: <span style={{ fontSize: 'clamp(1.2rem, 5vw, 1.5rem)' }}>{highScore}</span></div>
       </div>
 
-      <div style={{ position: 'relative', height: '220px', width: '100%', maxWidth: '420px', margin: '0 auto 3rem auto' }}>
+      {/* MOBİL UYUMLU KART ALANI */}
+      <div style={{ position: 'relative', height: 'var(--card-h)', width: '100%', maxWidth: '500px', margin: '0 auto 3rem auto' }}>
         {[0, 1, 2].map((cardId) => {
           const currentPosIndex = positions.indexOf(cardId);
           
@@ -103,10 +107,10 @@ function AytekBulmaca() {
               onClick={() => handleCardClick(cardId)}
               style={{
                 position: 'absolute',
-                width: '120px',
-                height: '160px',
-                // Responsive olması için yüzde hesabı kullandım
-                left: `calc(50% - 60px + ${(currentPosIndex - 1) * 140}px)`, 
+                width: 'var(--card-w)',
+                height: 'var(--card-h)',
+                // CSS Değişkenleri ile dinamik mobil/masaüstü pozisyonlaması
+                left: `calc(50% - var(--card-half-w) + (var(--card-gap) * ${currentPosIndex - 1}))`, 
                 transition: `left ${shuffleSpeed / 1000}s ease-in-out`,
                 backgroundColor: 'var(--bg-card)',
                 border: '1px solid var(--accent-dark)',
@@ -115,7 +119,8 @@ function AytekBulmaca() {
                 justifyContent: 'center',
                 cursor: gameState === 'guessing' ? 'pointer' : 'default',
                 overflow: 'hidden',
-                boxShadow: gameState === 'guessing' ? '0 4px 15px rgba(0,0,0,0.1)' : 'none'
+                boxShadow: gameState === 'guessing' ? '0 4px 15px rgba(0,0,0,0.1)' : 'none',
+                borderRadius: '8px'
               }}
             >
               {(gameState === 'showing' || gameState === 'gameover') && cardId === targetCard ? (
@@ -125,35 +130,63 @@ function AytekBulmaca() {
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                 />
               ) : (
-                <div style={{ fontSize: '3rem', opacity: 0.3, color: 'var(--accent-dark)' }}>?</div>
+                <div style={{ fontSize: 'clamp(2rem, 8vw, 3rem)', opacity: 0.3, color: 'var(--accent-dark)' }}>?</div>
               )}
             </div>
           );
         })}
       </div>
 
-      <div style={{ minHeight: '80px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ minHeight: '80px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
         {gameState === 'idle' && (
-          <button onClick={startRound} className="editorial-link" style={{ padding: '0.8rem 2rem', border: '1px solid var(--accent-dark)', backgroundColor: 'transparent', color: 'var(--text-main)', cursor: 'pointer', fontWeight: 'bold' }}>
+          <button onClick={startRound} className="editorial-link" style={{ padding: '0.8rem 2rem', border: '1px solid var(--accent-dark)', backgroundColor: 'transparent', color: 'var(--text-main)', cursor: 'pointer', fontWeight: 'bold', fontSize: 'clamp(0.9rem, 3vw, 1.1rem)' }}>
             TESTİ BAŞLAT
           </button>
         )}
 
-        {gameState === 'shuffling' && <p style={{ fontSize: '1.1rem', letterSpacing: '2px', animation: 'pulse 1s infinite' }}>KARTLAR KARIŞTIRILIYOR...</p>}
+        {gameState === 'shuffling' && <p style={{ fontSize: 'clamp(1rem, 4vw, 1.2rem)', letterSpacing: '2px', animation: 'pulse 1s infinite' }}>KARTLAR KARIŞTIRILIYOR...</p>}
         
-        {gameState === 'guessing' && <p style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>HEDEF PORTRE HANGİSİNDE?</p>}
+        {gameState === 'guessing' && <p style={{ fontSize: 'clamp(1.1rem, 4.5vw, 1.3rem)', fontWeight: 'bold' }}>HEDEF PORTRE HANGİSİNDE?</p>}
 
         {gameState === 'gameover' && (
           <div className="animate-fade">
-            <p style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '1.5rem', opacity: 0.8 }}>YANLIŞ SEÇİM. ODAK KAYBEDİLDİ.</p>
-            <button onClick={resetGame} className="editorial-link" style={{ padding: '0.8rem 2rem', border: '1px solid var(--accent-dark)', backgroundColor: 'var(--text-main)', color: 'var(--bg-main)', cursor: 'pointer', fontWeight: 'bold' }}>
+            <p style={{ fontSize: 'clamp(1.1rem, 4.5vw, 1.3rem)', fontWeight: 'bold', marginBottom: '1.5rem', opacity: 0.8 }}>YANLIŞ SEÇİM. ODAK KAYBEDİLDİ.</p>
+            <button onClick={resetGame} className="editorial-link" style={{ padding: '0.8rem 2rem', border: '1px solid var(--accent-dark)', backgroundColor: 'var(--text-main)', color: 'var(--bg-main)', cursor: 'pointer', fontWeight: 'bold', fontSize: 'clamp(0.9rem, 3vw, 1.1rem)' }}>
               YENİDEN DENE
             </button>
           </div>
         )}
       </div>
       
+      {/* İÇE GÖMÜLÜ MOBİL CSS (Media Queries) */}
       <style dangerouslySetInnerHTML={{__html: `
+        .game-container {
+          --card-w: 120px;
+          --card-h: 160px;
+          --card-gap: 140px;
+          --card-half-w: 60px;
+        }
+
+        /* Tabletler ve Büyük Telefonlar İçin */
+        @media (max-width: 500px) {
+          .game-container {
+            --card-w: 95px;
+            --card-h: 130px;
+            --card-gap: 110px;
+            --card-half-w: 47.5px;
+          }
+        }
+
+        /* Küçük Ekranlı Telefonlar (iPhone SE vb.) İçin */
+        @media (max-width: 360px) {
+          .game-container {
+            --card-w: 80px;
+            --card-h: 110px;
+            --card-gap: 95px;
+            --card-half-w: 40px;
+          }
+        }
+
         @keyframes pulse {
           0% { opacity: 0.5; }
           50% { opacity: 1; }
