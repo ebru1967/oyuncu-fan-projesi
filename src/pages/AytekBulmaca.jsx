@@ -125,7 +125,7 @@ function AytekBulmaca() {
             >
               {(gameState === 'showing' || gameState === 'gameover') && cardId === targetCard ? (
                 <img 
-                  src="/gallery/h1 (114).jpg"
+                  src="/gallery/h1 (114).jpeg"
                   alt="Hedef" 
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                 />
