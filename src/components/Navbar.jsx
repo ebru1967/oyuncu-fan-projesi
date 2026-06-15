@@ -160,7 +160,7 @@ function Navbar() {
       XOX
     </Link>
     <Link to="/oyun" className="editorial-link">
-  → DİJİTAL HAFIZA OYUNUNU BAŞLAT ↗
+  ODAK TESTİ
 </Link>
           </div>
         </div>
