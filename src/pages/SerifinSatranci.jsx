@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Chess } from 'chess.js';
 import { Chessboard } from 'react-chessboard';
 
@@ -14,81 +14,72 @@ const serifQuotes = [
 ];
 
 function SerifinSatranci() {
-  // Satranç motorunu React'in güncellemelerinden korumak için useRef kullanıyoruz
-  const chessRef = useRef(new Chess());
-  
-  // Sadece tahtanın görünümünü (FEN string) güncellemek için state tutuyoruz
-  const [fen, setFen] = useState(chessRef.current.fen());
+  const [game, setGame] = useState(new Chess());
   const [quote, setQuote] = useState("Hamleni yap. Sadece sonucu geciktireceksin.");
-  const [isThinking, setIsThinking] = useState(false);
   const [gameStatus, setGameStatus] = useState("playing");
 
-  // Güncel oyun durumunu kontrol eden fonksiyon
-  const checkGameEnd = () => {
-    const cg = chessRef.current;
-    if (cg.isCheckmate()) {
+  // Oyun bitiş durumunu kontrol eden fonksiyon
+  const checkGameEnd = (currentGame) => {
+    if (currentGame.isCheckmate()) {
       setGameStatus("checkmate");
-      setQuote(cg.turn() === 'w' ? "Mat. Duygular her zaman kaybettirir." : "Bir hata yaptım... İmkansız.");
-    } else if (cg.isDraw() || cg.isStalemate() || cg.isThreefoldRepetition()) {
+      setQuote(currentGame.turn() === 'w' ? "Mat. Duygular her zaman kaybettirir." : "Bir hata yaptım... İmkansız.");
+    } else if (currentGame.isDraw() || currentGame.isStalemate() || currentGame.isThreefoldRepetition()) {
       setGameStatus("draw");
       setQuote("Berabere. Beklediğimden daha inatçısın.");
-    } else if (cg.inCheck()) {
+    } else if (currentGame.inCheck()) {
       setQuote("Şah. Çember daralıyor.");
     }
   };
 
-  // SÜRÜKLE BIRAK MANTIĞI (Artık kilitlenmeyecek)
-  const onDrop = (sourceSquare, targetSquare) => {
-    // Oyun bittiyse veya sıra Şerif'teyse (siyah) oynamaya izin verme
-    if (gameStatus !== "playing" || chessRef.current.turn() === 'b') return false;
-
+  // GÜVENLİ HAMLE FONKSİYONU (Kilitlenmeyi önler)
+  const makeAMove = (move) => {
     try {
-      const move = chessRef.current.move({
-        from: sourceSquare,
-        to: targetSquare,
-        promotion: 'q', // Piyon sona gelirse otomatik Vezir olur
-      });
-
-      // Geçersiz hamleyse taşı eski yerine geri koy
-      if (move === null) return false;
-
-      // Hamle başarılıysa tahtanın görüntüsünü güncelle
-      setFen(chessRef.current.fen());
-      checkGameEnd();
-      return true;
-    } catch (error) {
-      return false; // Satranç kuralları dışı hamleleri engelle
+      const gameCopy = new Chess(game.fen());
+      const result = gameCopy.move(move);
+      setGame(gameCopy);
+      checkGameEnd(gameCopy);
+      return result; // Geçersiz hamleyse kütüphane null döner
+    } catch (e) {
+      return null;
     }
   };
 
-  // ŞERİF'İN (BOT) HAMLESİ
-  useEffect(() => {
-    if (gameStatus !== "playing" || chessRef.current.turn() === 'w') return;
+  // SENİN (BEYAZ) HAMLEN
+  const onDrop = (sourceSquare, targetSquare) => {
+    // Sadece oyun devam ediyorsa ve sıra sendeyse oyna
+    if (gameStatus !== "playing" || game.turn() === 'b') return false;
 
-    setIsThinking(true);
+    const move = makeAMove({
+      from: sourceSquare,
+      to: targetSquare,
+      promotion: 'q', // Piyonu vezir yap
+    });
+
+    // Geçersiz hamleyse taşı eski yerine oturtur
+    if (move === null) return false;
+    return true;
+  };
+
+  // ŞERİF'İN (SİYAH BOT) HAMLESİ
+  useEffect(() => {
+    // Sıra beyazdaysa veya oyun bittiyse bot beklemede kalır
+    if (game.turn() === 'w' || game.isGameOver()) return;
+
+    // React'in iki kere çalıştırmasını engellemek için ufak bir gecikme
     const timer = setTimeout(() => {
-      const possibleMoves = chessRef.current.moves();
-      
+      const possibleMoves = game.moves();
       if (possibleMoves.length > 0) {
-        // Rastgele bir hamle seç
         const randomIndex = Math.floor(Math.random() * possibleMoves.length);
-        chessRef.current.move(possibleMoves[randomIndex]);
-        
-        // Tahtayı ve durumları güncelle
-        setFen(chessRef.current.fen());
+        makeAMove(possibleMoves[randomIndex]);
         setQuote(serifQuotes[Math.floor(Math.random() * serifQuotes.length)]);
-        checkGameEnd();
       }
-      setIsThinking(false);
-    }, 800); // 0.8 saniye düşünme süresi
+    }, 600);
 
     return () => clearTimeout(timer);
-  }, [fen, gameStatus]); // 'fen' değiştiğinde sıranın Şerif'e geçip geçmediğini kontrol et
+  }, [game]); // Sadece oyun durumu değiştiğinde tetiklenir
 
-  // Oyunu Sıfırla
   const resetGame = () => {
-    chessRef.current.reset(); // Motoru sıfırla
-    setFen(chessRef.current.fen()); // Görünümü sıfırla
+    setGame(new Chess());
     setGameStatus("playing");
     setQuote("Yeniden denemek cesaret ister. Hamleni yap.");
   };
@@ -99,23 +90,23 @@ function SerifinSatranci() {
         <span className="archive-badge" style={{ color: 'var(--accent-dark)' }}>// ŞERİF FURTUNA ALGORİTMASI</span>
         <h2 className="editorial-title" style={{ marginTop: '0.5rem', fontSize: 'clamp(1.5rem, 5vw, 2.5rem)' }}>KUSURSUZ ZİHİN</h2>
         <p className="editorial-subtitle" style={{ opacity: 0.8, maxWidth: '600px', margin: '0 auto', fontSize: 'clamp(0.85rem, 3vw, 1rem)' }}>
-          Tam teşekküllü satranç düellosu. Şerif Furtuna (Siyah) sana karşı.
+          İlk hamle Beyaz'ın (Senin). Taşı gideceği kareye sürükle.
         </p>
       </div>
 
       <div style={{ backgroundColor: 'var(--bg-card)', borderLeft: '4px solid var(--accent-dark)', padding: '1rem 2rem', margin: '1rem 0 2rem 0', minHeight: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center', maxWidth: '500px', width: '100%', boxShadow: '0 4px 15px rgba(0,0,0,0.05)' }}>
         <p style={{ margin: 0, fontStyle: 'italic', fontWeight: '600', fontSize: '1.1rem', color: 'var(--accent-dark)' }}>
-          "{isThinking ? 'Şerif hamlesini hesaplıyor...' : quote}"
+          "{game.turn() === 'b' ? 'Şerif hamlesini hesaplıyor...' : quote}"
         </p>
       </div>
 
       <div style={{ width: '100%', maxWidth: '400px', margin: '0 auto 2rem auto', border: '4px solid var(--accent-dark)', padding: '4px', backgroundColor: 'var(--bg-card)', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}>
         <Chessboard 
-          id="serifin-satranci"
-          position={fen} 
+          id="SerifChess"
+          position={game.fen()} 
           onPieceDrop={onDrop}
           boardOrientation="white"
-          animationDuration={200}
+          animationDuration={300}
           customDarkSquareStyle={{ backgroundColor: 'var(--accent-dark)' }}
           customLightSquareStyle={{ backgroundColor: 'var(--bg-card)' }}
         />
@@ -123,8 +114,8 @@ function SerifinSatranci() {
 
       {gameStatus !== "playing" && (
         <div className="animate-fade" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
-          <h3 style={{ fontSize: '1.5rem', color: gameStatus === "checkmate" && chessRef.current.turn() === 'w' ? '#b22222' : 'var(--text-main)' }}>
-            {gameStatus === "checkmate" ? (chessRef.current.turn() === 'w' ? 'ŞERİF KAZANDI.' : 'İMKANSIZI BAŞARDIN.') : 'BERABERLİK.'}
+          <h3 style={{ fontSize: '1.5rem', color: gameStatus === "checkmate" && game.turn() === 'w' ? '#b22222' : 'var(--text-main)' }}>
+            {gameStatus === "checkmate" ? (game.turn() === 'w' ? 'ŞERİF KAZANDI.' : 'İMKANSIZI BAŞARDIN.') : 'BERABERLİK.'}
           </h3>
           <button onClick={resetGame} className="editorial-link" style={{ padding: '0.8rem 2rem', border: '1px solid var(--accent-dark)', backgroundColor: 'transparent', color: 'var(--text-main)', cursor: 'pointer', fontWeight: 'bold' }}>
             YENİDEN YÜZLEŞ

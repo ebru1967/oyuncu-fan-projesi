@@ -133,7 +133,16 @@ function Home() {
                   <img 
                     src={newsCoverImages[mainArticle.id]} 
                     alt={mainArticle?.title || "Aktif Proje Detayı"} 
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', position: 'relative', zIndex: 20, opacity: 1 }} 
+                    style={{ 
+                      width: '100%', 
+                      height: '100%', 
+                      objectFit: 'contain', 
+                      backgroundColor: 'var(--bg-card)', 
+                      display: 'block', 
+                      position: 'relative', 
+                      zIndex: 20, 
+                      opacity: 1 
+                    }} 
                   />
                 ) : (
                   <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-card)', fontFamily: 'var(--font-heading)', color: 'var(--accent-dark)', opacity: 0.5 }}>
