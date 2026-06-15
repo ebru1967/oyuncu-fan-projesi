@@ -15,7 +15,7 @@ export const activeNews = [
     title: "Aytek Şayan, Mercedes-Benz Özel Etkinliğinde Boy Gösterdi",
     summary: "12 Haziran Cuma günü gerçekleştirilen özel Mercedes-Benz etkinliğine katılan Aytek Şayan, tarzı ve karizmatik duruşuyla dikkatleri üzerine çekti. Instagram üzerinden paylaşılan ve sosyal medyada hızla yayılan etkinlik kesitleri, başarılı oyuncunun prestijli markalarla olan güçlü bağını bir kez daha gözler önüne serdi.",
     linkText: "SOSYAL MEDYA YANSIMALARI ↗",
-    linkUrl: "https://www.instagram.com/ayteksayan" 
+    linkUrl: "https://x.com/aytekofc"
   },
   {
     id: 9,
