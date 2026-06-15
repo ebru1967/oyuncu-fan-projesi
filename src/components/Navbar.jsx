@@ -168,9 +168,6 @@ function Navbar() {
             <Link to="/masa-tenisi" onClick={closeMenu}>
               MASA TENİSİ 
             </Link>
-            <Link to="/serifin-satranci" onClick={closeMenu}>
-              SATRANÇ
-            </Link>
           </div>
         </div>
 
