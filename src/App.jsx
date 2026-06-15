@@ -21,6 +21,9 @@ import PhotoPuzzle from './pages/PhotoPuzzle';
 import Crossword from './pages/Crossword';
 import XOXGame from './pages/XOXGame';
 import AytekBulmaca from './pages/AytekBulmaca';
+import GorselHafiza from './pages/GorselHafiza';
+import SerifinSatranci from './pages/SerifinSatranci';
+import MasaTenisi from './pages/MasaTenisi';
 import Contact from './pages/Contact'; 
 import FCChannels from './pages/FCChannels';
 import FanArtGallery from './pages/FanArtGallery';
@@ -124,6 +127,9 @@ function App() {
             <Route path="/bulmaca" element={<Crossword />} />
             <Route path="/xox-oyunu" element={<XOXGame />} />
             <Route path="/oyun" element={<AytekBulmaca />} />
+            <Route path="/gorsel-hafiza" element={<GorselHafiza />} />  
+            <Route path="/serifin-satranci" element={<SerifinSatranci />} />  
+            <Route path="/masa-tenisi" element={<MasaTenisi />} />
             <Route path="/fc-hesaplar" element={<FCChannels />} />
             <Route path="/fan-gonderileri" element={<FanArtGallery />} />
             <Route path="/haber-bulteni" element={<Newsletter />} />
