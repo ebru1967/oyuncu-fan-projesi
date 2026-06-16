@@ -83,26 +83,110 @@ function XOXGame() {
   };
 
   return (
-    <div className="xox-container">
-      <h3>{winner ? (winner === 'Berabere' ? 'SONUÇ: BERABERE!' : (winner === 'X' ? 'TEBRİKLER, KAZANDIN!' : 'ŞERİF KAZANDI!')) : 'ŞERİF vs SEN'}</h3>
-      <div className="grid">
-        {board.map((cell, idx) => (
-          <button 
-            key={idx} 
-            onClick={() => handleClick(idx)} 
-            className="cell" 
-            disabled={!!winner || cell !== null}
-            style={{
-              backgroundImage: cell === 'X' ? "url('/gallery/h1 (160).jpeg')" : 
-                               cell === 'O' ? "url('/gallery/h1 (165).jpeg')" : "none",
-              backgroundSize: 'cover',
-              backgroundPosition: 'center'
-            }}
-          >
-          </button>
-        ))}
+    <div className="xox-wrapper animate-fade">
+      
+      {/* OYUN İÇİN ÖZEL CSS BLOĞU */}
+      <style>{`
+        .xox-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin: 2rem auto;
+          max-width: 400px;
+          padding: 2rem 1rem;
+          background: rgba(84, 107, 65, 0.02);
+          border: 1px solid rgba(84, 107, 65, 0.15);
+          border-radius: 8px;
+        }
+
+        .xox-header {
+          font-family: var(--font-heading);
+          color: var(--accent-dark);
+          margin-bottom: 2rem;
+          font-size: 1.5rem;
+          letter-spacing: 2px;
+          text-align: center;
+        }
+
+        .xox-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 10px;
+          width: 100%;
+          max-width: 320px;
+          aspect-ratio: 1 / 1; /* Oyun tahtasının daima tam kare olmasını sağlar */
+          margin-bottom: 2rem;
+        }
+
+        .xox-cell {
+          background-color: rgba(84, 107, 65, 0.05);
+          border: 1px dashed rgba(84, 107, 65, 0.3);
+          border-radius: 8px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          background-repeat: no-repeat;
+          padding: 0;
+          margin: 0;
+          width: 100%;
+          height: 100%;
+        }
+
+        .xox-cell:hover:not(:disabled) {
+          background-color: rgba(84, 107, 65, 0.15);
+          border-style: solid;
+          transform: scale(1.02);
+        }
+
+        .xox-cell:disabled {
+          cursor: not-allowed;
+          border-style: solid;
+        }
+
+        .xox-reset-btn {
+          background-color: transparent;
+          border: 1px solid var(--accent-dark);
+          color: var(--accent-dark);
+          padding: 0.8rem 2.5rem;
+          font-family: var(--font-heading);
+          font-weight: 700;
+          border-radius: 30px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          letter-spacing: 1px;
+        }
+
+        .xox-reset-btn:hover {
+          background-color: var(--accent-dark);
+          color: var(--bg-main);
+          box-shadow: 0 5px 15px rgba(84, 107, 65, 0.2);
+        }
+      `}</style>
+
+      <div className="xox-container">
+        <h3 className="xox-header">
+          {winner ? (winner === 'Berabere' ? 'SONUÇ: BERABERE!' : (winner === 'X' ? 'TEBRİKLER, KAZANDIN!' : 'ŞERİF KAZANDI!')) : 'ŞERİF vs SEN'}
+        </h3>
+        
+        <div className="xox-grid">
+          {board.map((cell, idx) => (
+            <button 
+              key={idx} 
+              onClick={() => handleClick(idx)} 
+              className="xox-cell" 
+              disabled={!!winner || cell !== null}
+              style={{
+                backgroundImage: cell === 'X' ? "url('/gallery/h1 (160).jpeg')" : 
+                                 cell === 'O' ? "url('/gallery/h1 (165).jpeg')" : "none",
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+              }}
+            >
+            </button>
+          ))}
+        </div>
+        
+        {winner && <button onClick={resetGame} className="xox-reset-btn">YENİ OYUN ⟲</button>}
       </div>
-      {winner && <button onClick={resetGame} className="reset-btn">YENİ OYUN</button>}
     </div>
   );
 }

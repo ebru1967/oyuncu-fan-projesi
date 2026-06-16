@@ -72,7 +72,6 @@ function Quiz() {
       setScore(score + 1);
     }
     
-    // Kullanıcının doğru/yanlış rengini görebilmesi için 1.2 saniye bekler
     setTimeout(() => {
       setSelectedAnswer(null);
       setIsWaiting(false);
@@ -91,6 +90,14 @@ function Quiz() {
     setShowResult(false);
     setSelectedAnswer(null);
     setIsWaiting(false);
+  };
+
+  // Skor paylaşma fonksiyonu
+  const shareOnX = () => {
+    const text = `Aytek Şayan Arşiv Sınavı'nda 40 soruda ${score} doğru yaptım! 🗂️✨\n\nSen bu masada mısın? Testi çözmek ve arşivi incelemek için tıkla! @aytekofc @chicolw`;
+    const siteUrl = "https://ayteksayan.com"; 
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(siteUrl)}`;
+    window.open(url, '_blank');
   };
 
   const getResultMessage = (score) => {
@@ -133,8 +140,8 @@ function Quiz() {
     <div className="press-editorial-wrapper animate-fade">
       <div className="container">
         
-        <div className="section-header-editorial">
-          <span className="archive-badge">// İNTERAKTİF ARŞİV PROTOKOLÜ</span>
+        <div className="section-header-editorial" style={{ paddingTop: '0', marginTop: '-3rem', marginBottom: '3rem', textAlign: 'center' }}>
+          <span className="archive-badge" style={{ display: 'inline-block', marginBottom: '1rem' }}>// İNTERAKTİF ARŞİV PROTOKOLÜ</span>
           <h1 className="editorial-title">NE KADAR TANIYORSUN?</h1>
           <p className="editorial-subtitle">Aytek Şayan arşivine ne kadar hakim olduğunuzu ölçen resmi yeterlilik sınavı.</p>
         </div>
@@ -149,9 +156,21 @@ function Quiz() {
               <p className="result-message" style={{ lineHeight: '1.6', opacity: 0.9, marginTop: '1rem', marginBottom: '2rem' }}>
                 {getResultMessage(score)}
               </p>
-              <button className="editorial-link-btn-anchor reset-btn" onClick={resetQuiz}>
-                TESTİ TEKRARLA ↗
-              </button>
+              
+              {/* BUTONLAR YAN YANA GELDİ */}
+              <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                <button className="editorial-link-btn-anchor reset-btn" onClick={resetQuiz}>
+                  TESTİ TEKRARLA ⟲
+                </button>
+                <button 
+                  className="editorial-link-btn-anchor" 
+                  onClick={shareOnX}
+                  style={{ backgroundColor: '#000', border: '1px solid #333', color: '#fff' }}
+                >
+                  SKORUNU X'TE PAYLAŞ 𝕏
+                </button>
+              </div>
+
             </div>
           ) : (
             <div className="quiz-question-box animate-fade" key={currentQ}> 
