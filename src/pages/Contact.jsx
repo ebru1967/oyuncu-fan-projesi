@@ -1,13 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { FaTwitter, FaEnvelope, FaPen } from 'react-icons/fa';
+import emailjs from '@emailjs/browser';
 
 function Contact() {
   const [isSent, setIsSent] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const form = useRef();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsSent(true);
-    setTimeout(() => setIsSent(false), 3000); 
+    setIsLoading(true);
+
+    emailjs.sendForm(
+      'service_7ext7hb',           
+      'template_nj0wswr', 
+      form.current, 
+      'A1Pr_6f81H0k0CkPr'    
+    )
+      .then((result) => {
+          console.log("Mesaj başarıyla uçtu:", result.text);
+          setIsSent(true);
+          setIsLoading(false);
+          form.current.reset(); 
+          setTimeout(() => setIsSent(false), 3000); 
+      }, (error) => {
+          console.log("Bir hata oluştu:", error.text);
+          setIsLoading(false);
+          alert("Mesaj gönderilemedi, lütfen tekrar deneyin.");
+      });
   };
 
   return (
@@ -55,7 +75,7 @@ function Contact() {
           width: 100%; text-transform: uppercase;
         }
         .submit-btn:hover:not(:disabled) { background: var(--accent-dark); color: #fff; }
-        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; border-color: #2ecc71; color: #2ecc71; }
+        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; border-color: var(--accent-dark); }
         
         @media (max-width: 768px) { .contact-grid { grid-template-columns: 1fr; gap: 3rem; } }
       `}</style>
@@ -96,11 +116,26 @@ function Contact() {
           <div className="contact-box">
             <h3><FaPen /> SORU & ÖNERİLER</h3>
             <p className="credits-text" style={{ marginBottom: '1.5rem' }}>Arşivle ilgili geri bildirimlerini buraya bırakabilirsin:</p>
-            <form onSubmit={handleSubmit}>
-              <input type="text" className="contact-input" placeholder="İsim / Rumuz" required />
-              <textarea className="contact-textarea" placeholder="Sorun veya önerin..." rows="4" required></textarea>
-              <button type="submit" className="submit-btn" disabled={isSent}>
-                {isSent ? 'GÖNDERİLDİ!' : 'GÖNDER →'}
+            
+            {/* Form'a ref eklendi ve input'lara name tanımlandı */}
+            <form ref={form} onSubmit={handleSubmit}>
+              <input 
+                type="text" 
+                name="user_name" 
+                className="contact-input" 
+                placeholder="İsim / Rumuz" 
+                required 
+              />
+              <textarea 
+                name="message" 
+                className="contact-textarea" 
+                placeholder="Sorun veya önerin..." 
+                rows="4" 
+                required
+              ></textarea>
+              
+              <button type="submit" className="submit-btn" disabled={isLoading || isSent}>
+                {isLoading ? 'GÖNDERİLİYOR...' : (isSent ? 'GÖNDERİLDİ!' : 'GÖNDER →')}
               </button>
             </form>
           </div>
