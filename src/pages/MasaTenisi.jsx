@@ -134,27 +134,36 @@ function MasaTenisi() {
       
       {/* 🚀 DİNAMİK TEMA MOTORU */}
       <style>{`
-        /* --- GÜNDÜZ MODU: GERÇEK MASA TENİSİ (VARSAYILAN) --- */
+        /* Oyun alanını sitenin genelinden izole et */
+        .game-container {
+          user-select: none;
+        }
+
         .pp-board {
-          background-color: #1b5e20 !important; /* Gerçekçi Masa Yeşili */
+          background-color: #1b5e20 !important;
           border-color: #fff !important;
           box-shadow: 0 15px 35px rgba(0,0,0,0.15) !important;
         }
-        .pp-center-line { border-left-color: rgba(255,255,255,0.7) !important; }
-        .pp-player { background-color: #d32f2f !important; box-shadow: 2px 2px 6px rgba(0,0,0,0.4) !important; } /* Kırmızı Raket */
-        .pp-bot { background-color: #111 !important; box-shadow: -2px 2px 6px rgba(0,0,0,0.4) !important; } /* Siyah Raket */
-        .pp-ball { background-color: #ffb300 !important; box-shadow: 0 2px 5px rgba(0,0,0,0.4) !important; } /* Turuncu Top */
 
-        /* --- KARANLIK MOD: RETRO NEON (ATARİ EFEKTİ) --- */
+        /* RAKETLER FARE İMLECİ İLE ÇAKIŞMASIN */
+        .pp-player, .pp-bot {
+          pointer-events: none; 
+        }
+
+        .pp-center-line { border-left-color: rgba(255,255,255,0.7) !important; }
+        .pp-player { background-color: #d32f2f !important; box-shadow: 2px 2px 6px rgba(0,0,0,0.4) !important; }
+        .pp-bot { background-color: #111 !important; box-shadow: -2px 2px 6px rgba(0,0,0,0.4) !important; }
+        .pp-ball { background-color: #ffb300 !important; box-shadow: 0 2px 5px rgba(0,0,0,0.4) !important; }
+
+        /* KARANLIK MOD - Her türlü durumu kapsayan seçiciler */
         .dark .pp-board, [data-theme="dark"] .pp-board, [data-mode="dark"] .pp-board {
-          background-color: #0a0a0a !important; /* Derin Siyah */
+          background-color: #0a0a0a !important;
           border-color: var(--accent-dark) !important;
           box-shadow: 0 10px 40px rgba(0,0,0,0.3), 0 0 15px var(--accent-dark) !important;
         }
-        .dark .pp-center-line, [data-theme="dark"] .pp-center-line { border-left-color: rgba(255,255,255,0.15) !important; }
-        .dark .pp-player, [data-theme="dark"] .pp-player { background-color: #fff !important; box-shadow: 0 0 12px rgba(255,255,255,0.6) !important; } /* Parlayan Beyaz */
-        .dark .pp-bot, [data-theme="dark"] .pp-bot { background-color: var(--accent-dark) !important; box-shadow: 0 0 12px var(--accent-dark) !important; } /* Parlayan Vurgu Rengi */
-        .dark .pp-ball, [data-theme="dark"] .pp-ball { background-color: #fff !important; box-shadow: 0 0 15px rgba(255,255,255,0.9) !important; }
+        .dark .pp-player, [data-theme="dark"] .pp-player, [data-mode="dark"] .pp-player { background-color: #fff !important; box-shadow: 0 0 12px rgba(255,255,255,0.6) !important; }
+        .dark .pp-bot, [data-theme="dark"] .pp-bot, [data-mode="dark"] .pp-bot { background-color: var(--accent-dark) !important; box-shadow: 0 0 12px var(--accent-dark) !important; }
+        .dark .pp-ball, [data-theme="dark"] .pp-ball, [data-mode="dark"] .pp-ball { background-color: #fff !important; box-shadow: 0 0 15px rgba(255,255,255,0.9) !important; }
       `}</style>
 
       {/* ÜST BAŞLIK */}
