@@ -576,9 +576,8 @@ function PressInterviews() {
     }
   ];
 
-  // Ayları JavaScript'in anlayacağı bir sayıya çeviren yardımcı fonksiyon
   const parseDate = (dateString) => {
-    if (!dateString) return new Date(); // Eğer tarih yoksa en üste at
+    if (!dateString) return new Date(); 
     const months = {
       'OCAK': 0, 'ŞUBAT': 1, 'MART': 2, 'NİSAN': 3, 'MAYIS': 4, 'HAZİRAN': 5,
       'TEMMUZ': 6, 'AĞUSTOS': 7, 'EYLÜL': 8, 'EKİM': 9, 'KASIM': 10, 'ARALIK': 11
@@ -590,10 +589,9 @@ function PressInterviews() {
       const year = parseInt(parts[2], 10);
       return new Date(year, month, day);
     }
-    return new Date(0); // Format uyuşmazsa en sona at
+    return new Date(0); 
   };
 
-  // Önce filtrele, sonra tarihe göre (en yeni en üstte) sırala
   const filteredInterviews = interviewData
     .filter(item => {
       if (filter === 'all') return true;
@@ -607,12 +605,151 @@ function PressInterviews() {
 
   return (
     <div className="press-editorial-wrapper animate-fade">
-      <div className="container">
+      
+      {/* YENİ EKLENEN CSS BLOĞU */}
+      <style>{`
+        .press-filters {
+          display: flex;
+          justify-content: center;
+          gap: 1rem;
+          margin-bottom: 3rem;
+          flex-wrap: wrap;
+        }
+
+        .filter-link {
+          background: transparent;
+          border: 1px solid rgba(84, 107, 65, 0.3);
+          color: var(--accent-dark);
+          padding: 0.6rem 1.5rem;
+          font-family: var(--font-heading);
+          font-size: 0.85rem;
+          font-weight: 700;
+          letter-spacing: 1px;
+          border-radius: 30px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .filter-link:hover, .filter-link.active {
+          background: var(--accent-dark);
+          color: var(--bg-main);
+          border-color: var(--accent-dark);
+        }
+
+        .press-archive-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 2rem;
+          max-width: 900px;
+          margin: 0 auto;
+        }
+
+        .press-archive-card {
+          background: var(--bg-main);
+          border: 1px solid rgba(84, 107, 65, 0.15);
+          padding: 2rem;
+          border-radius: 4px;
+          border-left: 4px solid var(--accent-dark);
+          transition: box-shadow 0.3s ease;
+        }
+
+        .press-archive-card:hover {
+          box-shadow: 0 10px 30px rgba(84, 107, 65, 0.08);
+        }
+
+        .press-card-meta {
+          display: flex;
+          justify-content: space-between;
+          font-family: var(--font-heading);
+          font-size: 0.75rem;
+          font-weight: bold;
+          color: var(--accent-light);
+          margin-bottom: 1rem;
+          border-bottom: 1px solid rgba(84, 107, 65, 0.1);
+          padding-bottom: 0.5rem;
+        }
+
+        .press-card-title {
+          font-family: var(--font-heading);
+          font-size: 1.5rem;
+          color: var(--accent-dark);
+          margin: 0 0 1rem 0;
+          line-height: 1.3;
+        }
+
+        .press-archive-summary {
+          font-size: 0.95rem;
+          line-height: 1.6;
+          opacity: 0.8;
+          margin-bottom: 1.5rem;
+        }
+
+        .editorial-link-btn {
+          background: transparent;
+          border: 1px dashed var(--accent-dark);
+          color: var(--accent-dark);
+          padding: 0.6rem 1rem;
+          font-family: var(--font-heading);
+          font-size: 0.8rem;
+          font-weight: bold;
+          cursor: pointer;
+          transition: all 0.3s;
+          width: 100%;
+          text-align: left;
+        }
+
+        .editorial-link-btn:hover {
+          background: rgba(84, 107, 65, 0.05);
+        }
+
+        .editorial-link-btn-anchor {
+          display: inline-block;
+          background: var(--accent-dark);
+          color: #fff;
+          text-decoration: none;
+          padding: 0.6rem 1.2rem;
+          font-family: var(--font-heading);
+          font-size: 0.8rem;
+          font-weight: bold;
+          border-radius: 4px;
+          transition: opacity 0.3s;
+        }
+
+        .editorial-link-btn-anchor:hover {
+          opacity: 0.8;
+          color: #fff;
+        }
+
+        .press-full-text-area {
+          margin-top: 1.5rem;
+          padding: 1.5rem;
+          background: rgba(84, 107, 65, 0.03);
+          border-radius: 4px;
+        }
+
+        .qa-block-unit {
+          margin-bottom: 1.5rem;
+        }
+
+        .interview-question {
+          font-style: italic;
+          margin-bottom: 0.5rem;
+          color: var(--accent-dark);
+          line-height: 1.5;
+        }
+
+        .interview-answer {
+          line-height: 1.6;
+          opacity: 0.9;
+        }
+      `}</style>
+
+      <div className="container" style={{ paddingBottom: '5rem' }}>
         
-        <div className="section-header-editorial">
-          <span className="archive-badge">// BASIN SİCİLİ & SÖYLEŞİLER</span>
-          <h1 className="editorial-title">MEDYA ARŞİVİ</h1>
-          <p className="editorial-subtitle">Yazılı basın röportajları, dijital söyleşiler ve doğrulanmış kayıt dökümanları.</p>
+        <div className="section-header-editorial" style={{ textAlign: 'center', marginBottom: '3rem', paddingTop: '3rem' }}>
+          <span className="archive-badge" style={{ display: 'inline-block', marginBottom: '1rem' }}>// BASIN SİCİLİ & SÖYLEŞİLER</span>
+          <h1 className="editorial-title" style={{ fontSize: '3rem' }}>MEDYA ARŞİVİ</h1>
+          <p className="editorial-subtitle">Yazılı basın röportajları, dijital söyleşiler ve doğrulanmış kayıt dokümanları.</p>
         </div>
 
         <div className="press-filters">
@@ -655,7 +792,7 @@ function PressInterviews() {
                       ))}
                       {item.originalLink && (
                         <div style={{ marginTop: '2rem', textAlign: 'right' }}>
-                          <a href={item.originalLink} target="_blank" rel="noreferrer" className="editorial-link" style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>
+                          <a href={item.originalLink} target="_blank" rel="noreferrer" className="editorial-link" style={{ fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--accent-dark)', textDecoration: 'underline' }}>
                           KAYNAĞA GİT ↗
                           </a>
                         </div>

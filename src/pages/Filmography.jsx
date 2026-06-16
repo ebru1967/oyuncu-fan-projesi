@@ -112,6 +112,7 @@ const filmographyList = [
   }
 ];
 
+// Tarihe göre kronolojik sıralama
 filmographyList.sort((a, b) => {
   const getYear = (y) => {
     if (y === "Bilinmiyor") return 0;
@@ -123,11 +124,63 @@ filmographyList.sort((a, b) => {
 function Filmography() {
   return (
     <div className="filmography-wrapper animate-fade">
+      
+      {/* CSS BLOĞU EKLENDİ */}
+      <style>{`
+        .filmo-card {
+          border: 1px solid rgba(84, 107, 65, 0.15);
+          border-radius: 8px;
+          overflow: hidden;
+          background-color: var(--bg-main);
+          display: flex;
+          flex-direction: column;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .filmo-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 10px 25px rgba(84, 107, 65, 0.1);
+          border-color: var(--accent-dark);
+        }
+
+        .filmo-btn {
+          display: inline-block;
+          background-color: transparent;
+          border: 1px solid var(--accent-dark);
+          padding: 0.6rem 1.2rem;
+          font-family: var(--font-heading);
+          font-size: 0.75rem;
+          font-weight: 700;
+          color: var(--accent-dark);
+          cursor: pointer;
+          text-decoration: none;
+          text-align: center;
+          border-radius: 4px;
+          transition: all 0.3s ease;
+        }
+
+        .filmo-btn:hover {
+          background-color: var(--accent-dark);
+          color: var(--bg-main);
+        }
+
+        .filmo-btn:disabled {
+          border: 1px dashed rgba(84, 107, 65, 0.3);
+          color: rgba(84, 107, 65, 0.5);
+          cursor: not-allowed;
+        }
+        
+        .filmo-btn:disabled:hover {
+          background-color: transparent;
+          color: rgba(84, 107, 65, 0.5);
+        }
+      `}</style>
+
       <div className="container" style={{ paddingBottom: '4rem' }}>
         
         {/* SAYFA BAŞLIĞI */}
-        <div className="section-header-editorial" style={{ marginBottom: '4rem', paddingTop: '3rem' }}>
-          <span className="archive-badge">// EKRAN KANONU</span>
+        <div className="section-header-editorial" style={{ marginBottom: '4rem', paddingTop: '3rem', textAlign: 'center' }}>
+          <span className="archive-badge" style={{ display: 'inline-block', marginBottom: '1rem' }}>// EKRAN KANONU</span>
           <h1 className="editorial-title" style={{ fontSize: '3.5rem' }}>DİZİ & FİLMOGRAFİ</h1>
           <p className="editorial-subtitle">Oyuncunun 2016'dan günümüze televizyon, sinema ve dijital platformlardaki dönüşümü, inşa ettiği karakterler ve proje arşivi.</p>
         </div>
@@ -136,7 +189,7 @@ function Filmography() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '3rem' }}>
           
           {filmographyList.map((project) => (
-            <div key={project.id} style={{ border: '1px solid rgba(84, 107, 65, 0.15)', borderRadius: '8px', overflow: 'hidden', backgroundColor: 'var(--bg-main)' }}>
+            <div key={project.id} className="filmo-card">
               
               {/* Fotoğraf Alanı */}
               <div style={{ height: '200px', backgroundColor: 'rgba(220, 204, 172, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderBottom: '1px solid rgba(84, 107, 65, 0.1)' }}>
@@ -148,7 +201,7 @@ function Filmography() {
               </div>
 
               {/* Metin ve Bilgi Alanı */}
-              <div style={{ padding: '2rem' }}>
+              <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
                 
                 {/* ÜST BİLGİ SATIRI */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', fontFamily: 'var(--font-heading)', fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent-light)' }}>
@@ -173,74 +226,36 @@ function Filmography() {
                 </p>
 
                 {/* DİNAMİK LİNK/BUTON MANTIĞI */}
-<div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-  {project.urls && project.urls.length > 0 ? (
-    project.urls.map((u, index) => (
-      <a 
-        key={index}
-        href={u.link} 
-        target="_blank" 
-        rel="noreferrer" 
-        style={{ 
-          display: 'inline-block',
-          backgroundColor: 'transparent', 
-          border: '1px solid var(--accent-dark)', 
-          padding: '0.6rem 1.2rem', 
-          fontFamily: 'var(--font-heading)', 
-          fontSize: '0.75rem', 
-          fontWeight: 700, 
-          color: 'var(--accent-dark)', 
-          cursor: 'pointer', 
-          textDecoration: 'none',
-          textAlign: 'center'
-        }}
-      >
-        {u.label}
-      </a>
-    ))
-  ) : project.url && project.url !== "#" ? (
-    
-    <a 
-      href={project.url} 
-      target="_blank" 
-      rel="noreferrer" 
-      style={{ 
-        display: 'inline-block',
-        backgroundColor: 'transparent', 
-        border: '1px solid var(--accent-dark)', 
-        padding: '0.6rem 1.2rem', 
-        fontFamily: 'var(--font-heading)', 
-        fontSize: '0.75rem', 
-        fontWeight: 700, 
-        color: 'var(--accent-dark)', 
-        cursor: 'pointer', 
-        textDecoration: 'none',
-        textAlign: 'center'
-      }}
-    >
-      İZLEME LİNKİ & DETAYLAR ↗
-    </a>
-  ) : (
-    // Link yoksa
-    <button 
-      disabled 
-      style={{ 
-        backgroundColor: 'transparent', 
-        border: '1px dashed rgba(84, 107, 65, 0.3)', 
-        padding: '0.6rem 1.2rem', 
-        fontFamily: 'var(--font-heading)', 
-        fontSize: '0.75rem', 
-        fontWeight: 700, 
-        color: 'rgba(84, 107, 65, 0.5)', 
-        cursor: 'not-allowed', 
-        width: '100%',
-        textAlign: 'center'
-      }}
-    >
-      LİNK YAKINDA EKLENECEK
-    </button>
-  )}
-</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: 'auto' }}>
+                  {project.urls && project.urls.length > 0 ? (
+                    project.urls.map((u, index) => (
+                      <a 
+                        key={index}
+                        href={u.link} 
+                        target="_blank" 
+                        rel="noreferrer" 
+                        className="filmo-btn"
+                      >
+                        {u.label}
+                      </a>
+                    ))
+                  ) : project.url && project.url !== "#" ? (
+                    <a 
+                      href={project.url} 
+                      target="_blank" 
+                      rel="noreferrer" 
+                      className="filmo-btn"
+                    >
+                      İZLEME LİNKİ & DETAYLAR ↗
+                    </a>
+                  ) : (
+                    // Link yoksa
+                    <button disabled className="filmo-btn">
+                      LİNK YAKINDA EKLENECEK
+                    </button>
+                  )}
+                </div>
+
               </div>
             </div>
           ))}
