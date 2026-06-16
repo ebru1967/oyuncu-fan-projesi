@@ -136,7 +136,8 @@ function Home() {
                     style={{ 
                       width: '100%', 
                       height: '100%', 
-                      objectFit: 'contain', 
+                      objectFit: 'cover', 
+                      objectPosition: 'center', 
                       backgroundColor: 'var(--bg-card)', 
                       display: 'block', 
                       position: 'relative', 
@@ -253,7 +254,6 @@ function Home() {
               </div>
             </div>
 
-            {/* SALTO DÖNEMİ */}
             <div className="chronicle-row">
               <div className="chronicle-year">2018—19</div>
               <div className="chronicle-details">
@@ -295,7 +295,6 @@ function Home() {
         <div className="container">
           <div className="registry-grid">
             
-            {/* AKTÖRÜN GERÇEK RESMİ HESAPLARI */}
             <div className="registry-column official-channels">
               <span className="registry-tag">// RESMİ KANALLAR</span>
               <h3 className="registry-title">SANATÇI RESMİ AĞI</h3>
@@ -314,7 +313,6 @@ function Home() {
               </div>
             </div>
 
-            {/* FC TOPLULUK AĞLARIVE LİNKLERİ */}
             <div className="registry-column fc-channels">
               <span className="registry-tag">// TOPLULUK MERKEZİ</span>
               <h3 className="registry-title">AYTEK ŞAYAN FC AĞI</h3>
