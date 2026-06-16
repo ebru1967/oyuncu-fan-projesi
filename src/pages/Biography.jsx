@@ -5,6 +5,35 @@ function Biography() {
 
   return (
     <div className="bio-editorial-wrapper animate-fade">
+      {/* 🚀 BİYOGRAFİ ÖZEL TİPOGRAFİ MOTORU */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Lora:ital,wght@0,400;0,600;1,400&family=Space+Mono:wght@700&display=swap');
+
+        /* Paragraflar: Eski Gazete / Kitap Hissi (Lora) */
+        .editorial-bio-paragraph {
+          font-family: 'Lora', serif !important;
+          font-size: 1.05rem !important;
+          line-height: 1.9 !important;
+          color: var(--text-main);
+          opacity: 0.9;
+        }
+
+        /* El Yazısı Notlar (Caveat) */
+        .bio-handwritten {
+          font-family: 'Caveat', cursive !important;
+          font-size: 1.8rem !important;
+          color: var(--accent-dark) !important;
+          transform: rotate(-2deg); /* Hafif eğik, gerçekçi duruş */
+          margin-bottom: 1.5rem;
+          opacity: 0.9;
+        }
+
+        /* Sicil Numaraları ve Etiketler (Daktilo Hissi) */
+        .archive-badge, .spec-label, .canvas-tag {
+          font-family: 'Space Mono', monospace !important;
+          letter-spacing: 1px !important;
+        }
+      `}</style>
       <section className="bio-editorial-section">
         <div className="bio-grid-container">
           
