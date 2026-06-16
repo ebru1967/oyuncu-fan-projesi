@@ -193,6 +193,25 @@ function AytekPenalty() {
           margin-bottom: 1rem;
           font-weight: bold;
         }
+          .reset-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    border: 2px solid var(--accent-dark);
+    color: var(--accent-dark);
+    padding: 0.6rem 2rem;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: var(--font-heading);
+    font-weight: bold;
+    transition: all 0.3s ease;
+  }
+
+  .reset-btn:hover {
+    background: var(--accent-dark);
+    color: #fff;
+  }
       `}</style>
 
       <div className="section-header-editorial" style={{ textAlign: 'center', marginBottom: '2rem' }}>
@@ -251,14 +270,9 @@ function AytekPenalty() {
 
         </div>
 
-        <button 
-          onClick={resetGame}
-          style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', border: '2px solid var(--accent-dark)', color: 'var(--accent-dark)', padding: '0.6rem 2rem', borderRadius: '30px', cursor: 'pointer', fontFamily: 'var(--font-heading)', fontWeight: 'bold', transition: '0.3s' }}
-          onMouseOver={(e) => {e.target.style.background = 'var(--accent-dark)'; e.target.style.color = '#fff'}}
-          onMouseOut={(e) => {e.target.style.background = 'transparent'; e.target.style.color = 'var(--accent-dark)'}}
-        >
-          <FaRedo /> SKORU SIFIRLA
-        </button>
+        <button onClick={resetGame} className="reset-btn">
+    <FaRedo /> SKORU SIFIRLA
+  </button>
 
       </div>
     </div>
