@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { archivePhotos } from '../data/photoData';
 
 function PhotoPuzzle() {
@@ -69,7 +69,7 @@ function PhotoPuzzle() {
   };
 
   return (
-    <div className="press-editorial-wrapper animate-fade" style={{ padding: '1rem 0 4rem 0', textAlign: 'center' }} lang="tr">
+    <div className="press-editorial-wrapper animate-fade" style={{ paddingBottom: '4rem' }} lang="tr">
       <style>{`
         .puzzle-grid {
           display: grid;
@@ -82,7 +82,7 @@ function PhotoPuzzle() {
           max-width: 600px;
           aspect-ratio: 1/1;
           box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
-          position: relative; /* Önizleme için eklendi */
+          position: relative;
         }
         
         .puzzle-piece {
@@ -106,6 +106,7 @@ function PhotoPuzzle() {
           filter: brightness(1.3);
           transform: scale(0.95);
           box-shadow: 0 0 15px var(--accent-dark);
+          z-index: 2;
         }
 
         @keyframes winPulse {
@@ -113,15 +114,9 @@ function PhotoPuzzle() {
           50% { box-shadow: 0 0 40px rgba(84, 107, 65, 0.8); }
           100% { box-shadow: 0 0 0 rgba(84, 107, 65, 0.4); }
         }
-        .puzzle-grid.won {
-          animation: winPulse 2s infinite;
-          gap: 0px;
-        }
-        .puzzle-grid.won .puzzle-piece {
-          border: none;
-        }
+        .puzzle-grid.won { animation: winPulse 2s infinite; gap: 0px; }
+        .puzzle-grid.won .puzzle-piece { border: none; }
 
-        /* İpucu Butonu Stili */
         .hint-btn {
           background: transparent;
           border: 1px solid rgba(84, 107, 65, 0.5);
@@ -134,30 +129,21 @@ function PhotoPuzzle() {
           transition: 0.3s;
           margin-bottom: 1rem;
         }
-        .hint-btn:active {
-          background: var(--accent-dark);
-          color: #fff;
-        }
+        .hint-btn:active { background: var(--accent-dark); color: #fff; }
       `}</style>
 
       <div className="container">
         
-        <div className="section-header-editorial" style={{ marginBottom: '3rem' }}>
-          <span className="archive-badge">// RESTORASYON MERKEZİ</span>
+        {/* HİZALAMA DÜZELTİLDİ: Diğer sayfalarla aynı hizada */}
+        <div className="section-header-editorial" style={{ paddingTop: '0', marginTop: '-3rem', marginBottom: '3rem', textAlign: 'center' }}>
+          <span className="archive-badge" style={{ display: 'inline-block', marginBottom: '1rem' }}>// RESTORASYON MERKEZİ</span>
           <h1 className="editorial-title" style={{ textTransform: 'none' }}>ARŞİV PUZZLE</h1>
           <p className="editorial-subtitle">Dağılan kareleri sırasıyla seçip yer değiştirerek gerçek görseli ortaya çıkar.</p>
         </div>
 
-        <div className="game-container" style={{ 
-          maxWidth: '800px', 
-          margin: '0 auto', 
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          padding: '3rem 2rem'
-        }}>
+        <div className="game-container" style={{ maxWidth: '800px', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginBottom: '2rem' }}>
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginBottom: '2rem', flexWrap: 'wrap' }}>
             {[3, 4, 6].map(s => (
               <button 
                 key={s} 
@@ -186,19 +172,9 @@ function PhotoPuzzle() {
             <button 
               onClick={pickRandomPhoto}
               style={{
-                backgroundColor: 'var(--bg-main)',
-                color: 'var(--accent-dark)',
-                border: '2px dashed var(--accent-dark)',
-                padding: '0.8rem 2rem',
-                fontFamily: 'var(--font-heading)',
-                fontSize: '0.9rem',
-                fontWeight: 'bold',
-                cursor: 'pointer',
-                borderRadius: '4px',
-                transition: 'all 0.3s',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem'
+                backgroundColor: 'var(--bg-main)', color: 'var(--accent-dark)', border: '2px dashed var(--accent-dark)',
+                padding: '0.8rem 2rem', fontFamily: 'var(--font-heading)', fontSize: '0.9rem', fontWeight: 'bold',
+                cursor: 'pointer', borderRadius: '4px', transition: 'all 0.3s', display: 'flex', alignItems: 'center', gap: '0.5rem'
               }}
               onMouseOver={(e) => {e.currentTarget.style.background = 'rgba(84, 107, 65, 0.1)'}}
               onMouseOut={(e) => {e.currentTarget.style.background = 'var(--bg-main)'}}
@@ -207,7 +183,7 @@ function PhotoPuzzle() {
             </button>
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', maxWidth: '600px', alignItems: 'flex-end' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', maxWidth: '600px', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem' }}>
             <div style={{ fontFamily: 'var(--font-heading)', color: 'var(--accent-dark)', fontSize: '1.2rem', fontWeight: 'bold' }}>
               HAMLE: <span style={{ fontSize: '1.5rem' }}>{moves}</span>
             </div>
@@ -227,7 +203,7 @@ function PhotoPuzzle() {
           </div>
 
           {isWon && (
-            <div className="game-message success" style={{ margin: '1rem 0', width: '100%', maxWidth: '600px' }}>
+            <div className="game-message success" style={{ margin: '1rem 0', width: '100%', maxWidth: '600px', backgroundColor: 'var(--accent-dark)', color: '#fff', padding: '1rem', borderRadius: '8px', textAlign: 'center' }}>
               <strong>TEBRİKLER! GÖRSELİ {moves} HAMLEDE BAŞARIYLA RESTORE ETTİN.</strong>
             </div>
           )}
@@ -245,10 +221,8 @@ function PhotoPuzzle() {
             )}
 
             {pieces.map((originalPieceId, currentIndex) => {
-              
               const backgroundSizeX = size * 100;
               const backgroundSizeY = size * 100;
-              
               const xPos = (originalPieceId % size) * (100 / (size - 1));
               const yPos = Math.floor(originalPieceId / size) * (100 / (size - 1));
 
@@ -273,10 +247,10 @@ function PhotoPuzzle() {
             onClick={startGame} 
             style={{ marginTop: '1rem', minWidth: '250px' }}
           >
-            {isStarted ? 'YENİDEN KARIŞTIR ↗' : 'OYUNU BAŞLAT ↗'}
+            {isStarted ? 'YENİDEN KARIŞTIR ⟲' : 'OYUNU BAŞLAT ↗'}
           </button>
           
-          <span style={{ marginTop: '1.5rem', fontSize: '0.75rem', opacity: 0.5, fontFamily: 'var(--font-heading)', maxWidth: '500px' }}>
+          <span style={{ marginTop: '1.5rem', fontSize: '0.75rem', opacity: 0.5, fontFamily: 'var(--font-heading)', maxWidth: '500px', textAlign: 'center', display: 'inline-block' }}>
             NASIL OYNANIR: Yerini değiştirmek istediğin parçaya tıkla, ardından geçeceği yere tıkla. En az hamleyle görseli tamamla. Unutursan "Görseli Hatırla" butonuna basılı tutabilirsin.
           </span>
           
