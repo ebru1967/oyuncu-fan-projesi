@@ -12,10 +12,10 @@ function GorselHafiza() {
 
   // Kartları karıştır ve oyunu başlat
   const shuffleCards = () => {
-    // 1. archivePhotos içindeki 190 fotoğraftan rastgele 8 tanesini seçiyoruz
+    // 1. archivePhotos içindeki fotoğraflardan rastgele 8 tanesini seçiyoruz
     const shuffledPool = [...archivePhotos].sort(() => Math.random() - 0.5);
     const selectedImages = shuffledPool.slice(0, 8).map(img => ({ 
-      src: img.url, // Senin veritabanında 'url' olarak geçtiği için buraya eşitledik
+      src: img.url, 
       matched: false 
     }));
 
@@ -96,101 +96,72 @@ function GorselHafiza() {
   }, [matches]);
 
   return (
-    <div className="memory-container" style={{
-      textAlign: 'center',
-      padding: '3rem 1rem',
-      backgroundColor: 'var(--bg-main)',
-      color: 'var(--text-main)',
-      fontFamily: 'var(--font-heading)',
-      minHeight: '80vh'
-    }}>
-      <div className="section-header-editorial" style={{ marginBottom: '1.5rem' }}>
-        <span className="archive-badge">// İNTERAKTİF ARŞİV</span>
-        <h2 className="editorial-title" style={{ marginTop: '0.5rem', fontSize: 'clamp(1.5rem, 5vw, 2.5rem)' }}>GÖRSEL HAFIZA</h2>
-      </div>
+    <div className="press-editorial-wrapper animate-fade" style={{ paddingBottom: '4rem' }} lang="tr">
+      
+      {/* ÖZEL CSS STİLLERİ */}
+      <style>{`
+        .memory-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: clamp(10px, 2vw, 20px);
+          max-width: 800px;
+          margin: 0 auto;
+          perspective: 1000px;
+        }
 
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginBottom: '2rem', fontFamily: 'var(--font-body)', fontWeight: 'bold' }}>
-        <div style={{ fontSize: '1.1rem' }}>HAMLE: <span style={{ fontSize: '1.4rem' }}>{turns}</span></div>
-        <div style={{ fontSize: '1.1rem', color: 'var(--accent-dark)' }}>EŞLEŞME: <span style={{ fontSize: '1.4rem' }}>{matches}/8</span></div>
-      </div>
-
-      <button onClick={shuffleCards} className="editorial-link" style={{ padding: '0.6rem 1.5rem', border: '1px solid var(--accent-dark)', backgroundColor: 'transparent', color: 'var(--text-main)', cursor: 'pointer', fontWeight: 'bold', marginBottom: '2rem' }}>
-        YENİDEN BAŞLAT
-      </button>
-
-      {isWin && (
-        <div className="animate-fade" style={{ marginBottom: '2rem', color: 'var(--accent-dark)', animation: 'pulse 1.5s infinite' }}>
-          <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>TEBRİKLER! GÖRSEL HAFIZAN MÜKEMMEL.</h3>
-          <p>Tüm arşivi {turns} hamlede başarıyla eşleştirdin.</p>
-        </div>
-      )}
-
-      {/* KARTLARIN GRID YAPISI */}
-      <div className="memory-grid" style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(4, 1fr)',
-        gap: 'clamp(10px, 2vw, 20px)',
-        maxWidth: '800px',
-        margin: '0 auto',
-        perspective: '1000px'
-      }}>
-        {cards.map((card) => {
-          const isFlipped = card === choiceOne || card === choiceTwo || card.matched;
-          return (
-            <div 
-              className={`memory-card ${isFlipped ? 'flipped' : ''} ${card.isJustMatched ? 'matched-pulse' : ''} ${card.isShake ? 'mismatch-shake' : ''}`} 
-              key={card.id} 
-              onClick={() => handleChoice(card)}
-              style={{ position: 'relative', aspectRatio: '3/4', cursor: disabled ? 'default' : 'pointer' }}
-            >
-              <div className="card-inner" style={{
-                position: 'absolute', width: '100%', height: '100%', transition: 'transform 0.6s', transformStyle: 'preserve-3d',
-                transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
-              }}>
-                {/* ÖN YÜZ (FOTOĞRAF) */}
-                <div className="card-front" style={{
-                  position: 'absolute', width: '100%', height: '100%', backfaceVisibility: 'hidden',
-                  transform: 'rotateY(180deg)', borderRadius: '8px', overflow: 'hidden', border: '2px solid var(--accent-dark)',
-                  boxShadow: '0 4px 10px rgba(0,0,0,0.1)'
-                }}>
-                  <img src={card.src} alt="Aytek Arşiv" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  {card.matched && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.4)' }}></div>}
-                </div>
-
-                {/* ARKA YÜZ (KAPALI HALİ) */}
-                <div className="card-back" style={{
-                  position: 'absolute', width: '100%', height: '100%', backfaceVisibility: 'hidden',
-                  backgroundColor: 'var(--bg-card)', border: '2px solid var(--accent-dark)', borderRadius: '8px',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  boxShadow: '0 4px 10px rgba(0,0,0,0.1)'
-                }}>
-                  <div style={{ width: '2px', height: '40%', backgroundColor: 'var(--accent-dark)', opacity: 0.3 }}></div>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* ANİMASYON CSS KODLARI */}
-      <style dangerouslySetInnerHTML={{__html: `
         @media (max-width: 500px) {
-          .memory-grid {
-            grid-template-columns: repeat(4, 1fr) !important;
-          }
+          .memory-grid { gap: 8px; }
+        }
+
+        .memory-card {
+          position: relative;
+          aspect-ratio: 3/4;
+          cursor: pointer;
+        }
+
+        .memory-card.flipped .card-inner { transform: rotateY(180deg); }
+        .memory-card.matched-pulse { animation: pulseMatch 0.5s ease-in-out; }
+        .memory-card.mismatch-shake { animation: shakeError 0.5s ease-in-out; }
+
+        .card-inner {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          transition: transform 0.6s;
+          transform-style: preserve-3d;
+        }
+
+        .card-front, .card-back {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          backface-visibility: hidden;
+          border-radius: 8px;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .card-front {
+          transform: rotateY(180deg);
+          overflow: hidden;
+          border: 2px solid var(--accent-dark);
+        }
+
+        .card-back {
+          background-color: var(--bg-card);
+          border: 2px solid var(--accent-dark);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background-color 0.3s ease;
         }
         
-        .matched-pulse {
-          animation: pulseMatch 0.5s ease-in-out;
-        }
-
-        .mismatch-shake {
-          animation: shakeError 0.5s ease-in-out;
+        .memory-card:hover .card-back {
+          background-color: rgba(84, 107, 65, 0.05);
         }
 
         @keyframes pulseMatch {
           0% { transform: scale(1); }
-          50% { transform: scale(1.1); }
+          50% { transform: scale(1.1); z-index: 10; box-shadow: 0 0 20px var(--accent-dark); }
           100% { transform: scale(1); }
         }
 
@@ -202,7 +173,65 @@ function GorselHafiza() {
           80% { transform: translateX(10px); }
           100% { transform: translateX(0); }
         }
-      `}} />
+      `}</style>
+
+      <div className="container">
+        
+        {/* HİZALAMA DÜZELTİLDİ: paddingTop: '0', marginTop: '-3rem' EKLENDİ */}
+        <div className="section-header-editorial" style={{ paddingTop: '0', marginTop: '-3rem', marginBottom: '3rem', textAlign: 'center' }}>
+          <span className="archive-badge" style={{ display: 'inline-block', marginBottom: '1rem' }}>// İNTERAKTİF ARŞİV</span>
+          <h1 className="editorial-title" style={{ textTransform: 'none' }}>GÖRSEL HAFIZA</h1>
+          <p className="editorial-subtitle">Tüm kartları en az hamleyle eşleştirerek arşivi tamamlayın.</p>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '3rem', marginBottom: '2rem', fontFamily: 'var(--font-heading)', fontWeight: 'bold' }}>
+            <div style={{ fontSize: '1.2rem', color: 'var(--text-main)' }}>HAMLE: <span style={{ fontSize: '1.8rem' }}>{turns}</span></div>
+            <div style={{ fontSize: '1.2rem', color: 'var(--accent-dark)' }}>EŞLEŞME: <span style={{ fontSize: '1.8rem' }}>{matches}/8</span></div>
+          </div>
+
+          {isWin && (
+            <div className="animate-fade" style={{ marginBottom: '2rem', color: 'var(--accent-dark)', textAlign: 'center', backgroundColor: 'rgba(84, 107, 65, 0.05)', padding: '1rem 2rem', borderRadius: '8px', border: '1px solid var(--accent-dark)' }}>
+              <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)' }}>TEBRİKLER! GÖRSEL HAFIZAN MÜKEMMEL.</h3>
+              <p style={{ margin: 0 }}>Tüm arşivi <strong>{turns}</strong> hamlede başarıyla eşleştirdin.</p>
+            </div>
+          )}
+
+          {/* KARTLARIN GRID YAPISI */}
+          <div className="memory-grid" style={{ width: '100%', marginBottom: '3rem' }}>
+            {cards.map((card) => {
+              const isFlipped = card === choiceOne || card === choiceTwo || card.matched;
+              return (
+                <div 
+                  className={`memory-card ${isFlipped ? 'flipped' : ''} ${card.isJustMatched ? 'matched-pulse' : ''} ${card.isShake ? 'mismatch-shake' : ''}`} 
+                  key={card.id} 
+                  onClick={() => handleChoice(card)}
+                  style={{ cursor: disabled || card.matched ? 'default' : 'pointer' }}
+                >
+                  <div className="card-inner">
+                    {/* ÖN YÜZ (FOTOĞRAF) */}
+                    <div className="card-front">
+                      <img src={card.src} alt="Aytek Arşiv" style={{ width: '100%', height: '100%', objectFit: 'cover' }} draggable="false" />
+                      {card.matched && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)' }}></div>}
+                    </div>
+
+                    {/* ARKA YÜZ (KAPALI HALİ) */}
+                    <div className="card-back">
+                      <div style={{ width: '3px', height: '40%', backgroundColor: 'var(--accent-dark)', opacity: 0.3, borderRadius: '5px' }}></div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <button onClick={shuffleCards} className="editorial-link-btn-anchor reset-btn">
+            YENİDEN BAŞLAT ⟲
+          </button>
+
+        </div>
+      </div>
     </div>
   );
 }
