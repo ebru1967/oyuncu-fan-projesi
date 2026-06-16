@@ -440,6 +440,21 @@ function FanArtGallery() {
           color: var(--bg-main);
         }
 
+        /* Updated Card Title CSS */
+        .art-card h3 {
+          color: var(--accent-dark);
+          margin-bottom: 1.5rem;
+          font-family: var(--font-heading);
+          font-size: 1.2rem;
+          line-height: 1.4;
+          display: -webkit-box;
+          -webkit-line-clamp: 2; 
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          min-height: 3.36rem; 
+        }
+
         .play-btn {
           width: 100%;
           padding: 0.8rem;
@@ -461,6 +476,11 @@ function FanArtGallery() {
         .play-btn:hover {
           background: var(--accent-dark);
           color: var(--bg-main);
+        }
+        
+        .play-btn:focus-visible {
+          outline: 2px solid var(--accent-dark);
+          outline-offset: 2px;
         }
 
         .no-context-card {
@@ -526,7 +546,7 @@ function FanArtGallery() {
             />
           </div>
 
-          <h3 style={{ color: 'var(--accent-dark)', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)', fontSize: '1.2rem' }}>
+          <h3 style={{ color: 'var(--accent-dark)', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)', fontSize: '1.2rem', minHeight: 'auto', display: 'block' }}>
             NO CONTEXT AYTEK
           </h3>
           <p style={{ fontSize: '0.85rem', opacity: 0.8, marginBottom: '1.5rem', lineHeight: '1.5', minHeight: '40px' }}>
@@ -555,7 +575,7 @@ function FanArtGallery() {
               ))}
             </div>
 
-            <h3 style={{ color: 'var(--accent-dark)', marginBottom: '1.5rem', fontFamily: 'var(--font-heading)', fontSize: '1.2rem', lineHeight: '1.4' }}>
+            <h3>
               {art.title}
             </h3>
             

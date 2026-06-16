@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 function CuvalTherapy() {
   const [rubCount, setRubCount] = useState(0);
@@ -30,12 +30,13 @@ function CuvalTherapy() {
         {`
           @keyframes purrShake {
             0% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(1px, 1px) rotate(0.5deg); }
-            50% { transform: translate(0, 0) rotate(0eg); }
-            75% { transform: translate(-1px, 1px) rotate(-0.5deg); }
+            25% { transform: translate(1.5px, 1.5px) rotate(0.5deg); }
+            50% { transform: translate(0, 0) rotate(0deg); }
+            75% { transform: translate(-1.5px, 1.5px) rotate(-0.5deg); }
             100% { transform: translate(0, 0) rotate(0deg); }
           }
-          .purr-active {
+          /* Titreme efekti artık div'e değil, direkt resmin kendisine uygulanıyor */
+          .purr-active img {
             animation: purrShake 0.15s linear infinite;
           }
         `}
@@ -62,20 +63,22 @@ function CuvalTherapy() {
 
           <div 
             onClick={handleMassage}
-            // Titreşim (purr-active) sınıfı isRubbing true olduğunda eklenir
             className={isRubbing ? 'purr-active' : ''}
             style={{ 
-              width: '300px', height: '300px', margin: '0 auto 3rem auto', cursor: 'pointer',
+              width: 'min(300px, 70vw)', 
+              aspectRatio: '1 / 1', 
+              margin: '0 auto 3rem auto', cursor: 'pointer',
               backgroundColor: rubCount >= 100 ? 'rgba(255, 215, 0, 0.1)' : 'rgba(84, 107, 65, 0.05)', 
               borderRadius: '50%', overflow: 'hidden',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               boxShadow: rubCount >= 100 
-                ? '0 0 60px rgba(255, 215, 0, 0.5), inset 0 0 20px rgba(255, 215, 0, 0.3)' // Nirvana Altın Haresi
+                ? '0 0 60px rgba(255, 215, 0, 0.5), inset 0 0 20px rgba(255, 215, 0, 0.3)' 
                 : (rubCount > 0 ? `0 0 ${rubCount}px rgba(84, 107, 65, 0.2)` : 'none'),
               transition: 'box-shadow 0.5s ease, background-color 0.5s ease, transform 0.1s ease',
               transform: `scale(${scaleRatio})`,
               userSelect: 'none', 
-              WebkitTapHighlightColor: 'transparent'
+              WebkitTapHighlightColor: 'transparent',
+              touchAction: 'manipulation' 
             }}
           >
             <img 
@@ -105,7 +108,6 @@ function CuvalTherapy() {
             {getCatReaction()}
           </p>
 
-          {/* Sadece skor 0'dan büyükse sıfırlama butonu görünsün */}
           {rubCount > 0 && (
             <button 
               className="editorial-link-btn-anchor reset-btn" 
