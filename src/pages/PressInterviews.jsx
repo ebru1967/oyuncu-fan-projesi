@@ -5,7 +5,53 @@ function PressInterviews() {
   const [expandedId, setExpandedId] = useState(null); 
 
   const interviewData = [
-   {
+    {
+      id: 21,
+      type: 'written',
+      source: 'TİYATRO DERGİSİ // PINAR EROL',
+      date: '16 HAZİRAN 2026',
+      title: 'AYTEK ŞAYAN’LA UZUN LAFIN KISASI: ADI KISA, ETKİSİ UZUN; HADİ FESTİVALE BUYURUN!',
+      summary: "Meyvenin çekirdeğinden yeşeren yaşam gibi, en yoğun, en vurucu hikâyeler bazen o küçücük formların içinden çıkıyor. Uzun bir romanın dolaşa dolaşa anlatacağı şeyi, iki dizelik şiir, bir anda kalbinize bırakıveriyor. “Kısalar Festivali”nin ikinci yılında, Aytek Şayan'la kısa formun dönüştürücü gücüne ve sanatın kolektif ruhuna yakından bakıyoruz.",
+      qaList: [
+        {
+          q: "“Kısalar Festivali”nin ikincisini karşılamaya günler kaldı. Daha dün elimize doğan festivalin büyümesini izlemenin heyecanı üzerimizde. Bu sene neler olacak? Belirlenen temalar yine birbirleriyle paslaşacaklar mı, aralarında konuşacaklar mı?",
+          a: "Festivali ikinci kez yapmak bizim için de çok heyecan verici. Bu sene temaları belirlerken biraz daha net olmak istedik. Geçen seneden bu seneye taşıdığımız bir tema var; “çevresel kıyamet”. Diğer temalar da “neşeli direniş”, “modern oburluk”, “kırılgan köprüler”, “kimlik ve aidiyet”. Hepsi de her gün içinden geçtiğimiz, her gün soluduğumuz dünyayı anlatıyor. Her biri kendi başına güçlü bir manifesto gibi ama bu dönemin ruhunu çok iyi temsil ettikleri için yan yana geldiklerinde de birbirleriyle konuşmaya başlıyorlar. Bu çağın getirdiği sorulara bambaşka yerlerden cevap verme fırsatı sunuyor aslında temalar."
+        },
+        {
+          q: "Festival bu yıl da DasDas'ta gerçekleşiyor. Bu iş birliğinin festivalin kimliğine ve üretim anlayışına nasıl bir etkisi var? Bir yandan da tarihleri, programı ve izleyicileri bekleyen atölye gibi buluşmaları konuşalım mı?",
+          a: "“Kısalar Festivali”, ikinci senesinde de DasDas'ta yapılıyor. İş birliği aslında bakış açılarının ortaklaşması demek bizim için. O yüzden sadece bir mekân değil bir yol arkadaşlığı gibi. Türkiye'de bir festivalin süresi boyunca tek bir mekânda gerçekleşmesi artık pek mümkün olmuyor biz burada bunu da başarıyoruz. Bu sene festival tarihleri 18 ve 21 Haziran arasındaki dört gün. Bu dört gün boyunca aşağı yukarı elli performans olacak. Ayrıca bu sene festivalde Alexandra Kazazou “Fiziksel Tiyatro” atölyesi gerçekleştirecek."
+        },
+        {
+          q: "“Kısa” tiyatro formatına pek alışık değiliz. Belli ki kalıpların dışına çıkan, bir tanıma hapsolmak istemeyen bir kimliği var “Kısalar Festivali”nin. Hatta tiyatroyla da sınırlamayalım, sahne sanatlarını kapsayan, genişleten, disiplinler arası bir üretim dili diyelim. Nedense “kısa” form olarak tamamlanmamış, rüştünü ispat etmemiş gibi algılanıyor. Bu festival bu algıya itiraz ediyor, değil mi?",
+          a: "Biz geçen sene festivale “yalın, özgür, şimdi” diyerek başladık. Aslında herkese anlatacağın bir hikâyen varsa onu belirli kalıplara sıkışmadan, yaratıcılığını kullanarak anlatabilirsin dedik. O yüzden “kısa” formun tamamlanmamış gibi algılanması aslında alışılagelmiş kalıpların bir yanılgısı. Festival bizim için sürelerin kısaldığı bir alan değil, tam tersine belirli tanımlara hapsolmak istemeyen, disiplinler arası bir özgürlük alanı. Hatta bu “kısa” forma, anlatının en rafine hali bile diyebiliriz. Aslında “kısa” form, anlatıyı en saf, en dürüst ve en yalın haliyle anlatmayı da mümkün kılıyor. Dolayısıyla bu algıya sadece itiraz etmiyoruz, bu algıyı kırmak için de elimizden geleni yapıyoruz."
+        },
+        {
+          q: "Her sene tiyatronun en zor senesindeyiz diye diye bu tiyatro mevsimini de atlattık (!) Bir oyun üzerinde hemfikir olmak, ekip kurmak, prova için mekân bulmak, salon bulmak, seyirciyle buluşmak başlı başına zorken ve gitgide zorlaşıyorken bir anlamda kolaylaştırıcı, yüreklendirici mi oluyor festival? Bir dayanışma ve motivasyon zemini oluşturuyor da diyebiliriz.",
+          a: "Evet sorunlar hep var, her zaman vardı ama “Kısalar Festivali”nin bir cesaretlendirme hali var. Dört gün boyunca yan yana durmanın, o kolektif enerjinin iyileştirici bir gücü oluyor. Festivale katılan herkes; izleyiciler, sahnede olanlar, yaratıcı ekipler, teknik ekipler ortak dertleri paylaşıyorlar ama ne olursa olsun bu işi yapmanın da heyecanını hissediyorlar. Bu yüzden festival herkes için “buradayız, devam ediyoruz” dediğimiz bir alan haline de geliyor. Çünkü hepimiz farkındayız ki sanatı sürdürülebilir kılmanın yollarından biri de birbirimize alan açmak ve yüklerimizi paylaşmak."
+        },
+        {
+          q: "Üretim dolaşıma da girebiliyor böylece.",
+          a: "Tabii buna alan açmak da çok önemli. Geçen sene “Kısalar Festivali”ndeki bazı oyunlar başka festivallerde de oynadı. “Kısalar Festivali”nde ilk gösterimini gerçekleştiren birkaç oyun da sezonda farklı sahnelerde oynamaya başladı. Bu oyunların ilk kez “Kısalar Festivali”nde oynanmış olması da bizi çok mutlu ediyor."
+        },
+        {
+          q: "Seyirci bazen bir performansla öyle özel bir buluşma yaşıyor, öyle güçlü bir bağ kuruyor ki o koltuktan öylece kalkıp gitmek olmuyor. İllaki oyuncusuyla, yönetmeniyle, yaratıcı ekibiyle buluşmak, biraz daha tiyatro konuşmak, biraz daha tiyatro yaşamak, biraz daha o dünyanın içinde kalmak istiyor. Bu festival bize bunun için biraz daha zaman veriyor.",
+          a: "Bizim tam olarak hayal ettiğimiz ve yaratmak istediğimiz şey buydu; bu aradaki mesafeyi kaldırabilmek. Her performanstan sonra yapılan soru-cevap kısmı tam da bunun için kurguladığımız ve ayırdığımız bir zaman. Seyirciyi performans biter bitmez ekiple buluşturuyoruz. O enerji yok olmadan, izleyici aklındaki soruyu hemen sorsun, duygusunu paylaşabilsin, fikirleri tartışabilsin diye. Çünkü performans sahnede bittiğinde aslında bitmiyor, izleyicinin, ekibin zihninde devam ediyor. Bir de izleyicilerin tiyatro, sahne sanatları üzerine ekiplerle konuşabileceği alan neredeyse yok gibi. Bu alanı açmak da önemli bir misyon bizim için. Geçen sene seyircinin de ekiplerin de bunu özlemiş olduğunu fark ettik."
+        },
+        {
+          q: "Bir de sezon biterken tiyatro sevdalıları için de bonus gibi oluyor. Kapanışı reddedenlere ilaç gibi geliyor.",
+          a: "Aslında bu söylediğiniz çok güzel ama biz aslında tiyatroda sezonun bitmemesi gerektiğini düşünüyoruz. Bu ezberi bozabilmek güzel olurdu. Festivalin dört gün boyunca da aynı enerjiyle, heyecanla ve katılımla devam etmesi de belki buna ufak bir katkı sunuyordur."
+        },
+        {
+          q: "Bu buluşmanın “3 Kısa” gibi çıktısı da oldu.",
+          a: "Evet geçen sene festivale katılmış üç oyunu seçerek “3 Kısa” adıyla yeni bir prodüksiyon yaptık. Ortak temalarda buluşan üç kadın oyunu yeni bir dramaturji yapılarak Fırat Aygün tarafından yönetildi. Önümüzdeki sene de yine böyle bir prodüksiyon yapmayı umuyoruz."
+        },
+        {
+          q: "Bir festivali programlamaktan çok bir ekosistem kuruyorsunuz aslında. Bu sayede de kim bilir kaç kişinin hayali gerçekleşiyor, sesi duyuluyor, varlığı biliniyor ve fikri karşılık buluyor. Şimdi bunlara teşekkür edilmez mi?",
+          a: "Biz çok teşekkür ederiz. Ekosistem kelimesi niyetimizi de çok güzel özetliyor. Amacımız, seyircilerin ve tüm yaratıcı ekiplerin birbirleriyle temas ettiği, yaşayan bir alan kurabilmek. Size, katılan tüm ekiplere, seyircilere ve festivali yapan tüm sahne arkası ekibe bir hayale ortak olduğu için de ayrıca teşekkür ederiz."
+        }
+      ]
+    },
+    {
       id: 20,
       type: 'written',
       source: 'MİLLİYET // SEYHAN AKINCI',
