@@ -2,80 +2,183 @@ import { activeNews } from '../data/newsData';
 
 function Archive() {
   return (
-    <div className="container animate-fade" style={{ padding: '4rem 1rem', maxWidth: '800px', margin: '0 auto' }}>
+    <div className="container animate-fade" style={{ padding: '4rem 1rem', maxWidth: '850px', margin: '0 auto' }}>
       
-      {/* MOBİL UYUMLULUK VE HOVER ANİMASYONU */}
+      {/* 📁 FİZİKSEL SİCİL DOSYASI (DOSSIER) CSS MOTORU */}
       <style>{`
-        .archive-row-item {
-          display: flex;
-          gap: 2rem;
-          margin-bottom: 3rem;
-          padding-bottom: 2rem;
-          border-bottom: 1px solid var(--border-color);
-          transition: transform 0.3s ease, border-color 0.3s ease;
+        /* Arşiv Başlığı - Daktilo Şeridi Etkisi */
+        .archive-main-heading {
+          text-align: center;
+          margin-bottom: 4rem;
+          position: relative;
         }
         
-        /* Üzerine gelince hafifçe sağa kayar ve alt çizgisi parlar */
-        .archive-row-item:hover {
-          transform: translateX(8px);
-          border-bottom-color: var(--accent-dark);
+        .archive-main-heading::after {
+          content: '';
+          display: block;
+          width: 60px;
+          height: 4px;
+          background: var(--accent-dark);
+          margin: 1rem auto 0;
         }
 
-        .archive-code-col {
-          flex: 0 0 100px;
+        /* Fiziksel Klasör Kartı */
+        .dossier-card {
+          position: relative;
+          background: var(--bg-card);
+          border: 2px solid var(--accent-dark);
+          border-left: 12px solid var(--accent-dark); /* Telli dosya kenarı */
+          padding: 2rem 2.5rem;
+          margin-bottom: 3rem;
+          box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.1); /* Sert Retro Gölge */
+          transition: all 0.3s ease;
+          overflow: hidden;
         }
 
-        /* TELEFON EKRANLARI İÇİN ÖZEL TASARIM */
+        .dossier-card:hover {
+          transform: translateY(-4px) translateX(-2px);
+          box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Kartın İçindeki Kesik Çizgili Antet (Header) */
+        .dossier-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-bottom: 2px dashed var(--accent-dark);
+          padding-bottom: 0.8rem;
+          margin-bottom: 1.5rem;
+        }
+
+        .dossier-code {
+          font-family: monospace;
+          font-size: 1.2rem;
+          font-weight: 900;
+          letter-spacing: 2px;
+          color: var(--accent-dark);
+        }
+
+        /* Fiziksel Kaşe/Mühür (Stamp) Efekti */
+        .dossier-stamp {
+          position: absolute;
+          top: 1.5rem;
+          right: -1rem;
+          transform: rotate(12deg);
+          border: 3px solid var(--accent-dark);
+          color: var(--accent-dark);
+          padding: 0.3rem 1.5rem;
+          font-weight: 900;
+          font-size: 0.85rem;
+          letter-spacing: 3px;
+          text-transform: uppercase;
+          opacity: 0.8;
+          border-radius: 4px;
+          pointer-events: none;
+        }
+
+        /* Başlık ve Metin */
+        .dossier-title {
+          font-size: 1.6rem;
+          line-height: 1.2;
+          margin: 0 0 1rem 0;
+          padding-right: 3rem; /* Mühürle çakışmaması için */
+        }
+
+        .dossier-summary {
+          font-size: 0.95rem;
+          line-height: 1.8;
+          opacity: 0.85;
+          text-align: justify;
+          margin-bottom: 1.5rem;
+        }
+
+        /* Ataçlanmış Dosya Linki */
+        .dossier-link-wrapper {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .dossier-link-wrapper::before {
+          content: '📎';
+          font-size: 1.2rem;
+          opacity: 0.7;
+        }
+
+        .dossier-action-link {
+          font-weight: bold;
+          font-size: 0.85rem;
+          text-decoration: underline;
+          text-underline-offset: 4px;
+          color: var(--text-main);
+          transition: color 0.2s;
+        }
+        
+        .dossier-action-link:hover {
+          color: var(--accent-dark);
+        }
+
+        /* MOBİL UYUMLULUK */
         @media (max-width: 600px) {
-          .archive-row-item {
-            flex-direction: column; /* Yan yana değil alt alta dizer */
-            gap: 0.5rem;
+          .dossier-card {
+            padding: 1.5rem;
+            border-left-width: 8px;
+            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
           }
-          .archive-code-col {
-            flex: none;
-            border-bottom: 2px dashed var(--accent-dark);
-            padding-bottom: 0.5rem;
+          .dossier-stamp {
+            position: relative;
+            top: 0;
+            right: 0;
+            transform: rotate(0);
             display: inline-block;
-            width: max-content;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-width: 2px;
+            padding: 0.2rem 0.8rem;
+          }
+          .dossier-title {
+            padding-right: 0;
+            font-size: 1.3rem;
+          }
+          .dossier-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
           }
         }
       `}</style>
 
-      <h1 className="editorial-title" style={{ textAlign: 'center', marginBottom: '3rem', borderBottom: '2px solid var(--accent-dark)', paddingBottom: '1rem' }}>
-        TÜM ARŞİV KAYITLARI
+      <h1 className="editorial-title archive-main-heading">
+        ARŞİV SİCİL KAYITLARI
       </h1>
       
-      <div className="chronicle-table">
+      <div className="dossier-list">
         {activeNews.map((news) => (
-          <div className="archive-row-item" key={news.id}>
+          <div className="dossier-card" key={news.id}>
             
-            <div className="archive-code-col" style={{ 
-              fontSize: '1.5rem', 
-              fontWeight: 'bold', 
-              color: 'var(--accent-dark)',
-              fontFamily: 'var(--font-heading)'
-            }}>
-              {news.regCode.split('#')[1] || news.regCode}
+            {/* Kaşe / Mühür */}
+            <div className="dossier-stamp">
+              {news.category}
+            </div>
+
+            {/* Antet / Sicil Kodu */}
+            <div className="dossier-header">
+              <span className="dossier-code">
+                {news.regCode}
+              </span>
             </div>
             
-            <div className="chronicle-details">
-              <span className="card-category" style={{ 
-                fontSize: '0.75rem', 
-                textTransform: 'uppercase', 
-                letterSpacing: '1px',
-                opacity: 0.7 
-              }}>
-                {news.category}
-              </span>
-              <h4 style={{ fontSize: '1.3rem', margin: '0.5rem 0' }}>{news.title}</h4>
-              <p style={{ fontSize: '0.95rem', lineHeight: '1.7', opacity: 0.9, textAlign: 'justify' }}>{news.summary}</p>
-              <a href={news.linkUrl} target="_blank" rel="noreferrer" className="editorial-link" style={{ 
-                display: 'inline-block', 
-                marginTop: '1rem',
-                fontSize: '0.85rem',
-                fontWeight: 'bold'
-              }}>
+            {/* İçerik Gövdesi */}
+            <h4 className="dossier-title">
+              {news.title.toLocaleUpperCase('tr-TR')}
+            </h4>
+            
+            <p className="dossier-summary">
+              {news.summary}
+            </p>
+            
+            {/* Ek/Link Bağlantısı */}
+            <div className="dossier-link-wrapper">
+              <a href={news.linkUrl} target="_blank" rel="noreferrer" className="dossier-action-link">
                 {news.linkText}
               </a>
             </div>
@@ -83,6 +186,7 @@ function Archive() {
           </div>
         ))}
       </div>
+
     </div>
   );
 }
