@@ -1,5 +1,14 @@
 export const activeNews = [
   {
+    id: 12,
+    regCode: "KAYIT #2026-06L",
+    category: "BASIN // RÖPORTAJ",
+    title: "Tiyatro Dergisi: 'Aytek Şayan’la Uzun Lafın Kısası'",
+    summary: "Pınar Erol'a konuşan Aytek Şayan, bu yıl DasDas'ta ikincisi gerçekleşecek olan Kısalar Festivali'nin vizyonunu, tiyatronun kalıplara sığmayan yenilikçi dilini ve sanatta kolektif ruhun iyileştirici gücünü anlatıyor.",
+    linkText: "RÖPORTAJI OKU ↗",
+    linkUrl: "/basin" 
+  },
+  {
     id: 10,
     regCode: "KAYIT #2026-06J",
     category: "BASIN // RÖPORTAJ",
