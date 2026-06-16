@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { activeNews } from '../data/newsData'; 
 
 function Home() {
-  const location = useLocation(); // URL'i dinlemek için
+  const location = useLocation();
 
   useEffect(() => {
     if (location.hash === '#kronoloji') {
@@ -18,7 +18,7 @@ function Home() {
     }
   }, [location]);
 
- const mainArticle = activeNews[0]; 
+  const mainArticle = activeNews[0]; 
   const sideArticles = activeNews.slice(1, 3);
 
   const newsCoverImages = {
@@ -120,7 +120,7 @@ function Home() {
       
       <section className="curated-records">
         <div className="container">
-          <div className="section-header-editorial">
+          <div className="section-header-editorial" style={{ paddingTop: '0', marginTop: '-3rem' }}>
             <h2 className="editorial-title">Aktif Arşiv Kayıtları</h2>
             <p className="editorial-subtitle">Oyuncunun sanat hayatından anlık güncellenen gelişmeler ve kritik dökümanlar.</p>
           </div>
@@ -197,7 +197,7 @@ function Home() {
       <section id="kronoloji" className="chronicle-section">
         <div className="container">
           
-          <div className="section-header-editorial">
+          <div className="section-header-editorial" style={{ paddingTop: '0', marginTop: '-3rem' }}>
             <span className="archive-badge">// KRONOLOJİK ARŞİV SİCİLİ</span>
             <h2 className="editorial-title">SANAT TARİHÇESİ</h2>
             <p className="editorial-subtitle">İzmir’deki o ilk amatör metin denemelerinden, bugünün avangart tiyatro hareketlerine uzanan hat.</p>
