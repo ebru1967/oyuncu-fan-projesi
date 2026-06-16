@@ -72,7 +72,7 @@ function AytekBulmaca() {
   };
 
   return (
-    <div className="game-container" style={{ 
+    <div className="game-container animate-fade" style={{ 
       textAlign: 'center', 
       padding: '2rem 1rem', 
       backgroundColor: 'var(--bg-main)', 
@@ -109,18 +109,17 @@ function AytekBulmaca() {
                 position: 'absolute',
                 width: 'var(--card-w)',
                 height: 'var(--card-h)',
-                // CSS Değişkenleri ile dinamik mobil/masaüstü pozisyonlaması
                 left: `calc(50% - var(--card-half-w) + (var(--card-gap) * ${currentPosIndex - 1}))`, 
-                transition: `left ${shuffleSpeed / 1000}s ease-in-out`,
+                transition: `left ${shuffleSpeed / 1000}s ease-in-out, transform 0.2s ease`,
                 backgroundColor: 'var(--bg-card)',
-                border: '1px solid var(--accent-dark)',
+                border: '2px solid var(--accent-dark)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: gameState === 'guessing' ? 'pointer' : 'default',
                 overflow: 'hidden',
-                boxShadow: gameState === 'guessing' ? '0 4px 15px rgba(0,0,0,0.1)' : 'none',
-                borderRadius: '8px'
+                boxShadow: '4px 4px 0px rgba(0,0,0,0.15)', // Retro gölge eklendi
+                borderRadius: '4px'
               }}
             >
               {(gameState === 'showing' || gameState === 'gameover') && cardId === targetCard ? (
@@ -130,7 +129,29 @@ function AytekBulmaca() {
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                 />
               ) : (
-                <div style={{ fontSize: 'clamp(2rem, 8vw, 3rem)', opacity: 0.3, color: 'var(--accent-dark)' }}>?</div>
+                /* Gizli Dosya (Dossier) Arka Yüzü */
+                <div style={{ 
+                  width: '100%', 
+                  height: '100%', 
+                  backgroundImage: 'repeating-linear-gradient(45deg, rgba(84,107,65,0.05) 0px, rgba(84,107,65,0.05) 2px, transparent 2px, transparent 8px)',
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  alignItems: 'center', 
+                  justifyContent: 'center'
+                }}>
+                  <span style={{ 
+                    border: '2px solid var(--accent-dark)', 
+                    color: 'var(--accent-dark)', 
+                    padding: '2px 8px', 
+                    transform: 'rotate(-15deg)', 
+                    fontSize: 'clamp(0.7rem, 2vw, 0.9rem)', 
+                    fontWeight: '900', 
+                    letterSpacing: '2px',
+                    opacity: 0.8
+                  }}>
+                    GİZLİ
+                  </span>
+                </div>
               )}
             </div>
           );
@@ -139,19 +160,19 @@ function AytekBulmaca() {
 
       <div style={{ minHeight: '80px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
         {gameState === 'idle' && (
-          <button onClick={startRound} className="editorial-link" style={{ padding: '0.8rem 2rem', border: '1px solid var(--accent-dark)', backgroundColor: 'transparent', color: 'var(--text-main)', cursor: 'pointer', fontWeight: 'bold', fontSize: 'clamp(0.9rem, 3vw, 1.1rem)' }}>
+          <button onClick={startRound} className="editorial-link" style={{ padding: '0.8rem 2rem', border: '1px solid var(--accent-dark)', backgroundColor: 'var(--text-main)', color: 'var(--bg-main)', cursor: 'pointer', fontWeight: 'bold', fontSize: 'clamp(0.9rem, 3vw, 1.1rem)' }}>
             TESTİ BAŞLAT
           </button>
         )}
 
-        {gameState === 'shuffling' && <p style={{ fontSize: 'clamp(1rem, 4vw, 1.2rem)', letterSpacing: '2px', animation: 'pulse 1s infinite' }}>KARTLAR KARIŞTIRILIYOR...</p>}
+        {gameState === 'shuffling' && <p style={{ fontSize: 'clamp(1rem, 4vw, 1.2rem)', letterSpacing: '2px', animation: 'pulse 1s infinite' }}>GÖZÜNÜ AYIRMA...</p>}
         
         {gameState === 'guessing' && <p style={{ fontSize: 'clamp(1.1rem, 4.5vw, 1.3rem)', fontWeight: 'bold' }}>HEDEF PORTRE HANGİSİNDE?</p>}
 
         {gameState === 'gameover' && (
           <div className="animate-fade">
             <p style={{ fontSize: 'clamp(1.1rem, 4.5vw, 1.3rem)', fontWeight: 'bold', marginBottom: '1.5rem', opacity: 0.8 }}>YANLIŞ SEÇİM. ODAK KAYBEDİLDİ.</p>
-            <button onClick={resetGame} className="editorial-link" style={{ padding: '0.8rem 2rem', border: '1px solid var(--accent-dark)', backgroundColor: 'var(--text-main)', color: 'var(--bg-main)', cursor: 'pointer', fontWeight: 'bold', fontSize: 'clamp(0.9rem, 3vw, 1.1rem)' }}>
+            <button onClick={resetGame} className="editorial-link" style={{ padding: '0.8rem 2rem', border: '1px solid var(--accent-dark)', backgroundColor: 'transparent', color: 'var(--text-main)', cursor: 'pointer', fontWeight: 'bold', fontSize: 'clamp(0.9rem, 3vw, 1.1rem)' }}>
               YENİDEN DENE
             </button>
           </div>
