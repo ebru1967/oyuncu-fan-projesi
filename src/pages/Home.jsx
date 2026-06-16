@@ -22,7 +22,7 @@ function Home() {
   const sideArticles = activeNews.slice(1, 3);
 
   const newsCoverImages = {
-    10: '/milliyet.jpeg', 
+    12: '/tiyatrodergisi.jpeg', 
   };
 
   const today = new Date();
