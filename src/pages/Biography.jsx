@@ -5,7 +5,6 @@ function Biography() {
 
   return (
     <div className="bio-editorial-wrapper animate-fade">
-      {/* 🚀 BİYOGRAFİ ÖZEL TİPOGRAFİ MOTORU */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Lora:ital,wght@0,400;0,600;1,400&family=Space+Mono:wght@700&display=swap');
 

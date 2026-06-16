@@ -4,7 +4,7 @@ function Archive() {
   return (
     <div className="container animate-fade" style={{ padding: '4rem 1rem', maxWidth: '850px', margin: '0 auto' }}>
       
-      {/* 📁 FİZİKSEL SİCİL DOSYASI (DOSSIER) CSS MOTORU */}
+      {/* 📁 FİZİKSEL SİCİL DOSYASI */}
       <style>{`
         /* Arşiv Başlığı - Daktilo Şeridi Etkisi */
         .archive-main-heading {

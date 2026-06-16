@@ -4,7 +4,6 @@ function Awards() {
   return (
     <div className="press-editorial-wrapper animate-fade" lang="tr">
       
-      {/* 🚀 ÖDÜLLER ÖZEL CSS MOTORU */}
       <style>{`
         .trophy-card {
           display: flex;
