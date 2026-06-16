@@ -132,126 +132,111 @@ function MasaTenisi() {
   return (
     <div className="game-container animate-fade" style={{ textAlign: 'center', padding: '3rem 1rem', backgroundColor: 'var(--bg-main)', color: 'var(--text-main)', fontFamily: 'var(--font-heading)', minHeight: '80vh', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       
+      {/* 🚀 DİNAMİK TEMA MOTORU */}
+      <style>{`
+        /* --- GÜNDÜZ MODU: GERÇEK MASA TENİSİ (VARSAYILAN) --- */
+        .pp-board {
+          background-color: #1b5e20 !important; /* Gerçekçi Masa Yeşili */
+          border-color: #fff !important;
+          box-shadow: 0 15px 35px rgba(0,0,0,0.15) !important;
+        }
+        .pp-center-line { border-left-color: rgba(255,255,255,0.7) !important; }
+        .pp-player { background-color: #d32f2f !important; box-shadow: 2px 2px 6px rgba(0,0,0,0.4) !important; } /* Kırmızı Raket */
+        .pp-bot { background-color: #111 !important; box-shadow: -2px 2px 6px rgba(0,0,0,0.4) !important; } /* Siyah Raket */
+        .pp-ball { background-color: #ffb300 !important; box-shadow: 0 2px 5px rgba(0,0,0,0.4) !important; } /* Turuncu Top */
+
+        /* --- KARANLIK MOD: RETRO NEON (ATARİ EFEKTİ) --- */
+        .dark .pp-board, [data-theme="dark"] .pp-board, [data-mode="dark"] .pp-board {
+          background-color: #0a0a0a !important; /* Derin Siyah */
+          border-color: var(--accent-dark) !important;
+          box-shadow: 0 10px 40px rgba(0,0,0,0.3), 0 0 15px var(--accent-dark) !important;
+        }
+        .dark .pp-center-line, [data-theme="dark"] .pp-center-line { border-left-color: rgba(255,255,255,0.15) !important; }
+        .dark .pp-player, [data-theme="dark"] .pp-player { background-color: #fff !important; box-shadow: 0 0 12px rgba(255,255,255,0.6) !important; } /* Parlayan Beyaz */
+        .dark .pp-bot, [data-theme="dark"] .pp-bot { background-color: var(--accent-dark) !important; box-shadow: 0 0 12px var(--accent-dark) !important; } /* Parlayan Vurgu Rengi */
+        .dark .pp-ball, [data-theme="dark"] .pp-ball { background-color: #fff !important; box-shadow: 0 0 15px rgba(255,255,255,0.9) !important; }
+      `}</style>
+
       {/* ÜST BAŞLIK */}
       <div className="section-header-editorial" style={{ marginBottom: '2rem', width: '100%' }}>
-        <span className="archive-badge" style={{ color: 'var(--accent-dark)', letterSpacing: '2px' }}>// NOSTALJİK REFLEKS TESTİ</span>
-        <h2 className="editorial-title" style={{ marginTop: '0.5rem', fontSize: 'clamp(1.8rem, 5vw, 3rem)', textShadow: '0px 2px 10px rgba(0,0,0,0.1)' }}>RETRO MASA TENİSİ</h2>
+        <span className="archive-badge" style={{ color: 'var(--accent-dark)', letterSpacing: '2px' }}>// REFLEKS VE ZİHİN</span>
+        <h2 className="editorial-title" style={{ marginTop: '0.5rem', fontSize: 'clamp(1.8rem, 5vw, 3rem)', textShadow: '0px 2px 10px rgba(0,0,0,0.1)' }}>MASA TENİSİ</h2>
       </div>
 
-      {/* SKOR TABELASI (DİJİTAL PANO EFEKTİ) */}
+      {/* SKOR TABELASI */}
       <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center',
-        gap: 'clamp(1.5rem, 4vw, 4rem)', 
-        margin: '0 0 2rem 0', 
-        padding: '1rem 2.5rem',
-        backgroundColor: 'var(--bg-card)',
-        border: '1px solid var(--accent-dark)',
-        borderRadius: '12px',
+        display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 'clamp(1.5rem, 4vw, 4rem)', 
+        margin: '0 0 2rem 0', padding: '1rem 2.5rem', backgroundColor: 'var(--bg-card)',
+        border: '1px solid var(--accent-dark)', borderRadius: '12px',
         boxShadow: '0 8px 25px rgba(0,0,0,0.08), inset 0 0 10px rgba(0,0,0,0.02)',
-        fontFamily: 'monospace',
-        position: 'relative'
+        fontFamily: 'monospace', position: 'relative'
       }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <span style={{ fontSize: '0.9rem', color: 'var(--accent-dark)', fontWeight: 'bold', letterSpacing: '1px', marginBottom: '0.5rem' }}>SEN</span>
           <span style={{ fontSize: 'clamp(2.5rem, 6vw, 3.5rem)', fontWeight: '900', color: 'var(--text-main)', lineHeight: '1' }}>{playerScore}</span>
         </div>
-        
         <div style={{ fontSize: '1.2rem', color: 'var(--accent-dark)', opacity: 0.5, fontStyle: 'italic', marginTop: '1.5rem' }}>VS</div>
-        
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <span style={{ fontSize: '0.9rem', color: 'var(--accent-dark)', fontWeight: 'bold', letterSpacing: '1px', marginBottom: '0.5rem' }}>AYTEK BOT</span>
           <span style={{ fontSize: 'clamp(2.5rem, 6vw, 3.5rem)', fontWeight: '900', color: 'var(--text-main)', lineHeight: '1' }}>{botScore}</span>
         </div>
       </div>
 
-      {/* OYUN ALANI (CRT EKRAN EFEKTİ) */}
+      {/* OYUN ALANI */}
       <div 
         ref={gameAreaRef}
+        className="pp-board" // CSS motoruna bağlandı
         onMouseMove={(e) => handleMove(e.clientY)}
         onTouchMove={(e) => { e.preventDefault(); handleMove(e.touches[0].clientY); }}
         style={{ 
-          position: 'relative', 
-          width: '100%', 
-          maxWidth: '700px', 
-          height: 'clamp(300px, 50vh, 450px)', 
-          backgroundColor: '#111', // Oyun alanını her zaman koyu yapıp kontrastı artırdık
-          border: '3px solid var(--accent-dark)', 
-          borderRadius: '16px',
-          boxShadow: '0 10px 40px rgba(0,0,0,0.2), 0 0 15px var(--accent-dark)', // Dış Neon Parlama
-          overflow: 'hidden', 
-          cursor: 'none', 
-          touchAction: 'none' 
+          position: 'relative', width: '100%', maxWidth: '700px', height: 'clamp(300px, 50vh, 450px)', 
+          borderWidth: '3px', borderStyle: 'solid', borderRadius: '12px',
+          overflow: 'hidden', cursor: 'none', touchAction: 'none', transition: 'all 0.3s ease'
         }}
       >
         {/* ORTA ÇİZGİ */}
-        <div style={{ position: 'absolute', top: 0, bottom: 0, left: '50%', width: '4px', marginLeft: '-2px', borderLeft: '4px dashed rgba(255,255,255,0.2)' }} />
+        <div className="pp-center-line" style={{ position: 'absolute', top: 0, bottom: 0, left: '50%', width: '4px', marginLeft: '-2px', borderLeftWidth: '4px', borderLeftStyle: 'dashed', transition: 'all 0.3s ease' }} />
         
         {/* OYUNCU RAKETİ (SOL) */}
-        <div ref={playerRef} style={{ 
+        <div ref={playerRef} className="pp-player" style={{ 
           position: 'absolute', left: '5%', top: '50%', width: '12px', height: `${state.current.paddleHeight}%`, 
-          backgroundColor: '#fff', transform: 'translate(-50%, -50%)', borderRadius: '6px',
-          boxShadow: '0 0 10px rgba(255,255,255,0.5)' // Raket Parlaması
+          transform: 'translate(-50%, -50%)', borderRadius: '6px', transition: 'background-color 0.3s ease, box-shadow 0.3s ease'
         }} />
         
         {/* BOT RAKETİ (SAĞ) */}
-        <div ref={botRef} style={{ 
+        <div ref={botRef} className="pp-bot" style={{ 
           position: 'absolute', left: '95%', top: '50%', width: '12px', height: `${state.current.paddleHeight}%`, 
-          backgroundColor: 'var(--accent-dark)', transform: 'translate(-50%, -50%)', borderRadius: '6px',
-          boxShadow: '0 0 12px var(--accent-dark)' // Bot Raket Parlaması
+          transform: 'translate(-50%, -50%)', borderRadius: '6px', transition: 'background-color 0.3s ease, box-shadow 0.3s ease'
         }} />
         
         {/* TOP */}
-        <div ref={ballRef} style={{ 
+        <div ref={ballRef} className="pp-ball" style={{ 
           position: 'absolute', left: '50%', top: '50%', width: '18px', height: '18px', 
-          backgroundColor: '#fff', transform: 'translate(-50%, -50%)', borderRadius: '50%', 
-          display: gameState === 'idle' ? 'none' : 'block',
-          boxShadow: '0 0 15px rgba(255,255,255,0.8)' // Top Parlaması
+          transform: 'translate(-50%, -50%)', borderRadius: '50%', display: gameState === 'idle' ? 'none' : 'block',
+          transition: 'background-color 0.3s ease, box-shadow 0.3s ease'
         }} />
 
-        {/* BAŞLANGIÇ EKRANI (GLASSMORPHISM) */}
+        {/* BAŞLANGIÇ EKRANI */}
         {gameState === 'idle' && (
-          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', zIndex: 10 }}>
+          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(3px)', zIndex: 10 }}>
             <button onClick={startGame} className="editorial-link" style={{ 
-              padding: '1.2rem 3rem', 
-              backgroundColor: 'var(--bg-main)', 
-              color: 'var(--text-main)', 
-              border: '2px solid var(--accent-dark)', 
-              borderRadius: '8px',
-              fontSize: '1.1rem',
-              cursor: 'pointer', 
-              fontWeight: 'bold',
-              textTransform: 'uppercase',
-              letterSpacing: '2px',
-              boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+              padding: '1.2rem 3rem', backgroundColor: '#fff', color: '#111', 
+              border: 'none', borderRadius: '8px', fontSize: '1.1rem', cursor: 'pointer', 
+              fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '2px', boxShadow: '0 4px 15px rgba(0,0,0,0.3)'
             }}>TURNUVAYI BAŞLAT</button>
           </div>
         )}
 
-        {/* BİTİŞ EKRANI (GLASSMORPHISM) */}
+        {/* BİTİŞ EKRANI */}
         {gameState === 'gameover' && (
-          <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(5px)', zIndex: 10, color: '#fff' }}>
-            <h3 style={{ 
-              fontSize: 'clamp(2rem, 5vw, 3rem)', 
-              marginBottom: '1.5rem', 
-              fontWeight: '900',
-              textShadow: '0 2px 10px rgba(0,0,0,0.5)',
-              color: winner === 'Sen' ? '#4caf50' : '#f44336' 
-            }}>
+          <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(4px)', zIndex: 10, color: '#fff' }}>
+            <h3 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', marginBottom: '1.5rem', fontWeight: '900', textShadow: '0 2px 10px rgba(0,0,0,0.5)', color: winner === 'Sen' ? '#4caf50' : '#f44336' }}>
               {winner === 'Sen' ? 'KAZANDIN!' : 'AYTEK BOT KAZANDI!'}
             </h3>
             <button onClick={startGame} className="editorial-link" style={{ 
-              padding: '1rem 2.5rem', 
-              backgroundColor: '#fff', 
-              color: '#111', 
-              border: 'none', 
-              borderRadius: '8px',
-              fontSize: '1rem',
-              cursor: 'pointer', 
-              fontWeight: '900',
-              textTransform: 'uppercase',
-              letterSpacing: '1px'
+              padding: '1rem 2.5rem', backgroundColor: '#fff', color: '#111', 
+              border: 'none', borderRadius: '8px', fontSize: '1rem', cursor: 'pointer', 
+              fontWeight: '900', textTransform: 'uppercase', letterSpacing: '1px'
             }}>RÖVANŞ İSTE</button>
           </div>
         )}
