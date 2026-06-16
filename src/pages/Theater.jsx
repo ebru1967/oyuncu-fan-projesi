@@ -122,8 +122,7 @@ function Theater() {
     <div className="press-editorial-wrapper animate-fade" lang="tr">
       <div className="container">
         
-        {/* SAYFA BAŞLIĞI */}
-        <div className="section-header-editorial">
+        <div className="section-header-editorial" style={{ paddingTop: '0', marginTop: '-3rem', marginBottom: '3rem' }}>
           <span className="archive-badge">// SANAT & KARİYER SİCİLİ</span>
           <h1 className="editorial-title" style={{ textTransform: 'none' }}>TİYATRO ENVANTERİ</h1>
           <p className="editorial-subtitle">2014 Bilkent mezuniyetinden bugüne aktif sahne performansları, oyun özetleri ve sahne kareleri.</p>
@@ -197,12 +196,10 @@ function Theater() {
                 
                 {/* --- LİNK VE BUTON MANTIĞI --- */}
                 {play.link && play.link !== "#" ? (
-                  /* Geçerli bir link varsa aktif buton */
                   <a href={play.link} target="_blank" rel="noreferrer" className="record-action-link" style={{ textTransform: 'none', display: 'inline-block', marginTop: '1rem' }}>
                     TANITIM / BİLET LİNKİ ↗
                   </a>
                 ) : play.meta.includes("Sahnede") ? (
-                  /* Oyun "Sahnede" yazıyor ama linki yoksa pasif buton */
                   <span className="record-action-link" style={{ textTransform: 'none', opacity: 0.5, cursor: 'not-allowed', display: 'inline-block', borderStyle: 'dashed', marginTop: '1rem' }}>
                     BİLETLER YAKINDA / TANITIM BEKLENİYOR
                   </span>

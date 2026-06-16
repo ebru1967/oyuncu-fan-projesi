@@ -62,57 +62,90 @@ function MediaArchive() {
   return (
     <div className="media-wrapper animate-fade">
       
-      {/* Özel Scrollbar Tasarımı */}
+      {/* CSS BLOĞU: Kod kalabalığı temizlendi */}
       <style>{`
         .custom-scroll::-webkit-scrollbar { width: 6px; }
         .custom-scroll::-webkit-scrollbar-track { background: rgba(84, 107, 65, 0.05); border-radius: 10px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: rgba(84, 107, 65, 0.3); border-radius: 10px; }
         .custom-scroll::-webkit-scrollbar-thumb:hover { background: rgba(84, 107, 65, 0.6); }
+        
+        .media-tab-btn {
+          background: transparent;
+          border: none;
+          font-family: var(--font-heading);
+          font-size: 0.9rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition: all 0.3s;
+          color: rgba(84, 107, 65, 0.5);
+          border-bottom: 3px solid transparent;
+          padding-bottom: 0.5rem;
+          white-space: nowrap;
+        }
+        
+        .media-tab-btn.active {
+          color: var(--accent-dark);
+          border-bottom-color: var(--accent-dark);
+        }
+
+        .media-tab-btn:hover {
+          color: var(--accent-dark);
+        }
+
+        .scene-card {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 1.2rem;
+          background-color: rgba(84, 107, 65, 0.03);
+          border: 1px solid rgba(84, 107, 65, 0.1);
+          border-radius: 4px;
+          transition: 0.3s;
+        }
+
+        .scene-card:hover {
+          background-color: rgba(84, 107, 65, 0.08);
+        }
+
+        .action-link-btn {
+          background-color: transparent;
+          color: var(--accent-dark);
+          border: 1px solid var(--accent-dark);
+          padding: 0.5rem 1.5rem;
+          font-size: 0.8rem;
+          border-radius: 4px;
+          text-decoration: none;
+          transition: 0.3s;
+          font-weight: bold;
+          font-family: var(--font-heading);
+        }
+
+        .action-link-btn:hover {
+          background-color: var(--accent-dark);
+          color: #fff;
+        }
       `}</style>
 
-      <div className="container" style={{ paddingTop: '3rem', paddingBottom: '4rem' }}>
+      {/* DÜZELTİLDİ: paddingTop sıfırlandı */}
+      <div className="container" style={{ paddingBottom: '4rem' }}>
         
-        {/* SAYFA BAŞLIĞI */}
-        <div className="section-header-editorial" style={{ marginBottom: '3rem' }}>
-          <span className="archive-badge">// GÖRSEL & İŞİTSEL ENVANTER</span>
+        {/* HİZALAMA BURADA DÜZELTİLDİ: paddingTop: '0', marginTop: '-3rem' eklendi */}
+        <div className="section-header-editorial" style={{ paddingTop: '0', marginTop: '-3rem', marginBottom: '3rem', textAlign: 'center' }}>
+          <span className="archive-badge" style={{ display: 'inline-block', marginBottom: '1rem' }}>// GÖRSEL & İŞİTSEL ENVANTER</span>
           <h1 className="editorial-title" style={{ fontSize: '3.5rem' }}>MEDYA DEPOSU</h1>
           <p className="editorial-subtitle">Oyuncunun profesyonel çekimlerinden, set arkası hallerine ve kurgularda kullanabileceğiniz ikonik mimik arşivine uzanan dijital kaynaklar.</p>
         </div>
 
         {/* SEKME (TAB) MENÜSÜ */}
         <div style={{ display: 'flex', gap: '1.5rem', borderBottom: '2px solid rgba(84, 107, 65, 0.2)', marginBottom: '3rem', overflowX: 'auto', paddingBottom: '1rem' }}>
-          
-          <button onClick={() => setActiveTab('karakter-kesitleri')} style={{ background: 'transparent', border: 'none', fontFamily: 'var(--font-heading)', fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer', transition: 'all 0.3s', color: activeTab === 'karakter-kesitleri' ? 'var(--accent-dark)' : 'rgba(84, 107, 65, 0.5)', borderBottom: activeTab === 'karakter-kesitleri' ? '3px solid var(--accent-dark)' : '3px solid transparent', paddingBottom: '0.5rem', whiteSpace: 'nowrap' }}>
-            KARAKTER KESİTLERİ
-          </button>
-
-          <button onClick={() => setActiveTab('fotograflar')} style={{ background: 'transparent', border: 'none', fontFamily: 'var(--font-heading)', fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer', transition: 'all 0.3s', color: activeTab === 'fotograflar' ? 'var(--accent-dark)' : 'rgba(84, 107, 65, 0.5)', borderBottom: activeTab === 'fotograflar' ? '3px solid var(--accent-dark)' : '3px solid transparent', paddingBottom: '0.5rem', whiteSpace: 'nowrap' }}>
-            FOTOĞRAF ARŞİVİ
-          </button>
-
-          <button onClick={() => setActiveTab('wallpapers')} style={{ background: 'transparent', border: 'none', fontFamily: 'var(--font-heading)', fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer', transition: 'all 0.3s', color: activeTab === 'wallpapers' ? 'var(--accent-dark)' : 'rgba(84, 107, 65, 0.5)', borderBottom: activeTab === 'wallpapers' ? '3px solid var(--accent-dark)' : '3px solid transparent', paddingBottom: '0.5rem', whiteSpace: 'nowrap' }}>
-            DUVAR KAĞITLARI
-          </button>
-
-          <button onClick={() => setActiveTab('profil-fotograflari')} style={{ background: 'transparent', border: 'none', fontFamily: 'var(--font-heading)', fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer', transition: 'all 0.3s', color: activeTab === 'profil-fotograflari' ? 'var(--accent-dark)' : 'rgba(84, 107, 65, 0.5)', borderBottom: activeTab === 'profil-fotograflari' ? '3px solid var(--accent-dark)' : '3px solid transparent', paddingBottom: '0.5rem', whiteSpace: 'nowrap' }}>
-            PROFİL FOTOĞRAFLARI
-          </button>
-
-          <button onClick={() => setActiveTab('headers')} style={{ background: 'transparent', border: 'none', fontFamily: 'var(--font-heading)', fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer', transition: 'all 0.3s', color: activeTab === 'headers' ? 'var(--accent-dark)' : 'rgba(84, 107, 65, 0.5)', borderBottom: activeTab === 'headers' ? '3px solid var(--accent-dark)' : '3px solid transparent', paddingBottom: '0.5rem', whiteSpace: 'nowrap' }}>
-            HEADER GÖRSELLERİ
-          </button>
-
-          <button onClick={() => setActiveTab('kamera-arkasi')} style={{ background: 'transparent', border: 'none', fontFamily: 'var(--font-heading)', fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer', transition: 'all 0.3s', color: activeTab === 'kamera-arkasi' ? 'var(--accent-dark)' : 'rgba(84, 107, 65, 0.5)', borderBottom: activeTab === 'kamera-arkasi' ? '3px solid var(--accent-dark)' : '3px solid transparent', paddingBottom: '0.5rem', whiteSpace: 'nowrap' }}>
-            KAMERA ARKASI
-          </button>
-
-          <button onClick={() => setActiveTab('mimikler')} style={{ background: 'transparent', border: 'none', fontFamily: 'var(--font-heading)', fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer', transition: 'all 0.3s', color: activeTab === 'mimikler' ? 'var(--accent-dark)' : 'rgba(84, 107, 65, 0.5)', borderBottom: activeTab === 'mimikler' ? '3px solid var(--accent-dark)' : '3px solid transparent', paddingBottom: '0.5rem', whiteSpace: 'nowrap' }}>
-            MİMİKLER (GIF)
-          </button>
-
-          <button onClick={() => setActiveTab('sticker')} style={{ background: 'transparent', border: 'none', fontFamily: 'var(--font-heading)', fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer', transition: 'all 0.3s', color: activeTab === 'sticker' ? 'var(--accent-dark)' : 'rgba(84, 107, 65, 0.5)', borderBottom: activeTab === 'sticker' ? '3px solid var(--accent-dark)' : '3px solid transparent', paddingBottom: '0.5rem', whiteSpace: 'nowrap' }}>
-            STICKER
-          </button>
+          <button className={`media-tab-btn ${activeTab === 'karakter-kesitleri' ? 'active' : ''}`} onClick={() => setActiveTab('karakter-kesitleri')}>KARAKTER KESİTLERİ</button>
+          <button className={`media-tab-btn ${activeTab === 'fotograflar' ? 'active' : ''}`} onClick={() => setActiveTab('fotograflar')}>FOTOĞRAF ARŞİVİ</button>
+          <button className={`media-tab-btn ${activeTab === 'wallpapers' ? 'active' : ''}`} onClick={() => setActiveTab('wallpapers')}>DUVAR KAĞITLARI</button>
+          <button className={`media-tab-btn ${activeTab === 'profil-fotograflari' ? 'active' : ''}`} onClick={() => setActiveTab('profil-fotograflari')}>PROFİL FOTOĞRAFLARI</button>
+          <button className={`media-tab-btn ${activeTab === 'headers' ? 'active' : ''}`} onClick={() => setActiveTab('headers')}>HEADER GÖRSELLERİ</button>
+          <button className={`media-tab-btn ${activeTab === 'kamera-arkasi' ? 'active' : ''}`} onClick={() => setActiveTab('kamera-arkasi')}>KAMERA ARKASI</button>
+          <button className={`media-tab-btn ${activeTab === 'mimikler' ? 'active' : ''}`} onClick={() => setActiveTab('mimikler')}>MİMİKLER (GIF)</button>
+          <button className={`media-tab-btn ${activeTab === 'sticker' ? 'active' : ''}`} onClick={() => setActiveTab('sticker')}>STICKER</button>
         </div>
 
         {/* SEKME İÇERİKLERİ */}
@@ -132,12 +165,12 @@ function MediaArchive() {
                 
                 <div className="custom-scroll" style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', maxHeight: '400px', overflowY: 'auto', paddingRight: '1rem' }}>
                   {dizi1Kesitleri.map((kesit) => (
-                    <div key={kesit.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.2rem', backgroundColor: 'rgba(84, 107, 65, 0.03)', border: '1px solid rgba(84, 107, 65, 0.1)', borderRadius: '4px', transition: '0.3s' }} onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(84, 107, 65, 0.08)'} onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(84, 107, 65, 0.03)'}>
+                    <div key={kesit.id} className="scene-card">
                       <div>
                         <strong style={{ color: 'var(--accent-dark)', display: 'block', marginBottom: '0.2rem' }}>{kesit.bolum} - Tüm Sahneler</strong>
                         <span style={{ fontSize: '0.8rem', opacity: 0.6 }}>Ekran Süresi: {kesit.sure} dk</span>
                       </div>
-                      <a href={kesit.url} target="_blank" rel="noreferrer" style={{ backgroundColor: 'transparent', color: 'var(--accent-dark)', border: '1px solid var(--accent-dark)', padding: '0.5rem 1.5rem', fontSize: '0.8rem', borderRadius: '4px', textDecoration: 'none', transition: '0.3s', fontWeight: 'bold' }} onMouseOver={(e) => {e.target.style.background = 'var(--accent-dark)'; e.target.style.color = '#fff'}} onMouseOut={(e) => {e.target.style.background = 'transparent'; e.target.style.color = 'var(--accent-dark)'}}>
+                      <a href={kesit.url} target="_blank" rel="noreferrer" className="action-link-btn">
                         X'TE İZLE ↗
                       </a>
                     </div>
@@ -153,12 +186,12 @@ function MediaArchive() {
                 
                 <div className="custom-scroll" style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', maxHeight: '400px', overflowY: 'auto', paddingRight: '1rem' }}>
                   {dizi2Kesitleri.map((kesit) => (
-                    <div key={kesit.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.2rem', backgroundColor: 'rgba(84, 107, 65, 0.03)', border: '1px solid rgba(84, 107, 65, 0.1)', borderRadius: '4px', transition: '0.3s' }} onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(84, 107, 65, 0.08)'} onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(84, 107, 65, 0.03)'}>
+                    <div key={kesit.id} className="scene-card">
                       <div>
                         <strong style={{ color: 'var(--accent-dark)', display: 'block', marginBottom: '0.2rem' }}>{kesit.bolum} - Tüm Sahneler</strong>
                         <span style={{ fontSize: '0.8rem', opacity: 0.6 }}>Ekran Süresi: {kesit.sure} dk</span>
                       </div>
-                      <a href={kesit.url} target="_blank" rel="noreferrer" style={{ backgroundColor: 'transparent', color: 'var(--accent-dark)', border: '1px solid var(--accent-dark)', padding: '0.5rem 1.5rem', fontSize: '0.8rem', borderRadius: '4px', textDecoration: 'none', transition: '0.3s', fontWeight: 'bold' }} onMouseOver={(e) => {e.target.style.background = 'var(--accent-dark)'; e.target.style.color = '#fff'}} onMouseOut={(e) => {e.target.style.background = 'transparent'; e.target.style.color = 'var(--accent-dark)'}}>
+                      <a href={kesit.url} target="_blank" rel="noreferrer" className="action-link-btn">
                         X'TE İZLE ↗
                       </a>
                     </div>
@@ -209,7 +242,7 @@ function MediaArchive() {
                     <h4 style={{ margin: '0 0 0.5rem 0', color: 'var(--accent-dark)', fontSize: '0.9rem' }}>Wallpaper {item.id}</h4>
                     <span style={{ fontSize: '0.7rem', opacity: 0.6, display: 'block', marginBottom: '1rem' }}>HD • Mobil</span>
                     
-                    <a href={item.url} download={`AytekSayan_Wallpaper_${item.id}.jpeg`} style={{ display: 'block', textDecoration: 'none', backgroundColor: 'transparent', color: 'var(--accent-dark)', border: '1px solid var(--accent-dark)', padding: '0.5rem 1rem', fontSize: '0.75rem', borderRadius: '4px', fontFamily: 'var(--font-heading)', transition: '0.3s' }} onMouseOver={(e) => {e.target.style.background = 'var(--accent-dark)'; e.target.style.color = '#fff'}} onMouseOut={(e) => {e.target.style.background = 'transparent'; e.target.style.color = 'var(--accent-dark)'}}>
+                    <a href={item.url} download={`AytekSayan_Wallpaper_${item.id}.jpeg`} className="action-link-btn" style={{ display: 'block', marginTop: '1rem' }}>
                       CİHAZA İNDİR ↓
                     </a>
                   </div>
@@ -228,13 +261,12 @@ function MediaArchive() {
                 {profilePics && profilePics.length > 0 ? (
                   profilePics.map(item => (
                     <div key={item.id} style={{ border: '1px solid rgba(84, 107, 65, 0.15)', borderRadius: '8px', padding: '1.5rem 1rem', textAlign: 'center', background: 'rgba(84, 107, 65, 0.02)' }}>
-                      {/* Avatar Çerçevesi (Yuvarlak) */}
                       <div style={{ aspectRatio: '1/1', backgroundColor: 'rgba(220, 204, 172, 0.3)', margin: '0 auto 1.2rem auto', borderRadius: '50%', overflow: 'hidden', border: '3px solid var(--accent-dark)', width: '100px', height: '100px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
                         <img src={item.url} alt={`Profil ${item.id}`} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
                       </div>
                       <h4 style={{ margin: '0 0 1rem 0', color: 'var(--accent-dark)', fontSize: '0.8rem' }}>Icon #{item.id}</h4>
                       
-                      <a href={item.url} download={`AytekSayan_Profil_${item.id}.jpeg`} style={{ display: 'inline-block', textDecoration: 'none', backgroundColor: 'var(--accent-dark)', color: '#fff', border: '1px solid var(--accent-dark)', padding: '0.4rem 1.2rem', fontSize: '0.7rem', borderRadius: '30px', fontFamily: 'var(--font-heading)', transition: '0.3s' }} onMouseOver={(e) => {e.target.style.background = 'transparent'; e.target.style.color = 'var(--accent-dark)'}} onMouseOut={(e) => {e.target.style.background = 'var(--accent-dark)'; e.target.style.color = '#fff'}}>
+                      <a href={item.url} download={`AytekSayan_Profil_${item.id}.jpeg`} className="action-link-btn" style={{ fontSize: '0.7rem', padding: '0.4rem 1.2rem', borderRadius: '30px' }}>
                         İNDİR ↓
                       </a>
                     </div>
@@ -261,7 +293,7 @@ function MediaArchive() {
                     </div>
                     <h4 style={{ margin: '0 0 0.5rem 0', color: 'var(--accent-dark)', fontSize: '0.9rem' }}>Header Tasarım {item.id}</h4>
                     
-                    <a href={item.url} download={`AytekSayan_Header_${item.id}.jpeg`} style={{ display: 'inline-block', marginTop: '0.5rem', textDecoration: 'none', backgroundColor: 'transparent', color: 'var(--accent-dark)', border: '1px solid var(--accent-dark)', padding: '0.5rem 2rem', fontSize: '0.75rem', borderRadius: '4px', fontFamily: 'var(--font-heading)', transition: '0.3s' }} onMouseOver={(e) => {e.target.style.background = 'var(--accent-dark)'; e.target.style.color = '#fff'}} onMouseOut={(e) => {e.target.style.background = 'transparent'; e.target.style.color = 'var(--accent-dark)'}}>
+                    <a href={item.url} download={`AytekSayan_Header_${item.id}.jpeg`} className="action-link-btn" style={{ display: 'inline-block', marginTop: '1rem', padding: '0.5rem 2rem' }}>
                       CİHAZA İNDİR ↓
                     </a>
                   </div>
@@ -270,94 +302,48 @@ function MediaArchive() {
             </div>
           )}
 
-        {/* 5. SET GÜNLÜKLERİ (FOTOĞRAFLAR VE VİDEOLAR) */}
-{activeTab === 'kamera-arkasi' && (
-  <div className="animate-fade">
-    <h2 style={{ fontFamily: 'var(--font-heading)', color: 'var(--accent-dark)', marginBottom: '1.5rem' }}>SET GÜNLÜKLERİ & KAMERA ARKASI</h2>
-    <p style={{ opacity: 0.8, marginBottom: '2rem' }}>Çekim aralarındaki doğal anlar ve ekip içi şakalaşmalar...</p>
-    
-    <div style={{ 
-      columnCount: 'auto', 
-      columnWidth: '300px', 
-      columnGap: '1.5rem' 
-    }}>
-      
-      {btsPhotos && btsPhotos.map(photo => (
-        <div key={photo.id} style={{ 
-          marginBottom: '1.5rem', 
-          borderRadius: '8px', 
-          overflow: 'hidden', 
-          border: '1px solid rgba(84, 107, 65, 0.2)',
-          breakInside: 'avoid' 
-        }}>
-          <img 
-            src={photo.url} 
-            alt="Kamera Arkası" 
-            style={{ width: '100%', height: 'auto', display: 'block' }} 
-          />
-        </div>
-      ))}
+          {/* 5. SET GÜNLÜKLERİ (FOTOĞRAFLAR VE VİDEOLAR) */}
+          {activeTab === 'kamera-arkasi' && (
+            <div className="animate-fade">
+              <h2 style={{ fontFamily: 'var(--font-heading)', color: 'var(--accent-dark)', marginBottom: '1.5rem' }}>SET GÜNLÜKLERİ & KAMERA ARKASI</h2>
+              <p style={{ opacity: 0.8, marginBottom: '2rem' }}>Çekim aralarındaki doğal anlar ve ekip içi şakalaşmalar...</p>
+              
+              <div style={{ columnCount: 'auto', columnWidth: '300px', columnGap: '1.5rem' }}>
+                
+                {btsPhotos && btsPhotos.map(photo => (
+                  <div key={photo.id} style={{ marginBottom: '1.5rem', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(84, 107, 65, 0.2)', breakInside: 'avoid' }}>
+                    <img src={photo.url} alt="Kamera Arkası" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                  </div>
+                ))}
 
-      {btsVideos && btsVideos.map(video => (
-                <div key={video.id} style={{ 
-                  marginBottom: '1.5rem', 
-                  borderRadius: '8px', 
-                  overflow: 'hidden', 
-                  border: '1px solid rgba(84, 107, 65, 0.2)', 
-                  backgroundColor: '#000',
-                  breakInside: 'avoid'
-                }}>
-                  <video 
-                    src={`${video.url}#t=0.1`} 
-                    controls 
-                    preload="none" 
-                    playsInline 
-                    style={{ width: '100%', height: 'auto', display: 'block' }} 
-                  />
-                </div>
-              ))}
+                {btsVideos && btsVideos.map(video => (
+                  <div key={video.id} style={{ marginBottom: '1.5rem', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(84, 107, 65, 0.2)', backgroundColor: '#000', breakInside: 'avoid' }}>
+                    <video src={`${video.url}#t=0.1`} controls preload="none" playsInline style={{ width: '100%', height: 'auto', display: 'block' }} />
+                  </div>
+                ))}
 
-    </div>
-  </div>
-)}
+              </div>
+            </div>
+          )}
 
-         {/* 6. MİMİKLER (GIF/MP4 - AKILLI GALERİ) */}
-{activeTab === 'mimikler' && (
-  <div className="animate-fade">
-    <h2 style={{ fontFamily: 'var(--font-heading)', color: 'var(--accent-dark)', marginBottom: '1.5rem' }}>MİMİK VE BAKIŞ GALERİSİ</h2>
-    
-    <div style={{ 
-      columnCount: 'auto', 
-      columnWidth: '200px', 
-      columnGap: '1rem' 
-    }}>
-      {gifs && gifs.length > 0 ? (
-        gifs.map(gif => (
-          <div key={gif.id} style={{ 
-            marginBottom: '1rem',
-            borderRadius: '8px', 
-            overflow: 'hidden',
-            breakInside: 'avoid' 
-          }}>
-            <video 
-              src={gif.url} 
-              autoPlay 
-              loop 
-              muted 
-              playsInline 
-              style={{ 
-                width: '100%', 
-                display: 'block' 
-              }} 
-            />
-          </div>
-        ))
-      ) : (
-        <p>Arşiv yükleniyor...</p>
-      )}
-    </div>
-  </div>
-)}
+          {/* 6. MİMİKLER (GIF/MP4 - AKILLI GALERİ) */}
+          {activeTab === 'mimikler' && (
+            <div className="animate-fade">
+              <h2 style={{ fontFamily: 'var(--font-heading)', color: 'var(--accent-dark)', marginBottom: '1.5rem' }}>MİMİK VE BAKIŞ GALERİSİ</h2>
+              
+              <div style={{ columnCount: 'auto', columnWidth: '200px', columnGap: '1rem' }}>
+                {gifs && gifs.length > 0 ? (
+                  gifs.map(gif => (
+                    <div key={gif.id} style={{ marginBottom: '1rem', borderRadius: '8px', overflow: 'hidden', breakInside: 'avoid' }}>
+                      <video src={gif.url} autoPlay loop muted playsInline style={{ width: '100%', display: 'block' }} />
+                    </div>
+                  ))
+                ) : (
+                  <p>Arşiv yükleniyor...</p>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* 7. STICKER PAKETLERİ */}
           {activeTab === 'sticker' && (
@@ -373,7 +359,10 @@ function MediaArchive() {
                       href={paket.url}
                       target="_blank" 
                       rel="noreferrer"
-                      style={{ display: 'inline-block', backgroundColor: 'var(--accent-dark)', color: '#fff', padding: '0.6rem 1.2rem', fontSize: '0.8rem', borderRadius: '30px', textDecoration: 'none', fontFamily: 'var(--font-heading)', transition: '0.3s' }}
+                      className="action-link-btn"
+                      style={{ padding: '0.6rem 1.2rem', borderRadius: '30px', backgroundColor: 'var(--accent-dark)', color: '#fff' }}
+                      onMouseOver={(e) => {e.target.style.background = 'transparent'; e.target.style.color = 'var(--accent-dark)'}} 
+                      onMouseOut={(e) => {e.target.style.background = 'var(--accent-dark)'; e.target.style.color = '#fff'}}
                     >
                       PAKETİ GÖRÜNTÜLE →
                     </a>

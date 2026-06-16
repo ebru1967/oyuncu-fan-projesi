@@ -15,10 +15,12 @@ function Support() {
           box-shadow: 0 10px 30px rgba(0,0,0,0.05);
           transition: transform 0.3s ease, border-color 0.3s ease;
         }
+        
         .contribution-card:hover {
           transform: translateY(-5px);
           border-color: var(--accent-dark);
         }
+        
         .cta-btn {
           display: inline-block;
           margin-top: 2.5rem;
@@ -34,21 +36,37 @@ function Support() {
           font-size: 0.9rem;
           border-radius: 30px;
         }
+        
         .cta-btn:hover {
           background: var(--accent-dark);
           color: white;
           box-shadow: 0 5px 15px rgba(84, 107, 65, 0.3);
         }
+
+        /* YENİ: Klasör emojisi için hafif süzülme animasyonu */
+        @keyframes floatIcon {
+          0% { transform: translateY(0px); }
+          50% { transform: translateY(-8px); }
+          100% { transform: translateY(0px); }
+        }
+        
+        .floating-icon {
+          display: inline-block;
+          font-size: 3rem;
+          margin-bottom: 1.5rem;
+          opacity: 0.8;
+          animation: floatIcon 3s ease-in-out infinite;
+        }
       `}</style>
 
-      <div className="section-header-editorial" style={{ textAlign: 'center', marginBottom: '4rem' }}>
+      <div className="section-header-editorial" style={{ textAlign: 'center', marginBottom: '4rem', paddingTop: '0', marginTop: '-3rem' }}>
         <span className="archive-badge">// ARŞİV KATKISI</span>
         <h1 className="editorial-title">BİRLİKTE BİRİKTİRELİM</h1>
         <p className="editorial-subtitle">Bu arşiv senin katkılarınla büyüyor.</p>
       </div>
 
       <div className="contribution-card">
-        <div style={{ fontSize: '3rem', marginBottom: '1.5rem', opacity: 0.8 }}>🗂️</div>
+        <div className="floating-icon">🗂️</div>
         <p style={{ color: 'var(--accent-light)', lineHeight: '1.8', fontSize: '1.1rem' }}>
           Aytek Şayan'a dair elinde olan, burada yer almayan kesitleri, replikleri veya görselleri bizimle paylaşarak 
           bu dijital müzenin bir parçası ol.
