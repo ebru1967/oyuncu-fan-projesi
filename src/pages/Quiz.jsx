@@ -92,9 +92,9 @@ function Quiz() {
     setIsWaiting(false);
   };
 
-  // Skor paylaşma fonksiyonu
+  // Skor paylaşma fonksiyonu (Etiketler çıkarıldı)
   const shareOnX = () => {
-    const text = `Aytek Şayan Arşiv Sınavı'nda 40 soruda ${score} doğru yaptım! 🗂️✨\n\nSen bu masada mısın? Testi çözmek ve arşivi incelemek için tıkla! @aytekofc @chicolw`;
+    const text = `Aytek Şayan Arşiv Sınavı'nda 40 soruda ${score} doğru yaptım! 🗂️✨\n\nSen bu masada mısın? Testi çözmek ve arşivi incelemek için tıkla!`;
     const siteUrl = "https://ayteksayan.com"; 
     const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(siteUrl)}`;
     window.open(url, '_blank');
@@ -157,7 +157,6 @@ function Quiz() {
                 {getResultMessage(score)}
               </p>
               
-              {/* BUTONLAR YAN YANA GELDİ */}
               <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                 <button className="editorial-link-btn-anchor reset-btn" onClick={resetQuiz}>
                   TESTİ TEKRARLA ⟲
@@ -191,7 +190,7 @@ function Quiz() {
                     className="quiz-option-btn"
                     onClick={() => handleAnswer(option)}
                     disabled={isWaiting} 
-                    style={{ ...getButtonStyle(option), transition: 'all 0.3s' }} // Dinamik renk stilleri
+                    style={{ ...getButtonStyle(option), transition: 'all 0.3s' }} 
                   >
                     <span className="option-letter">{['A', 'B', 'C', 'D'][idx]}</span>
                     {option}
