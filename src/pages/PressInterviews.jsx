@@ -746,7 +746,7 @@ function PressInterviews() {
 
       <div className="container" style={{ paddingBottom: '5rem' }}>
         
-        <div className="section-header-editorial" style={{ textAlign: 'center', marginBottom: '3rem', paddingTop: '3rem' }}>
+        <div className="section-header-editorial" style={{ textAlign: 'center', marginBottom: '3rem', paddingTop: '1rem' }}>
           <span className="archive-badge" style={{ display: 'inline-block', marginBottom: '1rem' }}>// BASIN SİCİLİ & SÖYLEŞİLER</span>
           <h1 className="editorial-title" style={{ fontSize: '3rem' }}>MEDYA ARŞİVİ</h1>
           <p className="editorial-subtitle">Yazılı basın röportajları, dijital söyleşiler ve doğrulanmış kayıt dokümanları.</p>

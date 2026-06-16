@@ -179,7 +179,7 @@ function Filmography() {
       <div className="container" style={{ paddingBottom: '4rem' }}>
         
         {/* SAYFA BAŞLIĞI */}
-        <div className="section-header-editorial" style={{ marginBottom: '4rem', paddingTop: '3rem', textAlign: 'center' }}>
+        <div className="section-header-editorial" style={{ marginBottom: '4rem', paddingTop: '1rem', textAlign: 'center' }}>
           <span className="archive-badge" style={{ display: 'inline-block', marginBottom: '1rem' }}>// EKRAN KANONU</span>
           <h1 className="editorial-title" style={{ fontSize: '3.5rem' }}>DİZİ & FİLMOGRAFİ</h1>
           <p className="editorial-subtitle">Oyuncunun 2016'dan günümüze televizyon, sinema ve dijital platformlardaki dönüşümü, inşa ettiği karakterler ve proje arşivi.</p>
