@@ -73,7 +73,7 @@ function Awards() {
 
       <div className="container">
         
-        <div className="section-header-editorial">
+        <div className="section-header-editorial" style={{ paddingTop: '0', marginTop: '-3rem' }}>
           <span className="archive-badge">// SANAT & KARİYER SİCİLİ</span>
           <h1 className="editorial-title">ÖDÜLLER</h1>
           <p className="editorial-subtitle">Sektörel ödül törenleri, akademi başarıları ve jüri tescil nedenleri.</p>
