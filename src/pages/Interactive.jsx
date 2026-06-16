@@ -171,7 +171,7 @@ function Interactive() {
   };
 
   return (
-    <div className="interactive-wrapper animate-fade" style={{ padding: '1rem 0 4rem 0', textAlign: 'center' }}>
+    <div className="press-editorial-wrapper animate-fade" style={{ paddingBottom: '4rem' }} lang="tr">
       
       <style>
         {`
@@ -196,7 +196,7 @@ function Interactive() {
           
           .game-arena {
             background: var(--bg-card);
-            border: 1px solid rgba(79, 119, 45, 0.2);
+            border: 1px solid rgba(84, 107, 65, 0.2);
             box-shadow: 0 15px 40px rgba(84, 107, 65, 0.05);
             border-radius: 20px;
             padding: 6rem 2rem;
@@ -204,47 +204,27 @@ function Interactive() {
             margin: 0 auto;
             position: relative;
             overflow: hidden;
+            text-align: center;
           }
           
           .game-arena::before {
-            content: '';
-            position: absolute;
-            top: -20%; left: -10%;
-            width: 300px; height: 300px;
-            background: radial-gradient(circle, rgba(150, 110, 70, 0.25) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: ambientGlow 8s infinite alternate ease-in-out;
-            pointer-events: none;
+            content: ''; position: absolute; top: -20%; left: -10%; width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(150, 110, 70, 0.25) 0%, transparent 70%); border-radius: 50%;
+            animation: ambientGlow 8s infinite alternate ease-in-out; pointer-events: none;
           }
           .game-arena::after {
-            content: '';
-            position: absolute;
-            bottom: -20%; right: -10%;
-            width: 400px; height: 400px;
-            background: radial-gradient(circle, rgba(210, 180, 140, 0.15) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: ambientGlow 6s infinite alternate-reverse ease-in-out;
-            pointer-events: none;
+            content: ''; position: absolute; bottom: -20%; right: -10%; width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(210, 180, 140, 0.15) 0%, transparent 70%); border-radius: 50%;
+            animation: ambientGlow 6s infinite alternate-reverse ease-in-out; pointer-events: none;
           }
 
           .mystic-pinata {
-            font-size: 8rem;
-            cursor: pointer;
-            position: relative;
-            z-index: 10;
-            display: inline-block;
-            user-select: none;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 8rem; cursor: pointer; position: relative; z-index: 10; display: inline-block;
+            user-select: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
           }
-          .mystic-pinata:hover:not(.is-shaking) {
-            transform: scale(1.15) translateY(-5px);
-          }
-          .status-floating {
-            animation: cinematicFloat 4s ease-in-out infinite;
-          }
-          .is-shaking {
-            animation: intenseShake 0.4s cubic-bezier(.36,.07,.19,.97) both;
-          }
+          .mystic-pinata:hover:not(.is-shaking) { transform: scale(1.15) translateY(-5px); }
+          .status-floating { animation: cinematicFloat 4s ease-in-out infinite; }
+          .is-shaking { animation: intenseShake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
 
           .cinematic-quote-box {
             background: rgba(20, 25, 21, 0.6);
@@ -261,52 +241,31 @@ function Interactive() {
           }
           
           .cinematic-quote-box::before {
-            content: '"';
-            position: absolute;
-            top: -20px;
-            left: 20px;
-            font-size: 6rem;
-            color: rgba(220, 204, 172, 0.15);
-            font-family: serif;
-            line-height: 1;
+            content: '"'; position: absolute; top: -20px; left: 20px; font-size: 6rem;
+            color: rgba(220, 204, 172, 0.15); font-family: serif; line-height: 1;
           }
 
           .candy-decoration {
-            font-size: 2rem;
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            opacity: 0.8;
+            font-size: 2rem; display: flex; justify-content: center; gap: 1rem; margin-bottom: 1.5rem; opacity: 0.8;
           }
 
           .reset-btn {
-            margin-top: 3rem;
-            background: linear-gradient(90deg, rgba(84, 107, 65, 0.8) 0%, rgba(50, 70, 40, 0.8) 100%);
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 0.8rem 2.5rem;
-            font-size: 0.85rem;
-            font-family: var(--font-heading);
-            font-weight: 700;
-            letter-spacing: 3px;
-            cursor: pointer;
-            border-radius: 30px;
-            text-transform: uppercase;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            margin-top: 3rem; background: linear-gradient(90deg, rgba(84, 107, 65, 0.8) 0%, rgba(50, 70, 40, 0.8) 100%);
+            color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); padding: 0.8rem 2.5rem; font-size: 0.85rem;
+            font-family: var(--font-heading); font-weight: 700; letter-spacing: 3px; cursor: pointer;
+            border-radius: 30px; text-transform: uppercase; transition: all 0.3s ease; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
           }
           .reset-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 25px rgba(84, 107, 65, 0.4);
-            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-3px); box-shadow: 0 15px 25px rgba(84, 107, 65, 0.4); border-color: rgba(255,255,255,0.5);
           }
         `}
       </style>
 
       <div className="container">
-        <div className="section-header-editorial" style={{ marginBottom: '4rem' }}>
-          <span className="archive-badge">// KADERİNİ ÇEK</span>
+        
+        {/* HİZALAMA DÜZELTİLDİ: paddingTop: '0', marginTop: '-3rem' eklendi */}
+        <div className="section-header-editorial" style={{ paddingTop: '0', marginTop: '-3rem', marginBottom: '3rem', textAlign: 'center' }}>
+          <span className="archive-badge" style={{ display: 'inline-block', marginBottom: '1rem' }}>// KADERİNİ ÇEK</span>
           <h1 className="editorial-title">REPLİK PİNYATASI</h1>
           <p className="editorial-subtitle">İçindeki repliği düşürmek için pinyataya vur!</p>
         </div>
@@ -325,7 +284,6 @@ function Interactive() {
             🪅
           </div>
 
-          {/* DİNAMİK YÖNLENDİRME METNİ */}
           {!isBurst && !isShaking && (
             <p style={{ 
               fontFamily: 'var(--font-heading)', 

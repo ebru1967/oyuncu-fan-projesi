@@ -94,7 +94,6 @@ function Hangman() {
     setEndQuote('');
   };
 
-  // useCallback ile sarmaladık ki klavye event listener'ı güncel state'i yakalayabilsin
   const handleGuess = useCallback((letter) => {
     if (guessedLetters.includes(letter) || isGameOver || isGameWon) return;
 
@@ -130,16 +129,101 @@ function Hangman() {
   }, [handleGuess]);
 
   return (
-    <div className="press-editorial-wrapper animate-fade" lang="tr">
+    <div className="press-editorial-wrapper animate-fade" lang="tr" style={{ paddingBottom: '4rem' }}>
+      
+      {/* OYUN İÇİN ÖZEL CSS STİLLERİ EKLENDİ */}
+      <style>{`
+        .hangman-status {
+          text-align: center;
+          margin-bottom: 2rem;
+          font-family: var(--font-heading);
+          color: var(--accent-dark);
+        }
+        .mistake-bar {
+          width: 100%;
+          max-width: 400px;
+          height: 8px;
+          background: rgba(84, 107, 65, 0.1);
+          border-radius: 10px;
+          margin: 0.8rem auto 0;
+          overflow: hidden;
+        }
+        .mistake-fill {
+          height: 100%;
+          transition: width 0.3s ease, background-color 0.3s ease;
+        }
+        .word-display {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 1.5rem;
+          margin-bottom: 3rem;
+        }
+        .word-letter {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: clamp(30px, 8vw, 45px);
+          height: clamp(40px, 10vw, 55px);
+          font-size: clamp(1.5rem, 5vw, 2.5rem);
+          font-weight: bold;
+          border-bottom: 3px solid var(--accent-dark);
+          text-transform: uppercase;
+          color: var(--text-main);
+          font-family: var(--font-heading);
+        }
+        .keyboard {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 0.5rem;
+          max-width: 600px;
+          margin: 0 auto;
+        }
+        .key-btn {
+          width: clamp(35px, 9vw, 45px);
+          height: clamp(40px, 10vw, 50px);
+          font-family: var(--font-heading);
+          font-weight: bold;
+          font-size: 1.1rem;
+          border: 1px solid rgba(84, 107, 65, 0.3);
+          background: transparent;
+          color: var(--text-main);
+          border-radius: 6px;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+        .key-btn:hover:not(:disabled) {
+          background: rgba(84, 107, 65, 0.1);
+          border-color: var(--accent-dark);
+        }
+        .key-btn.correct {
+          background: var(--accent-dark);
+          color: #fff;
+          border-color: var(--accent-dark);
+        }
+        .key-btn.wrong {
+          background: rgba(200, 50, 50, 0.7);
+          color: #fff;
+          border-color: rgba(200, 50, 50, 0.7);
+          opacity: 0.5;
+        }
+        .key-btn:disabled {
+          cursor: not-allowed;
+        }
+      `}</style>
+
       <div className="container">
         
-        <div className="section-header-editorial">
-          <span className="archive-badge">// İNTERAKTİF ARŞİV PROTOKOLÜ</span>
+        {/* HİZALAMA DÜZELTİLDİ: Diğer sayfalarla aynı hizada */}
+        <div className="section-header-editorial" style={{ paddingTop: '0', marginTop: '-3rem', marginBottom: '3rem', textAlign: 'center' }}>
+          <span className="archive-badge" style={{ display: 'inline-block', marginBottom: '1rem' }}>// İNTERAKTİF ARŞİV PROTOKOLÜ</span>
           <h1 className="editorial-title" style={{ textTransform: 'none' }}>ADAM ASMACA</h1>
           <p className="editorial-subtitle">Aytek Şayan arşivinin derinliklerindeki kelimeleri tahmin edin. Dikkatli olun, Şerif hatalı harfleri affetmez.</p>
         </div>
 
-        <div className="game-container">
+        <div className="game-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          
           <div className="hangman-status">
             <h3>SİSTEM GÜVENLİĞİ: {maxMistakes - mistakes} HATA PAYI KALDI</h3>
             <div className="mistake-bar">
@@ -147,7 +231,7 @@ function Hangman() {
             </div>
           </div>
 
-          <div className="word-display" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1rem' }}>
+          <div className="word-display">
             {word.split(' ').map((wordPart, wordIndex) => (
               <div key={wordIndex} style={{ display: 'flex', gap: '0.5rem', flexWrap: 'nowrap' }}>
                 {wordPart.split('').map((letter, letterIndex) => (
@@ -160,7 +244,7 @@ function Hangman() {
           </div>
 
           {isGameOver && (
-            <div className="game-message error" style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', padding: '1.5rem', backgroundColor: 'rgba(200, 50, 50, 0.1)', border: '1px solid rgba(200, 50, 50, 0.3)', borderRadius: '8px' }}>
+            <div className="game-message error" style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', padding: '1.5rem', backgroundColor: 'rgba(200, 50, 50, 0.05)', border: '1px solid rgba(200, 50, 50, 0.3)', borderRadius: '8px', marginBottom: '2rem', maxWidth: '500px', textAlign: 'center' }}>
               <strong style={{ color: 'rgba(200, 50, 50, 0.9)' }}>ARŞİVE ERİŞİM REDDEDİLDİ! KELİME: {word}</strong>
               <span style={{ fontStyle: 'italic', fontSize: '1rem', opacity: 0.9, fontFamily: 'var(--font-heading)' }}>
                 "{endQuote}" <br/><span style={{ fontSize: '0.8rem', opacity: 0.7, fontStyle: 'normal' }}>— Şerif Furtuna</span>
@@ -169,7 +253,7 @@ function Hangman() {
           )}
 
           {isGameWon && (
-            <div className="game-message success" style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', padding: '1.5rem', backgroundColor: 'rgba(84, 107, 65, 0.1)', border: '1px solid var(--accent-dark)', borderRadius: '8px' }}>
+            <div className="game-message success" style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', padding: '1.5rem', backgroundColor: 'rgba(84, 107, 65, 0.05)', border: '1px solid var(--accent-dark)', borderRadius: '8px', marginBottom: '2rem', maxWidth: '500px', textAlign: 'center' }}>
               <strong style={{ color: 'var(--accent-dark)' }}>ŞİFRE ÇÖZÜLDÜ! ARŞİV ERİŞİMİ ONAYLANDI.</strong>
               <span style={{ fontStyle: 'italic', fontSize: '1rem', opacity: 0.9, fontFamily: 'var(--font-heading)' }}>
                 "{endQuote}" <br/><span style={{ fontSize: '0.8rem', opacity: 0.7, fontStyle: 'normal' }}>— Şerif Furtuna</span>
@@ -191,8 +275,8 @@ function Hangman() {
           </div>
 
           {(isGameOver || isGameWon) && (
-            <button className="editorial-link-btn-anchor reset-btn" onClick={startNewGame} style={{ marginTop: '2rem' }}>
-              YENİ KELİME ÜRET ↗
+            <button className="editorial-link-btn-anchor reset-btn" onClick={startNewGame} style={{ marginTop: '3rem' }}>
+              YENİ KELİME ÜRET ⟲
             </button>
           )}
         </div>
