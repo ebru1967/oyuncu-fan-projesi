@@ -125,6 +125,7 @@ function Filmography() {
   return (
     <div className="filmography-wrapper animate-fade">
       
+      {/* CSS BLOĞU */}
       <style>{`
         .filmo-card {
           border: 1px solid rgba(84, 107, 65, 0.15);
@@ -176,7 +177,7 @@ function Filmography() {
 
         /* VİDEO BÖLÜMÜ İÇİN ÖZEL CSS */
         .video-showcase-container {
-          max-width: 900px;
+          max-width: 750px;
           margin: 0 auto 4rem auto;
           border: 1px solid rgba(84, 107, 65, 0.2);
           border-radius: 12px;
@@ -192,22 +193,63 @@ function Filmography() {
           display: block;
           outline: none;
         }
+
+        /* BAŞLIK HİZALAMA VE ORTALAMA İÇİN ÖZEL CSS */
+        .filmo-header-container {
+          margin-bottom: 3rem;
+          padding-top: 0;
+          margin-top: -2rem;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 100%;
+        }
+
+        .filmo-main-title {
+          font-family: var(--font-heading);
+          font-size: clamp(2rem, 8vw, 3.5rem); /* Mobilde otomatik küçülür */
+          text-align: center;
+          width: 100%;
+          margin: 0;
+          line-height: 1.2;
+        }
+
+        @media (max-width: 768px) {
+          .filmo-header-container {
+            margin-top: -4rem; /* Mobilde yukarıya çekildi */
+          }
+        }
       `}</style>
 
       <div className="container" style={{ paddingBottom: '4rem' }}>
         
-        {/* SAYFA BAŞLIĞI */}
-        <div className="section-header-editorial" style={{ marginBottom: '3rem', paddingTop: '0', marginTop: '-2rem', textAlign: 'center' }}>
+        {/* SAYFA BAŞLIĞI (ORTALANMIŞ VE MOBİLE UYUMLU) */}
+        <div className="section-header-editorial filmo-header-container">
           <span className="archive-badge" style={{ display: 'inline-block', marginBottom: '1rem' }}>// EKRAN KANONU</span>
-          <h1 className="editorial-title" style={{ fontSize: '3.5rem' }}>DİZİ & FİLMOGRAFİ</h1>
-          <p className="editorial-subtitle">Oyuncunun 2016'dan günümüze televizyon, sinema ve dijital platformlardaki dönüşümü, inşa ettiği karakterler ve proje arşivi.</p>
+          <h1 className="editorial-title filmo-main-title">DİZİ & FİLMOGRAFİ</h1>
+          <p className="editorial-subtitle" style={{ marginTop: '1rem' }}>Oyuncunun 2016'dan günümüze televizyon, sinema ve dijital platformlardaki dönüşümü, inşa ettiği karakterler ve proje arşivi.</p>
+        </div>
+
+        {/* --- KARAKTERLER VİDEO EDİT ALANI --- */}
+        <div style={{ maxWidth: '750px', margin: '0 auto 1.5rem auto', display: 'flex', flexDirection: 'column', gap: '0.5rem', textAlign: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.8rem' }}>
+            <span className="archive-badge" style={{ backgroundColor: 'var(--accent-dark)', color: 'var(--bg-main)' }}>// VİDEO ARŞİVİ</span>
+            <span style={{ fontSize: '0.8rem', opacity: 0.6, fontWeight: 'bold', fontFamily: 'var(--font-heading)' }}>SÜRE: 1 DK 56 SN</span>
+          </div>
+          <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '2rem', color: 'var(--accent-dark)', margin: 0 }}>
+            BİR AKTÖRÜN DÖNÜŞÜMÜ
+          </h2>
+          <p style={{ margin: 0, opacity: 0.8, fontSize: '0.95rem' }}>
+            2016'dan günümüze Aytek Şayan'ın hayat verdiği tüm ikonik karakterlerin evrimi.
+          </p>
         </div>
 
         <div className="video-showcase-container">
           <video 
             className="video-showcase-video" 
             controls 
-            poster="/karakterkapak.jpeg" 
+            poster="/karakterkapak.jpeg"
           >
             <source src="/karakterler-edit.mp4" type="video/mp4" />
             Tarayıcınız video oynatmayı desteklemiyor.
