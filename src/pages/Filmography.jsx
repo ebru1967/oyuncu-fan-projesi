@@ -125,7 +125,6 @@ function Filmography() {
   return (
     <div className="filmography-wrapper animate-fade">
       
-      {/* CSS BLOĞU EKLENDİ */}
       <style>{`
         .filmo-card {
           border: 1px solid rgba(84, 107, 65, 0.15);
@@ -174,16 +173,47 @@ function Filmography() {
           background-color: transparent;
           color: rgba(84, 107, 65, 0.5);
         }
+
+        /* VİDEO BÖLÜMÜ İÇİN ÖZEL CSS */
+        .video-showcase-container {
+          max-width: 900px;
+          margin: 0 auto 4rem auto;
+          border: 1px solid rgba(84, 107, 65, 0.2);
+          border-radius: 12px;
+          overflow: hidden;
+          background: #000;
+          box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+          position: relative;
+        }
+        
+        .video-showcase-video {
+          width: 100%;
+          height: auto;
+          display: block;
+          outline: none;
+        }
       `}</style>
 
       <div className="container" style={{ paddingBottom: '4rem' }}>
         
         {/* SAYFA BAŞLIĞI */}
-        <div className="section-header-editorial" style={{ marginBottom: '4rem', paddingTop: '0', marginTop: '-2rem', textAlign: 'center' }}>
+        <div className="section-header-editorial" style={{ marginBottom: '3rem', paddingTop: '0', marginTop: '-2rem', textAlign: 'center' }}>
           <span className="archive-badge" style={{ display: 'inline-block', marginBottom: '1rem' }}>// EKRAN KANONU</span>
           <h1 className="editorial-title" style={{ fontSize: '3.5rem' }}>DİZİ & FİLMOGRAFİ</h1>
           <p className="editorial-subtitle">Oyuncunun 2016'dan günümüze televizyon, sinema ve dijital platformlardaki dönüşümü, inşa ettiği karakterler ve proje arşivi.</p>
         </div>
+
+        <div className="video-showcase-container">
+          <video 
+            className="video-showcase-video" 
+            controls 
+            poster="/karakterkapak.jpeg" 
+          >
+            <source src="/karakterler-edit.mp4" type="video/mp4" />
+            Tarayıcınız video oynatmayı desteklemiyor.
+          </video>
+        </div>
+        {/* -------------------------------------- */}
 
         {/* PROJELER LİSTESİ (IZGARA DÜZENİ) */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '3rem' }}>
