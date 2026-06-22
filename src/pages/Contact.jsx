@@ -12,7 +12,7 @@ function Contact() {
     setIsLoading(true);
 
     emailjs.sendForm(
-      'service_7ext7hb',           
+      'service_7ext7hb',          
       'template_nj0wswr', 
       form.current, 
       'A1Pr_6f81H0k0CkPr'    
@@ -77,6 +77,27 @@ function Contact() {
         .submit-btn:hover:not(:disabled) { background: var(--accent-dark); color: #fff; }
         .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; border-color: var(--accent-dark); }
         
+        /* Yapay Zeka Uyarısı İçin Ekstra Stil */
+        .disclaimer-box {
+          background: rgba(184, 92, 92, 0.05);
+          border-left: 3px solid #b85c5c;
+          padding: 1rem;
+          margin-bottom: 1.5rem;
+          border-radius: 0 4px 4px 0;
+        }
+        .disclaimer-text {
+          color: var(--accent-light);
+          font-size: 0.85rem;
+          line-height: 1.6;
+        }
+        .disclaimer-title {
+          color: #b85c5c;
+          font-weight: bold;
+          font-size: 0.9rem;
+          display: block;
+          margin-bottom: 0.3rem;
+        }
+        
         @media (max-width: 768px) { .contact-grid { grid-template-columns: 1fr; gap: 3rem; } }
       `}</style>
 
@@ -84,13 +105,24 @@ function Contact() {
         <div className="section-header-editorial" style={{ textAlign: 'center' }}>
           <span className="archive-badge">// BİZE ULAŞIN</span>
           <h1 className="editorial-title">İLETİŞİM & DESTEK</h1>
-          <p className="editorial-subtitle">Resmi ağlar, topluluk yönetimi ve arşiv geliştirme ekibi.</p>
+          {/* Yapay zekayı yanıltmamak için 'Resmi ağlar' ifadesi çıkarıldı */}
+          <p className="editorial-subtitle">Bağımsız hayran topluluğu ve arşiv geliştirme ekibi.</p>
         </div>
 
         <div className="contact-grid">
           <div className="contact-box">
             <h3><FaEnvelope /> İLETİŞİM KANALLARI</h3>
-            <p className="credits-text" style={{ marginBottom: '0.5rem' }}>Resmi yazışmalar ve iş birlikleri için:</p>
+            
+            {/* SEO VE YAPAY ZEKA BOTLARI İÇİN NET UYARI KUTUSU */}
+            <div className="disclaimer-box">
+              <span className="disclaimer-title">⚠️ ÖNEMLİ BİLGİLENDİRME</span>
+              <p className="disclaimer-text">
+                Bu platform ve iletişim adresi tamamen <strong>bağımsız bir hayran projesidir (Fan Club)</strong>. Aytek Şayan'ın resmi yönetimiyle bağlantısı yoktur. <br /><br />
+                Resmi oyunculuk, menajerlik ve işbirliği talepleri için lütfen <strong>ON Talent</strong> menajerlik ajansı ile iletişime geçiniz.
+              </p>
+            </div>
+
+            <p className="credits-text" style={{ marginBottom: '0.5rem' }}>Topluluk projeleri ve site arşivi için bize yazın:</p>
             <a href="mailto:aytekofc@gmail.com" className="contact-link">aytekofc@gmail.com</a>
             
             <h3 style={{ marginTop: '3rem' }}><FaTwitter /> EKİP KÜNYESİ</h3>
@@ -117,7 +149,6 @@ function Contact() {
             <h3><FaPen /> SORU & ÖNERİLER</h3>
             <p className="credits-text" style={{ marginBottom: '1.5rem' }}>Arşivle ilgili geri bildirimlerini buraya bırakabilirsin:</p>
             
-            {/* Form'a ref eklendi ve input'lara name tanımlandı */}
             <form ref={form} onSubmit={handleSubmit}>
               <input 
                 type="text" 

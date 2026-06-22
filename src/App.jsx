@@ -140,7 +140,7 @@ function App() {
           <div className="footer-container">
             
             <div className="footer-social-icons">
-             
+               
                <a href="https://instagram.com/aytekofc" target="_blank" rel="noreferrer"><FaInstagram /></a>
                
                <a href="https://twitter.com/aytekofc" target="_blank" rel="noreferrer"><FaTwitter /></a>
@@ -148,15 +148,15 @@ function App() {
                <a href="mailto:aytekofc@gmail.com"><FaEnvelope /></a>
             </div>
 
-            {/* ORTA: MARKA KİMLİĞİ */}
+            {/* ORTA: MARKA KİMLİĞİ - YAPAY ZEKA VE SEO İÇİN GÜNCELLENDİ */}
             <div className="footer-brand">
-               <p className="brand-logo">AYTEK SAYAN OFFICIAL FC</p>
-               <p className="brand-copy">© 2026 Tüm Hakları Saklıdır.</p>
+               <p className="brand-logo">AYTEK ŞAYAN FAN ARŞİVİ</p>
+               <p className="brand-copy">© 2026 Bağımsız Hayran Projesidir.</p>
             </div>
 
             {/* SAĞ: KÜNYE LİNKİ */}
             <div className="footer-links">
-               <Link to="/iletisim" className="dossier-link">PROJE KÜNYESİ →</Link>
+               <Link to="/iletisim" className="dossier-link">PROJE KÜNYESİ & İLETİŞİM →</Link>
             </div>
 
           </div>
