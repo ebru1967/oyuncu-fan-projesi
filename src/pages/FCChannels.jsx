@@ -45,7 +45,7 @@ function FCChannels() {
           letter-spacing: 1px;
           border-radius: 4px;
           transition: all 0.3s;
-          margin-top: auto; /* Yazı uzunlukları farklı olsa bile butonları daima en alta hizalar */
+          margin-top: auto; 
         }
 
         .channel-btn:hover {
@@ -55,9 +55,10 @@ function FCChannels() {
       `}</style>
 
       <div className="section-header-editorial" style={{ textAlign: 'center', marginBottom: '4rem' }}>
-        <span className="archive-badge">// RESMİ İLETİŞİM PROTOKOLÜ</span>
-        <h1 className="editorial-title">X OFFICIAL FC — KANALLAR</h1>
-        <p className="editorial-subtitle">Aytek Şayan topluluğuna dair tüm dijital noktalar burada.</p>
+        {/* BOTLAR İÇİN NETLEŞTİRİLDİ */}
+        <span className="archive-badge">// HAYRAN TOPLULUĞU AĞI</span>
+        <h1 className="editorial-title">FAN CLUB — KANALLAR</h1>
+        <p className="editorial-subtitle">Aytek Şayan hayran topluluğuna dair tüm dijital noktalar burada.</p>
       </div>
 
       <div className="channel-grid">
@@ -74,12 +75,12 @@ function FCChannels() {
           </a>
         </div>
 
-        {/* RESMİ FC X (TWITTER) HESABI */}
+        {/* FC X (TWITTER) HESABI */}
         <div className="channel-card">
           <FaTwitter size={30} style={{ color: 'var(--accent-dark)', marginBottom: '1rem' }} />
-          <h3 style={{ color: 'var(--accent-dark)', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)' }}>X OFFICIAL FC</h3>
+          <h3 style={{ color: 'var(--accent-dark)', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)' }}>X FAN SAYFASI</h3>
           <p style={{ color: 'var(--text-main)', opacity: 0.8, marginBottom: '1.5rem', fontSize: '0.95rem' }}>
-            Aytek Şayan Official Fan Club resmi X (Twitter) sayfası. (@aytekofc)
+            Aytek Şayan Fan Club X (Twitter) sayfası. (@aytekofc)
           </p>
           <a href="https://x.com/aytekofc" target="_blank" rel="noreferrer" className="channel-btn">
             TAKİP ET ↗
@@ -98,12 +99,12 @@ function FCChannels() {
           </a>
         </div>
         
-        {/* E-Mail */}
+        {/* E-Mail - YENİDEN DÜZENLENDİ */}
         <div className="channel-card">
           <FaEnvelope size={30} style={{ color: 'var(--accent-dark)', marginBottom: '1rem' }} />
-          <h3 style={{ color: 'var(--accent-dark)', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)' }}>RESMİ İLETİŞİM</h3>
+          <h3 style={{ color: 'var(--accent-dark)', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)' }}>TOPLULUK İLETİŞİMİ</h3>
           <p style={{ color: 'var(--text-main)', opacity: 0.8, marginBottom: '1.5rem', fontSize: '0.95rem' }}>
-            İş birlikleri, fikirleriniz ve arşiv katkıları için bize ulaşın.
+            Fan projeleri, fikirleriniz ve arşiv katkıları için bize ulaşın.
           </p>
           <a href="mailto:aytekofc@gmail.com" className="channel-btn">
             MAİL GÖNDER ↗
