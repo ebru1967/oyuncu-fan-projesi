@@ -16,21 +16,21 @@ const GRID = [
 ];
 
 const NUMBERS = {
-  "1-1": 1,  // RÜSTEM
-  "1-4": 2,  // SERHAT (Sağa) & SARP (Aşağı)
-  "1-8": 3,  // ALİ BİLGİN
-  "1-11": 4, // ŞERİF
-  "2-0": 5,  // GÜRKAN
-  "3-8": 6,  // İMAM
-  "4-8": 7,  // BEHİÇ
-  "5-0": 8,  // MERT
-  "5-3": 9,  // TURAHAN
-  "5-14": 10, // FIRAT
-  "6-8": 11, // LAİS
-  "6-9": 12, // ATTİLA
-  "8-10": 13, // KÜRŞAT
-  "10-0": 14, // BOZAN
-  "11-5": 15  // ŞAHBAZ
+  "1-1": 1, 
+  "1-4": 2, 
+  "1-8": 3, 
+  "1-11": 4, 
+  "2-0": 5, 
+  "3-8": 6, 
+  "4-8": 7, 
+  "5-0": 8, 
+  "5-3": 9, 
+  "5-14": 10, 
+  "6-8": 11, 
+  "6-9": 12, 
+  "8-10": 13, 
+  "10-0": 14, 
+  "11-5": 15 
 };
 
 const ACROSS_CLUES = [
@@ -57,30 +57,23 @@ const DOWN_CLUES = [
 
 function Crossword() {
   const [inputs, setInputs] = useState({});
-  // YENİ EKLENTİ: Inputları hafızada tutmak için useRef kullanıyoruz. 
-  // Böylece otomatik odaklanma (focus) yapabileceğiz.
   const inputRefs = useRef({}); 
 
   const handleInputChange = (r, c, value) => {
     const char = value.toLocaleUpperCase('tr-TR').replace(/[^A-ZÇĞİÖŞÜI]/g, '').slice(-1);
     setInputs(prev => ({ ...prev, [`${r}-${c}`]: char }));
 
-    // YENİ EKLENTİ: Harf girildiğinde eğer sağında veya altında boş bir kutu varsa otomatik olarak oraya geç
     if (char) {
       if (GRID[r][c + 1] && GRID[r][c + 1] !== '.') {
-        // Sağa geç
         inputRefs.current[`${r}-${c + 1}`]?.focus();
       } else if (GRID[r + 1] && GRID[r + 1][c] !== '.') {
-        // Sağa gidemiyorsa aşağı geç
         inputRefs.current[`${r + 1}-${c}`]?.focus();
       }
     }
   };
 
-  // YENİ EKLENTİ: Yön tuşları ve silme (Backspace) desteği
   const handleKeyDown = (e, r, c) => {
     if (e.key === 'Backspace' && !inputs[`${r}-${c}`]) {
-      // Kutucuk zaten boşken silmeye basılırsa bir önceki kutuya (sola veya yukarı) geri dön
       if (GRID[r][c - 1] && GRID[r][c - 1] !== '.') {
         inputRefs.current[`${r}-${c - 1}`]?.focus();
       } else if (GRID[r - 1] && GRID[r - 1][c] !== '.') {
@@ -136,6 +129,24 @@ function Crossword() {
           width: 22px; height: 22px; text-align: center; line-height: 22px; border-radius: 50%;
           font-weight: bold; font-size: 0.75rem; margin-right: 0.5rem;
         }
+        
+        .badge-reward-container {
+          background: #2ecc71;
+          color: white;
+          text-align: center;
+          padding: 2.5rem;
+          border-radius: 12px;
+          margin-bottom: 3rem;
+          font-family: var(--font-heading);
+          box-shadow: 0 15px 35px rgba(46, 204, 113, 0.2);
+          border: 3px solid rgba(255, 255, 255, 0.3);
+          animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+          from { transform: translateY(-20px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
       `}</style>
 
       <div className="container">
@@ -145,11 +156,39 @@ function Crossword() {
           <p className="editorial-subtitle">İpuçlarını takip ederek karakterlerin arşivdeki kimliklerini ortaya çıkarın.</p>
         </div>
 
+        {/* --- ÖDÜL VE KAZANMA EKRANI --- */}
         {isWon && (
-          <div style={{ background: '#2ecc71', color: 'white', textAlign: 'center', padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem', fontFamily: 'var(--font-heading)', letterSpacing: '1px', animation: 'fadeIn 0.5s' }}>
-            🎉 TEBRİKLER! TÜM GİZLİ KİMLİKLERİ BAŞARIYLA ÇÖZDÜNÜZ!
+          <div className="badge-reward-container">
+            <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🎖️</div>
+            <h2 style={{ fontSize: '2rem', margin: '0 0 0.5rem 0', color: 'white' }}>TEBRİKLER! BULMACA ÇÖZÜLDÜ!</h2>
+            <p style={{ fontSize: '1.1rem', marginBottom: '2rem', opacity: 0.95 }}>
+              Arşivin bu en zorlu görevini başarıyla tamamladın. "Crossword Master" dijital rozetin kazanıldı!
+            </p>
+            
+            <a 
+              href="/bulmaca-rozet.png" 
+              download="Aytek_Sayan_Crossword_Master.png" 
+              style={{
+                display: 'inline-block',
+                backgroundColor: 'white',
+                color: '#2ecc71',
+                padding: '1rem 2.5rem',
+                fontFamily: 'var(--font-heading)',
+                fontWeight: 'bold',
+                textDecoration: 'none',
+                borderRadius: '50px',
+                fontSize: '1rem',
+                boxShadow: '0 5px 15px rgba(0,0,0,0.1)',
+                transition: 'transform 0.2s ease'
+              }}
+              onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+              onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+            >
+              ROZETİ CİHAZINA İNDİR ↓
+            </a>
           </div>
         )}
+        {/* ------------------------------- */}
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', justifyContent: 'center', alignItems: 'flex-start' }}>
           
@@ -178,10 +217,10 @@ function Crossword() {
                         )}
                         <input
                           type="text"
-                          ref={el => inputRefs.current[`${r}-${c}`] = el} // Referansı hafızaya kaydettik
+                          ref={el => inputRefs.current[`${r}-${c}`] = el}
                           value={inputs[`${r}-${c}`] || ''}
                           onChange={(e) => handleInputChange(r, c, e.target.value)}
-                          onKeyDown={(e) => handleKeyDown(e, r, c)} // Yön tuşları desteği
+                          onKeyDown={(e) => handleKeyDown(e, r, c)}
                           className={`cw-input ${isCellCorrect ? 'correct-input' : ''}`}
                           disabled={isWon}
                         />
