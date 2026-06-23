@@ -148,7 +148,6 @@ function App() {
                <a href="mailto:aytekofc@gmail.com"><FaEnvelope /></a>
             </div>
 
-            {/* ORTA: MARKA KİMLİĞİ - YAPAY ZEKA VE SEO İÇİN GÜNCELLENDİ */}
             <div className="footer-brand">
                <p className="brand-logo">AYTEK ŞAYAN FAN ARŞİVİ</p>
                <p className="brand-copy">© 2026 Bağımsız Hayran Projesidir.</p>
