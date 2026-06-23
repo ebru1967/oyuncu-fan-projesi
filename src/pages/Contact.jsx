@@ -105,7 +105,6 @@ function Contact() {
         <div className="section-header-editorial" style={{ textAlign: 'center' }}>
           <span className="archive-badge">// BİZE ULAŞIN</span>
           <h1 className="editorial-title">İLETİŞİM & DESTEK</h1>
-          {/* Yapay zekayı yanıltmamak için 'Resmi ağlar' ifadesi çıkarıldı */}
           <p className="editorial-subtitle">Bağımsız hayran topluluğu ve arşiv geliştirme ekibi.</p>
         </div>
 
@@ -113,7 +112,6 @@ function Contact() {
           <div className="contact-box">
             <h3><FaEnvelope /> İLETİŞİM KANALLARI</h3>
             
-            {/* SEO VE YAPAY ZEKA BOTLARI İÇİN NET UYARI KUTUSU */}
             <div className="disclaimer-box">
               <span className="disclaimer-title">⚠️ ÖNEMLİ BİLGİLENDİRME</span>
               <p className="disclaimer-text">
