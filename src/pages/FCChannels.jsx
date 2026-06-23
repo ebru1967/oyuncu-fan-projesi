@@ -66,19 +66,21 @@ function FCChannels() {
           box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
+        /* BAŞLIK KÜÇÜLTÜLDÜ VE TOPARLANDI */
         .thanks-title {
           font-family: var(--font-heading);
-          font-size: 1.8rem;
+          font-size: clamp(1.2rem, 5vw, 1.6rem);
           color: var(--accent-dark);
           margin-bottom: 0.5rem;
           margin-top: 0;
+          line-height: 1.3;
         }
 
         .thanks-desc {
-          font-size: 0.95rem;
-          line-height: 1.6;
+          font-size: 0.9rem;
+          line-height: 1.5;
           opacity: 0.8;
-          margin-bottom: 2rem;
+          margin-bottom: 1.5rem;
         }
       `}</style>
 
@@ -110,7 +112,6 @@ function FCChannels() {
                 Mayıs 18, 2026
               </a>
             </blockquote> 
-            {/* Embed kodunun çalışması için gereken script */}
             <script async src="https://platform.twitter.com/widgets.js" charSet="utf-8"></script>
           </div>
         </div>
