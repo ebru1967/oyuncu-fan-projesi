@@ -3,11 +3,10 @@ import { Link } from 'react-router-dom';
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false); // YENİ: Karanlık mod durumu
+  const [isDarkMode, setIsDarkMode] = useState(false); 
 
   const closeMenu = () => setIsOpen(false);
 
-  // Mobil menü açıldığında alttaki sayfanın kaymasını engeller
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -23,7 +22,6 @@ function Navbar() {
     };
   }, [isOpen]);
 
-  // YENİ: Sayfa ilk açıldığında hafızada dark mode var mı kontrol et
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
@@ -32,7 +30,6 @@ function Navbar() {
     }
   }, []);
 
-  // YENİ: Tuşa basıldığında temayı değiştiren fonksiyon
   const toggleTheme = () => {
     if (isDarkMode) {
       document.body.classList.remove('dark-mode');
@@ -157,9 +154,9 @@ function Navbar() {
               KARE BULMACA
             </Link>
             <Link to="/xox-oyunu" onClick={closeMenu}>
-      XOX
-    </Link>
-    <Link to="/oyun" onClick={closeMenu}>
+              XOX
+            </Link>
+            <Link to="/oyun" onClick={closeMenu}>
               ODAK TESTİ
             </Link>
             <Link to="/gorsel-hafiza" onClick={closeMenu}>
@@ -194,27 +191,31 @@ function Navbar() {
           İLETİŞİM
         </Link>
 
-        {/* YENİ: GECE/GÜNDÜZ TUŞU */}
-        <button 
-          onClick={() => { toggleTheme(); closeMenu(); }} 
-          style={{
-            background: 'transparent', 
-            border: '1px solid var(--accent-dark)', 
-            color: 'var(--accent-dark)', 
-            padding: '0.4rem 1rem', 
-            borderRadius: '30px', 
-            cursor: 'pointer', 
-            fontFamily: 'var(--font-heading)', 
-            fontWeight: 'bold',
-            margin: '0.5rem 1rem', 
-            display: 'inline-flex', 
-            alignItems: 'center', 
-            justifyContent: 'center',
-            width: 'max-content'
-          }}
-        >
-          {isDarkMode ? '☀ GÜNDÜZ' : '☾ GECE'}
-        </button>
+        {/* GECE/GÜNDÜZ TUŞU VE ÇEVİRİ BUTONU AYNI HİZADA */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: '0 1rem' }}>
+          <button 
+            onClick={() => { toggleTheme(); closeMenu(); }} 
+            style={{
+              background: 'transparent', 
+              border: '1px solid var(--accent-dark)', 
+              color: 'var(--accent-dark)', 
+              padding: '0.4rem 1rem', 
+              borderRadius: '30px', 
+              cursor: 'pointer', 
+              fontFamily: 'var(--font-heading)', 
+              fontWeight: 'bold',
+              display: 'inline-flex', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              width: 'max-content'
+            }}
+          >
+            {isDarkMode ? '☀ GÜNDÜZ' : '☾ GECE'}
+          </button>
+          
+          {/* ÇEVİRİ BUTONU */}
+          <div id="google_translate_element"></div>
+        </div>
 
       </div>
     </nav>
