@@ -30,6 +30,32 @@ function Navbar() {
     }
   }, []);
 
+  // YENİ EKLENEN KISIM: Google Translate Çözümü
+  useEffect(() => {
+    // Sayfa her yüklendiğinde eski kalıntıları temizler
+    const translateElement = document.getElementById('google_translate_element');
+    if (translateElement) {
+        translateElement.innerHTML = '';
+    }
+
+    // Google Translate script'ini React hazır olduktan sonra zorla çalıştırır
+    const addScript = document.createElement('script');
+    addScript.setAttribute('src', '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit');
+    document.body.appendChild(addScript);
+
+    // Kendi tanımladığımız init fonksiyonunu global objeye bağlıyoruz
+    window.googleTranslateElementInit = () => {
+      new window.google.translate.TranslateElement(
+        {
+          pageLanguage: 'tr',
+          includedLanguages: 'en,pt,es,de,ar,ru,az',
+          layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
+        },
+        'google_translate_element'
+      );
+    };
+  }, []);
+
   const toggleTheme = () => {
     if (isDarkMode) {
       document.body.classList.remove('dark-mode');
@@ -207,7 +233,8 @@ function Navbar() {
               display: 'inline-flex', 
               alignItems: 'center', 
               justifyContent: 'center',
-              width: 'max-content'
+              width: 'max-content',
+              whiteSpace: 'nowrap'
             }}
           >
             {isDarkMode ? '☀ GÜNDÜZ' : '☾ GECE'}
