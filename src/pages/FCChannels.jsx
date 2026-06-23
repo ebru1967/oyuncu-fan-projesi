@@ -91,7 +91,7 @@ function FCChannels() {
           <p className="editorial-subtitle">Aytek Şayan hayran topluluğuna dair tüm dijital iletişim noktaları.</p>
         </div>
 
-        {/* --- ÖZEL TEŞEKKÜR KÖŞESİ (YENİ EKLENDİ) --- */}
+        {/* --- ÖZEL TEŞEKKÜR KÖŞESİ --- */}
         <div className="special-thanks-container animate-fade">
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem', color: 'var(--accent-dark)' }}>
             <span style={{ fontSize: '2rem' }}>★</span>
