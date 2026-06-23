@@ -1,5 +1,14 @@
 export const activeNews = [
   {
+    id: 13,
+    regCode: "KAYIT #2026-06M",
+    category: "BASIN // RÖPORTAJ",
+    title: "Sahnertoz Özel: 'Bu Festivaller Şehre ve Herkese Aittir'",
+    summary: "Ceren Ertöz'e konuşan Aytek Şayan; Kısalar Festivali'nin temalarını, seçim kriterlerini ve festivalin Türkiye tiyatrosundaki geleceğine dair hedeflerini paylaşıyor. Şayan, kusursuzluk yerine cesur fikirlerin ve sahnede eylemin gücüne inandığının altını çiziyor.",
+    linkText: "RÖPORTAJI OKU ↗",
+    linkUrl: "/basin" 
+  },
+  {
     id: 12,
     regCode: "KAYIT #2026-06L",
     category: "BASIN // RÖPORTAJ",

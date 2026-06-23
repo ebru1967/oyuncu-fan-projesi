@@ -6,6 +6,40 @@ function PressInterviews() {
 
   const interviewData = [
     {
+      id: 22,
+      type: 'written',
+      source: 'SAHNERTOZ // CEREN ERTÖZ',
+      date: '22 HAZİRAN 2026',
+      title: 'Kısalar Festivali Özel: "Bu Festivaller Şehre ve Herkese Aittir"',
+      summary: "Ceren Ertöz'e konuşan Aytek Şayan; Kısalar Festivali'nin temalarını, seçim kriterlerini ve festivalin Türkiye tiyatrosundaki geleceğine dair hedeflerini paylaşıyor. Şayan, kusursuzluk yerine cesur fikirlerin ve sahnede eylemin gücüne inandığının altını çiziyor.",
+      qaList: [
+        {
+          q: "Kırılgan Köprüler, Çevresel Kıyamet, Modern Oburluk, 'Kimlik ve Aidiyet' ve 'Neşeli Direniş'... Bu temalar sanatçılar için bir sınır mı, yoksa bir davet mi?",
+          a: "Aslında buradaki tek düşünülmesini istemediğim şey, bunun sanatçıları sınırlandırıyor gibi durması. Çünkü burada bir davet var. İki senedir bu temaları belirlerken dünyadaki festivalleri, sanatla ilgili fonları ve insanların üzerine düşündüğü meseleleri değerlendiriyoruz. Bu başlıklar hem entelektüel hem de etik anlamda önemli gördüğümüz konular. Bu beş temayı yan yana koyduğumuzda, aslında bugün dünyada neler olup bitiyorsa onlar hakkında düşünmüş oluyoruz. Kimlik ve aidiyet bu kadar ilgi görürken çevresel kıyamet neden daha az ilgi görüyor? Türkiye'de sonuç böyleyse, İngiltere'de ya da Manisa'da nasıl olurdu? Burada bir rota var. Bu rotayı belirleyen bazı değerlerimiz var. İnsanlar da o değerlere göre reaksiyon veriyorlar ve biz de burada bazı şeyleri görme şansı buluyoruz."
+        },
+        {
+          q: "Kısalar Festivali bu yıl oldukça geniş bir seçkiyle, 50 oyunla gerçekleşiyor. Uzun vadede hedefiniz daha fazla üretime alan açmak mı, yoksa daha seçici bir yapıyla seçilen oyunların gelişim süreçlerine görünürlüğüne daha fazla alan tanımak mı? Bu dengeyi nasıl kurmayı hedefliyorsunuz?",
+          a: "Bence bunun ana amacı şu: 'Bir fikrim var, keşke onu insanlara gösterebilsem.' Evde otururken bir fikir bulup heyecanlanmak başka, o fikri çalışıp sahneye taşıyabilmek başka. İnsan o çalışma sürecine girdiğinde zaten kendini sınamış oluyor ve bence bu yeterince önemli bir sınav. Kısalar Festivali ağırlıklı olarak bundan daha fazlasını sınamamalı. Şu an için tavrımız daha çok 'Hadi yapalım' diyerek insanları desteklemek. Keşke diğer tiyatrolar da buraya gelip potansiyel gördükleri oyunları keşfetse. Çünkü bu, gençlere yatırım yapmanın en kolay ve en kısa yolu. Biz kendi adımıza tiyatro sektörüne hizmet etmeye çalışıyoruz. Daha fazla oyuna destek verebilmek için de çalışmaya devam ediyoruz."
+        },
+        {
+          q: "Kısalar Festivali pek çok genç yazar, yönetmen ve oyuncunun ilk kez görünür olduğu bir alan. Bir oyunu değerlendirirken sizin için belirleyici olan şey nedir? Kusursuz bir iş mi, cesur bir fikir mi, yoksa geleceğe dair güçlü bir potansiyel mi?",
+          a: "Kesinlikle kusursuz bir şey arayışında değiliz. Hatta neyin kusursuz, neyin kusur olduğunu da sorguladığımız bir yer burası. Çok çalışılıp yanlış çalışılabilme ihtimali de bizim gördüğümüz bir şey. Böyle bir projede, o sürecin kıymetli bir kesitini tam olarak buraya denk düşürmeye çalışıyoruz. Biz oyunun en çok dramaturjisiyle ve sahneye koyuş biçimiyle ilgileniyoruz. Çünkü aynı şeyi anlatıyor olabiliriz ama birimiz onu diğerinden daha farklı anlatıyor. Bu anlamda fikir bizim için çok önemli. Çıkış noktası da çok önemli. Ama en çok da nasıl anlatılmaya çalışıldığı önemli. Ekiplerin içinde sahne sanatlarında farklı şeyleri kıymetli bulan insanlar da var. Bu da bizim için bir çeşitlilik. Hata yapma şansı olan insanları elemeye çalışmıyoruz. Hata yapma şansı olan insanlarla beraber burada olalım istiyoruz."
+        },
+        {
+          q: "Kısalar Festivalinin geleceğini nasıl hayal ediyorsunuz? Festivalin farklı mekanlara ve şehirlere yayılması mümkün mü?",
+          a: "Kısalar'ın geleceğini düşünürken mesele sadece yeni mekanlar değil, festival deneyiminin nasıl büyüyeceği. Tek mekanın şöyle bir güzelliği oluyor: Herkes dört gün boyunca nereye geleceğini biliyor. Aslında bu işi kuvvetlendiren bir taraf da bu. Şehre yayılmak da bir seçenek ama bunu nasıl yaptığımız önemli. Şehri bir noktada toplamak da başka bir kuvvet, başka bir romantizm yaratıyor. İnsanlar yollarda kaybolmak yerine her gün nereye gideceğini biliyor ve rastlaşa rastlaşa geliyor. Ama benim kafamda bu festivali Berlin'e de, Amsterdam'a da, Londra'ya da, Trabzon'a da, Van'a da, Ankara'ya da götürmek var. Çünkü bu festivaldeki deneyimin kodlarını alıp başka yerlere taşımak istiyorum. Bu anlamda Kısalar Festivali doğru kaynağa ulaşabilirse, buradaki niyetin ve amatör ruhun dünyanın her yerinde karşılık bulacağını düşünüyorum."
+        },
+        {
+          q: "Festival boyunca çok sayıda oyun sahneleniyor. Oyunları izleme, değerlendirme ve üzerine tartışma sürecini nasıl yürütüyorsunuz? Bu tartışmalar gelecek yılların festivalini de şekillendiriyor mu?",
+          a: "Arkadaşlarımızı, dramaturg arkadaşlarımızı ve akademisyenleri buraya davet ettik. Onlardan da geri dönüşler aldık. Ama burada bizim için önemli olan şeylerden biri eylem. Bir oyuncu çıkıp trapez öğrenmek ya da kendi hikâyesini anlatabilmek için yeni bir beceri edinmek üzere yola çıkıyorsa, bu benim için kıymetli. Çünkü sadece metni iyi oynamak değil, o yolculuğun kendisi de önemli. Ben bir eylemin gücüne inanıyorum. Tiyatro sahnesinde eylemin kuvvetine inanıyorum. Sözün de bir eylem olduğunu düşünüyorum. Bir anlamda festival de benim için bir arayış. 'Şu beş tema üzerine bir şey yapabilirsiniz.' diyorum. Mesele yalnızca onların kendini göstermesi olmuyor; bu aynı zamanda ileride birlikte çalışacağım insanları tanıma biçimim. Keşke bu mesleğin içinde birlik oluşturmaya çalışanlar da bu kadar insanın bir araya geldiği yerlere gelseler. Bu sene OGM Yapım'ın desteğiyle şunu gördüm: Sektörde işini gerçekten ciddiye alan insanlar var ve bizim bu umudu kırmamamız lazım."
+        },
+        {
+          q: "Siz yıllar sonra geriye dönüp baktığınızda bu festivalin Türkiye Tiyatrosu'nda nasıl bir iz bırakmasını istersiniz? Kısalar Festivali'nin nasıl bir hafızaya dönüşmesini hayal ediyorsunuz?",
+          a: "Festivalin çok profesyonel işler yapan insanlarla hala amatör ruhu taşıyan insanların buluşma noktası olmasını istiyorum. Biz bunu hak ediyoruz. Bir araya gelip oyunlar izlemeyi, oyunlar üzerine konuşmayı ve birlikte düşünmeyi hak ediyoruz. Ben festivallerin bir şehre ait olduğuna inanıyorum. Birilerinin değil, herkesin. 'Bir gün insanların, Biz Kısalar'dan çıktık' demesini isterim. İleride oyuncuların, yazarların ve sanatçıların 'Bir yolculuğa Kısalar Festivali'nde başladık' demesi benim için çok kıymetli olur. Çünkü biz burada genelde yolculuğun başındaki insanlarla buluşuyoruz. İnsanları umutlandıran, cesaretlendiren ve giderek buradan çıkan insanların da beslediği bir yapıya dönüşmesini isterim. En büyük hayalim ise şu: Kısalar Festivali'nin o üniversite tiyatrolarındaki amatör, cesur ve umut dolu ruhu koruması."
+        }
+      ]
+    },
+    {
       id: 21,
       type: 'written',
       source: 'TİYATRO DERGİSİ // PINAR EROL',
