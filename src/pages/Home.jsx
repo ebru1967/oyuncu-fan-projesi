@@ -1,9 +1,42 @@
 import { Link, useLocation } from 'react-router-dom'; 
-import { useEffect } from 'react'; 
+import { useEffect, useState } from 'react'; 
 import { activeNews } from '../data/newsData'; 
+
+function useDailyStreak() {
+  const [streak, setStreak] = useState(0);
+
+  useEffect(() => {
+    const today = new Date().toDateString(); 
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr = yesterday.toDateString();
+
+    const lastVisit = localStorage.getItem('fc_lastVisitDate');
+    let currentStreak = parseInt(localStorage.getItem('fc_streakCount') || '0', 10);
+
+    if (lastVisit === today) {
+      // Bugün zaten girilmiş, seriyi sabit tut
+      setStreak(currentStreak);
+    } else {
+      if (lastVisit === yesterdayStr) {
+        // Dün girilmiş, seriyi artır
+        currentStreak += 1;
+      } else {
+        // Seri bozulmuş veya ilk giriş, 1'den başlat
+        currentStreak = 1;
+      }
+      localStorage.setItem('fc_lastVisitDate', today);
+      localStorage.setItem('fc_streakCount', currentStreak.toString());
+      setStreak(currentStreak);
+    }
+  }, []);
+
+  return streak;
+}
 
 function Home() {
   const location = useLocation();
+  const streakCount = useDailyStreak(); 
 
   useEffect(() => {
     if (location.hash === '#kronoloji') {
@@ -61,6 +94,13 @@ function Home() {
               <span className="archive-badge">
                 🎂 {daysLeft} GÜN KALDI
               </span>
+
+              {/*GÜNLÜK SERİ ROZETİ */}
+              {streakCount > 0 && (
+                <span className="archive-badge" style={{ backgroundColor: 'var(--accent-dark)', color: 'var(--bg-main)' }}>
+                  🔥 {streakCount} GÜNLÜK SERİ
+                </span>
+              )}
             </div>
             <h1 className="hero-main-title">AYTEK ŞAYAN</h1>
             <p className="hero-statement">
