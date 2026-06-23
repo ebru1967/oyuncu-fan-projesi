@@ -30,32 +30,6 @@ function Navbar() {
     }
   }, []);
 
-  // YENİ EKLENEN KISIM: Google Translate Çözümü
-  useEffect(() => {
-    // Sayfa her yüklendiğinde eski kalıntıları temizler
-    const translateElement = document.getElementById('google_translate_element');
-    if (translateElement) {
-        translateElement.innerHTML = '';
-    }
-
-    // Google Translate script'ini React hazır olduktan sonra zorla çalıştırır
-    const addScript = document.createElement('script');
-    addScript.setAttribute('src', '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit');
-    document.body.appendChild(addScript);
-
-    // Kendi tanımladığımız init fonksiyonunu global objeye bağlıyoruz
-    window.googleTranslateElementInit = () => {
-      new window.google.translate.TranslateElement(
-        {
-          pageLanguage: 'tr',
-          includedLanguages: 'en,pt,es,de,ar,ru,az',
-          layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
-        },
-        'google_translate_element'
-      );
-    };
-  }, []);
-
   const toggleTheme = () => {
     if (isDarkMode) {
       document.body.classList.remove('dark-mode');
@@ -217,8 +191,7 @@ function Navbar() {
           İLETİŞİM
         </Link>
 
-        {/* GECE/GÜNDÜZ TUŞU VE ÇEVİRİ BUTONU AYNI HİZADA */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: '0 1rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', margin: '0 1rem' }}>
           <button 
             onClick={() => { toggleTheme(); closeMenu(); }} 
             style={{
@@ -239,9 +212,6 @@ function Navbar() {
           >
             {isDarkMode ? '☀ GÜNDÜZ' : '☾ GECE'}
           </button>
-          
-          {/* ÇEVİRİ BUTONU */}
-          <div id="google_translate_element"></div>
         </div>
 
       </div>
