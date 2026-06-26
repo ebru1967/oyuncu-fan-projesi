@@ -33,7 +33,7 @@ import Support from './pages/Support';
 import BackToTop from './components/BackToTop';
 import ScrollToTop from './components/ScrollToTop';
 import './App.css';
-import CharacterTest from './pages/CharacterTest';
+
 
 function App() {
   const [timeLeft, setTimeLeft] = useState('');
