@@ -19,240 +19,255 @@ const CHARACTERS = {
   FIRAT: { name: "FIRAT", project: "Su Yüzü", image: "/fırat.jpeg", desc: "Sanatsal, hassas ve gözlemci bir ruha sahipsin." }
 };
 
-// 6 Soruluk Kapsamlı Karakter Puanlama Testi
-const QUESTIONS = [
-  { question: "Uzun yıllardır dost olduğun biri, seni korumak için büyük bir sırrı senden sakladığını itiraf ediyor. İlk tepkin ne olur?", options: [
-    { text: "Neden yaptığını anlamaya çalışırım.", pts: { TURAHAN: 1, SERHAT: 1, IMAM: 1, FIRAT: 1 } },
-    { text: "Güven kırıldıysa sebebi önemli değildir.", pts: { KURSAT: 1, GURKAN: 1, MERT: 1, BEHIC: 1 } },
-    { text: "Tüm detayları öğrenmeden karar vermem.", pts: { RUSTEM: 1, SAHBAZ: 1, BOZAN: 1, LAIS: 1 } },
-    { text: "Kırılsam da dostluğumuzu tamamen bitirmem.", pts: { ALI: 1, SARP: 1, SERIF: 1, ATTILA: 1 } }
-  ]},
-  { question: "Çok emek verdiğin bir işin başarısı başkasına mal ediliyor. Ne yaparsın?", options: [
-    { text: "Hakkımı sonuna kadar ararım.", pts: { MERT: 1, ATTILA: 1, SAHBAZ: 1, GURKAN: 1 } },
-    { text: "Doğru zaman gelince gerçeği ortaya çıkarırım.", pts: { RUSTEM: 1, BOZAN: 1, SERIF: 1, LAIS: 1 } },
-    { text: "Önemli olan sonucu almak der geçerim.", pts: { TURAHAN: 1, IMAM: 1, FIRAT: 1, KURSAT: 1 } },
-    { text: "Sessiz kalırım ama unutamam.", pts: { ALI: 1, SARP: 1, BEHIC: 1, SERHAT: 1 } }
-  ]},
-  { question: "Bir liderin yanlış karar verdiğini biliyorsun. Ne yaparsın?", options: [
-    { text: "Açıkça karşı çıkarım.", pts: { MERT: 1, GURKAN: 1, ATTILA: 1, KURSAT: 1 } },
-    { text: "Önce neden böyle düşündüğünü anlamaya çalışırım.", pts: { TURAHAN: 1, BEHIC: 1, SERHAT: 1, FIRAT: 1 } },
-    { text: "Emirleri uygularım.", pts: { LAIS: 1, BOZAN: 1, RUSTEM: 1, SAHBAZ: 1 } },
-    { text: "Kendi çözümümü gizlice uygularım.", pts: { SARP: 1, SERIF: 1, ALI: 1, IMAM: 1 } }
-  ]},
-  {
-    question: "Büyük bir krizin veya tehlikenin ortasındasın. İlk tepkin ne olur?",
-    options: [
-      { text: "Duygularımı sıfırlar, satranç oynar gibi stratejik hamlelerimi planlarım.", pointsTo: ["SERIF", "SARP", "LAIS", "RUSTEM"] },
-      { text: "Gücümü kullanarak rakiplerime korku salar ve kaosu bastırırım.", pointsTo: ["ATTILA", "BOZAN", "SAHBAZ", "ALI"] },
-      { text: "Kurallara ve kanunlara sarılır, olayı rasyonel bir şekilde çözerim.", pointsTo: ["KURSAT", "GURKAN", "MERT", "BEHIC"] },
-      { text: "Sakin kalır, etrafımdaki insanların manevi olarak ayakta kalmasını sağlarım.", pointsTo: ["IMAM", "SERHAT", "FIRAT", "TURAHAN"] }
-    ]
-  },
-  {
-    question: "Hayattaki temel motivasyonun aşağıdakilerden hangisidir?",
-    options: [
-      { text: "Geçmişte bana yapılanların hesabını sormak ve intikam almak.", pointsTo: ["SERIF", "SARP", "ALI", "BOZAN"] },
-      { text: "Görevimi eksiksiz yerine getirmek ve adaleti sağlamak.", pointsTo: ["GURKAN", "KURSAT", "MERT", "BEHIC"] },
-      { text: "Bulunduğum hiyerarşide en tepeye çıkmak ve gücü elime almak.", pointsTo: ["SAHBAZ", "ATTILA", "LAIS", "RUSTEM"] },
-      { text: "Sevdiklerime destek olmak ve kendimi ispatlamak.", pointsTo: ["SERHAT", "TURAHAN", "IMAM", "FIRAT"] }
-    ]
-  },
-  {
-    question: "İnsanlarla ilişkilerinde 'güven' konusuna nasıl yaklaşırsın?",
-    options: [
-      { text: "Kimseye güvenmem, insanlar benim için sadece kullanılabilecek araçlardır.", pointsTo: ["SARP", "SAHBAZ", "LAIS", "RUSTEM"] },
-      { text: "Bana mutlak itaat ve saygı gösterenlere güvenirim.", pointsTo: ["BOZAN", "ATTILA", "SERIF", "ALI"] },
-      { text: "Güven benim için kanundur. Bir kere sarsılırsa o kişiyi hayatımdan silerim.", pointsTo: ["KURSAT", "GURKAN", "MERT", "BEHIC"] },
-      { text: "Dostlarıma her koşulda sonuna kadar inanır ve omuz veririm.", pointsTo: ["SERHAT", "IMAM", "FIRAT", "TURAHAN"] }
-    ]
-  },
-  {
-    question: "Düşmanını veya rakibini nasıl alt etmeyi tercih edersin?",
-    options: [
-      { text: "Entrika, kurnazlık ve arkadan iş çevirerek.", pointsTo: ["SAHBAZ", "LAIS", "RUSTEM", "TURAHAN"] },
-      { text: "Yüzüne karşı, otoritemi ve gücümü kanıtlayarak.", pointsTo: ["BOZAN", "ATTILA", "ALI", "KURSAT"] },
-      { text: "Bütün kanıtları toplayıp, rasyonel bir şekilde köşeye sıkıştırarak.", pointsTo: ["MERT", "GURKAN", "BEHIC", "SERIF"] },
-      { text: "Psikolojisiyle oynayıp, zihinsel olarak çökmesini sağlayarak.", pointsTo: ["SARP", "SERIF", "IMAM", "FIRAT"] }
-    ]
-  },
-  {
-    question: "Bir ekibin veya grubun içinde genellikle hangi rolü üstlenirsin?",
-    options: [
-      { text: "Otoriteyi sağlayan, disiplinli lider.", pointsTo: ["ATTILA", "BOZAN", "KURSAT", "GURKAN"] },
-      { text: "Arka planda gizli planları yapan stratejik zeka.", pointsTo: ["SERIF", "LAIS", "SARP", "RUSTEM"] },
-      { text: "Kuralları sorgulayan ama detayları asla kaçırmayan analitik beyin.", pointsTo: ["MERT", "BEHIC", "ALI", "SAHBAZ"] },
-      { text: "Grup içindeki dengeyi kuran sadık dost.", pointsTo: ["SERHAT", "TURAHAN", "IMAM", "FIRAT"] }
-    ]
-  },
-  {
-    question: "Kendini en rahat hissettiğin ortam neresidir?",
-    options: [
-      { text: "Herkesin bana itaat ettiği, gücün bende olduğu karanlık bir merkez.", pointsTo: ["BOZAN", "ATTILA", "LAIS", "SAHBAZ"] },
-      { text: "Kendi başıma kalıp geçmişi düşünebildiğim sessiz, izole bir yer.", pointsTo: ["SERIF", "SARP", "IMAM", "FIRAT"] },
-      { text: "Aksiyonun, mücadelenin ve adaletin arandığı sokaklar/olay mahalleri.", pointsTo: ["GURKAN", "MERT", "KURSAT", "RUSTEM"] },
-      { text: "Dostlarımla ve sevdiklerimle omuz omuza durduğum herhangi bir yer.", pointsTo: ["SERHAT", "BEHIC", "TURAHAN", "ALI"] }
-    ]
-  },
-  { question: "Bir seçim yapman gerekiyor:", options: [
-    { text: "Sevdiğin insan.", pts: { BOZAN: 1, ATTILA: 1, SERIF: 1, SAHBAZ: 1 } },
-    { text: "Görevin.", pts: { LAIS: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
-    { text: "Adalet.", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
-    { text: "Kendi geleceğin.", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
-  ]},
-  { question: "İnsanların seni en çok hangi özelliğinle hatırlamasını isterdin?", options: [
-    { text: "Cesaretimle.", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
-    { text: "Sadakatimle.", pts: { GURKAN: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
-    { text: "Zekâmla.", pts: { SERIF: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
-    { text: "Kararlılığımla.", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
-  ]},
-  { question: "En yakın arkadaşın büyük bir hata yaptı ve bunun sonuçlarına katlanmak istemiyor.", options: [
-    { text: "Onu korurum.", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
-    { text: "Hatasıyla yüzleşmesini sağlarım.", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
-    { text: "Neden yaptığını anlamaya çalışırım.", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
-    { text: "Yardım ederim ama sorumluluğu ona bırakırım.", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
-  ]},
-  { question: "Hayatında her şeyi değiştirebilecek bir fırsat yakaladın fakat bu fırsat seni ailenden uzaklaştıracak.", options: [
-    { text: "Fırsatı değerlendiririm.", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
-    { text: "Ailemi bırakmam.", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
-    { text: "İkisini de koruyacak yol ararım.", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
-    { text: "Karar vermeden önce uzun süre düşünürüm.", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
-  ]},
-  { question: "Sana göre gerçek güç nedir?", options: [
-    { text: "İnsanları koruyabilmek.", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
-    { text: "Duygularını kontrol edebilmek.", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
-    { text: "Vazgeçmemek.", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
-    { text: "İnsanları yönlendirebilmek.", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
-  ]},
-  { question: "Haksızlığa uğradığında...", options: [
-    { text: "Hemen tepki veririm.", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
-    { text: "Sabırla doğru zamanı beklerim.", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
-    { text: "Sebeplerini araştırırım.", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
-    { text: "Unutmasam da yoluma devam ederim.", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
-  ]},
-  { question: "Bir düşmanın yardımına ihtiyaç duyuyor.", options: [
-    { text: "Yardım ederim.", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
-    { text: "Önce nedenini öğrenirim.", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
-    { text: "Geçmişi unutamam.", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
-    { text: "Duruma göre karar veririm.", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
-  ]},
-  { question: "Hayatını en iyi anlatan cümle hangisi?", options: [
-    { text: "Mücadele etmeden vazgeçmem.", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
-    { text: "Her şeyin bir sebebi vardır.", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
-    { text: "Sevdiklerim benim önceliğimdir.", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
-    { text: "Kendi yolumu kendim çizerim.", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
-  ]},
-  { question: "İnsanlarda seni en çok rahatsız eden şey nedir?", options: [
-    { text: "İhanet", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
-    { text: "Yalan.", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
-    { text: "Bencillik.", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
-    { text: "Korkaklık", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
-  ]},
-  { question: "Bir ekipte hangi rol sana daha uygun?", options: [
-    { text: "Lider", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
-    { text: "Stratejist", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
-    { text: "Koruyucu", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
-    { text: "Yalnız çalışan", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
-  ]},
-  { question: "En büyük korkun nedir?", options: [
-    { text: "Sevdiklerimi kaybetmek", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SERIF: 1 } },
-    { text: "Amaçsız yaşamak", pts: { SAHBAZ: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
-    { text: "Başarısız olmak", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
-    { text: "Kendimi kaybetmek", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
-  ]},
-  { question: "Sana yapılan bir iyiliği…", options: [
-    { text: "Asla unutmam.", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
-    { text: "Karşılığını vermeye çalışırım.", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
-    { text: "İçimde saklarım.", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
-    { text: "Normal karşılarım.", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
-  ]},
-  { question: "Bir savaşın ortasında olsan hangi görevi seçerdin?", options: [
-    { text: "En önde savaşmak.", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
-    { text: "Plan yapmak.", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
-    { text: "İnsanları korumak.", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
-    { text: "Gizli görev yürütmek.", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
-  ]},
-  { question: "Bir insanı gerçekten tanımak için ne gerekir?", options: [
-    { text: "Zor günlerini görmek.", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
-    { text: "Güç sahibi olduğundaki halini görmek.", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
-    { text: "Sevdiklerine davranışını görmek.", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
-    { text: "Kaybederken nasıl davrandığını görmek.", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
-  ]},
-  { question: "Hangisi senin için daha ağırdır?", options: [
-    { text: "İhanete uğramak", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
-    { text: "Sevdiklerini kaybetmek", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
-    { text: "Başarısız olmak", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
-    { text: "Vicdan azabı çekmek", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
-  ]},
-  { question: "Bir hata yaptığında ne yaparsın?", options: [
-    { text: "Telafi etmeye çalışırım.", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
-    { text: "Uzun süre düşünürüm.", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
-    { text: "Kimseye belli etmem.", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
-    { text: "Ders çıkarıp devam ederim.", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
-  ]},
-  { question: "Eğer hayatın bir kelimeyle özetlenecek olsaydı hangisi olurdu?", options: [
-    { text: "Mücadele", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
-    { text: "Sadakat", pts: { SERIF: 1, SARP: 1, IMAM: 1, SERIF: 1 } },
-    { text: "Adalet", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
-    { text: "Hedef", pts: { FIRAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
-  ]}
+const option = (text, pointsTo) => ({ text, pointsTo });
+const question = (question, options) => ({ question, options });
 
+const QUESTIONS = [
+  question("Uzun yıllardır dost olduğun biri, seni korumak için büyük bir sırrı senden sakladığını itiraf ediyor. İlk tepkin ne olur?", [
+    option("Neden yaptığını anlamaya çalışırım.", ["TURAHAN", "SERHAT", "IMAM", "FIRAT"]),
+    option("Güven kırıldıysa sebebi önemli değildir.", ["KURSAT", "GURKAN", "MERT", "BEHIC"]),
+    option("Tüm detayları öğrenmeden karar vermem.", ["RUSTEM", "SAHBAZ", "BOZAN", "LAIS"]),
+    option("Kırılsam da dostluğumuzu tamamen bitirmem.", ["ALI", "SARP", "SERIF", "ATTILA"])
+  ]),
+
+  question("Çok emek verdiğin bir işin başarısı başkasına mal ediliyor. Ne yaparsın?", [
+    option("Hakkımı sonuna kadar ararım.", ["MERT", "ATTILA", "SAHBAZ", "GURKAN"]),
+    option("Doğru zaman gelince gerçeği ortaya çıkarırım.", ["RUSTEM", "BOZAN", "SERIF", "LAIS"]),
+    option("Önemli olan sonucu almak der geçerim.", ["TURAHAN", "IMAM", "FIRAT", "KURSAT"]),
+    option("Sessiz kalırım ama unutamam.", ["ALI", "SARP", "BEHIC", "SERHAT"])
+  ]),
+
+  question("Bir liderin yanlış karar verdiğini biliyorsun. Ne yaparsın?", [
+    option("Açıkça karşı çıkarım.", ["MERT", "GURKAN", "ATTILA", "KURSAT"]),
+    option("Önce neden böyle düşündüğünü anlamaya çalışırım.", ["TURAHAN", "BEHIC", "SERHAT", "FIRAT"]),
+    option("Emirleri uygularım.", ["LAIS", "BOZAN", "RUSTEM", "SAHBAZ"]),
+    option("Kendi çözümümü gizlice uygularım.", ["SARP", "SERIF", "ALI", "IMAM"])
+  ]),
+
+  question("Büyük bir krizin veya tehlikenin ortasındasın. İlk tepkin ne olur?", [
+    option("Duygularımı sıfırlar, satranç oynar gibi stratejik hamlelerimi planlarım.", ["SERIF", "SARP", "LAIS", "RUSTEM"]),
+    option("Gücümü kullanarak rakiplerime korku salar ve kaosu bastırırım.", ["ATTILA", "BOZAN", "SAHBAZ", "ALI"]),
+    option("Kurallara ve kanunlara sarılır, olayı rasyonel bir şekilde çözerim.", ["KURSAT", "GURKAN", "MERT", "BEHIC"]),
+    option("Sakin kalır, etrafımdaki insanların manevi olarak ayakta kalmasını sağlarım.", ["IMAM", "SERHAT", "FIRAT", "TURAHAN"])
+  ]),
+
+  question("Hayattaki temel motivasyonun aşağıdakilerden hangisidir?", [
+    option("Geçmişte bana yapılanların hesabını sormak ve intikam almak.", ["SERIF", "SARP", "ALI", "BOZAN"]),
+    option("Görevimi eksiksiz yerine getirmek ve adaleti sağlamak.", ["GURKAN", "KURSAT", "MERT", "BEHIC"]),
+    option("Bulunduğum hiyerarşide en tepeye çıkmak ve gücü elime almak.", ["SAHBAZ", "ATTILA", "LAIS", "RUSTEM"]),
+    option("Sevdiklerime destek olmak ve kendimi ispatlamak.", ["SERHAT", "TURAHAN", "IMAM", "FIRAT"])
+  ]),
+
+  question("İnsanlarla ilişkilerinde 'güven' konusuna nasıl yaklaşırsın?", [
+    option("Kimseye güvenmem, insanlar benim için sadece kullanılabilecek araçlardır.", ["SARP", "SAHBAZ", "LAIS", "RUSTEM"]),
+    option("Bana mutlak itaat ve saygı gösterenlere güvenirim.", ["BOZAN", "ATTILA", "SERIF", "ALI"]),
+    option("Güven benim için kanundur. Bir kere sarsılırsa o kişiyi hayatımdan silerim.", ["KURSAT", "GURKAN", "MERT", "BEHIC"]),
+    option("Dostlarıma her koşulda sonuna kadar inanır ve omuz veririm.", ["SERHAT", "IMAM", "FIRAT", "TURAHAN"])
+  ]),
+
+  question("Düşmanını veya rakibini nasıl alt etmeyi tercih edersin?", [
+    option("Entrika, kurnazlık ve arkadan iş çevirerek.", ["SAHBAZ", "LAIS", "RUSTEM", "TURAHAN"]),
+    option("Yüzüne karşı, otoritemi ve gücümü kanıtlayarak.", ["BOZAN", "ATTILA", "ALI", "KURSAT"]),
+    option("Bütün kanıtları toplayıp, rasyonel bir şekilde köşeye sıkıştırarak.", ["MERT", "GURKAN", "BEHIC", "SERIF"]),
+    option("Psikolojisiyle oynayıp, zihinsel olarak çökmesini sağlayarak.", ["SARP", "SERIF", "IMAM", "FIRAT"])
+  ]),
+
+  question("Bir ekibin veya grubun içinde genellikle hangi rolü üstlenirsin?", [
+    option("Otoriteyi sağlayan, disiplinli lider.", ["ATTILA", "BOZAN", "KURSAT", "GURKAN"]),
+    option("Arka planda gizli planları yapan stratejik zeka.", ["SERIF", "LAIS", "SARP", "RUSTEM"]),
+    option("Kuralları sorgulayan ama detayları asla kaçırmayan analitik beyin.", ["MERT", "BEHIC", "ALI", "SAHBAZ"]),
+    option("Grup içindeki dengeyi kuran sadık dost.", ["SERHAT", "TURAHAN", "IMAM", "FIRAT"])
+  ]),
+
+  question("Kendini en rahat hissettiğin ortam neresidir?", [
+    option("Herkesin bana itaat ettiği, gücün bende olduğu karanlık bir merkez.", ["BOZAN", "ATTILA", "LAIS", "SAHBAZ"]),
+    option("Kendi başıma kalıp geçmişi düşünebildiğim sessiz, izole bir yer.", ["SERIF", "SARP", "IMAM", "FIRAT"]),
+    option("Aksiyonun, mücadelenin ve adaletin arandığı sokaklar/olay mahalleri.", ["GURKAN", "MERT", "KURSAT", "RUSTEM"]),
+    option("Dostlarımla ve sevdiklerimle omuz omuza durduğum herhangi bir yer.", ["SERHAT", "BEHIC", "TURAHAN", "ALI"])
+  ]),
+
+  question("Bir seçim yapman gerekiyor:", [
+    option("Sevdiğin insan.", ["BOZAN", "ATTILA", "SERIF", "SAHBAZ"]),
+    option("Görevin.", ["LAIS", "SARP", "IMAM", "FIRAT"]),
+    option("Adalet.", ["GURKAN", "MERT", "KURSAT", "RUSTEM"]),
+    option("Kendi geleceğin.", ["SERHAT", "BEHIC", "TURAHAN", "ALI"])
+  ]),
+
+  question("İnsanların seni en çok hangi özelliğinle hatırlamasını isterdin?", [
+    option("Cesaretimle.", ["BOZAN", "ATTILA", "LAIS", "SAHBAZ"]),
+    option("Sadakatimle.", ["GURKAN", "SARP", "IMAM", "FIRAT"]),
+    option("Zekâmla.", ["SERIF", "MERT", "KURSAT", "RUSTEM"]),
+    option("Kararlılığımla.", ["SERHAT", "BEHIC", "TURAHAN", "ALI"])
+  ]),
+
+  question("En yakın arkadaşın büyük bir hata yaptı ve bunun sonuçlarına katlanmak istemiyor.", [
+    option("Onu korurum.", ["BOZAN", "ATTILA", "LAIS", "SAHBAZ"]),
+    option("Hatasıyla yüzleşmesini sağlarım.", ["SERIF", "SARP", "IMAM", "FIRAT"]),
+    option("Neden yaptığını anlamaya çalışırım.", ["GURKAN", "MERT", "KURSAT", "RUSTEM"]),
+    option("Yardım ederim ama sorumluluğu ona bırakırım.", ["SERHAT", "BEHIC", "TURAHAN", "ALI"])
+  ]),
+
+  question("Hayatında her şeyi değiştirebilecek bir fırsat yakaladın fakat bu fırsat seni ailenden uzaklaştıracak.", [
+    option("Fırsatı değerlendiririm.", ["BOZAN", "ATTILA", "LAIS", "SAHBAZ"]),
+    option("Ailemi bırakmam.", ["SERIF", "SARP", "IMAM", "FIRAT"]),
+    option("İkisini de koruyacak yol ararım.", ["GURKAN", "MERT", "KURSAT", "RUSTEM"]),
+    option("Karar vermeden önce uzun süre düşünürüm.", ["SERHAT", "BEHIC", "TURAHAN", "ALI"])
+  ]),
+
+  question("Sana göre gerçek güç nedir?", [
+    option("İnsanları koruyabilmek.", ["BOZAN", "ATTILA", "LAIS", "SAHBAZ"]),
+    option("Duygularını kontrol edebilmek.", ["SERIF", "SARP", "IMAM", "FIRAT"]),
+    option("Vazgeçmemek.", ["GURKAN", "MERT", "KURSAT", "RUSTEM"]),
+    option("İnsanları yönlendirebilmek.", ["SERHAT", "BEHIC", "TURAHAN", "ALI"])
+  ]),
+
+  question("Haksızlığa uğradığında...", [
+    option("Hemen tepki veririm.", ["BOZAN", "ATTILA", "LAIS", "SAHBAZ"]),
+    option("Sabırla doğru zamanı beklerim.", ["SERIF", "SARP", "IMAM", "FIRAT"]),
+    option("Sebeplerini araştırırım.", ["GURKAN", "MERT", "KURSAT", "RUSTEM"]),
+    option("Unutmasam da yoluma devam ederim.", ["SERHAT", "BEHIC", "TURAHAN", "ALI"])
+  ]),
+
+  question("Bir düşmanın yardımına ihtiyaç duyuyor.", [
+    option("Yardım ederim.", ["BOZAN", "ATTILA", "LAIS", "SAHBAZ"]),
+    option("Önce nedenini öğrenirim.", ["SERIF", "SARP", "IMAM", "FIRAT"]),
+    option("Geçmişi unutamam.", ["GURKAN", "MERT", "KURSAT", "RUSTEM"]),
+    option("Duruma göre karar veririm.", ["SERHAT", "BEHIC", "TURAHAN", "ALI"])
+  ]),
+
+  question("Hayatını en iyi anlatan cümle hangisi?", [
+    option("Mücadele etmeden vazgeçmem.", ["BOZAN", "ATTILA", "LAIS", "SAHBAZ"]),
+    option("Her şeyin bir sebebi vardır.", ["SERIF", "SARP", "IMAM", "FIRAT"]),
+    option("Sevdiklerim benim önceliğimdir.", ["GURKAN", "MERT", "KURSAT", "RUSTEM"]),
+    option("Kendi yolumu kendim çizerim.", ["SERHAT", "BEHIC", "TURAHAN", "ALI"])
+  ]),
+
+  question("İnsanlarda seni en çok rahatsız eden şey nedir?", [
+    option("İhanet.", ["BOZAN", "ATTILA", "LAIS", "SAHBAZ"]),
+    option("Yalan.", ["SERIF", "SARP", "IMAM", "FIRAT"]),
+    option("Bencillik.", ["GURKAN", "MERT", "KURSAT", "RUSTEM"]),
+    option("Korkaklık.", ["SERHAT", "BEHIC", "TURAHAN", "ALI"])
+  ]),
+
+  question("Bir ekipte hangi rol sana daha uygun?", [
+    option("Lider.", ["BOZAN", "ATTILA", "LAIS", "SAHBAZ"]),
+    option("Stratejist.", ["SERIF", "SARP", "IMAM", "FIRAT"]),
+    option("Koruyucu.", ["GURKAN", "MERT", "KURSAT", "RUSTEM"]),
+    option("Yalnız çalışan.", ["SERHAT", "BEHIC", "TURAHAN", "ALI"])
+  ]),
+
+  question("En büyük korkun nedir?", [
+    option("Sevdiklerimi kaybetmek.", ["BOZAN", "ATTILA", "LAIS", "SERIF"]),
+    option("Amaçsız yaşamak.", ["SAHBAZ", "SARP", "IMAM", "FIRAT"]),
+    option("Başarısız olmak.", ["GURKAN", "MERT", "KURSAT", "RUSTEM"]),
+    option("Kendimi kaybetmek.", ["SERHAT", "BEHIC", "TURAHAN", "ALI"])
+  ]),
+
+  question("Sana yapılan bir iyiliği...", [
+    option("Asla unutmam.", ["BOZAN", "ATTILA", "LAIS", "SAHBAZ"]),
+    option("Karşılığını vermeye çalışırım.", ["SERIF", "SARP", "IMAM", "FIRAT"]),
+    option("İçimde saklarım.", ["GURKAN", "MERT", "KURSAT", "RUSTEM"]),
+    option("Normal karşılarım.", ["SERHAT", "BEHIC", "TURAHAN", "ALI"])
+  ]),
+
+  question("Bir savaşın ortasında olsan hangi görevi seçerdin?", [
+    option("En önde savaşmak.", ["BOZAN", "ATTILA", "LAIS", "SAHBAZ"]),
+    option("Plan yapmak.", ["SERIF", "SARP", "IMAM", "FIRAT"]),
+    option("İnsanları korumak.", ["GURKAN", "MERT", "KURSAT", "RUSTEM"]),
+    option("Gizli görev yürütmek.", ["SERHAT", "BEHIC", "TURAHAN", "ALI"])
+  ]),
+
+  question("Bir insanı gerçekten tanımak için ne gerekir?", [
+    option("Zor günlerini görmek.", ["BOZAN", "ATTILA", "LAIS", "SAHBAZ"]),
+    option("Güç sahibi olduğundaki halini görmek.", ["SERIF", "SARP", "IMAM", "FIRAT"]),
+    option("Sevdiklerine davranışını görmek.", ["GURKAN", "MERT", "KURSAT", "RUSTEM"]),
+    option("Kaybederken nasıl davrandığını görmek.", ["SERHAT", "BEHIC", "TURAHAN", "ALI"])
+  ]),
+
+  question("Hangisi senin için daha ağırdır?", [
+    option("İhanete uğramak.", ["BOZAN", "ATTILA", "LAIS", "SAHBAZ"]),
+    option("Sevdiklerini kaybetmek.", ["SERIF", "SARP", "IMAM", "FIRAT"]),
+    option("Başarısız olmak.", ["GURKAN", "MERT", "KURSAT", "RUSTEM"]),
+    option("Vicdan azabı çekmek.", ["SERHAT", "BEHIC", "TURAHAN", "ALI"])
+  ]),
+
+  question("Bir hata yaptığında ne yaparsın?", [
+    option("Telafi etmeye çalışırım.", ["BOZAN", "ATTILA", "LAIS", "SAHBAZ"]),
+    option("Uzun süre düşünürüm.", ["SERIF", "SARP", "IMAM", "FIRAT"]),
+    option("Kimseye belli etmem.", ["GURKAN", "MERT", "KURSAT", "RUSTEM"]),
+    option("Ders çıkarıp devam ederim.", ["SERHAT", "BEHIC", "TURAHAN", "ALI"])
+  ]),
+
+  question("Eğer hayatın bir kelimeyle özetlenecek olsaydı hangisi olurdu?", [
+    option("Mücadele.", ["BOZAN", "ATTILA", "LAIS", "SAHBAZ"]),
+    option("Sadakat.", ["SERIF", "SARP", "IMAM", "FIRAT"]),
+    option("Adalet.", ["GURKAN", "MERT", "KURSAT", "RUSTEM"]),
+    option("Hedef.", ["SERHAT", "BEHIC", "TURAHAN", "ALI"])
+  ])
 ];
+
+const CHARACTER_KEYS = Object.keys(CHARACTERS);
+
+const createInitialScores = () =>
+  CHARACTER_KEYS.reduce((scores, key) => {
+    scores[key] = 0;
+    return scores;
+  }, {});
 
 function CharacterTest() {
   const [currentQ, setCurrentQ] = useState(0);
   const [result, setResult] = useState(null);
-  
-  // Tüm karakterlerin başlangıç skorları
-  const [scores, setScores] = useState({
-    ATTILA: 0, SERIF: 0, KURSAT: 0, GURKAN: 0,
-    SERHAT: 0, TURAHAN: 0, SARP: 0, IMAM: 0,
-    SAHBAZ: 0, RUSTEM: 0, BEHIC: 0, ALI: 0,
-    LAIS: 0, BOZAN: 0, MERT: 0, FIRAT: 0
-  });
+  const [scores, setScores] = useState(createInitialScores);
 
-  const handleAnswer = (pointsToKeys) => {
-    // Seçilen şıktaki karakterlere 1'er puan ekle
-    const newScores = { ...scores };
-    pointsToKeys.forEach(key => {
-      newScores[key] += 1;
+  const getHighestScoreKey = (finalScores) =>
+    CHARACTER_KEYS.reduce((bestKey, key) =>
+      finalScores[key] > finalScores[bestKey] ? key : bestKey
+    );
+
+  const handleAnswer = (pointsTo) => {
+    const nextScores = { ...scores };
+
+    pointsTo.forEach((key) => {
+      nextScores[key] += 1;
     });
-    setScores(newScores);
 
-    // Sonraki soru veya sonuç ekranı
+    setScores(nextScores);
+
     if (currentQ + 1 < QUESTIONS.length) {
-      setCurrentQ(currentQ + 1);
-    } else {
-      calculateResult(newScores);
+      setCurrentQ((prev) => prev + 1);
+      return;
     }
-  };
 
-  const calculateResult = (finalScores) => {
-    // En yüksek puana sahip karakteri bul (Eşitlik durumunda ilk bulduğunu seçer)
-    const highestScoreChar = Object.keys(finalScores).reduce((a, b) => finalScores[a] > finalScores[b] ? a : b);
-    setResult(CHARACTERS[highestScoreChar]);
+    const winnerKey = getHighestScoreKey(nextScores);
+    setResult(CHARACTERS[winnerKey]);
   };
 
   const resetTest = () => {
     setCurrentQ(0);
-    setScores({
-      ATTILA: 0, SERIF: 0, KURSAT: 0, GURKAN: 0,
-      SERHAT: 0, TURAHAN: 0, SARP: 0, IMAM: 0,
-      SAHBAZ: 0, RUSTEM: 0, BEHIC: 0, ALI: 0,
-      LAIS: 0, BOZAN: 0, MERT: 0, FIRAT: 0
-    });
+    setScores(createInitialScores());
     setResult(null);
   };
 
   const shareOnX = () => {
-    const text = `Aytek Şayan Evreninde ben "%100 ${result.name}" çıktım! 🎬😎\n\nKarakter Analizi: "${result.desc.substring(0, 75)}..."\n\n16 farklı karakterden sen hangisisin? Testi çöz:`;
-    const siteUrl = "https://ayteksayan.com/hangi-karaktersin"; 
+    if (!result) return;
+
+    const text = `Aytek Şayan Evreninde ben "%100 ${result.name}" çıktım!
+
+Karakter Analizi: "${result.desc.substring(0, 75)}..."
+
+16 farklı karakterden sen hangisisin? Testi çöz:`;
+
+    const siteUrl = "https://ayteksayan.com/hangi-karaktersin";
     const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(siteUrl)}`;
-    window.open(url, '_blank');
+
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
+  const progressPercent = Math.round(((currentQ + 1) / QUESTIONS.length) * 100);
+  const activeQuestion = QUESTIONS[currentQ];
+
   return (
-    <div className="press-editorial-wrapper animate-fade" style={{ minHeight: '80vh', paddingBottom: '4rem' }}>
-      
+    <div className="press-editorial-wrapper animate-fade" style={{ minHeight: "80vh", paddingBottom: "4rem" }}>
       <style>{`
         .test-option-btn {
           display: block;
@@ -269,37 +284,38 @@ function CharacterTest() {
           cursor: pointer;
           transition: all 0.3s ease;
         }
+
         .test-option-btn:hover {
           background: rgba(84, 107, 65, 0.1);
           border-color: var(--accent-dark);
           transform: translateX(5px);
         }
-        
+
         .result-card {
           background: var(--bg-card);
           border: 2px solid var(--accent-dark);
-          border-radius: 12px;
+          border-radius: 8px;
           overflow: hidden;
-          box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
           text-align: center;
           max-width: 600px;
           margin: 0 auto;
         }
-        
+
         .result-image-container {
           height: 300px;
           width: 100%;
           border-bottom: 2px solid var(--accent-dark);
           background-color: #111;
         }
-        
+
         .result-image-container img {
           width: 100%;
           height: 100%;
           object-fit: cover;
           opacity: 0.9;
         }
-        
+
         .progress-bar-container {
           width: 100%;
           height: 6px;
@@ -308,7 +324,7 @@ function CharacterTest() {
           overflow: hidden;
           margin-bottom: 2rem;
         }
-        
+
         .progress-bar-fill {
           height: 100%;
           background: var(--accent-dark);
@@ -317,42 +333,64 @@ function CharacterTest() {
       `}</style>
 
       <div className="container">
-        
-        <div className="section-header-editorial" style={{ textAlign: 'center', marginBottom: '3rem' }}>
+        <div className="section-header-editorial" style={{ textAlign: "center", marginBottom: "3rem" }}>
           <span className="archive-badge">// KİŞİLİK ENVANTERİ</span>
-          <h1 className="editorial-title" style={{ textTransform: 'none', margin: '0.5rem 0' }}>HANGİ KARAKTERSİN?</h1>
-          <p className="editorial-subtitle">16 farklı karakterin yer aldığı psikolojik sicil testini tamamla ve Aytek Şayan evrenindeki alter eganı keşfet.</p>
+          <h1 className="editorial-title" style={{ textTransform: "none", margin: "0.5rem 0" }}>
+            HANGİ KARAKTERSİN?
+          </h1>
+          <p className="editorial-subtitle">
+            16 farklı karakterin yer aldığı psikolojik sicil testini tamamla ve Aytek Şayan evrenindeki alter eganı keşfet.
+          </p>
         </div>
 
-        {/* --- SONUÇ EKRANI --- */}
         {result ? (
           <div className="result-card animate-fade">
             <div className="result-image-container">
               <img src={result.image} alt={result.name} />
             </div>
-            
-            <div style={{ padding: '2.5rem 2rem' }}>
-              <span style={{ fontFamily: 'var(--font-heading)', fontSize: '0.9rem', opacity: 0.7, letterSpacing: '2px' }}>
-                {result.project.toLocaleUpperCase('tr-TR')}
+
+            <div style={{ padding: "2.5rem 2rem" }}>
+              <span style={{ fontFamily: "var(--font-heading)", fontSize: "0.9rem", opacity: 0.7, letterSpacing: "2px" }}>
+                {result.project.toLocaleUpperCase("tr-TR")}
               </span>
-              <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '2.5rem', color: 'var(--accent-dark)', margin: '0.5rem 0 1.5rem 0' }}>
+
+              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "2.5rem", color: "var(--accent-dark)", margin: "0.5rem 0 1.5rem" }}>
                 {result.name}
               </h2>
-              
-              <p style={{ fontSize: '1.1rem', lineHeight: '1.8', opacity: 0.9, marginBottom: '2.5rem' }}>
+
+              <p style={{ fontSize: "1.1rem", lineHeight: "1.8", opacity: 0.9, marginBottom: "2.5rem" }}>
                 {result.desc}
               </p>
-              
-              <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                <button 
+
+              <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
+                <button
                   onClick={shareOnX}
-                  style={{ backgroundColor: '#000', color: '#fff', border: 'none', padding: '1rem 2rem', borderRadius: '30px', fontFamily: 'var(--font-heading)', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                  style={{
+                    backgroundColor: "#000",
+                    color: "#fff",
+                    border: "none",
+                    padding: "1rem 2rem",
+                    borderRadius: "30px",
+                    fontFamily: "var(--font-heading)",
+                    fontWeight: "bold",
+                    cursor: "pointer"
+                  }}
                 >
                   SONUCU X'TE PAYLAŞ 𝕏
                 </button>
-                <button 
+
+                <button
                   onClick={resetTest}
-                  style={{ backgroundColor: 'transparent', color: 'var(--accent-dark)', border: '1px solid var(--accent-dark)', padding: '1rem 2rem', borderRadius: '30px', fontFamily: 'var(--font-heading)', fontWeight: 'bold', cursor: 'pointer' }}
+                  style={{
+                    backgroundColor: "transparent",
+                    color: "var(--accent-dark)",
+                    border: "1px solid var(--accent-dark)",
+                    padding: "1rem 2rem",
+                    borderRadius: "30px",
+                    fontFamily: "var(--font-heading)",
+                    fontWeight: "bold",
+                    cursor: "pointer"
+                  }}
                 >
                   TESTİ TEKRARLA ⟲
                 </button>
@@ -360,38 +398,31 @@ function CharacterTest() {
             </div>
           </div>
         ) : (
-          /* --- SORU EKRANI --- */
-          <div style={{ maxWidth: '700px', margin: '0 auto' }}>
-            
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-heading)', fontWeight: 'bold', color: 'var(--accent-dark)', marginBottom: '0.5rem' }}>
+          <div style={{ maxWidth: "700px", margin: "0 auto" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", fontFamily: "var(--font-heading)", fontWeight: "bold", color: "var(--accent-dark)", marginBottom: "0.5rem" }}>
               <span>ANALİZ: {currentQ + 1} / {QUESTIONS.length}</span>
-              <span>% {Math.round((currentQ / QUESTIONS.length) * 100)}</span>
-            </div>
-            
-            <div className="progress-bar-container">
-              <div className="progress-bar-fill" style={{ width: `${(currentQ / QUESTIONS.length) * 100}%` }}></div>
+              <span>% {progressPercent}</span>
             </div>
 
-            <h3 style={{ fontSize: '1.5rem', lineHeight: '1.5', marginBottom: '2rem', color: 'var(--accent-dark)' }}>
-              {QUESTIONS[currentQ].question}
+            <div className="progress-bar-container">
+              <div className="progress-bar-fill" style={{ width: `${progressPercent}%` }} />
+            </div>
+
+            <h3 style={{ fontSize: "1.5rem", lineHeight: "1.5", marginBottom: "2rem", color: "var(--accent-dark)" }}>
+              {activeQuestion.question}
             </h3>
 
-            <div>
-              {/* Seçenekler */}
-              {QUESTIONS[currentQ].options.map((option, idx) => (
-                <button 
-                  key={idx} 
-                  className="test-option-btn"
-                  onClick={() => handleAnswer(option.pointsTo)}
-                >
-                  {option.text}
-                </button>
-              ))}
-            </div>
-            
+            {activeQuestion.options.map((answer, index) => (
+              <button
+                key={`${currentQ}-${index}`}
+                className="test-option-btn"
+                onClick={() => handleAnswer(answer.pointsTo)}
+              >
+                {answer.text}
+              </button>
+            ))}
           </div>
         )}
-
       </div>
     </div>
   );
