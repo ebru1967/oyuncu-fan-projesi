@@ -7,7 +7,7 @@ const TABOO_CARDS = [
   { word: "FURTUNA", forbidden: ["Şerif", "Soyadı", "Taşacak Bu Deniz", "Reis", "Dizi"] },
   { word: "GÜRKAN", forbidden: ["Komiser/Polis", "Çağatay Ulusoy", "Karakter", "Gaddar", "Mesut"] },
   { word: "KÜRŞAT", forbidden: ["Karakter", "Komiser", "Kahve", "İnci Taneleri", "Yılmaz Erdoğan"] },
-  { word: "SARP", forbidden: ["Çöp Adam", "Dizi", "Engin Altan Düzyatan", "Manipüle", "Elçin Sangu"] },
+  { word: "SARP", forbidden: ["Çöp Adam", "Psikoloji", "Engin Altan Düzyatan", "Manipüle", "Elçin Sangu"] },
   { word: "BOZAN", forbidden: ["Asker", "Kötü", "İsimsizler", "Operasyon", "Düşman"] },
   { word: "BEHİÇ", forbidden: ["Karakter", "Devlet", "Sadık", "Ya İstiklal Ya Ölüm", "Bıyık"] },
   { word: "LAİS", forbidden: ["Karakter", "Kurnaz", "Çıkar", "Diriliş Ertuğrul", "Oyun"] },
