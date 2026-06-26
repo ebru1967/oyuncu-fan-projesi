@@ -22,8 +22,8 @@ const TABOO_CARDS = [
   { word: "46 YOK OLAN", forbidden: ["Dizi", "İlk", "Profesyonel", "Proje", "Televizyon"] },
   { word: "İNCİ TANELERİ", forbidden: ["Dizi", "Kürşat", "Yılmaz Erdoğan", "Pavyon", "Kanal D"] },
   { word: "ŞAHSİYET", forbidden: ["Dizi", "Yerli", "Haluk Bilginer", "Sevmek", "Favori"] },
-  { word: "MESUT", forbidden: ["Gaddar", "Gürkan", "Polis", "Dandun", "Taksi"] },
-  { word: "ESME", forbidden: ["Şerif", "Kadın", "Taşacak bu deniz", "Aşk", "Karakter"] },
+  { word: "MESUT", forbidden: ["Gaddar", "Gürkan", "Polis", "Müdür", "Karakter"] },
+  { word: "ESME", forbidden: ["Şerif", "Kadın", "Dizi", "Aşk", "Karakter"] },
   
   // Biyografi ve Eğitim
   { word: "VETERİNERLİK", forbidden: ["Bursa", "Baba", "Hayvan", "Bırakmak", "Tiyatro"] },
@@ -36,7 +36,7 @@ const TABOO_CARDS = [
   { word: "BURSA", forbidden: ["Uludağ", "Veteriner", "Şehir", "Fakülte", "Gençlik"] },
   { word: "POLONYA", forbidden: ["Grotowski", "Salto", "Ülke", "Yurtdışı", "Tiyatro"] },
   { word: "ÇERKES", forbidden: ["Kök", "Soy", "Aile", "Düzce", "Kafkas"] },
-  { word: "SÜRMENE", forbidden: ["Trabzon", "Karadeniz", "İlçe", "Bıçak", "Taşacak bu deniz"] },
+  { word: "SÜRMENE", forbidden: ["Trabzon", "Karadeniz", "İlçe", "Bıçak", "Memleket"] },
   { word: "ÇUVAL", forbidden: ["Kedi", "Felsefe", "Hayvan", "İsim", "Evcil"] },
   
   // Tiyatro ve Sanat
@@ -68,47 +68,61 @@ const TABOO_CARDS = [
   { word: "ANTAGONİST", forbidden: ["Kötü Adam", "Şerif", "Rol", "Karşıt", "Karakter"] },
   { word: "JIM CARREY", forbidden: ["Komedi", "Oyuncu", "Hollywood", "Maske", "İdol"] },
   { word: "PLÜTON", forbidden: ["Gezegen", "Uzay", "Cüce", "Dokuzuncu", "Sistem"] },
-  { word: "KURU PASTA", forbidden: ["Şerif", "Favori", "Rize", "Yemek", "Tatlı"] }
+  { word: "KURU PASTA", forbidden: ["Şerif", "Favori", "Çay", "Yemek", "Tatlı"] }
 ];
 
-const GAME_TIME = 60; // Saniye cinsinden oyun süresi
+const GAME_TIME = 60; // Saniye cinsinden her elin süresi
 
 function Taboo() {
-  const [gameState, setGameState] = useState('start'); // start, playing, end
-  const [score, setScore] = useState(0);
+  const [gameState, setGameState] = useState('start'); // start, playing, turnEnd, gameOver
+  const [currentTeam, setCurrentTeam] = useState('A'); // 'A' veya 'B'
+  const [teamAScore, setTeamAScore] = useState(0);
+  const [teamBScore, setTeamBScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(GAME_TIME);
   const [deck, setDeck] = useState([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [passCount, setPassCount] = useState(3);
 
-  // Oyunu Başlat ve Kartları Karıştır
+  // Oyunu En Baştan Başlat
   const startGame = () => {
     const shuffledDeck = [...TABOO_CARDS].sort(() => Math.random() - 0.5);
     setDeck(shuffledDeck);
     setCurrentCardIndex(0);
-    setScore(0);
+    setTeamAScore(0);
+    setTeamBScore(0);
+    setCurrentTeam('A');
     setTimeLeft(GAME_TIME);
     setPassCount(3);
     setGameState('playing');
   };
 
-  // Sonraki Karta Geç
+  // Sırayı Değiştir ve Diğer Takıma Geç
+  const startNextTurn = () => {
+    setCurrentTeam(prev => prev === 'A' ? 'B' : 'A');
+    setTimeLeft(GAME_TIME);
+    setPassCount(3);
+    setGameState('playing');
+  };
+
+  // Sonraki Karta Geç veya Deste Biterse Oyunu Bitir
   const nextCard = useCallback(() => {
     if (currentCardIndex + 1 < deck.length) {
       setCurrentCardIndex(prev => prev + 1);
     } else {
-      setGameState('end'); 
+      setGameState('gameOver'); 
     }
   }, [currentCardIndex, deck.length]);
 
-  // Buton Aksiyonları
+  // Puanlama Fonksiyonları
   const handleCorrect = () => {
-    setScore(prev => prev + 1);
+    if (currentTeam === 'A') setTeamAScore(prev => prev + 1);
+    else setTeamBScore(prev => prev + 1);
     nextCard();
   };
 
   const handleTaboo = () => {
-    setScore(prev => prev - 1);
+    if (currentTeam === 'A') setTeamAScore(prev => prev - 1);
+    else setTeamBScore(prev => prev - 1);
     nextCard();
   };
 
@@ -119,7 +133,7 @@ function Taboo() {
     }
   };
 
-  // Zamanlayıcı (Timer)
+  // Zamanlayıcı (Timer) - Süre bitince sırayı diğerine atar
   useEffect(() => {
     let timer;
     if (gameState === 'playing' && timeLeft > 0) {
@@ -127,7 +141,7 @@ function Taboo() {
         setTimeLeft(prev => prev - 1);
       }, 1000);
     } else if (timeLeft === 0 && gameState === 'playing') {
-      setGameState('end');
+      setGameState('turnEnd');
     }
     return () => clearInterval(timer);
   }, [gameState, timeLeft]);
@@ -136,25 +150,24 @@ function Taboo() {
     <div className="press-editorial-wrapper animate-fade" style={{ padding: '2rem 1rem', minHeight: '80vh', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       
       <div className="section-header-editorial" style={{ textAlign: 'center', marginBottom: '2rem' }}>
-        <span className="archive-badge">// ZAMANLI MEYDAN OKUMA</span>
+        <span className="archive-badge">// ZAMANLI TAKIM MÜSABAKASI</span>
         <h1 className="editorial-title" style={{ textTransform: 'none', margin: '0.5rem 0' }}>TABU: ARŞİV VERSİYONU</h1>
-        <p className="editorial-subtitle">Yasaklı kelimeleri kullanmadan ana kelimeyi anlat. Süren 60 saniye!</p>
+        <p className="editorial-subtitle">A Takımı vs B Takımı! Yasaklı kelimeleri kullanmadan en çok arşivi anlatan kazanır.</p>
       </div>
 
       {/* BAŞLANGIÇ EKRANI */}
       {gameState === 'start' && (
         <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-          <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>⏱️</div>
+          <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🎭</div>
           <p style={{ fontFamily: 'var(--font-heading)', fontSize: '1.2rem', marginBottom: '2rem', color: 'var(--accent-dark)' }}>
-            Hazır olduğunda süre başlayacak. Toplam {TABOO_CARDS.length} kelimelik deste karıştırılıyor...
+            Hazır olduğunuzda süre başlayacak. İlk sıra <strong>A TAKIMI'NDA!</strong> <br/><br/>
+            Toplam {TABOO_CARDS.length} kelimelik deste karıştırılıyor...
           </p>
           <button 
             onClick={startGame}
             style={{ backgroundColor: 'var(--accent-dark)', color: 'var(--bg-main)', padding: '1rem 3rem', borderRadius: '50px', border: 'none', fontSize: '1.2rem', fontFamily: 'var(--font-heading)', fontWeight: 'bold', cursor: 'pointer', transition: 'transform 0.2s' }}
-            onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-            onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
           >
-            OYUNU BAŞLAT
+            MÜSABAKAYI BAŞLAT
           </button>
         </div>
       )}
@@ -163,14 +176,25 @@ function Taboo() {
       {gameState === 'playing' && deck.length > 0 && (
         <div style={{ width: '100%', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           
-          {/* Üst Bilgi Barı */}
+          {/* Skor Tabelası */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'var(--bg-card)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--accent-dark)' }}>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: timeLeft <= 10 ? '#e74c3c' : 'var(--accent-dark)', fontFamily: 'var(--font-heading)' }}>
-              ⏳ {timeLeft}sn
+            <div style={{ textAlign: 'center', flex: 1, borderRight: '1px solid var(--accent-dark)' }}>
+              <span style={{ fontSize: '0.8rem', display: 'block', opacity: 0.8 }}>A TAKIMI</span>
+              <strong style={{ fontSize: '1.5rem', color: currentTeam === 'A' ? '#2ecc71' : 'var(--accent-dark)' }}>{teamAScore}</strong>
             </div>
-            <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--accent-dark)', fontFamily: 'var(--font-heading)' }}>
-              PUAN: {score}
+            
+            <div style={{ textAlign: 'center', flex: 1 }}>
+              <span style={{ fontSize: '1.5rem', display: 'block', fontWeight: 'bold', color: timeLeft <= 10 ? '#e74c3c' : 'var(--accent-dark)' }}>⏳ {timeLeft}sn</span>
             </div>
+
+            <div style={{ textAlign: 'center', flex: 1, borderLeft: '1px solid var(--accent-dark)' }}>
+              <span style={{ fontSize: '0.8rem', display: 'block', opacity: 0.8 }}>B TAKIMI</span>
+              <strong style={{ fontSize: '1.5rem', color: currentTeam === 'B' ? '#2ecc71' : 'var(--accent-dark)' }}>{teamBScore}</strong>
+            </div>
+          </div>
+
+          <div style={{ textAlign: 'center', backgroundColor: currentTeam === 'A' ? 'rgba(46, 204, 113, 0.2)' : 'rgba(52, 152, 219, 0.2)', padding: '0.5rem', borderRadius: '8px', fontFamily: 'var(--font-heading)', fontWeight: 'bold' }}>
+            ŞU AN OYNAYAN: {currentTeam} TAKIMI
           </div>
 
           {/* Kart Alanı */}
@@ -196,19 +220,42 @@ function Taboo() {
         </div>
       )}
 
-      {/* BİTİŞ EKRANI */}
-      {gameState === 'end' && (
+      {/* EL BİTİŞ EKRANI (TURN END) */}
+      {gameState === 'turnEnd' && (
         <div style={{ textAlign: 'center', marginTop: '2rem', backgroundColor: 'var(--bg-card)', padding: '3rem 2rem', borderRadius: '16px', border: '1px solid var(--accent-dark)' }}>
-          <h2 style={{ fontSize: '2.5rem', color: 'var(--accent-dark)', margin: '0 0 1rem 0', fontFamily: 'var(--font-heading)' }}>SÜRE DOLDU!</h2>
-          <div style={{ fontSize: '5rem', margin: '1rem 0' }}>🎯</div>
-          <p style={{ fontSize: '1.5rem', margin: '0 0 2rem 0' }}>
-            Toplam Puanınız: <strong style={{ fontSize: '2.5rem', display: 'block', color: 'var(--accent-dark)' }}>{score}</strong>
+          <h2 style={{ fontSize: '2rem', color: '#e74c3c', margin: '0 0 1rem 0', fontFamily: 'var(--font-heading)' }}>SÜRE DOLDU!</h2>
+          <p style={{ fontSize: '1.2rem', margin: '0 0 2rem 0' }}>
+            Telefonu / Bilgisayarı diğer takıma devredin.
           </p>
+          <button 
+            onClick={startNextTurn}
+            style={{ backgroundColor: currentTeam === 'A' ? '#3498db' : '#2ecc71', color: '#fff', padding: '1rem 2rem', borderRadius: '30px', border: 'none', fontSize: '1rem', fontFamily: 'var(--font-heading)', fontWeight: 'bold', cursor: 'pointer' }}
+          >
+            {currentTeam === 'A' ? 'B TAKIMI HAZIRSA BAŞLA' : 'A TAKIMI HAZIRSA BAŞLA'}
+          </button>
+        </div>
+      )}
+
+      {/* OYUN BİTİŞ EKRANI (GAME OVER - DESTE BİTİNCE) */}
+      {gameState === 'gameOver' && (
+        <div style={{ textAlign: 'center', marginTop: '2rem', backgroundColor: 'var(--bg-card)', padding: '3rem 2rem', borderRadius: '16px', border: '1px solid var(--accent-dark)' }}>
+          <h2 style={{ fontSize: '2.5rem', color: 'var(--accent-dark)', margin: '0 0 1rem 0', fontFamily: 'var(--font-heading)' }}>TÜM KARTLAR BİTTİ!</h2>
+          <div style={{ fontSize: '5rem', margin: '1rem 0' }}>🏆</div>
+          
+          <div style={{ display: 'flex', justifyContent: 'space-around', margin: '2rem 0', fontSize: '1.5rem' }}>
+            <div>A Takımı: <strong>{teamAScore}</strong></div>
+            <div>B Takımı: <strong>{teamBScore}</strong></div>
+          </div>
+
+          <div style={{ fontSize: '2rem', color: '#2ecc71', fontWeight: 'bold', marginBottom: '2rem' }}>
+            {teamAScore > teamBScore ? 'A TAKIMI KAZANDI!' : teamBScore > teamAScore ? 'B TAKIMI KAZANDI!' : 'İNANILMAZ, BERABERE!'}
+          </div>
+
           <button 
             onClick={startGame}
             style={{ backgroundColor: 'var(--accent-dark)', color: 'var(--bg-main)', padding: '1rem 2rem', borderRadius: '30px', border: 'none', fontSize: '1rem', fontFamily: 'var(--font-heading)', fontWeight: 'bold', cursor: 'pointer' }}
           >
-            YENİDEN OYNA ⟲
+            RÖVANŞ İÇİN YENİDEN OYNA ⟲
           </button>
         </div>
       )}
