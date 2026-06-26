@@ -31,8 +31,12 @@ function Contact() {
   };
 
   return (
-    <div className="press-editorial-wrapper animate-fade" style={{ padding: '1rem 0 4rem 0' }}>
+    <div className="press-editorial-wrapper contact-wrapper animate-fade">
       <style>{`
+        .contact-wrapper {
+          padding: 1rem 0 4rem 0;
+        }
+        
         .contact-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -98,11 +102,23 @@ function Contact() {
           margin-bottom: 0.3rem;
         }
         
-        @media (max-width: 768px) { .contact-grid { grid-template-columns: 1fr; gap: 3rem; } }
+        @media (max-width: 768px) { 
+          .contact-wrapper {
+            padding-top: 0;
+          }
+          .contact-header {
+            margin-top: -2.5rem; /* Mobilde başlığı yukarı çeken sihirli dokunuş */
+          }
+          .contact-grid { 
+            grid-template-columns: 1fr; 
+            gap: 3rem; 
+            margin-top: 2rem;
+          } 
+        }
       `}</style>
 
       <div className="container">
-        <div className="section-header-editorial" style={{ textAlign: 'center' }}>
+        <div className="section-header-editorial contact-header" style={{ textAlign: 'center' }}>
           <span className="archive-badge">// BİZE ULAŞIN</span>
           <h1 className="editorial-title">İLETİŞİM & DESTEK</h1>
           <p className="editorial-subtitle">Bağımsız hayran topluluğu ve arşiv geliştirme ekibi.</p>

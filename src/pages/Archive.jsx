@@ -1,15 +1,36 @@
+import { useState, useMemo } from 'react';
 import { activeNews } from '../data/newsData';
 
 function Archive() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('TÜMÜ');
+
+  // Arşivdeki kategorileri dinamik olarak çıkarıyoruz 
+  const categories = ['TÜMÜ', ...new Set(activeNews.map(news => news.category))];
+
+  // Arama ve kategori süzgeci 
+  const filteredNews = useMemo(() => {
+    return activeNews.filter(news => {
+      const matchesCategory = selectedCategory === 'TÜMÜ' || news.category === selectedCategory;
+      const searchLower = searchTerm.toLocaleLowerCase('tr-TR');
+      const matchesSearch = 
+        news.title.toLocaleLowerCase('tr-TR').includes(searchLower) ||
+        news.summary.toLocaleLowerCase('tr-TR').includes(searchLower) ||
+        news.regCode.toLocaleLowerCase('tr-TR').includes(searchLower);
+        
+      return matchesCategory && matchesSearch;
+    });
+  }, [searchTerm, selectedCategory]);
+
   return (
     <div className="container animate-fade" style={{ padding: '4rem 1rem', maxWidth: '850px', margin: '0 auto' }}>
       
-      {/* 📁 FİZİKSEL SİCİL DOSYASI */}
+      {/* 📁 FİZİKSEL SİCİL DOSYASI & KONTROL PANELİ CSS */}
       <style>{`
         /* Arşiv Başlığı - Daktilo Şeridi Etkisi */
         .archive-main-heading {
           text-align: center;
-          margin-bottom: 4rem;
+          margin-bottom: 3rem;
           position: relative;
         }
         
@@ -20,6 +41,71 @@ function Archive() {
           height: 4px;
           background: var(--accent-dark);
           margin: 1rem auto 0;
+        }
+
+        /* --- YENİ: ARAMA VE FİLTRE PANELİ --- */
+        .archive-controls {
+          margin-bottom: 4rem;
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
+          background: rgba(84, 107, 65, 0.03);
+          padding: 2rem;
+          border: 1px dashed rgba(84, 107, 65, 0.3);
+          border-radius: 8px;
+        }
+
+        .archive-search-input {
+          width: 100%;
+          background: transparent;
+          border: 1px solid var(--accent-dark);
+          color: var(--text-main);
+          padding: 1rem 1.5rem;
+          font-family: 'Space Mono', monospace;
+          font-size: 1rem;
+          border-radius: 4px;
+          outline: none;
+          transition: box-shadow 0.3s;
+        }
+
+        .archive-search-input:focus {
+          box-shadow: inset 4px 4px 0px rgba(84, 107, 65, 0.1);
+        }
+
+        .archive-search-input::placeholder {
+          color: var(--accent-light);
+          opacity: 0.7;
+        }
+
+        .category-filters {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.8rem;
+          justify-content: center;
+        }
+
+        .filter-btn {
+          background: transparent;
+          border: 1px solid rgba(84, 107, 65, 0.4);
+          color: var(--accent-dark);
+          padding: 0.5rem 1.2rem;
+          font-family: var(--font-heading);
+          font-size: 0.8rem;
+          font-weight: bold;
+          cursor: pointer;
+          border-radius: 30px;
+          transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+          border-color: var(--accent-dark);
+          background: rgba(84, 107, 65, 0.05);
+        }
+
+        .filter-btn.active {
+          background: var(--accent-dark);
+          color: var(--bg-main);
+          border-color: var(--accent-dark);
         }
 
         /* Fiziksel Klasör Kartı */
@@ -56,6 +142,14 @@ function Archive() {
           font-weight: 900;
           letter-spacing: 2px;
           color: var(--accent-dark);
+        }
+
+        .dossier-clearance {
+          font-family: monospace;
+          font-size: 0.8rem;
+          font-weight: bold;
+          opacity: 0.6;
+          letter-spacing: 1px;
         }
 
         /* Fiziksel Kaşe/Mühür (Stamp) Efekti */
@@ -144,6 +238,9 @@ function Archive() {
             align-items: flex-start;
             gap: 0.5rem;
           }
+          .archive-controls {
+            padding: 1rem;
+          }
         }
       `}</style>
 
@@ -151,40 +248,76 @@ function Archive() {
         ARŞİV SİCİL KAYITLARI
       </h1>
       
+      {/* KONTROL PANELİ (ARAMA VE FİLTRE) */}
+      <div className="archive-controls">
+        <input 
+          type="text" 
+          className="archive-search-input" 
+          placeholder="DÖKÜMAN KODU, BAŞLIK VEYA ANAHTAR KELİME GİRİNİZ..." 
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        
+        <div className="category-filters">
+          {categories.map((category, index) => (
+            <button 
+              key={index}
+              className={`filter-btn ${selectedCategory === category ? 'active' : ''}`}
+              onClick={() => setSelectedCategory(category)}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* DOSYA LİSTESİ */}
       <div className="dossier-list">
-        {activeNews.map((news) => (
-          <div className="dossier-card" key={news.id}>
-            
-            {/* Kaşe / Mühür */}
-            <div className="dossier-stamp">
-              {news.category}
-            </div>
+        {filteredNews.length > 0 ? (
+          filteredNews.map((news) => (
+            <div className="dossier-card" key={news.id}>
+              
+              {/* Kaşe / Mühür */}
+              <div className="dossier-stamp">
+                {news.category}
+              </div>
 
-            {/* Antet / Sicil Kodu */}
-            <div className="dossier-header">
-              <span className="dossier-code">
-                {news.regCode}
-              </span>
-            </div>
-            
-            {/* İçerik Gövdesi */}
-            <h4 className="dossier-title">
-              {news.title.toLocaleUpperCase('tr-TR')}
-            </h4>
-            
-            <p className="dossier-summary">
-              {news.summary}
-            </p>
-            
-            {/* Ek/Link Bağlantısı */}
-            <div className="dossier-link-wrapper">
-              <a href={news.linkUrl} target="_blank" rel="noreferrer" className="dossier-action-link">
-                {news.linkText}
-              </a>
-            </div>
+              {/* Antet / Sicil Kodu */}
+              <div className="dossier-header">
+                <span className="dossier-code">
+                  {news.regCode}
+                </span>
+                <span className="dossier-clearance">
+                  // ERİŞİM: AÇIK
+                </span>
+              </div>
+              
+              {/* İçerik Gövdesi */}
+              <h4 className="dossier-title">
+                {news.title.toLocaleUpperCase('tr-TR')}
+              </h4>
+              
+              <p className="dossier-summary">
+                {news.summary}
+              </p>
+              
+              {/* Ek/Link Bağlantısı */}
+              <div className="dossier-link-wrapper">
+                <a href={news.linkUrl} target="_blank" rel="noreferrer" className="dossier-action-link">
+                  {news.linkText}
+                </a>
+              </div>
 
+            </div>
+          ))
+        ) : (
+          // EĞER ARAMA SONUCU EŞLEŞMEZSE GÖSTERİLECEK EKRAN
+          <div style={{ textAlign: 'center', padding: '3rem', border: '1px dashed var(--accent-dark)', opacity: 0.7 }}>
+            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🗄️</div>
+            <h3 style={{ fontFamily: 'var(--font-heading)' }}>KAYIT BULUNAMADI</h3>
+            <p>Aradığınız kriterlere uygun bir döküman arşive henüz eklenmemiş olabilir.</p>
           </div>
-        ))}
+        )}
       </div>
 
     </div>

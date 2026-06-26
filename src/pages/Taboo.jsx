@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
-// Quiz, Arşiv Verileri ve Özel "Lore" Eklemeleriyle 59 Kelimelik Dev Deste
 const TABOO_CARDS = [
   // Karakterler ve Projeler
   { word: "ŞERİF", forbidden: ["Karakter", "Taşacak Bu Deniz", "Kötü", "Çay", "20 Yıl"] },
