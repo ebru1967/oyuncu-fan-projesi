@@ -1,27 +1,44 @@
 import React, { useState } from 'react';
 
-// Filmografideki 16 Karakterin Tamamı
 const CHARACTERS = {
-  ATTILA: { name: "ATTİLA", project: "Tarihin Efsaneleri", image: "/attila.jpeg", desc: "Tarihin akışını değiştiren efsanevi bir lidersin. Güç savaşlarında ve dönüm noktalarında her zaman ön saflardasın. Kararların kitleleri etkiliyor." },
-  SERIF: { name: "ŞERİF FURTUNA", project: "Taşacak Bu Deniz", image: "/şerif.jpeg", desc: "Hayatı duygulardan arındırılmış bir satranç oyunu gibi görüyorsun. Sabrın sınır tanımıyor; hedefin için 20 yıl bile bekleyebilirsin." },
-  KURSAT: { name: "KÜRŞAT", project: "İnci Taneleri", image: "/kürşat.jpeg", desc: "Sıfır taviz! Görev bilinciyle hareket eden, işini ciddiyetle takip eden ve sorumluluklarını sonuna kadar yerine getiren kuralcı birisin." },
-  GURKAN: { name: "GÜRKAN KOMİSER", project: "Gaddar", image: "/gürkan.jpeg", desc: "İdealist bir yapın var. Düzenin her şeyden önce geldiğine inanırsın ama adaletin işlemediği yerde kendi kurallarını koymaktan da çekinmezsin." },
-  SERHAT: { name: "SERHAT", project: "Kübra", image: "/serhat.jpeg", desc: "Sadık, aklıselim ve mahalle kültürüne bağlı birisin. Dostlarının inanç ve gerçeklik arasındaki savaşlarında onlara ayna tutan en büyük destekçisin." },
-  TURAHAN: { name: "TURAHAN", project: "Hay Sultan", image: "/turahan.jpeg", desc: "Dinamik ve stratejik bir yapın var. Sadakat, hırs ve adalet arasında gidip geliyor, her zaman kendi rüştünü ispat etmeye çalışıyorsun." },
-  SARP: { name: "SARP", project: "Çöp Adam", image: "/sarp.jpeg", desc: "İntikam duygusuyla hareket eden, derin yaralar taşıyan ve inanılmaz manipülatif birisin. İnsanların hayatındaki dengelerle oynamayı iyi biliyorsun." },
-  IMAM: { name: "İMAM", project: "Bana Karanlığını Anlat", image: "/imam2.jpeg", desc: "Karanlığın ve kaosun ortasında sakin kalan manevi bir figürsün. İnsanlar sırlarıyla ve korkularıyla yüzleşmek için senin sığınağına gelir." },
-  SAHBAZ: { name: "KILIÇOĞLU ŞAHBAZ", project: "Barbaroslar", image: "/şahbaz.jpeg", desc: "Kurnaz, entrikacı ve hırslısın. Kendi çıkarların ve hedeflerin uğruna gerektiğinde herkesi feda edebilir, taraf değiştirebilirsin." },
-  RUSTEM: { name: "RÜSTEM", project: "Uyanış: Büyük Selçuklu", image: "/rüstem.jpeg", desc: "Sistemin içine sızmış zeki ve tehlikeli bir casussun. Bilgi senin en büyük silahın. Görevlerin uğruna her türlü riski almaktan çekinmezsin." },
-  BEHIC: { name: "HAKKI BEHİÇ BEY", project: "Ya İstiklal Ya Ölüm", image: "/behiç.jpeg", desc: "Dönemin gidişatını etkileyen, ciddi ve diplomatik bir devlet adamısın. Kararlarını her zaman büyük resmi düşünerek alıyorsun." },
-  ALI: { name: "ALİ BİLGİN", project: "Kuzgun", image: "/kuzgun2.jpeg", desc: "Hırslı, güç odaklı ve karmaşık bir psikolojiye sahipsin. Çevrendeki insanların hikayesinde kilit bir rol oynamayı başarıyorsun." },
-  LAIS: { name: "KOMUTAN LAİS", project: "Diriliş Ertuğrul", image: "/lais2.jpeg", desc: "Sinsi, zeki ve acımasızsın. Bulunduğun ortamda gizliden gizliye kaos yaratmak ve sistemi çökertmek senin uzmanlık alanın." },
-  BOZAN: { name: "BOZAN EROL", project: "İsimsizler", image: "/bozan.jpeg", desc: "Acımasız, stratejik ve tehditkâr bir lidersin. Güç senin için her şeydir ve hedeflerine ulaşmak için düşmanlarına korku salmayı seçersin." },
-  MERT: { name: "MERT", project: "46 Yok Olan", image: "/46dizi.jpeg", desc: "Kuralcı, son derece dikkatli ve olaylara tamamen rasyonel yaklaşan genç bir beyinsin. Kanıtlar olmadan adım atmazsın." },
-  FIRAT: { name: "FIRAT", project: "Su Yüzü", image: "/fırat.jpeg", desc: "İçinde sanatsal ve duygusal bir derinlik taşıyorsun. Etrafındaki atmosferin ve insanların duygularını yakalayan iyi bir gözlemcisin." }
+  MERT: { name: "MERT", project: "46 Yok Olan", image: "/46dizi.jpeg", desc: "Cesur, mücadeleci ve fedakârsın. Senin için hayat, ne pahasına olursa olsun doğru olanı yapma mücadelesidir." },
+  BOZAN: { name: "BOZAN EROL", project: "İsimsizler", image: "/bozan.jpeg", desc: "Soğukkanlı bir operasyon adamısın. Stratejik zekan ve disiplininle her durumu kontrol altında tutarsın." },
+  LAIS: { name: "KOMUTAN LAİS", project: "Diriliş Ertuğrul", image: "/lais2.jpeg", desc: "Güçlü, hırslı ve sert bir karaktere sahipsin. Hedeflerine ulaşmak için hiçbir engeli tanımazsın." },
+  ALI: { name: "ALİ BİLGİN", project: "Kuzgun", image: "/kuzgun2.jpeg", desc: "Sadık, duygusal ve sevdikleri için yaşayan birisin. Senin için ilişkiler her şeyden üstündür." },
+  BEHIC: { name: "HAKKI BEHİÇ BEY", project: "Ya İstiklal Ya Ölüm", image: "/behiç.jpeg", desc: "İlkeleri olan, adaletli ve sorumluluk sahibi bir devlet adamısın." },
+  RUSTEM: { name: "RÜSTEM", project: "Uyanış: Büyük Selçuklu", image: "/rüstem.jpeg", desc: "Zeki, planlı ve sabırlısın. Büyük resmi görme konusunda uzmansın." },
+  SAHBAZ: { name: "KILIÇOĞLU ŞAHBAZ", project: "Barbaroslar", image: "/şahbaz.jpeg", desc: "Lider ruhlu, savaşçı ve kararlısın. Kendi yolunu kendin çizmeyi seviyorsun." },
+  TURAHAN: { name: "TURAHAN", project: "Hay Sultan", image: "/turahan.jpeg", desc: "Bilge, sakin ve güvenilirsin. İnsanlar senin sükunetine ihtiyaç duyar." },
+  SARP: { name: "SARP", project: "Çöp Adam", image: "/sarp.jpeg", desc: "Duygusal, kırılgan ama bir o kadar da sadıksın. Derin bir iç dünyan var." },
+  SERHAT: { name: "SERHAT", project: "Kübra", image: "/serhat.jpeg", desc: "Mantıklı, gözlemci ve analitik birisin. Çevrendeki olayları derinlemesine analiz edersin." },
+  GURKAN: { name: "GÜRKAN KOMİSER", project: "Gaddar", image: "/gürkan.jpeg", desc: "Kuralcı ve adalet peşindesin. Kendi değerlerin senin pusulandır." },
+  KURSAT: { name: "KÜRŞAT", project: "İnci Taneleri", image: "/kürşat.jpeg", desc: "Güvenilir, dost canlısı ve koruyucusun. Çevrenin sığınağı sensin." },
+  SERIF: { name: "ŞERİF FURTUNA", project: "Taşacak Bu Deniz", image: "/şerif.jpeg", desc: "Asi, bağımsız ve pes etmeyen birisin. Kendi kurallarınla yaşamayı seviyorsun." },
+  ATTILA: { name: "ATTİLA", project: "Tarihin Efsaneleri", image: "/attila.jpeg", desc: "Öncü, kararlı ve büyük hayalleri olan birisin." },
+  IMAM: { name: "İMAM", project: "Bana Karanlığını Anlat", image: "/imam2.jpeg", desc: "Maneviyatı yüksek, dingin ve çözüm odaklısın." },
+  FIRAT: { name: "FIRAT", project: "Su Yüzü", image: "/fırat.jpeg", desc: "Sanatsal, hassas ve gözlemci bir ruha sahipsin." }
 };
 
 // 6 Soruluk Kapsamlı Karakter Puanlama Testi
 const QUESTIONS = [
+  { question: "Uzun yıllardır dost olduğun biri, seni korumak için büyük bir sırrı senden sakladığını itiraf ediyor. İlk tepkin ne olur?", options: [
+    { text: "Neden yaptığını anlamaya çalışırım.", pts: { TURAHAN: 1, SERHAT: 1, IMAM: 1, FIRAT: 1 } },
+    { text: "Güven kırıldıysa sebebi önemli değildir.", pts: { KURSAT: 1, GURKAN: 1, MERT: 1, BEHIC: 1 } },
+    { text: "Tüm detayları öğrenmeden karar vermem.", pts: { RUSTEM: 1, SAHBAZ: 1, BOZAN: 1, LAIS: 1 } },
+    { text: "Kırılsam da dostluğumuzu tamamen bitirmem.", pts: { ALI: 1, SARP: 1, SERIF: 1, ATTILA: 1 } }
+  ]},
+  { question: "Çok emek verdiğin bir işin başarısı başkasına mal ediliyor. Ne yaparsın?", options: [
+    { text: "Hakkımı sonuna kadar ararım.", pts: { MERT: 1, ATTILA: 1, SAHBAZ: 1, GURKAN: 1 } },
+    { text: "Doğru zaman gelince gerçeği ortaya çıkarırım.", pts: { RUSTEM: 1, BOZAN: 1, SERIF: 1, LAIS: 1 } },
+    { text: "Önemli olan sonucu almak der geçerim.", pts: { TURAHAN: 1, IMAM: 1, FIRAT: 1, KURSAT: 1 } },
+    { text: "Sessiz kalırım ama unutamam.", pts: { ALI: 1, SARP: 1, BEHIC: 1, SERHAT: 1 } }
+  ]},
+  { question: "Bir liderin yanlış karar verdiğini biliyorsun. Ne yaparsın?", options: [
+    { text: "Açıkça karşı çıkarım.", pts: { MERT: 1, GURKAN: 1, ATTILA: 1, KURSAT: 1 } },
+    { text: "Önce neden böyle düşündüğünü anlamaya çalışırım.", pts: { TURAHAN: 1, BEHIC: 1, SERHAT: 1, FIRAT: 1 } },
+    { text: "Emirleri uygularım.", pts: { LAIS: 1, BOZAN: 1, RUSTEM: 1, SAHBAZ: 1 } },
+    { text: "Kendi çözümümü gizlice uygularım.", pts: { SARP: 1, SERIF: 1, ALI: 1, IMAM: 1 } }
+  ]},
   {
     question: "Büyük bir krizin veya tehlikenin ortasındasın. İlk tepkin ne olur?",
     options: [
@@ -75,7 +92,110 @@ const QUESTIONS = [
       { text: "Aksiyonun, mücadelenin ve adaletin arandığı sokaklar/olay mahalleri.", pointsTo: ["GURKAN", "MERT", "KURSAT", "RUSTEM"] },
       { text: "Dostlarımla ve sevdiklerimle omuz omuza durduğum herhangi bir yer.", pointsTo: ["SERHAT", "BEHIC", "TURAHAN", "ALI"] }
     ]
-  }
+  },
+  { question: "Bir seçim yapman gerekiyor:", options: [
+    { text: "Sevdiğin insan.", pts: { BOZAN: 1, ATTILA: 1, SERIF: 1, SAHBAZ: 1 } },
+    { text: "Görevin.", pts: { LAIS: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
+    { text: "Adalet.", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
+    { text: "Kendi geleceğin.", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
+  ]},
+  { question: "İnsanların seni en çok hangi özelliğinle hatırlamasını isterdin?", options: [
+    { text: "Cesaretimle.", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
+    { text: "Sadakatimle.", pts: { GURKAN: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
+    { text: "Zekâmla.", pts: { SERIF: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
+    { text: "Kararlılığımla.", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
+  ]},
+  { question: "En yakın arkadaşın büyük bir hata yaptı ve bunun sonuçlarına katlanmak istemiyor.", options: [
+    { text: "Onu korurum.", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
+    { text: "Hatasıyla yüzleşmesini sağlarım.", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
+    { text: "Neden yaptığını anlamaya çalışırım.", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
+    { text: "Yardım ederim ama sorumluluğu ona bırakırım.", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
+  ]},
+  { question: "Hayatında her şeyi değiştirebilecek bir fırsat yakaladın fakat bu fırsat seni ailenden uzaklaştıracak.", options: [
+    { text: "Fırsatı değerlendiririm.", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
+    { text: "Ailemi bırakmam.", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
+    { text: "İkisini de koruyacak yol ararım.", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
+    { text: "Karar vermeden önce uzun süre düşünürüm.", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
+  ]},
+  { question: "Sana göre gerçek güç nedir?", options: [
+    { text: "İnsanları koruyabilmek.", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
+    { text: "Duygularını kontrol edebilmek.", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
+    { text: "Vazgeçmemek.", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
+    { text: "İnsanları yönlendirebilmek.", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
+  ]},
+  { question: "Haksızlığa uğradığında...", options: [
+    { text: "Hemen tepki veririm.", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
+    { text: "Sabırla doğru zamanı beklerim.", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
+    { text: "Sebeplerini araştırırım.", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
+    { text: "Unutmasam da yoluma devam ederim.", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
+  ]},
+  { question: "Bir düşmanın yardımına ihtiyaç duyuyor.", options: [
+    { text: "Yardım ederim.", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
+    { text: "Önce nedenini öğrenirim.", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
+    { text: "Geçmişi unutamam.", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
+    { text: "Duruma göre karar veririm.", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
+  ]},
+  { question: "Hayatını en iyi anlatan cümle hangisi?", options: [
+    { text: "Mücadele etmeden vazgeçmem.", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
+    { text: "Her şeyin bir sebebi vardır.", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
+    { text: "Sevdiklerim benim önceliğimdir.", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
+    { text: "Kendi yolumu kendim çizerim.", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
+  ]},
+  { question: "İnsanlarda seni en çok rahatsız eden şey nedir?", options: [
+    { text: "İhanet", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
+    { text: "Yalan.", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
+    { text: "Bencillik.", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
+    { text: "Korkaklık", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
+  ]},
+  { question: "Bir ekipte hangi rol sana daha uygun?", options: [
+    { text: "Lider", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
+    { text: "Stratejist", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
+    { text: "Koruyucu", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
+    { text: "Yalnız çalışan", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
+  ]}
+  { question: "En büyük korkun nedir?", options: [
+    { text: "Sevdiklerimi kaybetmek", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SERIF: 1 } },
+    { text: "Amaçsız yaşamak", pts: { SAHBAZ: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
+    { text: "Başarısız olmak", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
+    { text: "Kendimi kaybetmek", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
+  ]},
+  { question: "Sana yapılan bir iyiliği…", options: [
+    { text: "Asla unutmam.", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
+    { text: "Karşılığını vermeye çalışırım.", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
+    { text: "İçimde saklarım.", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
+    { text: "Normal karşılarım.", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
+  ]},
+  { question: "Bir savaşın ortasında olsan hangi görevi seçerdin?", options: [
+    { text: "En önde savaşmak.", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
+    { text: "Plan yapmak.", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
+    { text: "İnsanları korumak.", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
+    { text: "Gizli görev yürütmek.", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
+  ]},
+  { question: "Bir insanı gerçekten tanımak için ne gerekir?", options: [
+    { text: "Zor günlerini görmek.", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
+    { text: "Güç sahibi olduğundaki halini görmek.", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
+    { text: "Sevdiklerine davranışını görmek.", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
+    { text: "Kaybederken nasıl davrandığını görmek.", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
+  ]},
+  { question: "Hangisi senin için daha ağırdır?", options: [
+    { text: "İhanete uğramak", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
+    { text: "Sevdiklerini kaybetmek", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
+    { text: "Başarısız olmak", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
+    { text: "Vicdan azabı çekmek", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
+  ]},
+  { question: "Bir hata yaptığında ne yaparsın?", options: [
+    { text: "Telafi etmeye çalışırım.", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
+    { text: "Uzun süre düşünürüm.", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
+    { text: "Kimseye belli etmem.", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
+    { text: "Ders çıkarıp devam ederim.", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
+  ]},
+  { question: "Eğer hayatın bir kelimeyle özetlenecek olsaydı hangisi olurdu?", options: [
+    { text: "Mücadele", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SAHBAZ: 1 } },
+    { text: "Sadakat", pts: { SERIF: 1, SARP: 1, IMAM: 1, SERIF: 1 } },
+    { text: "Adalet", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
+    { text: "Hedef", pts: { FIRAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
+  ]}
+
 ];
 
 function CharacterTest() {
