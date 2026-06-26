@@ -15,11 +15,14 @@ function useDailyStreak() {
     let currentStreak = parseInt(localStorage.getItem('fc_streakCount') || '0', 10);
 
     if (lastVisit === today) {
+      // Bugün zaten girilmiş, seriyi sabit tut
       setStreak(currentStreak);
     } else {
       if (lastVisit === yesterdayStr) {
+        // Dün girilmiş, seriyi artır
         currentStreak += 1;
       } else {
+        // Seri bozulmuş veya ilk giriş, 1'den başlat
         currentStreak = 1;
       }
       localStorage.setItem('fc_lastVisitDate', today);
@@ -69,74 +72,6 @@ function Home() {
   return (
     <div className="home-wrapper animate-fade">
       
-      {/* --- ANA SAYFAYA ÖZEL CSS EFEKTLERİ --- */}
-      <style>{`
-        /* 1. SİNEMATİK PORTRE EFEKTİ (Ken Burns) */
-        .canvas-inner {
-          transition: transform 8s ease-out !important; /* Yavaş ve sinematik geçiş */
-        }
-        .canvas-frame:hover .canvas-inner {
-          transform: scale(1.08);
-        }
-
-        /* 2. BAĞLANTILI KRONOLOJİ HATTI (Timeline) */
-        .chronicle-table {
-          border-left: 2px dashed rgba(84, 107, 65, 0.4);
-          padding-left: 2rem;
-          margin-left: 1rem;
-        }
-        .chronicle-row {
-          position: relative;
-          margin-bottom: 3rem;
-          transition: transform 0.3s ease;
-        }
-        /* Yıl Noktaları */
-        .chronicle-row::before {
-          content: '';
-          position: absolute;
-          left: -2.45rem;
-          top: 0.2rem;
-          width: 14px;
-          height: 14px;
-          border-radius: 50%;
-          background: var(--bg-main);
-          border: 2px solid var(--accent-dark);
-          transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        }
-        /* Nokta üzerine gelince dolma ve parlaması */
-        .chronicle-row:hover::before {
-          background-color: var(--accent-dark);
-          box-shadow: 0 0 10px rgba(84, 107, 65, 0.4);
-        }
-        .chronicle-row:hover {
-          transform: translateX(5px);
-        }
-
-        /* 3. AKIŞKAN OK ANİMASYONLARI */
-        .registry-social-link .link-arrow {
-          display: inline-block;
-          transition: transform 0.3s ease;
-        }
-        .registry-social-link:hover .link-arrow {
-          transform: translate(4px, -4px); /* Çapraz sağ yukarı kayma */
-        }
-        .mail-link:hover .link-arrow {
-          transform: translateX(5px); /* Sadece sağa kayma */
-        }
-        
-        /* Manifesto Bar Vurgu Efekti */
-        .manifesto-item {
-          transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-        .manifesto-item:hover {
-          transform: translateY(-3px);
-          opacity: 1 !important;
-        }
-        .archive-manifesto-bar:hover .manifesto-item:not(:hover) {
-          opacity: 0.5; /* Birine odaklanınca diğerleri soluklaşır */
-        }
-      `}</style>
-
       {/* DERGİ KAPAĞI KONSEPTİ */}
       <section className="editorial-hero">
         <div className="hero-grid-container">
@@ -178,18 +113,16 @@ function Home() {
           </div>
           
           <div className="hero-right-display">
-            <div className="canvas-frame" style={{ overflow: 'hidden' }}> {/* Taşan resmi kesmek için overflow eklendi */}
+            <div className="canvas-frame">
               <div 
                 className="canvas-inner" 
                 style={{ 
                   backgroundImage: "url('/homesayfası.jpeg')", 
                   backgroundSize: "cover", 
-                  backgroundPosition: "center top",
-                  width: '100%',
-                  height: '100%'
+                  backgroundPosition: "center top" 
                 }}
               >
-                <span className="canvas-tag" style={{ backgroundColor: 'rgba(0,0,0,0.6)', padding: '4px 8px', borderRadius: '2px', position: 'absolute', bottom: '10px', right: '10px' }}>
+                <span className="canvas-tag" style={{ backgroundColor: 'rgba(0,0,0,0.6)', padding: '4px 8px', borderRadius: '2px' }}>
                   PORTRE #01
                 </span>
               </div>
