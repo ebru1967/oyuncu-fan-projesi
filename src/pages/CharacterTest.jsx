@@ -152,7 +152,7 @@ const QUESTIONS = [
     { text: "Stratejist", pts: { SERIF: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
     { text: "Koruyucu", pts: { GURKAN: 1, MERT: 1, KURSAT: 1, RUSTEM: 1 } },
     { text: "Yalnız çalışan", pts: { SERHAT: 1, BEHIC: 1, TURAHAN: 1, ALI: 1 } }
-  ]}
+  ]},
   { question: "En büyük korkun nedir?", options: [
     { text: "Sevdiklerimi kaybetmek", pts: { BOZAN: 1, ATTILA: 1, LAIS: 1, SERIF: 1 } },
     { text: "Amaçsız yaşamak", pts: { SAHBAZ: 1, SARP: 1, IMAM: 1, FIRAT: 1 } },
