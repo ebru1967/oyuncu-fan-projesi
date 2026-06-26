@@ -1,38 +1,68 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
-// Tam 40 Kelimelik Aytek Şayan Tabu Destesi
+// Quiz ve Arşiv Verileriyle Güncellenmiş 53 Kelimelik Dev Destesi
 const TABOO_CARDS = [
-  { word: "ŞERİF", forbidden: ["Karakter", "Taşacak Bu Deniz", "Kötü", "Çay", "20 yıl"] },
-  { word: "VETERİNERLİK", forbidden: ["Bursa", "Baba", "Hayvan", "Bırakmak", "Tiyatro"] },
-  { word: "BİLKENT", forbidden: ["Ankara", "Üniversite", "Tiyatro", "Mezun", "Eğitim"] },
-  { word: "SALTO", forbidden: ["Polonya", "Fiziksel", "Grotowski", "Oyun", "Tiyatro"] },
-  { word: "KISALAR", forbidden: ["Festival", "DasDas", "Bağımsız", "Mert Fırat", "Sahne"] },
-  { word: "İZMİR", forbidden: ["Doğum", "Şehir", "Çocukluk", "Ege", "Memleket"] },
-  { word: "DÜZCE", forbidden: ["Yaz", "Çocukluk", "Çerkes", "Anne", "Aile"] },
-  { word: "KÜRATÖR", forbidden: ["Dijital", "Hafıza", "Site", "Arşiv", "Sorumlu"] },
-  { word: "GÜRKAN", forbidden: ["Komiser/Polis", "Karakter", "Gaddar", "Mesut", "Çağatay Ulusoy"] },
-  { word: "HALİÇ ÜNİVERSİTESİ", forbidden: ["Yüksek Lisans", "İstanbul", "Tez", "Akademi", "Eğitim"] },
-  { word: "ÇERKES", forbidden: ["Kök", "Soy", "Aile", "Düzce", "Kafkas"] },
-  { word: "DON KİŞOT", forbidden: ["Kitap", "Okumak", "Roman", "Cervantes", "Tavsiye"] },
-  { word: "YABAN", forbidden: ["Yakup Kadri", "Roman", "Edebiyat", "İlk", "Kitap"] },
-  { word: "ORGANİK DRAMATURJİ", forbidden: ["Tez", "Salto", "Yöntem", "Fiziksel", "Beden"] },
-  { word: "KÜRŞAT", forbidden: ["Karakter", "Dizi", "Sert", "Mafya", "Rol"] },
+  // Karakterler ve Projeler
+  { word: "ŞERİF", forbidden: ["Karakter", "Taşacak Bu Deniz", "Kötü", "Çay", "20 Yıl"] },
+  { word: "FURTUNA", forbidden: ["Şerif", "Soyadı", "Deniz", "Karakter", "Dizi"] },
+  { word: "GÜRKAN", forbidden: ["Komiser", "Polis", "Karakter", "Gaddar", "Mesut"] },
+  { word: "KÜRŞAT", forbidden: ["Karakter", "Dizi", "Sert", "İnci Taneleri", "Rol"] },
+  { word: "SARP", forbidden: ["Çöp Adam", "Dizi", "Karakter", "Rol", "Yalı"] },
   { word: "BOZAN", forbidden: ["Karakter", "Kötü", "Dizi", "Saç", "Düşman"] },
   { word: "BEHİÇ", forbidden: ["Karakter", "Devlet", "Sadık", "Dizi", "Bıyık"] },
   { word: "LAİS", forbidden: ["Karakter", "Kurnaz", "Çıkar", "Dizi", "Oyun"] },
-  { word: "İMAM", forbidden: ["Karakter", "Din", "Cami", "Dizi", "Vaaz"] },
-  { word: "MERT", forbidden: ["Karakter", "Genç", "Dizi", "Hikaye", "Rol"] },
-  { word: "TEATR ANDRA", forbidden: ["Ekip", "Polonya", "Salto", "Tiyatro", "Bağımsız"] },
-  { word: "DASDAS", forbidden: ["Sahne", "Ataşehir", "Tiyatro", "Festival", "Mekan"] },
-  { word: "FİZİKSEL TİYATRO", forbidden: ["Beden", "Hareket", "Salto", "Yöntem", "Eğitim"] },
-  { word: "PORTRE", forbidden: ["Fotoğraf", "Çekim", "Siyah Beyaz", "Vesika", "Arşiv"] },
+  { word: "İMAM", forbidden: ["Bana Karanlığını Anlat", "Din", "Cami", "Dizi", "Sinema"] },
+  { word: "MERT", forbidden: ["Karakter", "Genç", "Dizi", "Hikaye", "İsimsizler"] },
+  { word: "ŞAHBAZ", forbidden: ["Kılıçoğlu", "Barbaroslar", "Dizi", "Akdeniz", "Karakter"] },
+  { word: "RÜSTEM", forbidden: ["Uyanış", "Selçuklu", "Karakter", "Dizi", "Tarihi"] },
+  { word: "SERHAT", forbidden: ["Kübra", "Dizi", "Karakter", "Rol", "Netflix"] },
+  { word: "TURAHAN", forbidden: ["Hay Sultan", "Karakter", "Dizi", "Rol", "Tarihi"] },
+  { word: "ALİ BİLGİN", forbidden: ["Kuzgun", "Karakter", "Dizi", "Rol", "İsim"] },
+  { word: "BİZANS KOMUTANI", forbidden: ["Diriliş Ertuğrul", "Dizi", "Bölüm", "Düşman", "Karakter"] },
+  { word: "46 YOK OLAN", forbidden: ["Dizi", "İlk", "Profesyonel", "Proje", "Televizyon"] },
+  { word: "İNCİ TANELERİ", forbidden: ["Dizi", "Kürşat", "Yılmaz Erdoğan", "Pavyon", "Kanal D"] },
+  { word: "ŞAHSİYET", forbidden: ["Dizi", "Yerli", "Haluk Bilginer", "Sevmek", "Favori"] },
+  
+  // Biyografi ve Eğitim
+  { word: "VETERİNERLİK", forbidden: ["Bursa", "Baba", "Hayvan", "Bırakmak", "Tiyatro"] },
+  { word: "BİLKENT", forbidden: ["Ankara", "Üniversite", "Tiyatro", "Mezun", "Eğitim"] },
+  { word: "HALİÇ ÜNİVERSİTESİ", forbidden: ["Yüksek Lisans", "İstanbul", "Tez", "Akademi", "Eğitim"] },
+  { word: "YUNUS EMRE LİSESİ", forbidden: ["İzmir", "Okul", "Almanca", "Eğitim", "Lise"] },
+  { word: "İZMİR", forbidden: ["Doğum", "Şehir", "Çocukluk", "Ege", "Memleket"] },
+  { word: "DÜZCE", forbidden: ["Yaz", "Çocukluk", "Çerkes", "Anne", "Aile"] },
   { word: "ANKARA", forbidden: ["Bilkent", "Şehir", "Öğrenci", "Ayaz", "Başkent"] },
   { word: "BURSA", forbidden: ["Uludağ", "Veteriner", "Şehir", "Fakülte", "Gençlik"] },
   { word: "POLONYA", forbidden: ["Grotowski", "Salto", "Ülke", "Yurtdışı", "Tiyatro"] },
+  { word: "ÇERKES", forbidden: ["Kök", "Soy", "Aile", "Düzce", "Kafkas"] },
+  { word: "ÇUVAL", forbidden: ["Kedi", "Felsefe", "Hayat", "İsim", "Evcil"] },
+  
+  // Tiyatro ve Sanat
+  { word: "SALTO", forbidden: ["Polonya", "Fiziksel", "Grotowski", "Oyun", "Tiyatro"] },
+  { word: "AYNA", forbidden: ["Ödül", "Direklerarası", "Oyun", "Tiyatro", "En İyi Erkek"] },
+  { word: "MEZARSIZ ÖLÜLER", forbidden: ["Oyun", "Tiyatro", "Henri", "Sahne", "2014"] },
+  { word: "SU YÜZÜ", forbidden: ["Kısa", "Film", "Proje", "2023", "Sinema"] },
+  { word: "TEATR ANDRA", forbidden: ["Ekip", "Polonya", "Salto", "Tiyatro", "Bağımsız"] },
+  { word: "DASDAS", forbidden: ["Sahne", "Ataşehir", "Tiyatro", "Festival", "Mekan"] },
+  { word: "FİZİKSEL TİYATRO", forbidden: ["Beden", "Hareket", "Salto", "Yöntem", "Eğitim"] },
   { word: "BAĞIMSIZ TİYATRO", forbidden: ["Kısalar", "Ekip", "Özgür", "Alternatif", "Sahne"] },
-  { word: "ANTAGONİST", forbidden: ["Kötü Adam", "Şerif", "Rol", "Karşıt", "Karakter"] },
+  { word: "ORGANİK DRAMATURJİ", forbidden: ["Tez", "Salto", "Yöntem", "Fiziksel", "Beden"] },
+  { word: "KISALAR", forbidden: ["Festival", "DasDas", "Bağımsız", "Mert Fırat", "Sahne"] },
+  { word: "TEZ", forbidden: ["Yüksek Lisans", "Akademi", "Savunma", "Yazı", "Haliç"] },
   { word: "SAHNE", forbidden: ["Tiyatro", "Oyun", "Perde", "Seyirci", "Işık"] },
-  { word: "KULİS", forbidden: ["Hazırlık", "Arka", "Kostüm", "Makyaj", "Beklemek"] }
+  { word: "KULİS", forbidden: ["Hazırlık", "Arka", "Kostüm", "Makyaj", "Beklemek"] },
+
+  // Felsefe, Kitaplar ve Set Anıları
+  { word: "DON KİŞOT", forbidden: ["Kitap", "Okumak", "Roman", "Cervantes", "Tavsiye"] },
+  { word: "YABAN", forbidden: ["Yakup Kadri", "Roman", "Edebiyat", "İlk", "Kitap"] },
+  { word: "EĞİTİM SİSTEMİ", forbidden: ["Değiştirmek", "Oyunculuk", "Sektör", "Okul", "Akademi"] },
+  { word: "MÜCADELE", forbidden: ["Kavram", "Tanım", "Hayat", "Zorluk", "Felsefe"] },
+  { word: "AŞK", forbidden: ["Sabah", "Uyanmak", "İlk Şey", "Sevgi", "İlişki"] },
+  { word: "TEPSİ", forbidden: ["Hata", "Kamera", "İkinci", "Düşürmek", "Çay"] },
+  { word: "HASAN SABBAH", forbidden: ["Hayal", "Rol", "Oynamak", "Tarihi", "Alamut"] },
+  { word: "BEKLEMEK", forbidden: ["Zor", "Oyunculuk", "Kulis", "Set", "Saat"] },
+  { word: "DAVID LYNCH", forbidden: ["Yönetmen", "Yabancı", "Favori", "Sevdiği", "Sinema"] },
+  { word: "YILMAZ ERDOĞAN", forbidden: ["Yönetmen", "İnci Taneleri", "BKM", "Yazar", "Usta"] },
+  { word: "ANTAGONİST", forbidden: ["Kötü Adam", "Şerif", "Rol", "Karşıt", "Karakter"] }
 ];
 
 const GAME_TIME = 60; // Saniye cinsinden oyun süresi
@@ -61,7 +91,7 @@ function Taboo() {
     if (currentCardIndex + 1 < deck.length) {
       setCurrentCardIndex(prev => prev + 1);
     } else {
-      setGameState('end'); // Kart biterse oyunu bitir
+      setGameState('end'); 
     }
   }, [currentCardIndex, deck.length]);
 
