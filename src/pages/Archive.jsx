@@ -5,10 +5,10 @@ function Archive() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('TÜMÜ');
 
-  // Arşivdeki kategorileri dinamik olarak çıkarıyoruz 
+  // Arşivdeki kategorileri dinamik olarak çıkarıyoruz
   const categories = ['TÜMÜ', ...new Set(activeNews.map(news => news.category))];
 
-  // Arama ve kategori süzgeci 
+  // Arama ve kategori süzgeci
   const filteredNews = useMemo(() => {
     return activeNews.filter(news => {
       const matchesCategory = selectedCategory === 'TÜMÜ' || news.category === selectedCategory;
@@ -25,7 +25,6 @@ function Archive() {
   return (
     <div className="container animate-fade" style={{ padding: '4rem 1rem', maxWidth: '850px', margin: '0 auto' }}>
       
-      {/* 📁 FİZİKSEL SİCİL DOSYASI & KONTROL PANELİ CSS */}
       <style>{`
         /* Arşiv Başlığı - Daktilo Şeridi Etkisi */
         .archive-main-heading {
@@ -43,19 +42,20 @@ function Archive() {
           margin: 1rem auto 0;
         }
 
-        /* --- YENİ: ARAMA VE FİLTRE PANELİ --- */
+        /* --- KONTROL PANELİ (YAN YANA TASARIM) --- */
         .archive-controls {
           margin-bottom: 4rem;
           display: flex;
-          flex-direction: column;
-          gap: 1.5rem;
+          gap: 1rem;
           background: rgba(84, 107, 65, 0.03);
           padding: 2rem;
           border: 1px dashed rgba(84, 107, 65, 0.3);
           border-radius: 8px;
+          align-items: center;
         }
 
         .archive-search-input {
+          flex: 2;
           width: 100%;
           background: transparent;
           border: 1px solid var(--accent-dark);
@@ -77,35 +77,23 @@ function Archive() {
           opacity: 0.7;
         }
 
-        .category-filters {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 0.8rem;
-          justify-content: center;
-        }
-
-        .filter-btn {
+        .archive-category-select {
+          flex: 1;
+          width: 100%;
           background: transparent;
-          border: 1px solid rgba(84, 107, 65, 0.4);
-          color: var(--accent-dark);
-          padding: 0.5rem 1.2rem;
-          font-family: var(--font-heading);
-          font-size: 0.8rem;
-          font-weight: bold;
+          border: 1px solid var(--accent-dark);
+          color: var(--text-main);
+          padding: 1rem 1.5rem;
+          font-family: 'Space Mono', monospace;
+          font-size: 1rem;
+          border-radius: 4px;
+          outline: none;
           cursor: pointer;
-          border-radius: 30px;
-          transition: all 0.2s;
         }
-
-        .filter-btn:hover {
-          border-color: var(--accent-dark);
-          background: rgba(84, 107, 65, 0.05);
-        }
-
-        .filter-btn.active {
-          background: var(--accent-dark);
-          color: var(--bg-main);
-          border-color: var(--accent-dark);
+        
+        .archive-category-select option {
+          background: var(--bg-main);
+          color: var(--text-main);
         }
 
         /* Fiziksel Klasör Kartı */
@@ -113,10 +101,10 @@ function Archive() {
           position: relative;
           background: var(--bg-card);
           border: 2px solid var(--accent-dark);
-          border-left: 12px solid var(--accent-dark); /* Telli dosya kenarı */
+          border-left: 12px solid var(--accent-dark);
           padding: 2rem 2.5rem;
           margin-bottom: 3rem;
-          box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.1); /* Sert Retro Gölge */
+          box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.1);
           transition: all 0.3s ease;
           overflow: hidden;
         }
@@ -126,7 +114,6 @@ function Archive() {
           box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.15);
         }
 
-        /* Kartın İçindeki Kesik Çizgili Antet (Header) */
         .dossier-header {
           display: flex;
           justify-content: space-between;
@@ -152,7 +139,6 @@ function Archive() {
           letter-spacing: 1px;
         }
 
-        /* Fiziksel Kaşe/Mühür (Stamp) Efekti */
         .dossier-stamp {
           position: absolute;
           top: 1.5rem;
@@ -170,12 +156,11 @@ function Archive() {
           pointer-events: none;
         }
 
-        /* Başlık ve Metin */
         .dossier-title {
           font-size: 1.6rem;
           line-height: 1.2;
           margin: 0 0 1rem 0;
-          padding-right: 3rem; /* Mühürle çakışmaması için */
+          padding-right: 3rem;
         }
 
         .dossier-summary {
@@ -186,7 +171,6 @@ function Archive() {
           margin-bottom: 1.5rem;
         }
 
-        /* Ataçlanmış Dosya Linki */
         .dossier-link-wrapper {
           display: flex;
           align-items: center;
@@ -214,6 +198,10 @@ function Archive() {
 
         /* MOBİL UYUMLULUK */
         @media (max-width: 600px) {
+          .archive-controls {
+            flex-direction: column;
+            padding: 1.5rem;
+          }
           .dossier-card {
             padding: 1.5rem;
             border-left-width: 8px;
@@ -238,9 +226,6 @@ function Archive() {
             align-items: flex-start;
             gap: 0.5rem;
           }
-          .archive-controls {
-            padding: 1rem;
-          }
         }
       `}</style>
 
@@ -248,27 +233,27 @@ function Archive() {
         ARŞİV SİCİL KAYITLARI
       </h1>
       
-      {/* KONTROL PANELİ (ARAMA VE FİLTRE) */}
+      {/* KONTROL PANELİ (ARAMA VE AÇILIR MENÜ) */}
       <div className="archive-controls">
         <input 
           type="text" 
           className="archive-search-input" 
-          placeholder="DÖKÜMAN KODU, BAŞLIK VEYA ANAHTAR KELİME GİRİNİZ..." 
+          placeholder="DÖKÜMAN KODU, BAŞLIK VEYA KELİME ARA..." 
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         
-        <div className="category-filters">
+        <select 
+          className="archive-category-select"
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+        >
           {categories.map((category, index) => (
-            <button 
-              key={index}
-              className={`filter-btn ${selectedCategory === category ? 'active' : ''}`}
-              onClick={() => setSelectedCategory(category)}
-            >
-              {category}
-            </button>
+            <option key={index} value={category}>
+              {category === 'TÜMÜ' ? 'TÜM KATEGORİLER' : `KATEGORİ: ${category}`}
+            </option>
           ))}
-        </div>
+        </select>
       </div>
 
       {/* DOSYA LİSTESİ */}
@@ -277,12 +262,10 @@ function Archive() {
           filteredNews.map((news) => (
             <div className="dossier-card" key={news.id}>
               
-              {/* Kaşe / Mühür */}
               <div className="dossier-stamp">
                 {news.category}
               </div>
 
-              {/* Antet / Sicil Kodu */}
               <div className="dossier-header">
                 <span className="dossier-code">
                   {news.regCode}
@@ -292,7 +275,6 @@ function Archive() {
                 </span>
               </div>
               
-              {/* İçerik Gövdesi */}
               <h4 className="dossier-title">
                 {news.title.toLocaleUpperCase('tr-TR')}
               </h4>
@@ -301,7 +283,6 @@ function Archive() {
                 {news.summary}
               </p>
               
-              {/* Ek/Link Bağlantısı */}
               <div className="dossier-link-wrapper">
                 <a href={news.linkUrl} target="_blank" rel="noreferrer" className="dossier-action-link">
                   {news.linkText}
@@ -311,7 +292,6 @@ function Archive() {
             </div>
           ))
         ) : (
-          // EĞER ARAMA SONUCU EŞLEŞMEZSE GÖSTERİLECEK EKRAN
           <div style={{ textAlign: 'center', padding: '3rem', border: '1px dashed var(--accent-dark)', opacity: 0.7 }}>
             <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🗄️</div>
             <h3 style={{ fontFamily: 'var(--font-heading)' }}>KAYIT BULUNAMADI</h3>
