@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
-// Quiz ve Arşiv Verileriyle Güncellenmiş 53 Kelimelik Dev Destesi
+// Quiz, Arşiv Verileri ve Özel "Lore" Eklemeleriyle 59 Kelimelik Dev Deste
 const TABOO_CARDS = [
   // Karakterler ve Projeler
   { word: "ŞERİF", forbidden: ["Karakter", "Taşacak Bu Deniz", "Kötü", "Çay", "20 Yıl"] },
@@ -22,6 +22,8 @@ const TABOO_CARDS = [
   { word: "46 YOK OLAN", forbidden: ["Dizi", "İlk", "Profesyonel", "Proje", "Televizyon"] },
   { word: "İNCİ TANELERİ", forbidden: ["Dizi", "Kürşat", "Yılmaz Erdoğan", "Pavyon", "Kanal D"] },
   { word: "ŞAHSİYET", forbidden: ["Dizi", "Yerli", "Haluk Bilginer", "Sevmek", "Favori"] },
+  { word: "MESUT", forbidden: ["Gaddar", "Gürkan", "Polis", "Dandun", "Taksi"] },
+  { word: "ESME", forbidden: ["Şerif", "Kadın", "Taşacak bu deniz", "Aşk", "Karakter"] },
   
   // Biyografi ve Eğitim
   { word: "VETERİNERLİK", forbidden: ["Bursa", "Baba", "Hayvan", "Bırakmak", "Tiyatro"] },
@@ -34,7 +36,8 @@ const TABOO_CARDS = [
   { word: "BURSA", forbidden: ["Uludağ", "Veteriner", "Şehir", "Fakülte", "Gençlik"] },
   { word: "POLONYA", forbidden: ["Grotowski", "Salto", "Ülke", "Yurtdışı", "Tiyatro"] },
   { word: "ÇERKES", forbidden: ["Kök", "Soy", "Aile", "Düzce", "Kafkas"] },
-  { word: "ÇUVAL", forbidden: ["Kedi", "Felsefe", "Hayat", "İsim", "Evcil"] },
+  { word: "SÜRMENE", forbidden: ["Trabzon", "Karadeniz", "İlçe", "Bıçak", "Taşacak bu deniz"] },
+  { word: "ÇUVAL", forbidden: ["Kedi", "Felsefe", "Hayvan", "İsim", "Evcil"] },
   
   // Tiyatro ve Sanat
   { word: "SALTO", forbidden: ["Polonya", "Fiziksel", "Grotowski", "Oyun", "Tiyatro"] },
@@ -51,7 +54,7 @@ const TABOO_CARDS = [
   { word: "SAHNE", forbidden: ["Tiyatro", "Oyun", "Perde", "Seyirci", "Işık"] },
   { word: "KULİS", forbidden: ["Hazırlık", "Arka", "Kostüm", "Makyaj", "Beklemek"] },
 
-  // Felsefe, Kitaplar ve Set Anıları
+  // Felsefe, Set Anıları ve İkonik Detaylar
   { word: "DON KİŞOT", forbidden: ["Kitap", "Okumak", "Roman", "Cervantes", "Tavsiye"] },
   { word: "YABAN", forbidden: ["Yakup Kadri", "Roman", "Edebiyat", "İlk", "Kitap"] },
   { word: "EĞİTİM SİSTEMİ", forbidden: ["Değiştirmek", "Oyunculuk", "Sektör", "Okul", "Akademi"] },
@@ -62,7 +65,10 @@ const TABOO_CARDS = [
   { word: "BEKLEMEK", forbidden: ["Zor", "Oyunculuk", "Kulis", "Set", "Saat"] },
   { word: "DAVID LYNCH", forbidden: ["Yönetmen", "Yabancı", "Favori", "Sevdiği", "Sinema"] },
   { word: "YILMAZ ERDOĞAN", forbidden: ["Yönetmen", "İnci Taneleri", "BKM", "Yazar", "Usta"] },
-  { word: "ANTAGONİST", forbidden: ["Kötü Adam", "Şerif", "Rol", "Karşıt", "Karakter"] }
+  { word: "ANTAGONİST", forbidden: ["Kötü Adam", "Şerif", "Rol", "Karşıt", "Karakter"] },
+  { word: "JIM CARREY", forbidden: ["Komedi", "Oyuncu", "Hollywood", "Maske", "İdol"] },
+  { word: "PLÜTON", forbidden: ["Gezegen", "Uzay", "Cüce", "Dokuzuncu", "Sistem"] },
+  { word: "KURU PASTA", forbidden: ["Şerif", "Favori", "Rize", "Yemek", "Tatlı"] }
 ];
 
 const GAME_TIME = 60; // Saniye cinsinden oyun süresi
