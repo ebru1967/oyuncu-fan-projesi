@@ -168,6 +168,9 @@ function Navbar() {
             <Link to="/tabu" onClick={closeMenu}>
               TABU 
             </Link>
+            <Link to="/karakter-test" onClick={closeMenu}>
+              KARAKTER TEST
+            </Link>
           </div>
         </div>
 

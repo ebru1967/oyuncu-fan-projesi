@@ -23,6 +23,7 @@ import XOXGame from './pages/XOXGame';
 import AytekBulmaca from './pages/AytekBulmaca';
 import GorselHafiza from './pages/GorselHafiza';
 import MasaTenisi from './pages/MasaTenisi';
+import CharacterTest from './pages/CharacterTest';
 import Taboo from './pages/Taboo';
 import Contact from './pages/Contact'; 
 import FCChannels from './pages/FCChannels';
@@ -32,6 +33,7 @@ import Support from './pages/Support';
 import BackToTop from './components/BackToTop';
 import ScrollToTop from './components/ScrollToTop';
 import './App.css';
+import CharacterTest from './pages/CharacterTest';
 
 function App() {
   const [timeLeft, setTimeLeft] = useState('');
@@ -130,6 +132,7 @@ function App() {
             <Route path="/gorsel-hafiza" element={<GorselHafiza />} />  
             <Route path="/masa-tenisi" element={<MasaTenisi />} />
             <Route path="/tabu" element={<Taboo />} />
+            <Route path="/karakter-test" element={<CharacterTest />} />
             <Route path="/fc-hesaplar" element={<FCChannels />} />
             <Route path="/fan-gonderileri" element={<FanArtGallery />} />
             <Route path="/haber-bulteni" element={<Newsletter />} />
