@@ -34,14 +34,14 @@ function Contact() {
     <div className="press-editorial-wrapper contact-wrapper animate-fade">
       <style>{`
         .contact-wrapper {
-          padding: 1rem 0 4rem 0;
+          padding: 0 0 4rem 0; /* Üst padding sıfırlandı */
         }
         
         .contact-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 4rem;
-          margin-top: 3rem;
+          margin-top: 2rem;
         }
         .contact-box h3 {
           color: var(--accent-dark);
@@ -103,22 +103,19 @@ function Contact() {
         }
         
         @media (max-width: 768px) { 
-          .contact-wrapper {
-            padding-top: 0;
-          }
           .contact-header {
-            margin-top: -2.5rem; /* Mobilde başlığı yukarı çeken sihirli dokunuş */
+            margin-top: -3.5rem !important; /* Mobilde başlığı daha da yukarı çektik */
           }
           .contact-grid { 
             grid-template-columns: 1fr; 
             gap: 3rem; 
-            margin-top: 2rem;
+            margin-top: 1rem;
           } 
         }
       `}</style>
 
       <div className="container">
-        <div className="section-header-editorial contact-header" style={{ textAlign: 'center' }}>
+        <div className="section-header-editorial contact-header" style={{ textAlign: 'center', paddingTop: '0', marginTop: '-2rem' }}>
           <span className="archive-badge">// BİZE ULAŞIN</span>
           <h1 className="editorial-title">İLETİŞİM & DESTEK</h1>
           <p className="editorial-subtitle">Bağımsız hayran topluluğu ve arşiv geliştirme ekibi.</p>
