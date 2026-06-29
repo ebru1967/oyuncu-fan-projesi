@@ -217,3 +217,88 @@ body.dark-mode .reset-btn:hover {
     height: 45px;
   }
 }
+/* --- GECE MODU YUKARI ÇIK BUTONU DÜZELTMESİ --- */
+body.dark-mode .back-to-top {
+  background-color: #FFFFFF !important; /* Arka plan bembeyaz */
+  color: #000000 !important; /* Ok rengi simsiyah */
+  border-color: #FFFFFF !important;
+}
+
+/* React-icons (SVG) bileşeninin kesinlikle siyah olmasını garanti eder */
+body.dark-mode .back-to-top svg {
+  fill: #000000 !important;
+  color: #000000 !important;
+}
+
+/* Üzerine gelindiğinde (Hover) */
+body.dark-mode .back-to-top:hover {
+  background-color: #000000 !important; /* Arka plan siyah */
+  color: #FFFFFF !important; /* Ok bembeyaz */
+  border-color: #FFFFFF !important; /* Dış çizgi bembeyaz */
+}
+
+body.dark-mode .back-to-top:hover svg {
+  fill: #FFFFFF !important;
+  color: #FFFFFF !important;
+}
+/* --- YUKARI ÇIK BUTONU (BACK TO TOP) --- */
+.back-to-top {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  background-color: var(--accent-dark); 
+  color: var(--bg-main); 
+  border: 2px solid var(--accent-dark);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 999;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.back-to-top:hover {
+  transform: translateY(-5px);
+  background-color: transparent;
+  color: var(--accent-dark);
+}
+
+/* MOBİL İÇİN BİRAZ DAHA KÜÇÜK VE SAĞ ALTA YAKIN */
+@media (max-width: 768px) {
+  .back-to-top {
+    bottom: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+  }
+}
+
+/* --- GECE MODU İÇİN ÖZEL DÜZELTME --- */
+body.dark-mode .back-to-top {
+  background-color: #FFFFFF !important; 
+  color: #000000 !important; 
+  border-color: #FFFFFF !important;
+}
+
+/* İkonun gece modunda siyah görünmesi için doğrudan fill/stroke ataması */
+body.dark-mode .back-to-top svg {
+  fill: #000000 !important;
+  stroke: #000000 !important;
+}
+
+/* Gece modunda üzerine gelindiğinde (Hover) */
+body.dark-mode .back-to-top:hover {
+  background-color: #000000 !important; 
+  color: #FFFFFF !important; 
+  border-color: #FFFFFF !important;
+}
+
+body.dark-mode .back-to-top:hover svg {
+  fill: #FFFFFF !important;
+  stroke: #FFFFFF !important;
+}
