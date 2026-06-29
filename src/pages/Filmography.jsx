@@ -251,7 +251,7 @@ function Filmography() {
             controls 
             poster="/karakterkapak.jpeg"
           >
-            <source src="/karakterler-edit.mp4" type="video/mp4" />
+            <source src="/karakterediti.mp4" type="video/mp4" />
             Tarayıcınız video oynatmayı desteklemiyor.
           </video>
         </div>
