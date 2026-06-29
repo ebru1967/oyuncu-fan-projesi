@@ -200,9 +200,9 @@ const QUESTIONS = [
 
   question("Eğer hayatın bir kelimeyle özetlenecek olsaydı hangisi olurdu?", [
     option("Mücadele.", ["BOZAN", "ATTILA", "LAIS", "SAHBAZ"]),
-    option("Sadakat.", ["SERIF", "SARP", "IMAM", "FIRAT"]),
+    option("Sadakat.", ["SERIF", "SARP", "IMAM", "SERIF"]),
     option("Adalet.", ["GURKAN", "MERT", "KURSAT", "RUSTEM"]),
-    option("Hedef.", ["SERHAT", "BEHIC", "TURAHAN", "ALI"])
+    option("Hedef.", ["FIRAT", "BEHIC", "TURAHAN", "ALI"])
   ])
 ];
 
@@ -251,11 +251,7 @@ function CharacterTest() {
   const shareOnX = () => {
     if (!result) return;
 
-    const text = `Aytek Şayan Evreninde ben "%100 ${result.name}" çıktım!
-
-Karakter Analizi: "${result.desc.substring(0, 75)}..."
-
-16 farklı karakterden sen hangisisin? Testi çöz:`;
+    const text = `Aytek Şayan Evreninde ben "%100 ${result.name}" çıktım!\n\nKarakter Analizi: "${result.desc.substring(0, 75)}..."\n\n16 farklı karakterden sen hangisisin? Testi çöz:`;
 
     const siteUrl = "https://ayteksayan.com/hangi-karaktersin";
     const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(siteUrl)}`;
@@ -269,6 +265,14 @@ Karakter Analizi: "${result.desc.substring(0, 75)}..."
   return (
     <div className="press-editorial-wrapper animate-fade" style={{ minHeight: "80vh", paddingBottom: "4rem" }}>
       <style>{`
+        /* Soru Metni ve Mobil Uyumu */
+        .question-text {
+          font-size: 1.5rem;
+          line-height: 1.5;
+          margin-bottom: 2rem;
+          color: var(--accent-dark);
+        }
+
         .test-option-btn {
           display: block;
           width: 100%;
@@ -289,6 +293,19 @@ Karakter Analizi: "${result.desc.substring(0, 75)}..."
           background: rgba(84, 107, 65, 0.1);
           border-color: var(--accent-dark);
           transform: translateX(5px);
+        }
+
+        /* MOBİL MEDYA SORGUSU */
+        @media (max-width: 600px) {
+          .question-text {
+            font-size: 1.15rem; /* Boyut küçültüldü */
+            line-height: 1.4;
+            margin-bottom: 1.5rem;
+          }
+          .test-option-btn {
+            font-size: 0.95rem; /* Şık boyutu küçültüldü */
+            padding: 1rem;
+          }
         }
 
         .result-card {
@@ -333,7 +350,7 @@ Karakter Analizi: "${result.desc.substring(0, 75)}..."
       `}</style>
 
       <div className="container">
-        <div className="section-header-editorial" style={{ textAlign: "center", marginBottom: "3rem" }}>
+        <div className="section-header-editorial" style={{ textAlign: "center", marginBottom: "3rem", marginTop: "-2rem", paddingTop: "0" }}>
           <span className="archive-badge">// KİŞİLİK ENVANTERİ</span>
           <h1 className="editorial-title" style={{ textTransform: "none", margin: "0.5rem 0" }}>
             HANGİ KARAKTERSİN?
@@ -408,7 +425,7 @@ Karakter Analizi: "${result.desc.substring(0, 75)}..."
               <div className="progress-bar-fill" style={{ width: `${progressPercent}%` }} />
             </div>
 
-            <h3 style={{ fontSize: "1.5rem", lineHeight: "1.5", marginBottom: "2rem", color: "var(--accent-dark)" }}>
+            <h3 className="question-text">
               {activeQuestion.question}
             </h3>
 
