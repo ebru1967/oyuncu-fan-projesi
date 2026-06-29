@@ -36,12 +36,12 @@ export const profilePics = Array.from({ length: 15 }, (_, i) => ({
   url: `/profile/p${i + 1}.jpeg` 
 }));
 
-export const btsVideos = Array.from({ length: 53 }, (_, i) => ({
+export const btsVideos = Array.from({ length: 55 }, (_, i) => ({
   id: `v-${i + 1}`,
   url: `/kamera-arkasi/v (${i + 1}).mp4` 
 }));
 
-export const btsPhotos = Array.from({ length: 20 }, (_, i) => ({
+export const btsPhotos = Array.from({ length: 23 }, (_, i) => ({
   id: `f-${i + 1}`,
   url: `/kamera-arkasi/f (${i + 1}).jpeg` 
 }));
