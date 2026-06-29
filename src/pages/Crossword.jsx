@@ -166,9 +166,9 @@ function Crossword() {
             </p>
             
             <a 
-              href="/bulmaca-rozet.png" 
-              download="Aytek_Sayan_Crossword_Master.png" 
-              style={{
+  href="/bulmaca-rozet.svg" 
+  download="Aytek_Sayan_Crossword_Master.svg" 
+  style={{
                 display: 'inline-block',
                 backgroundColor: 'white',
                 color: '#2ecc71',
