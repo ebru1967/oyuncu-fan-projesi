@@ -1,5 +1,14 @@
 export const activeNews = [
   {
+    id: 14,
+    regCode: "KAYIT #2026-06N",
+    category: "YOUTUBE // SÖYLEŞİ",
+    title: "Backstage Whispers: Aytek Şayan ile Kısalar Festivali Üzerine",
+    summary: "Backstage Whispers kanalına konuk olan Aytek Şayan, bağımsız tiyatronun nabzını tutan Kısalar Festivali'nin kuruluş serüvenini, sahne arkasında yaşananları ve kısa formun tiyatrodaki dönüştürücü gücünü detaylarıyla anlatıyor.",
+    linkText: "SÖYLEŞİYİ İZLE ↗",
+    linkUrl: "/basin" 
+  },
+  {
     id: 13,
     regCode: "KAYIT #2026-06M",
     category: "BASIN // RÖPORTAJ",

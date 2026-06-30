@@ -6,6 +6,15 @@ function PressInterviews() {
 
   const interviewData = [
     {
+      id: 23, 
+      type: 'video',
+      source: 'YOUTUBE // BACKSTAGE WHISPERS',
+      date: '30 HAZİRAN 2026', 
+      title: 'Aytek Şayan ile Kısalar Festivali Üzerine',
+      summary: 'Backstage Whispers kanalına konuk olan Aytek Şayan, Kısalar Festivali\'nin perde arkasını, bağımsız tiyatro ekiplerinin üretim süreçlerini ve kısa oyun formatının tiyatro dünyasındaki tazeleyici etkisini izleyicilerle paylaşıyor.',
+      videoUrl: 'https://youtu.be/BrMAowJZ0oU'
+    },
+    {
       id: 22,
       type: 'written',
       source: 'SAHNERTOZ // CEREN ERTÖZ',

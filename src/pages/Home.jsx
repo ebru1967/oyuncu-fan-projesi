@@ -55,7 +55,7 @@ function Home() {
   const sideArticles = activeNews.slice(1, 3);
 
   const newsCoverImages = {
-    13: '/ertoz.jpeg', 
+    14: '/spot.jpeg', 
   };
 
   const today = new Date();
