@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { FaFutbol, FaTrophy, FaRedo } from 'react-icons/fa';
 
 function AytekPenalty() {
   const [score, setScore] = useState({ player: 0, gk: 0 });
   const [message, setMessage] = useState("Aytek sahnede! Hedefi seç ve şutunu çek.");
   const [isShooting, setIsShooting] = useState(false);
+  
+  // OYUNCUNUN ŞUT GEÇMİŞİNİ TUTAN VERİ DİZİSİ (Zorlaştırma Mekaniği)
+  const [shotHistory, setShotHistory] = useState([0, 0, 0, 0, 0, 0]);
   
   const [ballPos, setBallPos] = useState('initial');
   const [gkPos, setGkPos] = useState('initial');
@@ -27,15 +30,38 @@ function AytekPenalty() {
 
     setBallPos(targetIndex);
 
-    const randomGkMove = Math.floor(Math.random() * 6);
-    setGkPos(randomGkMove);
+    // --- AKILLI KALECİ ALGORİTMASI ---
+    // Şut geçmişini güncelle
+    const newHistory = [...shotHistory];
+    newHistory[targetIndex] += 1;
+    setShotHistory(newHistory);
+
+    // Jim Carrey %60 ihtimalle senin en çok şut çektiğin köşeyi analiz edip oraya atlar!
+    // %40 ihtimalle ise rastgele atlar (tahmin edilemezliği korumak için).
+    let predictedGkMove = Math.floor(Math.random() * 6); // Varsayılan: Rastgele
+    
+    if (Math.random() > 0.4) {
+      const maxHits = Math.max(...newHistory);
+      // En çok tercih edilen köşeleri bul (birden fazla olabilir)
+      const favoriteSpots = newHistory.reduce((acc, count, idx) => {
+        if (count === maxHits && count > 0) acc.push(idx);
+        return acc;
+      }, []);
+      
+      if (favoriteSpots.length > 0) {
+        // En çok atılan köşelerden birini seç
+        predictedGkMove = favoriteSpots[Math.floor(Math.random() * favoriteSpots.length)];
+      }
+    }
+
+    setGkPos(predictedGkMove);
 
     setTimeout(() => {
-      const isExactMatch = targetIndex === randomGkMove; 
-      const isSameDirection = Math.abs(targetIndex - randomGkMove) === 3; 
+      const isExactMatch = targetIndex === predictedGkMove; 
+      const isSameDirection = Math.abs(targetIndex - predictedGkMove) === 3; 
 
       if (isExactMatch) {
-        setMessage("TAM ÜSTÜNE! Jim Carrey topu kucağına aldı!");
+        setMessage("TAM ÜSTÜNE! Jim Carrey zihnini okudu!");
         setScore(prev => ({ ...prev, gk: prev.gk + 1 }));
       } else if (isSameDirection) {
         setMessage("KÖŞEYİ BİLDİ! Jim Carrey uzanarak topu çıkardı!");
@@ -61,6 +87,7 @@ function AytekPenalty() {
 
   const resetGame = () => {
     setScore({ player: 0, gk: 0 });
+    setShotHistory([0, 0, 0, 0, 0, 0]); // Geçmişi de sıfırla
     resetPositions();
     setMessage("Yeni Maç Başladı! Göster kendini Aytek.");
   };
@@ -80,10 +107,11 @@ function AytekPenalty() {
           text-align: center;
         }
 
+        /* SKOR TABELASINA BORDO-MAVİ DOKUNUŞ */
         .score-board {
           display: flex;
           justify-content: space-around;
-          background: var(--accent-dark);
+          background: linear-gradient(135deg, #7b113a 0%, #1a2942 100%);
           color: #fff;
           padding: 1rem;
           border-radius: 8px;
@@ -91,31 +119,31 @@ function AytekPenalty() {
           font-family: var(--font-heading);
           font-size: 1.2rem;
           align-items: center;
+          box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+          border: 2px solid rgba(255,255,255,0.1);
         }
 
-        /* OYUN ALANI: Gökyüzü ve Çim ayrımı yapıldı */
         .game-area {
           position: relative;
           width: 100%;
           height: 350px;
           background: linear-gradient(180deg, 
-            rgba(135, 206, 235, 0.6) 0%,   /* Gökyüzü */
-            rgba(135, 206, 235, 0.6) 45%,  /* Ufuk çizgisi */
-            rgba(84, 107, 65, 0.7) 45%,    /* Çim başlangıcı */
-            rgba(84, 107, 65, 1) 100%);    /* Çim bitişi */
+            rgba(135, 206, 235, 0.6) 0%, 
+            rgba(135, 206, 235, 0.6) 45%, 
+            rgba(84, 107, 65, 0.7) 45%, 
+            rgba(84, 107, 65, 1) 100%);
           border: 4px solid var(--accent-dark);
           border-radius: 8px;
           margin-bottom: 2rem;
           overflow: hidden;
         }
 
-        /* KALE DİREKLERİ: Fiziksel bir sınır çizildi */
         .goal-post {
           position: absolute;
-          bottom: 20px; /* Çimden biraz yukarıda başlar */
+          bottom: 20px;
           left: 10%;
           width: 80%;
-          height: 55%; /* Yalnızca belirli bir alanı kaplar */
+          height: 55%;
           border: 6px solid #fff;
           border-bottom: none;
           background-image: 
@@ -126,7 +154,6 @@ function AytekPenalty() {
           box-shadow: inset 0 15px 20px rgba(0,0,0,0.1);
         }
 
-        /* HEDEF IZGARASI ARTIK SADECE KALE DİREKLERİ İÇİNDE */
         .target-grid {
           position: absolute;
           top: 0; left: 0; width: 100%; height: 100%;
@@ -193,25 +220,26 @@ function AytekPenalty() {
           margin-bottom: 1rem;
           font-weight: bold;
         }
-          .reset-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: transparent;
-    border: 2px solid var(--accent-dark);
-    color: var(--accent-dark);
-    padding: 0.6rem 2rem;
-    border-radius: 30px;
-    cursor: pointer;
-    font-family: var(--font-heading);
-    font-weight: bold;
-    transition: all 0.3s ease;
-  }
+        
+        .reset-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: transparent;
+          border: 2px solid var(--accent-dark);
+          color: var(--accent-dark);
+          padding: 0.6rem 2rem;
+          border-radius: 30px;
+          cursor: pointer;
+          font-family: var(--font-heading);
+          font-weight: bold;
+          transition: all 0.3s ease;
+        }
 
-  .reset-btn:hover {
-    background: var(--accent-dark);
-    color: #fff;
-  }
+        .reset-btn:hover {
+          background: var(--accent-dark);
+          color: #fff;
+        }
       `}</style>
 
       <div className="section-header-editorial" style={{ textAlign: 'center', marginBottom: '2rem' }}>
@@ -271,8 +299,8 @@ function AytekPenalty() {
         </div>
 
         <button onClick={resetGame} className="reset-btn">
-    <FaRedo /> SKORU SIFIRLA
-  </button>
+          <FaRedo /> SKORU SIFIRLA
+        </button>
 
       </div>
     </div>
