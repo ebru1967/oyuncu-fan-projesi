@@ -1,136 +1,5 @@
 import React, { useState } from 'react';
 
-// --- ANA SAYFA HABERLERİ ---
-export const activeNews = [
-  {
-    id: 14,
-    regCode: "KAYIT #2026-06N",
-    category: "YOUTUBE // SÖYLEŞİ",
-    title: "Backstage Whispers: Aytek Şayan ile Kısalar Festivali Üzerine",
-    summary: "Backstage Whispers kanalına konuk olan Aytek Şayan, bağımsız tiyatronun nabzını tutan Kısalar Festivali'nin kuruluş serüvenini, sahne arkasında yaşananları ve kısa formun tiyatrodaki dönüştürücü gücünü detaylarıyla anlatıyor.",
-    linkText: "SÖYLEŞİYİ İZLE ↗",
-    linkUrl: "/basin" 
-  },
-  {
-    id: 13,
-    regCode: "KAYIT #2026-06M",
-    category: "BASIN // RÖPORTAJ",
-    title: "Sahnertoz Özel: 'Bu Festivaller Şehre ve Herkese Aittir'",
-    summary: "Ceren Ertöz'e konuşan Aytek Şayan; Kısalar Festivali'nin temalarını, seçim kriterlerini ve festivalin Türkiye tiyatrosundaki geleceğine dair hedeflerini paylaşıyor. Şayan, kusursuzluk yerine cesur fikirlerin ve sahnede eylemin gücüne inandığının altını çiziyor.",
-    linkText: "RÖPORTAJI OKU ↗",
-    linkUrl: "/basin" 
-  },
-  {
-    id: 12,
-    regCode: "KAYIT #2026-06L",
-    category: "BASIN // RÖPORTAJ",
-    title: "Tiyatro Dergisi: 'Aytek Şayan’la Uzun Lafın Kısası'",
-    summary: "Pınar Erol'a konuşan Aytek Şayan, bu yıl DasDas'ta ikincisi gerçekleşecek olan Kısalar Festivali'nin vizyonunu, tiyatronun kalıplara sığmayan yenilikçi dilini ve sanatta kolektif ruhun iyileştirici gücünü anlatıyor.",
-    linkText: "RÖPORTAJI OKU ↗",
-    linkUrl: "/basin" 
-  },
-  {
-    id: 10,
-    regCode: "KAYIT #2026-06J",
-    category: "BASIN // RÖPORTAJ",
-    title: "Milliyet Özel: 'Bu yolculuk kendimize doğru'",
-    summary: "Seyhan Akıncı'ya konuşan Aytek Şayan; veterinerlikten oyunculuğa uzanan yolculuğunu, İstanbul'daki ilk yıllarında yaşadığı zorlukları ve aidiyet hissini anlatıyor. Başarılı oyuncu, dizilerdeki ölüm sahnelerinin kendisine ölümü değil, 'kirayı' düşündürdüğünü tüm samimiyetiyle paylaşıyor.",
-    linkText: "RÖPORTAJI OKU ↗",
-    linkUrl: "/basin" 
-  },
-  {
-    id: 11,
-    regCode: "KAYIT #2026-06K",
-    category: "MARKA // ETKİNLİK",
-    title: "Aytek Şayan, Mercedes-Benz Özel Etkinliğinde Boy Gösterdi",
-    summary: "12 Haziran Cuma günü gerçekleştirilen özel Mercedes-Benz etkinliğine katılan Aytek Şayan, tarzı ve karizmatik duruşuyla dikkatleri üzerine çekti. Instagram üzerinden paylaşılan ve sosyal medyada hızla yayılan etkinlik kesitleri, başarılı oyuncunun prestijli markalarla olan güçlü bağını bir kez daha gözler önüne serdi.",
-    linkText: "SOSYAL MEDYA YANSIMALARI ↗",
-    linkUrl: "https://x.com/aytekofc"
-  },
-  {
-    id: 9,
-    regCode: "KAYIT #2026-06I",
-    category: "TELEVİZYON // SÖYLEŞİ",
-    title: "Teke Tek Sanat: 'Dilden Çok Eylemin Kuvvetine İnanıyorum'",
-    summary: "Bedia Ceylan Güzelce'nin sunduğu Teke Tek Sanat programında derinlikli bir sohbete imza atan Aytek Şayan; sahnede sözden ziyade eylemin gücüne inandığını belirterek, Kısalar Festivali'nin tiyatroyu nasıl ritüelistik bir 'deneyim' alanına dönüştürdüğünü anlatıyor.",
-    linkText: "SÖYLEŞİYİ İZLE ↗",
-    linkUrl: "/basin" 
-  },
-  {
-    id: 6,
-    regCode: "KAYIT #2026-06F",
-    category: "TELEVİZYON // DUYURU",
-    title: "Sezon Finalinde Büyük Rekabet: Aytek Şayan ve Burak Yörük 'Arda ile Omuz Omuza'da!",
-    summary: "Türkiye’nin sevilen şeflerinden Arda Türkmen’in ünlü konukları ağırladığı 'Arda ile Omuz Omuza' programı, nefes kesen bir sezon finali bölümüyle ekrana geliyor. 'Taşacak Bu Deniz' dizisinin başarılı oyuncuları Aytek Şayan ve Burak Yörük, bu özel bölümde mutfakta adeta ter döküyor. Arda Şef'in talimatlarıyla omuz omuza vererek en lezzetli Tavuklu Burger Sandviç'i hazırlamaya çalışan ikilinin set dışındaki harika enerjisi ve eğlenceli mutfak macerası izleyicilerle buluşuyor.",
-    linkText: "PROGRAM SAYFASI (KANAL D) ↗",
-    linkUrl: "https://www.kanald.com.tr/arda-ile-omuz-omuza" 
-  },
-  {
-    id: 8,
-    regCode: "KAYIT #2026-06H",
-    category: "BASIN // RÖPORTAJ",
-    title: "Tiyatro bir ritüeldir: Aytek Şayan ile Kısalar Festivali Üzerine",
-    summary: "Genç sanatçılara görünür olabilecekleri bir alan açan ‘Kısalar Festivali’ne sayılı günler kala Aytek Şayan; tiyatronun bir deneyim ve ritüel olduğunu, kısa anlatıların gücünü ve kendi oyunculuk anlayışını anlatıyor.",
-    linkText: "RÖPORTAJI OKU ↗",
-    linkUrl: "/basin" 
-  },
-  {
-    id: 7, 
-    regCode: "KAYIT #2026-06G",
-    category: "BASIN // RÖPORTAJ",
-    title: "Şerif\'in Psikolojisi, Set Ortamı ve Brezilya Hayali", 
-    summary: "Aytek Şayan\'ın; Şerif karakterinin kötülük felsefesini, Karadeniz\'in zorlu çekim koşullarını, rol arkadaşlarıyla olan eğlenceli dinamiklerini ve Brezilya kültürüne duyduğu merakı anlattığı özel video röportajı.",
-    linkText: "RÖPORTAJIN TAMAMINI İZLE ↗",
-    linkUrl: "/basin"
-  },
-  {
-    id: 5,
-    regCode: "KAYIT #2026-06E",
-    category: "GÜNCEL // ONUR NİŞANI",
-    title: "Sürmene'den Aytek Şayan'a Fahri Hemşehrilik Ünvanı",
-    summary: "'Taşacak Bu Deniz' dizisinin çekimleri sebebiyle uzun süredir Trabzon'da bulunan ve Karadeniz halkıyla kurduğu samimi bağla takdir toplayan Aytek Şayan'a, Sürmene Belediye Başkanı tarafından 'Fahri Hemşehrilik' beratı takdim edildi. Bölge kültürüne olan ilgisi ve saygısıyla bilinen başarılı oyuncu, bu anlamlı jest karşısında büyük bir onur duyduğunu belirtti.",
-    linkText: "HABERİN DETAYI ↗",
-    linkUrl: "https://www.kuzeyekspres.com.tr/haber/27788232/trabzon-gunlerinde-tasacak-bu-deniz-ruzgari"
-  },
-  {
-    id: 1,
-    regCode: "KAYIT #2026-06A",
-    category: "TELEVİZYON // İNCELEME",
-    title: "Ekranların En Derinlikli Karakteri: Şerif Furtuna Etkisi",
-    summary: "'Taşacak Bu Deniz' dizisinde hayat verdiği Şerif karakteriyle Aytek Şayan, sıradan kötü adam klişelerini tamamen yıkıyor. Karakterin olaylara duygulardan arınmış bir satranç ustası gibi yaklaşmasını büyük bir ustalıkla ekrana taşıyan oyuncu, hem eleştirmenlerden tam not alıyor hem de sosyal medyada izleyicilerin yoğun etkileşimiyle sezonun en çok konuşulan performanslarından birine imza atıyor.",
-    linkText: "ŞERİF'İN SAHNELERİNİ İZLE ↗",
-    linkUrl: "https://youtube.com/playlist?list=PLkowzc1JKWSj-LXZoBKue22W-RIPiIPiW" 
-  },
-  {
-    id: 3,
-    regCode: "KAYIT #2026-03C",
-    category: "PROJE // KÜRATÖRLÜK",
-    title: "Bağımsız Sahnenin Kalbi: 'Kısalar Festivali' Büyümeye Devam Ediyor",
-    summary: "Aytek Şayan'ın arkadaşlarıyla birlikte kurduğu 'Kısalar' kolektifi, DasDas'ın mekan sponsorluğunda bu yıl da bağımsız tiyatroculara nefes oldu. 160 başvurunun yapıldığı festivalde 62 kısa performans seyirciyle buluşurken, Şayan projenin küratörlüğünü üstlenerek sektörel vizyonunu bir kez daha kanıtladı.",
-    linkText: "FESTİVAL DETAYLARI ↗",
-    linkUrl: "https://www.dasdas.com.tr"
-  },
-  {
-    id: 4,
-    regCode: "KAYIT #2026-01D",
-    category: "BASIN // RÖPORTAJ",
-    title: "Kelebek Röportajı: 'Oyunculuk Yolunu Çok Ciddiye Alıyorum'",
-    summary: "Hürriyet'e verdiği son röportajda Şerif karakteri yüzünden sokakta aldığı ilginç tepkileri anlatan başarılı aktör, mesleki duruşunu şu sözlerle özetledi: 'Oyunculuk yolunu çok ciddiye alıyorum ve o ciddiyet bazen beni yoruyor. Tiyatroyla bir şeyler üreterek kalıcı olmaya çalışıyorum.'",
-    linkText: "RÖPORTAJI OKU ↗",
-    linkUrl: "https://www.hurriyet.com.tr/kelebek/hurriyet-cumartesi/intikam-almakla-hic-ugrasamam-43153248"
-  },
-  {
-    id: 2,
-    regCode: "KAYIT #2025-11B",
-    category: "TİYATRO // ÖDÜL",
-    title: "25. Direklerarası Ödülleri'nde 'En İyi Erkek Oyuncu' Zaferi",
-    summary: "DasDas sahnesinde kapalı gişe oynayan distopik tiyatro oyunu 'Ayna'daki çarpıcı performansı, Aytek Şayan'a 25. Direklerarası Seyirci Ödülleri'nde 'En İyi Erkek Oyuncu' ödülünü getirdi. Şayan, sansür ve otosansür konularını işleyen bu cesur metindeki performansıyla jüriden tam not aldı.",
-    linkText: "TİYATROLAR SAYFASI ↗",
-    linkUrl: "https://tiyatrolar.com.tr/m/aytek-sayan"
-  }
-];
-
-// --- MEDYA ARŞİVİ BİLEŞENİ ---
 function PressInterviews() {
   const [filter, setFilter] = useState('all'); 
   const [expandedId, setExpandedId] = useState(null); 
@@ -280,7 +149,7 @@ function PressInterviews() {
         }
       ]
     },
-    {
+      {
       id: 19, 
       type: 'video',
       source: 'YOUTUBE // TEKE TEK SANAT',
@@ -826,7 +695,7 @@ function PressInterviews() {
   return (
     <div className="press-editorial-wrapper animate-fade">
       
-      {/* YENİ EKLENEN CSS BLOĞU: PREMIUM SİCİL ODASI TASARIMI */}
+      {/* YENİ EKLENEN CSS BLOĞU */}
       <style>{`
         .press-filters {
           display: flex;
@@ -848,115 +717,78 @@ function PressInterviews() {
           border-radius: 30px;
           cursor: pointer;
           transition: all 0.3s ease;
-          text-transform: uppercase;
-          box-shadow: 0 2px 10px rgba(0,0,0,0.02);
         }
 
-        .filter-link:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 5px 15px rgba(84, 107, 65, 0.15);
-        }
-
-        .filter-link.active {
+        .filter-link:hover, .filter-link.active {
           background: var(--accent-dark);
           color: var(--bg-main);
           border-color: var(--accent-dark);
-          box-shadow: 0 5px 15px rgba(84, 107, 65, 0.2);
         }
 
         .press-archive-grid {
           display: grid;
           grid-template-columns: 1fr;
-          gap: 2.5rem;
+          gap: 2rem;
           max-width: 900px;
           margin: 0 auto;
         }
 
-        /* 3D KART HİSSİYATI */
         .press-archive-card {
-          position: relative;
-          background: linear-gradient(145deg, var(--bg-main) 0%, rgba(84, 107, 65, 0.02) 100%);
+          background: var(--bg-main);
           border: 1px solid rgba(84, 107, 65, 0.15);
-          padding: 2.5rem;
-          border-radius: 8px;
-          border-left: 5px solid var(--accent-dark);
-          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-          overflow: hidden;
+          padding: 2rem;
+          border-radius: 4px;
+          border-left: 4px solid var(--accent-dark);
+          transition: box-shadow 0.3s ease;
         }
 
         .press-archive-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 15px 40px rgba(84, 107, 65, 0.12);
-          border-color: rgba(84, 107, 65, 0.3);
+          box-shadow: 0 10px 30px rgba(84, 107, 65, 0.08);
         }
 
         .press-card-meta {
           display: flex;
           justify-content: space-between;
-          align-items: center;
           font-family: var(--font-heading);
-          font-weight: bold;
-          margin-bottom: 1.5rem;
-          border-bottom: 1px dashed rgba(84, 107, 65, 0.2);
-          padding-bottom: 0.8rem;
-        }
-
-        /* ROZET (BADGE) TASARIMI */
-        .press-source {
-          background: rgba(84, 107, 65, 0.1);
-          color: var(--accent-dark);
-          padding: 0.4rem 1rem;
-          border-radius: 20px;
           font-size: 0.75rem;
-          letter-spacing: 1px;
-        }
-
-        .press-date {
-          font-size: 0.8rem;
+          font-weight: bold;
           color: var(--accent-light);
-          opacity: 0.8;
-          letter-spacing: 0.5px;
+          margin-bottom: 1rem;
+          border-bottom: 1px solid rgba(84, 107, 65, 0.1);
+          padding-bottom: 0.5rem;
         }
 
         .press-card-title {
           font-family: var(--font-heading);
-          font-size: 1.6rem;
+          font-size: 1.5rem;
           color: var(--accent-dark);
-          margin: 0 0 1.2rem 0;
-          line-height: 1.35;
-          letter-spacing: -0.5px;
+          margin: 0 0 1rem 0;
+          line-height: 1.3;
         }
 
         .press-archive-summary {
-          font-size: 1rem;
-          line-height: 1.7;
-          opacity: 0.85;
-          margin-bottom: 2rem;
+          font-size: 0.95rem;
+          line-height: 1.6;
+          opacity: 0.8;
+          margin-bottom: 1.5rem;
         }
 
-        /* MODERN BUTONLAR */
         .editorial-link-btn {
           background: transparent;
-          border: 1px solid var(--accent-dark);
+          border: 1px dashed var(--accent-dark);
           color: var(--accent-dark);
-          padding: 0.8rem 1.5rem;
+          padding: 0.6rem 1rem;
           font-family: var(--font-heading);
-          font-size: 0.85rem;
+          font-size: 0.8rem;
           font-weight: bold;
-          border-radius: 4px;
           cursor: pointer;
-          transition: all 0.3s ease;
+          transition: all 0.3s;
           width: 100%;
           text-align: left;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
         }
 
         .editorial-link-btn:hover {
-          background: var(--accent-dark);
-          color: var(--bg-main);
-          box-shadow: 0 5px 15px rgba(84, 107, 65, 0.2);
+          background: rgba(84, 107, 65, 0.05);
         }
 
         .editorial-link-btn-anchor {
@@ -964,50 +796,40 @@ function PressInterviews() {
           background: var(--accent-dark);
           color: #fff;
           text-decoration: none;
-          padding: 0.8rem 1.8rem;
+          padding: 0.6rem 1.2rem;
           font-family: var(--font-heading);
-          font-size: 0.85rem;
+          font-size: 0.8rem;
           font-weight: bold;
           border-radius: 4px;
-          transition: all 0.3s ease;
-          box-shadow: 0 4px 10px rgba(84, 107, 65, 0.15);
+          transition: opacity 0.3s;
         }
 
         .editorial-link-btn-anchor:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 6px 15px rgba(84, 107, 65, 0.25);
+          opacity: 0.8;
+          color: #fff;
         }
 
-        /* YENİ RÖPORTAJ OKUMA ALANI (Transcript Style) */
         .press-full-text-area {
-          margin-top: 2rem;
-          padding: 2rem;
-          background: rgba(84, 107, 65, 0.02);
-          border: 1px solid rgba(84, 107, 65, 0.08);
-          border-radius: 8px;
-          box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);
+          margin-top: 1.5rem;
+          padding: 1.5rem;
+          background: rgba(84, 107, 65, 0.03);
+          border-radius: 4px;
         }
 
         .qa-block-unit {
-          margin-bottom: 2rem;
+          margin-bottom: 1.5rem;
         }
 
         .interview-question {
           font-style: italic;
+          margin-bottom: 0.5rem;
           color: var(--accent-dark);
-          line-height: 1.6;
-          border-left: 3px solid var(--accent-light);
-          padding: 1rem 1.2rem;
-          background: rgba(84, 107, 65, 0.05);
-          border-radius: 0 8px 8px 0;
-          margin-bottom: 1rem;
+          line-height: 1.5;
         }
 
         .interview-answer {
-          line-height: 1.7;
+          line-height: 1.6;
           opacity: 0.9;
-          padding-left: 1.4rem;
-          border-left: 3px solid transparent; /* Soru ile hizalama için */
         }
       `}</style>
 
@@ -1040,8 +862,7 @@ function PressInterviews() {
               {item.type === 'written' ? (
                 <div className="written-expand-container">
                   <button className="editorial-link-btn" onClick={() => toggleExpand(item.id)}>
-                    <span>{expandedId === item.id ? 'DOSYAYI KAPAT' : 'SÖYLEŞİNİN TAM METNİNİ OKU'}</span>
-                    <span>{expandedId === item.id ? '↑' : '↓'}</span>
+                    {expandedId === item.id ? '↑ DOSYAYI KAPAT' : '→ SÖYLEŞİNİN TAM METNİNİ OKU'}
                   </button>
                   
                   {expandedId === item.id && (
@@ -1059,9 +880,9 @@ function PressInterviews() {
                         </div>
                       ))}
                       {item.originalLink && (
-                        <div style={{ marginTop: '2.5rem', textAlign: 'right', borderTop: '1px dashed rgba(84,107,65,0.2)', paddingTop: '1.5rem' }}>
-                          <a href={item.originalLink} target="_blank" rel="noreferrer" className="editorial-link-btn-anchor" style={{ background: 'transparent', color: 'var(--accent-dark)', border: '1px solid var(--accent-dark)', boxShadow: 'none' }}>
-                            ORİJİNAL KAYNAĞA GİT ↗
+                        <div style={{ marginTop: '2rem', textAlign: 'right' }}>
+                          <a href={item.originalLink} target="_blank" rel="noreferrer" className="editorial-link" style={{ fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--accent-dark)', textDecoration: 'underline' }}>
+                          KAYNAĞA GİT ↗
                           </a>
                         </div>
                       )}
@@ -1070,7 +891,7 @@ function PressInterviews() {
                 </div>
               ) : (
                 <a href={item.videoUrl} target="_blank" rel="noreferrer" className="editorial-link-btn-anchor">
-                  GÖRÜNTÜLÜ KAYDI İNCELE ↗
+                  → GÖRÜNTÜLÜ KAYDI İNCELE ↗
                 </a>
               )}
 
