@@ -221,30 +221,25 @@ function PhotoPuzzle() {
             )}
 
             {pieces.map((originalPieceId, currentIndex) => {
-  // Parçanın doğru satır ve sütununu bul
-  const col = originalPieceId % size;
-  const row = Math.floor(originalPieceId / size);
+              const backgroundSizeX = size * 100;
+              const backgroundSizeY = size * 100;
+              const xPos = (originalPieceId % size) * (100 / (size - 1));
+              const yPos = Math.floor(originalPieceId / size) * (100 / (size - 1));
 
-  // Background position'ı net bölüntülerle hesapla
-  // size > 1 ise (size-1) kullanılır, tek parça varsa 0
-  const xPos = size > 1 ? (col * 100) / (size - 1) : 0;
-  const yPos = size > 1 ? (row * 100) / (size - 1) : 0;
-
-  return (
-    <div 
-      key={currentIndex} 
-      className={`puzzle-piece ${selectedIndex === currentIndex ? 'selected' : ''}`}
-      onClick={() => handlePieceClick(currentIndex)}
-      style={{
-        backgroundImage: `url("${selectedImage}")`,
-        // Parçaların birbirini tam tamamlaması için background-size'ı dinamik yapıyoruz
-        backgroundSize: `${size * 100}% ${size * 100}%`,
-        backgroundPosition: `${xPos}% ${yPos}%`
-      }}
-    >
-    </div>
-  );
-})}
+              return (
+                <div 
+                  key={currentIndex} 
+                  className={`puzzle-piece ${selectedIndex === currentIndex ? 'selected' : ''}`}
+                  onClick={() => handlePieceClick(currentIndex)}
+                  style={{
+                    backgroundImage: `url("${selectedImage}")`,
+                    backgroundSize: `${backgroundSizeX}% ${backgroundSizeY}%`,
+                    backgroundPosition: `${xPos}% ${yPos}%`
+                  }}
+                >
+                </div>
+              );
+            })}
           </div>
 
           <button 
