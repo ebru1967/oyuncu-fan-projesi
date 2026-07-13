@@ -6,7 +6,7 @@ function AytekPenalty() {
   const [message, setMessage] = useState("Aytek sahnede! Hedefi seç ve şutunu çek.");
   const [isShooting, setIsShooting] = useState(false);
   
-  // OYUNCUNUN ŞUT GEÇMİŞİNİ TUTAN VERİ DİZİSİ (Zorlaştırma Mekaniği)
+  // OYUNCUNUN ŞUT GEÇMİŞİNİ TUTAN VERİ DİZİSİ 
   const [shotHistory, setShotHistory] = useState([0, 0, 0, 0, 0, 0]);
   
   const [ballPos, setBallPos] = useState('initial');
