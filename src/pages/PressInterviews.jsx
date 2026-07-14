@@ -6,6 +6,15 @@ function PressInterviews() {
 
   const interviewData = [
     {
+      id: 24, 
+      type: 'video',
+      source: 'YOUTUBE // BLOOMBERG HT',
+      date: '14 TEMMUZ 2026', 
+      title: 'Aslı Şafak\'la İşin Aslı - Aytek Şayan',
+      summary: 'Aytek Şayan, Aslı Şafak\'ın sunduğu "İşin Aslı" programında; çocukluğundan bugüne uzanan içsel yolculuğunu, tiyatro ve ekran oyunculuğundaki beden-zihin koordinasyonunu ve amatör ruhun Kısalar Festivali ile nasıl harmanlandığını samimi detaylarıyla anlatıyor.',
+      videoUrl: 'https://youtu.be/sG7ZLQ6PBs8'
+    },
+    {
       id: 23, 
       type: 'video',
       source: 'YOUTUBE // BACKSTAGE WHISPERS',
@@ -149,7 +158,7 @@ function PressInterviews() {
         }
       ]
     },
-      {
+    {
       id: 19, 
       type: 'video',
       source: 'YOUTUBE // TEKE TEK SANAT',
@@ -695,7 +704,7 @@ function PressInterviews() {
   return (
     <div className="press-editorial-wrapper animate-fade">
       
-      {/* YENİ EKLENEN CSS BLOĞU */}
+      {/* YENİ EKLENEN CSS BLOĞU: PREMIUM SİCİL ODASI TASARIMI */}
       <style>{`
         .press-filters {
           display: flex;
@@ -717,78 +726,115 @@ function PressInterviews() {
           border-radius: 30px;
           cursor: pointer;
           transition: all 0.3s ease;
+          text-transform: uppercase;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.02);
         }
 
-        .filter-link:hover, .filter-link.active {
+        .filter-link:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(84, 107, 65, 0.15);
+        }
+
+        .filter-link.active {
           background: var(--accent-dark);
           color: var(--bg-main);
           border-color: var(--accent-dark);
+          box-shadow: 0 5px 15px rgba(84, 107, 65, 0.2);
         }
 
         .press-archive-grid {
           display: grid;
           grid-template-columns: 1fr;
-          gap: 2rem;
+          gap: 2.5rem;
           max-width: 900px;
           margin: 0 auto;
         }
 
+        /* 3D KART HİSSİYATI */
         .press-archive-card {
-          background: var(--bg-main);
+          position: relative;
+          background: linear-gradient(145deg, var(--bg-main) 0%, rgba(84, 107, 65, 0.02) 100%);
           border: 1px solid rgba(84, 107, 65, 0.15);
-          padding: 2rem;
-          border-radius: 4px;
-          border-left: 4px solid var(--accent-dark);
-          transition: box-shadow 0.3s ease;
+          padding: 2.5rem;
+          border-radius: 8px;
+          border-left: 5px solid var(--accent-dark);
+          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          overflow: hidden;
         }
 
         .press-archive-card:hover {
-          box-shadow: 0 10px 30px rgba(84, 107, 65, 0.08);
+          transform: translateY(-5px);
+          box-shadow: 0 15px 40px rgba(84, 107, 65, 0.12);
+          border-color: rgba(84, 107, 65, 0.3);
         }
 
         .press-card-meta {
           display: flex;
           justify-content: space-between;
+          align-items: center;
           font-family: var(--font-heading);
-          font-size: 0.75rem;
           font-weight: bold;
+          margin-bottom: 1.5rem;
+          border-bottom: 1px dashed rgba(84, 107, 65, 0.2);
+          padding-bottom: 0.8rem;
+        }
+
+        /* ROZET (BADGE) TASARIMI */
+        .press-source {
+          background: rgba(84, 107, 65, 0.1);
+          color: var(--accent-dark);
+          padding: 0.4rem 1rem;
+          border-radius: 20px;
+          font-size: 0.75rem;
+          letter-spacing: 1px;
+        }
+
+        .press-date {
+          font-size: 0.8rem;
           color: var(--accent-light);
-          margin-bottom: 1rem;
-          border-bottom: 1px solid rgba(84, 107, 65, 0.1);
-          padding-bottom: 0.5rem;
+          opacity: 0.8;
+          letter-spacing: 0.5px;
         }
 
         .press-card-title {
           font-family: var(--font-heading);
-          font-size: 1.5rem;
+          font-size: 1.6rem;
           color: var(--accent-dark);
-          margin: 0 0 1rem 0;
-          line-height: 1.3;
+          margin: 0 0 1.2rem 0;
+          line-height: 1.35;
+          letter-spacing: -0.5px;
         }
 
         .press-archive-summary {
-          font-size: 0.95rem;
-          line-height: 1.6;
-          opacity: 0.8;
-          margin-bottom: 1.5rem;
+          font-size: 1rem;
+          line-height: 1.7;
+          opacity: 0.85;
+          margin-bottom: 2rem;
         }
 
+        /* MODERN BUTONLAR */
         .editorial-link-btn {
           background: transparent;
-          border: 1px dashed var(--accent-dark);
+          border: 1px solid var(--accent-dark);
           color: var(--accent-dark);
-          padding: 0.6rem 1rem;
+          padding: 0.8rem 1.5rem;
           font-family: var(--font-heading);
-          font-size: 0.8rem;
+          font-size: 0.85rem;
           font-weight: bold;
+          border-radius: 4px;
           cursor: pointer;
-          transition: all 0.3s;
+          transition: all 0.3s ease;
           width: 100%;
           text-align: left;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
         }
 
         .editorial-link-btn:hover {
-          background: rgba(84, 107, 65, 0.05);
+          background: var(--accent-dark);
+          color: var(--bg-main);
+          box-shadow: 0 5px 15px rgba(84, 107, 65, 0.2);
         }
 
         .editorial-link-btn-anchor {
@@ -796,40 +842,50 @@ function PressInterviews() {
           background: var(--accent-dark);
           color: #fff;
           text-decoration: none;
-          padding: 0.6rem 1.2rem;
+          padding: 0.8rem 1.8rem;
           font-family: var(--font-heading);
-          font-size: 0.8rem;
+          font-size: 0.85rem;
           font-weight: bold;
           border-radius: 4px;
-          transition: opacity 0.3s;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 10px rgba(84, 107, 65, 0.15);
         }
 
         .editorial-link-btn-anchor:hover {
-          opacity: 0.8;
-          color: #fff;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 15px rgba(84, 107, 65, 0.25);
         }
 
+        /* YENİ RÖPORTAJ OKUMA ALANI (Transcript Style) */
         .press-full-text-area {
-          margin-top: 1.5rem;
-          padding: 1.5rem;
-          background: rgba(84, 107, 65, 0.03);
-          border-radius: 4px;
+          margin-top: 2rem;
+          padding: 2rem;
+          background: rgba(84, 107, 65, 0.02);
+          border: 1px solid rgba(84, 107, 65, 0.08);
+          border-radius: 8px;
+          box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);
         }
 
         .qa-block-unit {
-          margin-bottom: 1.5rem;
+          margin-bottom: 2rem;
         }
 
         .interview-question {
           font-style: italic;
-          margin-bottom: 0.5rem;
           color: var(--accent-dark);
-          line-height: 1.5;
+          line-height: 1.6;
+          border-left: 3px solid var(--accent-light);
+          padding: 1rem 1.2rem;
+          background: rgba(84, 107, 65, 0.05);
+          border-radius: 0 8px 8px 0;
+          margin-bottom: 1rem;
         }
 
         .interview-answer {
-          line-height: 1.6;
+          line-height: 1.7;
           opacity: 0.9;
+          padding-left: 1.4rem;
+          border-left: 3px solid transparent; /* Soru ile hizalama için */
         }
       `}</style>
 
@@ -862,7 +918,8 @@ function PressInterviews() {
               {item.type === 'written' ? (
                 <div className="written-expand-container">
                   <button className="editorial-link-btn" onClick={() => toggleExpand(item.id)}>
-                    {expandedId === item.id ? '↑ DOSYAYI KAPAT' : '→ SÖYLEŞİNİN TAM METNİNİ OKU'}
+                    <span>{expandedId === item.id ? 'DOSYAYI KAPAT' : 'SÖYLEŞİNİN TAM METNİNİ OKU'}</span>
+                    <span>{expandedId === item.id ? '↑' : '↓'}</span>
                   </button>
                   
                   {expandedId === item.id && (
@@ -880,9 +937,9 @@ function PressInterviews() {
                         </div>
                       ))}
                       {item.originalLink && (
-                        <div style={{ marginTop: '2rem', textAlign: 'right' }}>
-                          <a href={item.originalLink} target="_blank" rel="noreferrer" className="editorial-link" style={{ fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--accent-dark)', textDecoration: 'underline' }}>
-                          KAYNAĞA GİT ↗
+                        <div style={{ marginTop: '2.5rem', textAlign: 'right', borderTop: '1px dashed rgba(84,107,65,0.2)', paddingTop: '1.5rem' }}>
+                          <a href={item.originalLink} target="_blank" rel="noreferrer" className="editorial-link-btn-anchor" style={{ background: 'transparent', color: 'var(--accent-dark)', border: '1px solid var(--accent-dark)', boxShadow: 'none' }}>
+                            ORİJİNAL KAYNAĞA GİT ↗
                           </a>
                         </div>
                       )}
@@ -891,7 +948,7 @@ function PressInterviews() {
                 </div>
               ) : (
                 <a href={item.videoUrl} target="_blank" rel="noreferrer" className="editorial-link-btn-anchor">
-                  → GÖRÜNTÜLÜ KAYDI İNCELE ↗
+                  GÖRÜNTÜLÜ KAYDI İNCELE ↗
                 </a>
               )}
 

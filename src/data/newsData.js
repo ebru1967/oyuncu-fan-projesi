@@ -1,5 +1,14 @@
 export const activeNews = [
   {
+    id: 15,
+    regCode: "KAYIT #2026-07O",
+    category: "YOUTUBE // SÖYLEŞİ",
+    title: "Aslı Şafak'la İşin Aslı: Aytek Şayan",
+    summary: "Bloomberg HT'de Aslı Şafak'ın konuğu olan Aytek Şayan, çocukluk yıllarından oyunculuk kariyerine, veterinerlik fakültesini bırakma serüveninden 'Kısalar Festivali'nin kuruluşuna kadar pek çok bilinmeyeni içtenlikle anlatıyor.",
+    linkText: "SÖYLEŞİYİ İZLE ↗",
+    linkUrl: "/basin" 
+  },
+  {
     id: 14,
     regCode: "KAYIT #2026-06N",
     category: "YOUTUBE // SÖYLEŞİ",
