@@ -87,6 +87,8 @@ function Quiz() {
   const [isNewRecord, setIsNewRecord] = useState(false);
 
   const answerLockRef = useRef(false);
+  const advanceTimeoutRef = useRef(null);
+  const clearTimeoutRef = useRef(null);
 
   useEffect(() => {
     try {
@@ -95,6 +97,14 @@ function Quiz() {
     } catch (e) {
       // localStorage erişilemezse sessizce yok say (gizli sekme vb.)
     }
+  }, []);
+
+  // Bileşen kapanırken bekleyen zamanlayıcıları temizle
+  useEffect(() => {
+    return () => {
+      if (advanceTimeoutRef.current) clearTimeout(advanceTimeoutRef.current);
+      if (clearTimeoutRef.current) clearTimeout(clearTimeoutRef.current);
+    };
   }, []);
 
   const handleAnswer = (selectedOption) => {
@@ -121,16 +131,22 @@ function Quiz() {
       ]);
     }
     
-    setTimeout(() => {
+    // 1. AŞAMA: Renkleri temizle (soru HENÜZ değişmiyor)
+    advanceTimeoutRef.current = setTimeout(() => {
       setSelectedAnswer(null);
       setIsWaiting(false);
-      answerLockRef.current = false;
 
-      if (currentQ + 1 < questions.length) {
-        setCurrentQ(currentQ + 1);
-      } else {
-        finishQuiz(isCorrect ? score + 1 : score);
-      }
+      // 2. AŞAMA: Renkler temizlendikten SONRA, bir sonraki karede soruyu değiştir.
+      // Bu küçük gecikme, eski renklerin yeni soruya sızmasını kesin olarak engeller.
+      clearTimeoutRef.current = setTimeout(() => {
+        answerLockRef.current = false;
+
+        if (currentQ + 1 < questions.length) {
+          setCurrentQ(currentQ + 1);
+        } else {
+          finishQuiz(isCorrect ? score + 1 : score);
+        }
+      }, 50);
     }, 1200);
   };
 
@@ -150,6 +166,8 @@ function Quiz() {
   };
 
   const resetQuiz = () => {
+    if (advanceTimeoutRef.current) clearTimeout(advanceTimeoutRef.current);
+    if (clearTimeoutRef.current) clearTimeout(clearTimeoutRef.current);
     setQuestions(buildShuffledQuestions());
     setCurrentQ(0);
     setScore(0);
@@ -158,6 +176,7 @@ function Quiz() {
     setIsWaiting(false);
     setMissedQuestions([]);
     setIsNewRecord(false);
+    answerLockRef.current = false;
   };
 
   // Klavye kısayolları: 1-4 veya A-D ile cevap seçimi
@@ -365,7 +384,7 @@ function Quiz() {
               <div className="quiz-options">
                 {questions[currentQ].options.map((option, idx) => (
                   <button 
-                    key={idx} 
+                    key={`${currentQ}-${idx}`} 
                     className="quiz-option-btn"
                     onClick={() => handleAnswer(option)}
                     disabled={isWaiting} 
