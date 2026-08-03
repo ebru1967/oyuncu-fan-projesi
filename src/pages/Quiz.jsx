@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 
 const QUESTIONS = [
   // 1-10: Kariyer ve Projeler
@@ -50,7 +50,27 @@ const QUESTIONS = [
   { q: "Kariyerinde yer alan 2023 yapımı 'Su Yüzü' adlı projenin formatı nedir?", options: ["Kısa Film", "Tiyatro Oyunu", "Mini Dizi", "Sinema Filmi"], answer: "Kısa Film" }
 ];
 
+const HIGH_SCORE_KEY = 'aytek-sayan-quiz-highscore';
+
+// Fisher-Yates shuffle — orijinal diziyi bozmadan yeni bir dizi döner
+function shuffleArray(arr) {
+  const copy = [...arr];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function buildShuffledQuestions() {
+  return shuffleArray(QUESTIONS).map((item) => ({
+    ...item,
+    options: shuffleArray(item.options),
+  }));
+}
+
 function Quiz() {
+  const [questions, setQuestions] = useState(() => buildShuffledQuestions());
   const [currentQ, setCurrentQ] = useState(0);
   const [score, setScore] = useState(0);
   const [showResult, setShowResult] = useState(false);
@@ -59,38 +79,112 @@ function Quiz() {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isWaiting, setIsWaiting] = useState(false);
 
+  // Yanlış cevaplanan sorular (sonuç ekranındaki sicil dosyası için)
+  const [missedQuestions, setMissedQuestions] = useState([]);
+
+  // En yüksek skor (localStorage)
+  const [highScore, setHighScore] = useState(0);
+  const [isNewRecord, setIsNewRecord] = useState(false);
+
+  const answerLockRef = useRef(false);
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(HIGH_SCORE_KEY);
+      if (stored) setHighScore(Number(stored));
+    } catch (e) {
+      // localStorage erişilemezse sessizce yok say (gizli sekme vb.)
+    }
+  }, []);
+
   const handleAnswer = (selectedOption) => {
     // Eğer bir cevap seçildiyse ve bekleniyorsa, diğer butonlara tıklamayı engeller
     if (isWaiting) return;
 
     setSelectedAnswer(selectedOption);
     setIsWaiting(true);
+    answerLockRef.current = true;
 
-    const isCorrect = selectedOption === QUESTIONS[currentQ].answer;
+    const currentQuestion = questions[currentQ];
+    const isCorrect = selectedOption === currentQuestion.answer;
     
     if (isCorrect) {
-      setScore(score + 1);
+      setScore((prev) => prev + 1);
+    } else {
+      setMissedQuestions((prev) => [
+        ...prev,
+        {
+          question: currentQuestion.q,
+          correctAnswer: currentQuestion.answer,
+          selectedAnswer: selectedOption,
+        },
+      ]);
     }
     
     setTimeout(() => {
       setSelectedAnswer(null);
       setIsWaiting(false);
+      answerLockRef.current = false;
 
-      if (currentQ + 1 < QUESTIONS.length) {
+      if (currentQ + 1 < questions.length) {
         setCurrentQ(currentQ + 1);
       } else {
-        setShowResult(true);
+        finishQuiz(isCorrect ? score + 1 : score);
       }
     }, 1200);
   };
 
+  const finishQuiz = (finalScore) => {
+    setShowResult(true);
+    if (finalScore > highScore) {
+      setHighScore(finalScore);
+      setIsNewRecord(true);
+      try {
+        localStorage.setItem(HIGH_SCORE_KEY, String(finalScore));
+      } catch (e) {
+        // yazılamazsa sessizce geç
+      }
+    } else {
+      setIsNewRecord(false);
+    }
+  };
+
   const resetQuiz = () => {
+    setQuestions(buildShuffledQuestions());
     setCurrentQ(0);
     setScore(0);
     setShowResult(false);
     setSelectedAnswer(null);
     setIsWaiting(false);
+    setMissedQuestions([]);
+    setIsNewRecord(false);
   };
+
+  // Klavye kısayolları: 1-4 veya A-D ile cevap seçimi
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (showResult || answerLockRef.current) return;
+
+      const currentOptions = questions[currentQ]?.options;
+      if (!currentOptions) return;
+
+      const key = e.key.toUpperCase();
+      const numberMap = { '1': 0, '2': 1, '3': 2, '4': 3 };
+      const letterMap = { A: 0, B: 1, C: 2, D: 3 };
+
+      let idx = null;
+      if (key in numberMap) idx = numberMap[key];
+      else if (key in letterMap) idx = letterMap[key];
+
+      if (idx !== null && currentOptions[idx] !== undefined) {
+        handleAnswer(currentOptions[idx]);
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentQ, questions, showResult]);
 
   // Skor paylaşma fonksiyonu (Etiketler çıkarıldı)
   const shareOnX = () => {
@@ -101,7 +195,7 @@ function Quiz() {
   };
 
   const getResultMessage = (score) => {
-    const total = QUESTIONS.length;
+    const total = questions.length;
     const ratio = score / total;
 
     if (ratio === 1) {
@@ -124,7 +218,7 @@ function Quiz() {
   const getButtonStyle = (option) => {
     if (!selectedAnswer) return {}; 
 
-    const isCorrectAnswer = option === QUESTIONS[currentQ].answer;
+    const isCorrectAnswer = option === questions[currentQ].answer;
     const isSelected = option === selectedAnswer;
 
     if (isCorrectAnswer) {
@@ -138,6 +232,67 @@ function Quiz() {
 
   return (
     <div className="press-editorial-wrapper animate-fade">
+      <style>{`
+        .missed-log {
+          margin-top: 2.5rem;
+          text-align: left;
+          border-top: 1px dashed rgba(84, 107, 65, 0.3);
+          padding-top: 1.5rem;
+        }
+        .missed-log summary {
+          cursor: pointer;
+          font-family: 'Space Mono', monospace;
+          font-size: 0.85rem;
+          font-weight: 700;
+          letter-spacing: 1px;
+          color: var(--accent-dark);
+          margin-bottom: 1rem;
+        }
+        .missed-item {
+          background: rgba(200, 50, 50, 0.05);
+          border-left: 3px solid rgba(200, 50, 50, 0.5);
+          padding: 1rem 1.2rem;
+          margin-bottom: 1rem;
+          font-size: 0.9rem;
+          line-height: 1.5;
+        }
+        .missed-item .missed-q {
+          font-weight: 700;
+          margin-bottom: 0.4rem;
+        }
+        .missed-item .missed-wrong {
+          color: rgba(200, 50, 50, 0.9);
+        }
+        .missed-item .missed-correct {
+          color: #4F772D;
+          font-weight: 700;
+        }
+        .high-score-line {
+          font-family: 'Space Mono', monospace;
+          font-size: 0.8rem;
+          opacity: 0.7;
+          margin-top: 0.5rem;
+        }
+        .new-record-badge {
+          display: inline-block;
+          font-family: 'Space Mono', monospace;
+          font-size: 0.75rem;
+          font-weight: 700;
+          letter-spacing: 1px;
+          color: #fff;
+          background: var(--accent-dark);
+          padding: 0.3rem 0.8rem;
+          border-radius: 4px;
+          margin-top: 0.8rem;
+        }
+        .quiz-key-hint {
+          font-family: 'Space Mono', monospace;
+          font-size: 0.7rem;
+          opacity: 0.45;
+          text-align: center;
+          margin-top: 1.5rem;
+        }
+      `}</style>
       <div className="container">
         
         <div className="section-header-editorial" style={{ paddingTop: '0', marginTop: '-3rem', marginBottom: '3rem', textAlign: 'center' }}>
@@ -151,8 +306,16 @@ function Quiz() {
             <div className="quiz-result">
               <h3>SİCİL DEĞERLENDİRMESİ TAMAMLANDI</h3>
               <div className="score-display">
-                <span>{score}</span> / {QUESTIONS.length}
+                <span>{score}</span> / {questions.length}
               </div>
+
+              {isNewRecord && (
+                <div className="new-record-badge">🏆 YENİ REKOR</div>
+              )}
+              <div className="high-score-line">
+                EN YÜKSEK SİCİL: {highScore} / {questions.length}
+              </div>
+
               <p className="result-message" style={{ lineHeight: '1.6', opacity: 0.9, marginTop: '1rem', marginBottom: '2rem' }}>
                 {getResultMessage(score)}
               </p>
@@ -170,21 +333,37 @@ function Quiz() {
                 </button>
               </div>
 
+              {missedQuestions.length > 0 && (
+                <details className="missed-log">
+                  <summary>// EKSİK SİCİL DOSYALARI ({missedQuestions.length})</summary>
+                  {missedQuestions.map((item, idx) => (
+                    <div className="missed-item" key={idx}>
+                      <div className="missed-q">{item.question}</div>
+                      <div>
+                        Senin cevabın: <span className="missed-wrong">{item.selectedAnswer}</span>
+                      </div>
+                      <div>
+                        Doğrusu: <span className="missed-correct">{item.correctAnswer}</span>
+                      </div>
+                    </div>
+                  ))}
+                </details>
+              )}
             </div>
           ) : (
             <div className="quiz-question-box animate-fade" key={currentQ}> 
               
               <div className="quiz-progress" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <span>DÖKÜMAN: {currentQ + 1 < 10 ? `0${currentQ + 1}` : currentQ + 1} / {QUESTIONS.length}</span>
+                <span>DÖKÜMAN: {currentQ + 1 < 10 ? `0${currentQ + 1}` : currentQ + 1} / {questions.length}</span>
                 <div style={{ width: '60%', height: '6px', backgroundColor: 'rgba(84, 107, 65, 0.2)', borderRadius: '10px', overflow: 'hidden' }}>
-                  <div style={{ width: `${((currentQ + 1) / QUESTIONS.length) * 100}%`, height: '100%', backgroundColor: 'var(--accent-dark)', transition: 'width 0.5s ease' }}></div>
+                  <div style={{ width: `${((currentQ + 1) / questions.length) * 100}%`, height: '100%', backgroundColor: 'var(--accent-dark)', transition: 'width 0.5s ease' }}></div>
                 </div>
               </div>
 
-              <h3 className="quiz-question">{QUESTIONS[currentQ].q}</h3>
+              <h3 className="quiz-question">{questions[currentQ].q}</h3>
               
               <div className="quiz-options">
-                {QUESTIONS[currentQ].options.map((option, idx) => (
+                {questions[currentQ].options.map((option, idx) => (
                   <button 
                     key={idx} 
                     className="quiz-option-btn"
@@ -197,6 +376,8 @@ function Quiz() {
                   </button>
                 ))}
               </div>
+
+              <div className="quiz-key-hint">KLAVYE: 1-4 veya A-D tuşlarıyla da cevaplayabilirsin</div>
             </div>
           )}
         </div>
