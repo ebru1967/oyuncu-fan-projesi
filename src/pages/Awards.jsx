@@ -1,6 +1,113 @@
-import React from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
+
+const MILESTONES = [
+  {
+    year: 2023,
+    title: 'İSTANBUL FİLM FESTİVALİ SEÇKİSİ',
+    description: (
+      <>
+        Zeynep Köprülü'nün yönettiği ve Aytek Şayan'ın başrollerinden birini paylaştığı{' '}
+        <strong>"Su Yüzü"</strong> (Sinema Filmi), 42. İstanbul Film Festivali'nin Ulusal
+        Yarışma bölümünde dünya prömiyerini yaparak resmi seçkiye dahil edilmiştir.
+      </>
+    ),
+    tag: 'FESTİVAL / SİNEMA KANONU',
+  },
+  {
+    year: 2021,
+    title: 'AKADEMİK ONUR: LİSANSÜSTÜ DERECE',
+    description: (
+      <>
+        Haliç Üniversitesi Lisansüstü Eğitim Enstitüsü Tiyatro Anasanat Dalı bünyesinde
+        yürüttüğü <strong>Oyunculuk üzerine Tezli Yüksek Lisans</strong> eğitimini
+        başarıyla tamamlayarak uzmanlık derecesini almıştır.
+      </>
+    ),
+    tag: 'AKADEMİ / TEORİK UZMANLIK',
+  },
+  {
+    year: 2019,
+    title: 'ULUSLARARASI TEMSİL VE ENSTİTÜ KABULÜ',
+    description: (
+      <>
+        Polonya'daki prestijli <strong>Grotowski Enstitüsü</strong> partnerliğinde
+        yürütülen ve Teatr Andra ekibi tarafından hayata geçirilen "Salto" projesinin
+        fiziksel tiyatro araştırmalarına ana kadroda dahil olmuştur.
+      </>
+    ),
+    tag: 'AVANGART / FİZİKSEL TİYATRO',
+  },
+];
 
 function Awards() {
+  const [sortOrder, setSortOrder] = useState('desc'); // desc = yeniden eskiye (varsayılan sıra)
+  const [visibleSet, setVisibleSet] = useState(() => new Set());
+  const [progress, setProgress] = useState(0);
+
+  const milestoneRefs = useRef([]);
+  const timelineRef = useRef(null);
+
+  const sortedMilestones = useMemo(() => {
+    const arr = [...MILESTONES];
+    arr.sort((a, b) => (sortOrder === 'desc' ? b.year - a.year : a.year - b.year));
+    return arr;
+  }, [sortOrder]);
+
+  // Kaydırınca kilometre taşlarının belirmesi
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const idx = Number(entry.target.dataset.index);
+            setVisibleSet((prev) => {
+              if (prev.has(idx)) return prev;
+              const next = new Set(prev);
+              next.add(idx);
+              return next;
+            });
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    milestoneRefs.current.forEach((el) => el && observer.observe(el));
+    return () => observer.disconnect();
+  }, [sortOrder]);
+
+  // Zaman çizgisi ilerleme çubuğu (scroll'a göre dolan hat)
+  useEffect(() => {
+    let ticking = false;
+
+    function updateProgress() {
+      const el = timelineRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const viewportH = window.innerHeight;
+      const raw = (viewportH * 0.6 - rect.top) / rect.height;
+      setProgress(Math.min(1, Math.max(0, raw)) * 100);
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateProgress();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+
+    updateProgress();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, [sortOrder]);
+
   return (
     <div className="press-editorial-wrapper animate-fade" lang="tr">
       
@@ -53,7 +160,60 @@ function Awards() {
           filter: sepia(0%) grayscale(0%);
         }
 
-        /* --- YENİ: KARİYER TİMELİNE (MİLESTONES) STİLLERİ --- */
+        /* --- SİCİLE İŞLENDİ ROZETİ --- */
+        .verified-tag {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4rem;
+          font-family: 'Space Mono', monospace;
+          font-size: 0.7rem;
+          font-weight: 700;
+          letter-spacing: 1px;
+          color: var(--accent-dark);
+          background: rgba(84, 107, 65, 0.08);
+          border: 1px solid rgba(84, 107, 65, 0.25);
+          padding: 0.3rem 0.7rem;
+          border-radius: 4px;
+          margin-top: 0.8rem;
+        }
+
+        /* --- MİLESTONE KONTROL ŞERİDİ --- */
+        .milestones-toolbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 1rem;
+          margin-bottom: 2rem;
+        }
+
+        .milestones-count {
+          font-family: 'Space Mono', monospace;
+          font-size: 0.8rem;
+          opacity: 0.6;
+          letter-spacing: 1px;
+        }
+
+        .sort-toggle-btn {
+          font-family: 'Space Mono', monospace;
+          font-size: 0.75rem;
+          font-weight: 700;
+          letter-spacing: 1px;
+          background: transparent;
+          color: var(--accent-dark);
+          border: 1px solid var(--accent-dark);
+          padding: 0.5rem 1rem;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .sort-toggle-btn:hover {
+          background: var(--accent-dark);
+          color: var(--bg-main);
+        }
+
+        /* --- KARİYER TİMELİNE (MİLESTONES) STİLLERİ --- */
         .milestones-container {
           margin-top: 2rem;
           position: relative;
@@ -61,10 +221,29 @@ function Awards() {
           border-left: 2px dashed rgba(84, 107, 65, 0.3);
         }
 
+        /* Scroll ilerleme çubuğu — dashed çizginin üzerine dolan katı hat */
+        .milestones-progress-fill {
+          position: absolute;
+          left: -2px;
+          top: 0;
+          width: 2px;
+          background: var(--accent-dark);
+          transition: height 0.1s linear;
+          z-index: 1;
+        }
+
         .milestone-item {
           position: relative;
           margin-bottom: 3rem;
           padding-left: 1.5rem;
+          opacity: 0;
+          transform: translateY(16px);
+          transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .milestone-item.in-view {
+          opacity: 1;
+          transform: translateY(0);
         }
 
         /* Daire İkonu */
@@ -115,6 +294,14 @@ function Awards() {
           color: var(--accent-dark);
         }
 
+        @media (prefers-reduced-motion: reduce) {
+          .milestone-item {
+            opacity: 1;
+            transform: none;
+            transition: none;
+          }
+        }
+
         @media (max-width: 600px) {
           .trophy-card {
             flex-direction: column-reverse;
@@ -130,6 +317,10 @@ function Awards() {
           }
           .milestones-container {
             padding-left: 1.5rem;
+          }
+          .milestones-toolbar {
+            flex-direction: column;
+            align-items: flex-start;
           }
         }
       `}</style>
@@ -156,6 +347,8 @@ function Awards() {
                 <div className="award-reason" style={{ marginTop: '1rem', lineHeight: '1.6', opacity: '0.9' }}>
                   <strong>ÖDÜL NEDENİ:</strong> "DasDas'ta sahnelenen 'Ayna' adlı tiyatro oyunundaki üstün performansı, sahne hakimiyeti ve karaktere kattığı derinlik sebebiyle seyirciler tarafından bu ödüle layık görülmüştür."
                 </div>
+{/* ---
+                <span className="verified-tag"></span>  sonradan eklenebilecek cümle --- */}
               </div>
             </div>
 
@@ -170,44 +363,40 @@ function Awards() {
               // KARİYER KİLOMETRE TAŞLARI & ÖNEMLİ SEÇKİLER
             </span>
 
-            <div className="milestones-container">
-              
-              {/* Milestone 1: Su Yüzü */}
-              <div className="milestone-item">
-                <span className="milestone-year">2023</span>
-                <div className="milestone-content">
-                  <h4>İSTANBUL FİLM FESTİVALİ SEÇKİSİ</h4>
-                  <p>
-                    Zeynep Köprülü'nün yönettiği ve Aytek Şayan'ın başrollerinden birini paylaştığı <strong>"Su Yüzü"</strong> (Sinema Filmi), 42. İstanbul Film Festivali'nin Ulusal Yarışma bölümünde dünya prömiyerini yaparak resmi seçkiye dahil edilmiştir.
-                  </p>
-                  <span className="milestone-tag">FESTİVAL / SİNEMA KANONU</span>
-                </div>
-              </div>
+            <div className="milestones-toolbar">
+              <span className="milestones-count">
+                {MILESTONES.length} KİLOMETRE TAŞI KAYITLI
+              </span>
+              <button
+                type="button"
+                className="sort-toggle-btn"
+                onClick={() => setSortOrder((prev) => (prev === 'desc' ? 'asc' : 'desc'))}
+              >
+                {sortOrder === 'desc' ? '↓ ESKİDEN YENİYE SIRALA' : '↑ YENİDEN ESKİYE SIRALA'}
+              </button>
+            </div>
 
-              {/* Milestone 2: Yüksek Lisans */}
-              <div className="milestone-item">
-                <span className="milestone-year">2021</span>
-                <div className="milestone-content">
-                  <h4>AKADEMİK ONUR: LİSANSÜSTÜ DERECE</h4>
-                  <p>
-                    Haliç Üniversitesi Lisansüstü Eğitim Enstitüsü Tiyatro Anasanat Dalı bünyesinde yürüttüğü <strong>Oyunculuk üzerine Tezli Yüksek Lisans</strong> eğitimini başarıyla tamamlayarak uzmanlık derecesini almıştır.
-                  </p>
-                  <span className="milestone-tag">AKADEMİ / TEORİK UZMANLIK</span>
-                </div>
-              </div>
+            <div className="milestones-container" ref={timelineRef}>
+              <div
+                className="milestones-progress-fill"
+                style={{ height: `${progress}%` }}
+              />
 
-              {/* Milestone 3: Salto & Grotowski */}
-              <div className="milestone-item">
-                <span className="milestone-year">2019</span>
-                <div className="milestone-content">
-                  <h4>ULUSLARARASI TEMSİL VE ENSTİTÜ KABULÜ</h4>
-                  <p>
-                    Polonya'daki prestijli <strong>Grotowski Enstitüsü</strong> partnerliğinde yürütülen ve Teatr Andra ekibi tarafından hayata geçirilen "Salto" projesinin fiziksel tiyatro araştırmalarına ana kadroda dahil olmuştur.
-                  </p>
-                  <span className="milestone-tag">AVANGART / FİZİKSEL TİYATRO</span>
+              {sortedMilestones.map((milestone, index) => (
+                <div
+                  key={milestone.year + milestone.title}
+                  className={`milestone-item ${visibleSet.has(index) ? 'in-view' : ''}`}
+                  data-index={index}
+                  ref={(el) => (milestoneRefs.current[index] = el)}
+                >
+                  <span className="milestone-year">{milestone.year}</span>
+                  <div className="milestone-content">
+                    <h4>{milestone.title}</h4>
+                    <p>{milestone.description}</p>
+                    <span className="milestone-tag">{milestone.tag}</span>
+                  </div>
                 </div>
-              </div>
-
+              ))}
             </div>
           </div>
           {/* -------------------------------------- */}

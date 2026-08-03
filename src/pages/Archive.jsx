@@ -1,12 +1,38 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import { activeNews } from '../data/newsData';
+
+function highlightMatch(text, term) {
+  if (!term) return text;
+  const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const parts = text.split(new RegExp(`(${escaped})`, 'gi'));
+  return parts.map((part, i) =>
+    part.toLowerCase() === term.toLowerCase() ? (
+      <mark key={i} className="dossier-highlight">{part}</mark>
+    ) : (
+      part
+    )
+  );
+}
 
 function Archive() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('TÜMÜ');
+  const searchInputRef = useRef(null);
 
   // Arşivdeki kategorileri dinamik olarak çıkarıyoruz
   const categories = ['TÜMÜ', ...new Set(activeNews.map(news => news.category))];
+
+  // Her kategorideki kayıt sayısı (select içinde göstermek için)
+  const categoryCounts = useMemo(() => {
+    const counts = {};
+    categories.forEach((cat) => {
+      counts[cat] =
+        cat === 'TÜMÜ'
+          ? activeNews.length
+          : activeNews.filter((n) => n.category === cat).length;
+    });
+    return counts;
+  }, [categories]);
 
   // Arama ve kategori süzgeci
   const filteredNews = useMemo(() => {
@@ -21,6 +47,27 @@ function Archive() {
       return matchesCategory && matchesSearch;
     });
   }, [searchTerm, selectedCategory]);
+
+  // "/" kısayolu ile arama kutusuna odaklan
+  useEffect(() => {
+    function handleKeyDown(e) {
+      const tag = document.activeElement?.tagName;
+      if (e.key === '/' && tag !== 'INPUT' && tag !== 'TEXTAREA' && tag !== 'SELECT') {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Rastgele bir dosya çekip aramaya yansıtır
+  function pickRandom() {
+    if (activeNews.length === 0) return;
+    const random = activeNews[Math.floor(Math.random() * activeNews.length)];
+    setSelectedCategory('TÜMÜ');
+    setSearchTerm(random.regCode);
+  }
 
   return (
     <div className="container animate-fade" style={{ padding: '4rem 1rem', maxWidth: '850px', margin: '0 auto' }}>
@@ -44,7 +91,7 @@ function Archive() {
 
         /* --- KONTROL PANELİ (YAN YANA TASARIM) --- */
         .archive-controls {
-          margin-bottom: 4rem;
+          margin-bottom: 1.5rem;
           display: flex;
           gap: 1rem;
           background: rgba(84, 107, 65, 0.03);
@@ -96,6 +143,43 @@ function Archive() {
           color: var(--text-main);
         }
 
+        .archive-random-btn {
+          flex: 0 0 auto;
+          background: var(--accent-dark);
+          color: var(--bg-main);
+          border: 1px solid var(--accent-dark);
+          padding: 1rem 1.2rem;
+          font-family: 'Space Mono', monospace;
+          font-size: 0.85rem;
+          font-weight: 700;
+          border-radius: 4px;
+          cursor: pointer;
+          white-space: nowrap;
+          transition: opacity 0.2s;
+        }
+
+        .archive-random-btn:hover {
+          opacity: 0.8;
+        }
+
+        /* --- SONUÇ SİCİLİ --- */
+        .archive-result-count {
+          font-family: monospace;
+          font-size: 0.8rem;
+          letter-spacing: 1px;
+          opacity: 0.6;
+          margin-bottom: 2.5rem;
+          text-align: right;
+        }
+
+        /* Arama vurgusu */
+        .dossier-highlight {
+          background: var(--accent-light);
+          color: var(--bg-main);
+          padding: 0 2px;
+          border-radius: 2px;
+        }
+
         /* Fiziksel Klasör Kartı */
         .dossier-card {
           position: relative;
@@ -129,6 +213,13 @@ function Archive() {
           font-weight: 900;
           letter-spacing: 2px;
           color: var(--accent-dark);
+        }
+
+        .dossier-index {
+          opacity: 0.5;
+          font-weight: 400;
+          font-size: 0.95rem;
+          margin-left: 0.5rem;
         }
 
         .dossier-clearance {
@@ -202,6 +293,12 @@ function Archive() {
             flex-direction: column;
             padding: 1.5rem;
           }
+          .archive-random-btn {
+            width: 100%;
+          }
+          .archive-result-count {
+            text-align: left;
+          }
           .dossier-card {
             padding: 1.5rem;
             border-left-width: 8px;
@@ -236,9 +333,10 @@ function Archive() {
       {/* KONTROL PANELİ (ARAMA VE AÇILIR MENÜ) */}
       <div className="archive-controls">
         <input 
+          ref={searchInputRef}
           type="text" 
           className="archive-search-input" 
-          placeholder="DÖKÜMAN KODU, BAŞLIK VEYA KELİME ARA..." 
+          placeholder="DÖKÜMAN KODU, BAŞLIK VEYA KELİME ARA... ( / )" 
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -250,16 +348,27 @@ function Archive() {
         >
           {categories.map((category, index) => (
             <option key={index} value={category}>
-              {category === 'TÜMÜ' ? 'TÜM KATEGORİLER' : `KATEGORİ: ${category}`}
+              {category === 'TÜMÜ'
+                ? `TÜM KATEGORİLER (${categoryCounts[category]})`
+                : `KATEGORİ: ${category} (${categoryCounts[category]})`}
             </option>
           ))}
         </select>
+
+        <button type="button" className="archive-random-btn" onClick={pickRandom}>
+          🎲 RASTGELE DOSYA
+        </button>
+      </div>
+
+      <div className="archive-result-count">
+        {filteredNews.length} KAYIT LİSTELENDİ
+        {selectedCategory !== 'TÜMÜ' && ` · ${selectedCategory}`}
       </div>
 
       {/* DOSYA LİSTESİ */}
       <div className="dossier-list">
         {filteredNews.length > 0 ? (
-          filteredNews.map((news) => (
+          filteredNews.map((news, index) => (
             <div className="dossier-card" key={news.id}>
               
               <div className="dossier-stamp">
@@ -269,6 +378,9 @@ function Archive() {
               <div className="dossier-header">
                 <span className="dossier-code">
                   {news.regCode}
+                  <span className="dossier-index">
+                    · NO. {String(index + 1).padStart(3, '0')}/{String(filteredNews.length).padStart(3, '0')}
+                  </span>
                 </span>
                 <span className="dossier-clearance">
                   // ERİŞİM: AÇIK
@@ -276,11 +388,11 @@ function Archive() {
               </div>
               
               <h4 className="dossier-title">
-                {news.title.toLocaleUpperCase('tr-TR')}
+                {highlightMatch(news.title.toLocaleUpperCase('tr-TR'), searchTerm)}
               </h4>
               
               <p className="dossier-summary">
-                {news.summary}
+                {highlightMatch(news.summary, searchTerm)}
               </p>
               
               <div className="dossier-link-wrapper">

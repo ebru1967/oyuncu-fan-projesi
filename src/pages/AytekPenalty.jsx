@@ -1,100 +1,141 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { FaFutbol, FaTrophy, FaRedo } from 'react-icons/fa';
+
+const TOTAL_ZONES = 6;
 
 function AytekPenalty() {
   const [score, setScore] = useState({ player: 0, gk: 0 });
-  const [message, setMessage] = useState("Aytek sahnede! Hedefi seç ve şutunu çek.");
+  const [message, setMessage] = useState('Aytek sahnede! Hedefi seç ve şutunu çek.');
   const [isShooting, setIsShooting] = useState(false);
-  
-  // OYUNCUNUN ŞUT GEÇMİŞİNİ TUTAN VERİ DİZİSİ 
+
+  // OYUNCUNUN ŞUT GEÇMİŞİNİ TUTAN VERİ DİZİSİ
   const [shotHistory, setShotHistory] = useState([0, 0, 0, 0, 0, 0]);
-  
+
   const [ballPos, setBallPos] = useState('initial');
   const [gkPos, setGkPos] = useState('initial');
+  const [lastResult, setLastResult] = useState(null); // 'goal' | 'save' | null
+
+  const [streak, setStreak] = useState(0);
+  const [bestStreak, setBestStreak] = useState(0);
+  const [roundsPlayed, setRoundsPlayed] = useState(0);
+
+  const timeoutsRef = useRef([]);
+
+  const setTrackedTimeout = useCallback((fn, ms) => {
+    const id = setTimeout(fn, ms);
+    timeoutsRef.current.push(id);
+    return id;
+  }, []);
+
+  useEffect(() => {
+    return () => timeoutsRef.current.forEach(clearTimeout);
+  }, []);
 
   const coordinates = {
-    initial: { x: 50, y: 92 },   // Penaltı noktası (Çimde)
-    gkInitial: { x: 50, y: 65 }, // Kaleci başlangıç çizgisi
-    0: { x: 20, y: 48 }, // Sol Üst (90'a)
-    1: { x: 50, y: 48 }, // Orta Üst (Üst direk altı)
-    2: { x: 80, y: 48 }, // Sağ Üst (90'a)
-    3: { x: 20, y: 80 }, // Sol Alt
-    4: { x: 50, y: 80 }, // Orta Alt
-    5: { x: 80, y: 80 }  // Sağ Alt
+    initial: { x: 50, y: 92 },
+    gkInitial: { x: 50, y: 65 },
+    0: { x: 20, y: 48 },
+    1: { x: 50, y: 48 },
+    2: { x: 80, y: 48 },
+    3: { x: 20, y: 80 },
+    4: { x: 50, y: 80 },
+    5: { x: 80, y: 80 },
   };
 
   const shoot = (targetIndex) => {
-    if (isShooting) return; 
+    if (isShooting) return;
     setIsShooting(true);
-    setMessage("Top ağlara doğru süzülüyor...");
+    setLastResult(null);
+    setMessage('Top ağlara doğru süzülüyor...');
 
     setBallPos(targetIndex);
 
-    // --- AKILLI KALECİ ALGORİTMASI ---
-    // Şut geçmişini güncelle
     const newHistory = [...shotHistory];
     newHistory[targetIndex] += 1;
     setShotHistory(newHistory);
 
-    // Jim Carrey %60 ihtimalle senin en çok şut çektiğin köşeyi analiz edip oraya atlar!
-    // %40 ihtimalle ise rastgele atlar (tahmin edilemezliği korumak için).
-    let predictedGkMove = Math.floor(Math.random() * 6); // Varsayılan: Rastgele
-    
-    if (Math.random() > 0.4) {
+    // --- AKILLI KALECİ ALGORİTMASI ---
+    // Aytek'in serisi uzadıkça Jim Carrey daha dikkatli okumaya başlıyor:
+    // taban ihtimal %60, her seri golünde biraz daha artıyor (üst sınır %85).
+    const readChance = Math.min(0.85, 0.6 + streak * 0.05);
+
+    let predictedGkMove = Math.floor(Math.random() * TOTAL_ZONES);
+
+    if (Math.random() < readChance) {
       const maxHits = Math.max(...newHistory);
-      // En çok tercih edilen köşeleri bul (birden fazla olabilir)
       const favoriteSpots = newHistory.reduce((acc, count, idx) => {
         if (count === maxHits && count > 0) acc.push(idx);
         return acc;
       }, []);
-      
+
       if (favoriteSpots.length > 0) {
-        // En çok atılan köşelerden birini seç
         predictedGkMove = favoriteSpots[Math.floor(Math.random() * favoriteSpots.length)];
       }
     }
 
     setGkPos(predictedGkMove);
 
-    setTimeout(() => {
-      const isExactMatch = targetIndex === predictedGkMove; 
-      const isSameDirection = Math.abs(targetIndex - predictedGkMove) === 3; 
+    setTrackedTimeout(() => {
+      const isExactMatch = targetIndex === predictedGkMove;
+      const isSameColumn = Math.abs(targetIndex - predictedGkMove) === 3;
+
+      setRoundsPlayed((r) => r + 1);
 
       if (isExactMatch) {
-        setMessage("TAM ÜSTÜNE! Jim Carrey zihnini okudu!");
-        setScore(prev => ({ ...prev, gk: prev.gk + 1 }));
-      } else if (isSameDirection) {
-        setMessage("KÖŞEYİ BİLDİ! Jim Carrey uzanarak topu çıkardı!");
-        setScore(prev => ({ ...prev, gk: prev.gk + 1 }));
+        setMessage('TAM ÜSTÜNE! Jim Carrey zihnini okudu!');
+        setScore((prev) => ({ ...prev, gk: prev.gk + 1 }));
+        setStreak(0);
+        setLastResult('save');
+      } else if (isSameColumn) {
+        setMessage('KÖŞEYİ BİLDİ! Jim Carrey uzanarak topu çıkardı!');
+        setScore((prev) => ({ ...prev, gk: prev.gk + 1 }));
+        setStreak(0);
+        setLastResult('save');
       } else {
-        setMessage("GOOOOL! Aytek, idolünü ters köşeye yatırdı!");
-        setScore(prev => ({ ...prev, player: prev.player + 1 }));
+        setMessage('GOOOOL! Aytek, idolünü ters köşeye yatırdı!');
+        setScore((prev) => ({ ...prev, player: prev.player + 1 }));
+        setStreak((s) => {
+          const next = s + 1;
+          setBestStreak((b) => Math.max(b, next));
+          return next;
+        });
+        setLastResult('goal');
       }
 
-      setTimeout(() => {
+      setTrackedTimeout(() => {
         resetPositions();
       }, 2000);
-
-    }, 600); 
+    }, 600);
   };
 
   const resetPositions = () => {
     setBallPos('initial');
     setGkPos('initial');
-    setMessage("Sıradaki Şut! İdolüne acıma.");
+    setLastResult(null);
+    setMessage('Sıradaki Şut! İdolüne acıma.');
     setIsShooting(false);
   };
 
   const resetGame = () => {
     setScore({ player: 0, gk: 0 });
-    setShotHistory([0, 0, 0, 0, 0, 0]); // Geçmişi de sıfırla
+    setShotHistory([0, 0, 0, 0, 0, 0]);
+    setStreak(0);
+    setRoundsPlayed(0);
     resetPositions();
-    setMessage("Yeni Maç Başladı! Göster kendini Aytek.");
+    setMessage('Yeni Maç Başladı! Göster kendini Aytek.');
   };
+
+  const handleKeyDown = (e, index) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      shoot(index);
+    }
+  };
+
+  const winRate = roundsPlayed > 0 ? Math.round((score.player / roundsPlayed) * 100) : null;
 
   return (
     <div className="container animate-fade" style={{ padding: '4rem 0', minHeight: '80vh' }}>
-      
       <style>{`
         .stadium-bg {
           background-color: rgba(84, 107, 65, 0.05);
@@ -107,7 +148,6 @@ function AytekPenalty() {
           text-align: center;
         }
 
-        /* SKOR TABELASINA BORDO-MAVİ DOKUNUŞ */
         .score-board {
           display: flex;
           justify-content: space-around;
@@ -115,12 +155,28 @@ function AytekPenalty() {
           color: #fff;
           padding: 1rem;
           border-radius: 8px;
-          margin-bottom: 2rem;
+          margin-bottom: 1rem;
           font-family: var(--font-heading);
           font-size: 1.2rem;
           align-items: center;
           box-shadow: 0 5px 15px rgba(0,0,0,0.2);
           border: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .stat-strip {
+          display: flex;
+          justify-content: center;
+          gap: 1.5rem;
+          flex-wrap: wrap;
+          font-family: var(--font-body);
+          font-size: 0.85rem;
+          opacity: 0.75;
+          margin-bottom: 1.5rem;
+        }
+
+        .stat-strip strong {
+          color: var(--accent-dark);
+          font-size: 1rem;
         }
 
         .game-area {
@@ -134,7 +190,7 @@ function AytekPenalty() {
             rgba(84, 107, 65, 1) 100%);
           border: 4px solid var(--accent-dark);
           border-radius: 8px;
-          margin-bottom: 2rem;
+          margin-bottom: 1.5rem;
           overflow: hidden;
         }
 
@@ -166,11 +222,14 @@ function AytekPenalty() {
         .target-zone {
           cursor: crosshair;
           transition: background 0.2s;
+          position: relative;
         }
 
-        .target-zone:hover {
+        .target-zone:hover,
+        .target-zone:focus-visible {
           background: rgba(231, 76, 60, 0.3);
           border: 1px dashed rgba(231, 76, 60, 0.7);
+          outline: none;
         }
 
         .football {
@@ -220,6 +279,19 @@ function AytekPenalty() {
           margin-bottom: 1rem;
           font-weight: bold;
         }
+
+        .streak-badge {
+          display: inline-block;
+          font-family: var(--font-body);
+          font-size: 0.75rem;
+          letter-spacing: 1px;
+          background: var(--accent-dark);
+          color: #fff;
+          padding: 2px 10px;
+          border-radius: 20px;
+          margin-bottom: 1rem;
+          opacity: 0.9;
+        }
         
         .reset-btn {
           display: inline-flex;
@@ -240,6 +312,25 @@ function AytekPenalty() {
           background: var(--accent-dark);
           color: #fff;
         }
+
+        @keyframes flash-goal {
+          0% { background: rgba(46, 204, 113, 0); }
+          30% { background: rgba(46, 204, 113, 0.35); }
+          100% { background: rgba(46, 204, 113, 0); }
+        }
+
+        @keyframes flash-save {
+          0% { background: rgba(231, 76, 60, 0); }
+          30% { background: rgba(231, 76, 60, 0.35); }
+          100% { background: rgba(231, 76, 60, 0); }
+        }
+
+        .game-area.result-goal { animation: flash-goal 0.9s ease-out; }
+        .game-area.result-save { animation: flash-save 0.9s ease-out; }
+
+        @media (prefers-reduced-motion: reduce) {
+          .game-area, .football, .goalkeeper { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+        }
       `}</style>
 
       <div className="section-header-editorial" style={{ textAlign: 'center', marginBottom: '2rem' }}>
@@ -249,59 +340,79 @@ function AytekPenalty() {
       </div>
 
       <div className="stadium-bg">
-        
         <div className="score-board">
           <div style={{ fontWeight: 'bold' }}>AYTEK (SEN): {score.player}</div>
-          <div><FaTrophy color="#f1c40f" size={24} /></div>
+          <div>
+            <FaTrophy color="#f1c40f" size={24} />
+          </div>
           <div style={{ fontWeight: 'bold' }}>JIM CARREY: {score.gk}</div>
         </div>
 
-        <div className="message-box">
-          {message}
+        <div className="stat-strip">
+          <div>
+            SERİ: <strong>{streak}</strong>
+          </div>
+          <div>
+            EN İYİ SERİ: <strong>{bestStreak}</strong>
+          </div>
+          {winRate !== null && (
+            <div>
+              İSABET ORANI: <strong>%{winRate}</strong>
+            </div>
+          )}
         </div>
 
-        <div className="game-area">
-          
+        {streak >= 3 && (
+          <div className="streak-badge">🔥 JIM CARREY SENİ OKUMAYA BAŞLADI — DAHA DİKKATLİ SEÇ</div>
+        )}
+
+        <div className="message-box">{message}</div>
+
+        <div className={`game-area ${lastResult ? `result-${lastResult}` : ''}`}>
           <div className="goal-post">
             <div className="target-grid">
-              {[0, 1, 2, 3, 4, 5].map(index => (
-                <div 
-                  key={index} 
-                  className="target-zone" 
+              {[0, 1, 2, 3, 4, 5].map((index) => (
+                <div
+                  key={index}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`Hedef bölge ${index + 1}`}
+                  className="target-zone"
                   onClick={() => shoot(index)}
-                ></div>
+                  onKeyDown={(e) => handleKeyDown(e, index)}
+                />
               ))}
             </div>
           </div>
-          
-          <div 
-            className="goalkeeper" 
-            style={{ 
-              left: `${gkPos === 'initial' ? coordinates.gkInitial.x : coordinates[gkPos].x}%`, 
-              top: `${gkPos === 'initial' ? coordinates.gkInitial.y : coordinates[gkPos].y}%` 
+
+          <div
+            className="goalkeeper"
+            style={{
+              left: `${gkPos === 'initial' ? coordinates.gkInitial.x : coordinates[gkPos].x}%`,
+              top: `${gkPos === 'initial' ? coordinates.gkInitial.y : coordinates[gkPos].y}%`,
             }}
           >
             <img src="/jim-vucut.png" alt="Jim Carrey" className="gk-body" />
             <span className="gk-name">JIM CARREY</span>
           </div>
 
-          <div 
+          <div
             className="football"
-            style={{ 
-              left: `${ballPos === 'initial' ? coordinates.initial.x : coordinates[ballPos].x}%`, 
+            style={{
+              left: `${ballPos === 'initial' ? coordinates.initial.x : coordinates[ballPos].x}%`,
               top: `${ballPos === 'initial' ? coordinates.initial.y : coordinates[ballPos].y}%`,
-              transform: `translate(-50%, -50%) ${ballPos !== 'initial' ? 'rotate(720deg) scale(0.7)' : 'rotate(0deg) scale(1)'}`
+              transform: `translate(-50%, -50%) ${
+                ballPos !== 'initial' ? 'rotate(720deg) scale(0.7)' : 'rotate(0deg) scale(1)'
+              }`,
             }}
           >
             <FaFutbol color="#2c3e50" style={{ background: '#fff', borderRadius: '50%' }} />
           </div>
-
         </div>
 
         <button onClick={resetGame} className="reset-btn">
           <FaRedo /> SKORU SIFIRLA
         </button>
-
       </div>
     </div>
   );
