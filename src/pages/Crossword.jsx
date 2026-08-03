@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 
 const GRID = [
   ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'],
@@ -57,42 +57,50 @@ const DOWN_CLUES = [
 
 function Crossword() {
   const [inputs, setInputs] = useState({});
-  const inputRefs = useRef({}); 
+  const inputRefs = useRef({});
+
+  const focusCell = (r, c) => {
+    inputRefs.current[`${r}-${c}`]?.focus();
+  };
 
   const handleInputChange = (r, c, value) => {
     const char = value.toLocaleUpperCase('tr-TR').replace(/[^A-ZÇĞİÖŞÜI]/g, '').slice(-1);
-    setInputs(prev => ({ ...prev, [`${r}-${c}`]: char }));
+    setInputs((prev) => ({ ...prev, [`${r}-${c}`]: char }));
 
     if (char) {
       if (GRID[r][c + 1] && GRID[r][c + 1] !== '.') {
-        inputRefs.current[`${r}-${c + 1}`]?.focus();
+        focusCell(r, c + 1);
       } else if (GRID[r + 1] && GRID[r + 1][c] !== '.') {
-        inputRefs.current[`${r + 1}-${c}`]?.focus();
+        focusCell(r + 1, c);
       }
     }
   };
 
   const handleKeyDown = (e, r, c) => {
     if (e.key === 'Backspace' && !inputs[`${r}-${c}`]) {
+      // Hücre zaten boşsa bir önceki hücreye geç VE onu da temizle
+      // (standart bulmaca davranışı: geri tuşu bir önceki harfi siler)
       if (GRID[r][c - 1] && GRID[r][c - 1] !== '.') {
-        inputRefs.current[`${r}-${c - 1}`]?.focus();
+        setInputs((prev) => ({ ...prev, [`${r}-${c - 1}`]: '' }));
+        focusCell(r, c - 1);
       } else if (GRID[r - 1] && GRID[r - 1][c] !== '.') {
-        inputRefs.current[`${r - 1}-${c}`]?.focus();
+        setInputs((prev) => ({ ...prev, [`${r - 1}-${c}`]: '' }));
+        focusCell(r - 1, c);
       }
     } else if (e.key === 'ArrowRight' && GRID[r][c + 1] && GRID[r][c + 1] !== '.') {
-      inputRefs.current[`${r}-${c + 1}`]?.focus();
+      focusCell(r, c + 1);
     } else if (e.key === 'ArrowLeft' && GRID[r][c - 1] && GRID[r][c - 1] !== '.') {
-      inputRefs.current[`${r}-${c - 1}`]?.focus();
+      focusCell(r, c - 1);
     } else if (e.key === 'ArrowDown' && GRID[r + 1] && GRID[r + 1][c] !== '.') {
-      inputRefs.current[`${r + 1}-${c}`]?.focus();
+      focusCell(r + 1, c);
     } else if (e.key === 'ArrowUp' && GRID[r - 1] && GRID[r - 1][c] !== '.') {
-      inputRefs.current[`${r - 1}-${c}`]?.focus();
+      focusCell(r - 1, c);
     }
   };
 
   let totalCells = 0;
   let correctCells = 0;
-  
+
   GRID.forEach((row, r) => {
     row.forEach((cell, c) => {
       if (cell !== '.') {
@@ -105,10 +113,45 @@ function Crossword() {
   });
 
   const isWon = totalCells > 0 && totalCells === correctCells;
+  const progressPercent = totalCells > 0 ? Math.round((correctCells / totalCells) * 100) : 0;
+
+  const focusFirstPlayableCell = useCallback(() => {
+    for (let r = 0; r < GRID.length; r++) {
+      for (let c = 0; c < GRID[r].length; c++) {
+        if (GRID[r][c] !== '.') {
+          focusCell(r, c);
+          return;
+        }
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    focusFirstPlayableCell();
+  }, [focusFirstPlayableCell]);
+
+  const handleClear = () => {
+    setInputs({});
+    focusFirstPlayableCell();
+  };
+
+  const handleHint = () => {
+    const emptyOrWrongCells = [];
+    GRID.forEach((row, r) => {
+      row.forEach((cell, c) => {
+        if (cell !== '.' && inputs[`${r}-${c}`] !== cell) {
+          emptyOrWrongCells.push([r, c]);
+        }
+      });
+    });
+    if (emptyOrWrongCells.length === 0) return;
+    const [r, c] = emptyOrWrongCells[Math.floor(Math.random() * emptyOrWrongCells.length)];
+    setInputs((prev) => ({ ...prev, [`${r}-${c}`]: GRID[r][c] }));
+    focusCell(r, c);
+  };
 
   return (
     <div className="press-editorial-wrapper animate-fade" style={{ padding: '0.5rem 0 4rem 0', minHeight: '80vh' }}>
-      
       <style>{`
         .cw-input {
           width: 100%; height: 100%; border: none; background: transparent; text-align: center;
@@ -129,6 +172,25 @@ function Crossword() {
           width: 22px; height: 22px; text-align: center; line-height: 22px; border-radius: 50%;
           font-weight: bold; font-size: 0.75rem; margin-right: 0.5rem;
         }
+
+        .cw-progress-row {
+          display: flex; justify-content: space-between; align-items: center;
+          font-family: var(--font-heading); font-size: 0.85rem; color: var(--accent-dark);
+          max-width: 500px; margin: 0 auto 0.5rem;
+        }
+        .cw-progress-track {
+          width: 100%; height: 5px; background: rgba(84, 107, 65, 0.15); border-radius: 3px;
+          overflow: hidden; max-width: 500px; margin: 0 auto 1.5rem;
+        }
+        .cw-progress-fill { height: 100%; background: var(--accent-dark); transition: width 0.3s ease; }
+
+        .hint-btn {
+          margin-top: 0.8rem; width: 100%; text-align: center; background: transparent;
+          border: 1px dashed rgba(84, 107, 65, 0.5); color: var(--accent-dark);
+          padding: 0.6rem; border-radius: 4px; cursor: pointer; font-family: var(--font-body);
+          font-size: 0.85rem; transition: all 0.2s ease;
+        }
+        .hint-btn:hover { background: rgba(84, 107, 65, 0.08); }
         
         .badge-reward-container {
           background: #2ecc71;
@@ -156,7 +218,6 @@ function Crossword() {
           <p className="editorial-subtitle">İpuçlarını takip ederek karakterlerin arşivdeki kimliklerini ortaya çıkarın.</p>
         </div>
 
-        {/* --- ÖDÜL VE KAZANMA EKRANI --- */}
         {isWon && (
           <div className="badge-reward-container">
             <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🎖️</div>
@@ -164,11 +225,11 @@ function Crossword() {
             <p style={{ fontSize: '1.1rem', marginBottom: '2rem', opacity: 0.95 }}>
               Arşivin bu en zorlu görevini başarıyla tamamladın. "Crossword Master" dijital rozetin kazanıldı!
             </p>
-            
-            <a 
-  href="/bulmaca-rozet.svg" 
-  download="Aytek_Sayan_Crossword_Master.svg" 
-  style={{
+
+            <a
+              href="/bulmaca-rozet.svg"
+              download="Aytek_Sayan_Crossword_Master.svg"
+              style={{
                 display: 'inline-block',
                 backgroundColor: 'white',
                 color: '#2ecc71',
@@ -179,56 +240,95 @@ function Crossword() {
                 borderRadius: '50px',
                 fontSize: '1rem',
                 boxShadow: '0 5px 15px rgba(0,0,0,0.1)',
-                transition: 'transform 0.2s ease'
+                transition: 'transform 0.2s ease',
               }}
-              onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-              onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+              onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
+              onMouseOut={(e) => (e.currentTarget.style.transform = 'scale(1)')}
             >
               ROZETİ CİHAZINA İNDİR ↓
             </a>
           </div>
         )}
-        {/* ------------------------------- */}
+
+        {!isWon && (
+          <>
+            <div className="cw-progress-row">
+              <span>İLERLEME</span>
+              <span>{correctCells} / {totalCells} DOĞRU</span>
+            </div>
+            <div className="cw-progress-track" aria-hidden="true">
+              <div className="cw-progress-fill" style={{ width: `${progressPercent}%` }} />
+            </div>
+          </>
+        )}
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', justifyContent: 'center', alignItems: 'flex-start' }}>
-          
           <div style={{ flex: '1 1 500px', overflowX: 'auto', display: 'flex', justifyContent: 'center', padding: '0.5rem 0' }}>
-            <div style={{ 
-              display: 'grid', gridTemplateColumns: `repeat(17, 35px)`, gap: '1px', 
-              background: 'var(--accent-dark)', border: '2px solid var(--accent-dark)', padding: '2px' 
-            }}>
-              {GRID.map((row, r) => row.map((cell, c) => {
-                const isPlayable = cell !== '.';
-                const num = NUMBERS[`${r}-${c}`];
-                const isCellCorrect = inputs[`${r}-${c}`] === cell;
-                
-                return (
-                  <div key={`${r}-${c}`} className={`cw-cell ${isWon ? 'won' : ''}`} style={{
-                    width: '35px', height: '35px',
-                    background: isPlayable ? 'var(--bg-main)' : 'transparent',
-                    position: 'relative'
-                  }}>
-                    {isPlayable && (
-                      <>
-                        {num && (
-                          <span style={{ position: 'absolute', top: '2px', left: '2px', fontSize: '10px', fontFamily: 'var(--font-heading)', color: 'rgba(84, 107, 65, 0.7)', zIndex: 2, pointerEvents: 'none' }}>
-                            {num}
-                          </span>
-                        )}
-                        <input
-                          type="text"
-                          ref={el => inputRefs.current[`${r}-${c}`] = el}
-                          value={inputs[`${r}-${c}`] || ''}
-                          onChange={(e) => handleInputChange(r, c, e.target.value)}
-                          onKeyDown={(e) => handleKeyDown(e, r, c)}
-                          className={`cw-input ${isCellCorrect ? 'correct-input' : ''}`}
-                          disabled={isWon}
-                        />
-                      </>
-                    )}
-                  </div>
-                );
-              }))}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: `repeat(17, 35px)`,
+                gap: '1px',
+                background: 'var(--accent-dark)',
+                border: '2px solid var(--accent-dark)',
+                padding: '2px',
+              }}
+            >
+              {GRID.map((row, r) =>
+                row.map((cell, c) => {
+                  const isPlayable = cell !== '.';
+                  const num = NUMBERS[`${r}-${c}`];
+                  const isCellCorrect = inputs[`${r}-${c}`] === cell;
+
+                  return (
+                    <div
+                      key={`${r}-${c}`}
+                      className={`cw-cell ${isWon ? 'won' : ''}`}
+                      style={{
+                        width: '35px',
+                        height: '35px',
+                        background: isPlayable ? 'var(--bg-main)' : 'transparent',
+                        position: 'relative',
+                      }}
+                    >
+                      {isPlayable && (
+                        <>
+                          {num && (
+                            <span
+                              style={{
+                                position: 'absolute',
+                                top: '2px',
+                                left: '2px',
+                                fontSize: '10px',
+                                fontFamily: 'var(--font-heading)',
+                                color: 'rgba(84, 107, 65, 0.7)',
+                                zIndex: 2,
+                                pointerEvents: 'none',
+                              }}
+                            >
+                              {num}
+                            </span>
+                          )}
+                          <input
+                            type="text"
+                            ref={(el) => (inputRefs.current[`${r}-${c}`] = el)}
+                            value={inputs[`${r}-${c}`] || ''}
+                            onChange={(e) => handleInputChange(r, c, e.target.value)}
+                            onKeyDown={(e) => handleKeyDown(e, r, c)}
+                            className={`cw-input ${isCellCorrect ? 'correct-input' : ''}`}
+                            disabled={isWon}
+                            maxLength={1}
+                            autoComplete="off"
+                            autoCorrect="off"
+                            spellCheck={false}
+                            aria-label={num ? `${num} numaralı ipucunun hücresi` : 'Bulmaca hücresi'}
+                          />
+                        </>
+                      )}
+                    </div>
+                  );
+                })
+              )}
             </div>
           </div>
 
@@ -236,8 +336,10 @@ function Crossword() {
             <div style={{ marginBottom: '2rem' }}>
               <h3>SOLDAN SAĞA</h3>
               <ul className="clue-list">
-                {ACROSS_CLUES.map(clue => (
-                  <li key={`across-${clue.num}`}><span className="clue-number">{clue.num}</span> {clue.text}</li>
+                {ACROSS_CLUES.map((clue) => (
+                  <li key={`across-${clue.num}`}>
+                    <span className="clue-number">{clue.num}</span> {clue.text}
+                  </li>
                 ))}
               </ul>
             </div>
@@ -245,16 +347,27 @@ function Crossword() {
             <div>
               <h3>YUKARIDAN AŞAĞIYA</h3>
               <ul className="clue-list">
-                {DOWN_CLUES.map(clue => (
-                  <li key={`down-${clue.num}`}><span className="clue-number">{clue.num}</span> {clue.text}</li>
+                {DOWN_CLUES.map((clue) => (
+                  <li key={`down-${clue.num}`}>
+                    <span className="clue-number">{clue.num}</span> {clue.text}
+                  </li>
                 ))}
               </ul>
             </div>
-            
+
             {!isWon && (
-              <button onClick={() => setInputs({})} className="editorial-link-btn-anchor" style={{ marginTop: '2.5rem', width: '100%', textAlign: 'center', background: 'transparent', border: '1px dashed var(--accent-dark)' }}>
-                BULMACAYI TEMİZLE ⟲
-              </button>
+              <>
+                <button
+                  onClick={handleClear}
+                  className="editorial-link-btn-anchor"
+                  style={{ marginTop: '2.5rem', width: '100%', textAlign: 'center', background: 'transparent', border: '1px dashed var(--accent-dark)' }}
+                >
+                  BULMACAYI TEMİZLE ⟲
+                </button>
+                <button onClick={handleHint} className="hint-btn">
+                  💡 BİR HARF GÖSTER
+                </button>
+              </>
             )}
           </div>
         </div>

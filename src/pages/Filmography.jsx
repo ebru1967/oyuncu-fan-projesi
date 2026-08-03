@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 
 const filmographyList = [
   { 
@@ -121,11 +121,149 @@ filmographyList.sort((a, b) => {
   return getYear(b.year) - getYear(a.year);
 });
 
+const SUMMARY_LIMIT = 140;
+
+function FilmoCard({ project, index }) {
+  const [expanded, setExpanded] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const cardRef = useRef(null);
+
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const isLong = project.summary.length > SUMMARY_LIMIT;
+  const shownSummary = expanded || !isLong
+    ? project.summary
+    : project.summary.slice(0, SUMMARY_LIMIT).trimEnd() + '…';
+
+  return (
+    <div
+      ref={cardRef}
+      className="filmo-card"
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? 'translateY(0)' : 'translateY(18px)',
+        transition: `opacity 0.5s ease ${Math.min(index, 6) * 0.05}s, transform 0.5s ease ${Math.min(index, 6) * 0.05}s`
+      }}
+    >
+      <div style={{ height: '200px', backgroundColor: 'rgba(220, 204, 172, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderBottom: '1px solid rgba(84, 107, 65, 0.1)' }}>
+        {project.image ? (
+          <img src={project.image} alt={project.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        ) : (
+          <span style={{ fontFamily: 'var(--font-heading)', opacity: 0.4, fontSize: '0.8rem', letterSpacing: '2px' }}>GÖRSEL BEKLENİYOR</span>
+        )}
+      </div>
+
+      <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', fontFamily: 'var(--font-heading)', fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent-light)' }}>
+          <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center' }}>
+            <span style={{ backgroundColor: 'rgba(84, 107, 65, 0.1)', padding: '0.2rem 0.6rem', borderRadius: '4px' }}>{project.year}</span>
+            <span>BÖLÜM: {project.episodes}</span>
+          </div>
+          <span style={{ opacity: 0.6 }}>{project.platform}</span>
+        </div>
+
+        <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.4rem', color: 'var(--accent-dark)', margin: '0 0 0.5rem 0' }}>
+          {project.title.toLocaleUpperCase('tr-TR')}
+        </h3>
+
+        <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.9rem', fontWeight: 'bold', opacity: 0.8 }}>
+          Karakter: <span style={{ color: 'var(--accent-dark)' }}>{project.character}</span>
+        </p>
+
+        <p style={{ fontSize: '0.9rem', lineHeight: 1.6, opacity: 0.7, marginBottom: isLong ? '0.5rem' : '2rem' }}>
+          {shownSummary}
+        </p>
+
+        {isLong && (
+          <button
+            onClick={() => setExpanded(prev => !prev)}
+            style={{
+              alignSelf: 'flex-start',
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              marginBottom: '2rem',
+              fontFamily: 'var(--font-heading)',
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              color: 'var(--accent-dark)',
+              cursor: 'pointer',
+              textDecoration: 'underline'
+            }}
+          >
+            {expanded ? 'DAHA AZ GÖSTER' : 'DEVAMINI OKU'}
+          </button>
+        )}
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: 'auto' }}>
+          {project.urls && project.urls.length > 0 ? (
+            project.urls.map((u, idx) => (
+              <a key={idx} href={u.link} target="_blank" rel="noreferrer" className="filmo-btn">
+                {u.label}
+              </a>
+            ))
+          ) : project.url && project.url !== "#" ? (
+            <a href={project.url} target="_blank" rel="noreferrer" className="filmo-btn">
+              İZLEME LİNKİ & DETAYLAR ↗
+            </a>
+          ) : (
+            <button disabled className="filmo-btn">
+              LİNK YAKINDA EKLENECEK
+            </button>
+          )}
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
 function Filmography() {
+  const [activePlatform, setActivePlatform] = useState('Tümü');
+
+  const platforms = useMemo(() => {
+    const set = new Set(filmographyList.map(p => p.platform));
+    return ['Tümü', ...Array.from(set).sort()];
+  }, []);
+
+  const stats = useMemo(() => {
+    const years = filmographyList
+      .map(p => parseInt(p.year.split('-')[0]))
+      .filter(y => !isNaN(y));
+    const platformCount = new Set(filmographyList.map(p => p.platform)).size;
+    return {
+      total: filmographyList.length,
+      spanStart: Math.min(...years),
+      spanEnd: new Date().getFullYear(),
+      platformCount
+    };
+  }, []);
+
+  const filteredList = useMemo(() => {
+    if (activePlatform === 'Tümü') return filmographyList;
+    return filmographyList.filter(p => p.platform === activePlatform);
+  }, [activePlatform]);
+
   return (
     <div className="filmography-wrapper animate-fade">
-      
-      {/* CSS BLOĞU */}
+
       <style>{`
         .filmo-card {
           border: 1px solid rgba(84, 107, 65, 0.15);
@@ -175,7 +313,6 @@ function Filmography() {
           color: rgba(84, 107, 65, 0.5);
         }
 
-        /* VİDEO BÖLÜMÜ İÇİN ÖZEL CSS */
         .video-showcase-container {
           max-width: 750px;
           margin: 0 auto 4rem auto;
@@ -194,7 +331,6 @@ function Filmography() {
           outline: none;
         }
 
-        /* BAŞLIK HİZALAMA VE ORTALAMA İÇİN ÖZEL CSS */
         .filmo-header-container {
           margin-bottom: 3rem;
           padding-top: 0;
@@ -208,7 +344,7 @@ function Filmography() {
 
         .filmo-main-title {
           font-family: var(--font-heading);
-          font-size: clamp(2rem, 8vw, 3.5rem); /* Mobilde otomatik küçülür */
+          font-size: clamp(2rem, 8vw, 3.5rem);
           text-align: center;
           width: 100%;
           margin: 0;
@@ -217,21 +353,93 @@ function Filmography() {
 
         @media (max-width: 768px) {
           .filmo-header-container {
-            margin-top: -4rem; /* Mobilde yukarıya çekildi */
+            margin-top: -4rem;
           }
+        }
+
+        .filmo-stats-bar {
+          display: flex;
+          justify-content: center;
+          gap: 2.5rem;
+          flex-wrap: wrap;
+          margin: 0 auto 2.5rem auto;
+        }
+
+        .filmo-stat {
+          text-align: center;
+        }
+
+        .filmo-stat-value {
+          font-family: var(--font-heading);
+          font-size: 1.8rem;
+          color: var(--accent-dark);
+          display: block;
+          line-height: 1.1;
+        }
+
+        .filmo-stat-label {
+          font-size: 0.7rem;
+          letter-spacing: 1px;
+          opacity: 0.6;
+          font-weight: 700;
+        }
+
+        .filmo-filter-bar {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 0.6rem;
+          margin: 0 auto 3rem auto;
+          max-width: 900px;
+        }
+
+        .filmo-chip {
+          font-family: var(--font-heading);
+          font-size: 0.75rem;
+          font-weight: 700;
+          padding: 0.4rem 1rem;
+          border-radius: 999px;
+          border: 1px solid rgba(84, 107, 65, 0.3);
+          background: transparent;
+          color: var(--accent-dark);
+          cursor: pointer;
+          transition: all 0.25s ease;
+        }
+
+        .filmo-chip:hover {
+          border-color: var(--accent-dark);
+        }
+
+        .filmo-chip.active {
+          background: var(--accent-dark);
+          color: var(--bg-main);
+          border-color: var(--accent-dark);
         }
       `}</style>
 
       <div className="container" style={{ paddingBottom: '4rem' }}>
-        
-        {/* SAYFA BAŞLIĞI (ORTALANMIŞ VE MOBİLE UYUMLU) */}
+
         <div className="section-header-editorial filmo-header-container">
           <span className="archive-badge" style={{ display: 'inline-block', marginBottom: '1rem' }}>// EKRAN KANONU</span>
           <h1 className="editorial-title filmo-main-title">DİZİ & FİLMOGRAFİ</h1>
           <p className="editorial-subtitle" style={{ marginTop: '1rem' }}>Oyuncunun 2016'dan günümüze televizyon, sinema ve dijital platformlardaki dönüşümü, inşa ettiği karakterler ve proje arşivi.</p>
         </div>
 
-        {/* --- KARAKTERLER VİDEO EDİT ALANI --- */}
+        <div className="filmo-stats-bar">
+          <div className="filmo-stat">
+            <span className="filmo-stat-value">{stats.total}</span>
+            <span className="filmo-stat-label">PROJE</span>
+          </div>
+          <div className="filmo-stat">
+            <span className="filmo-stat-value">{stats.spanStart}—{stats.spanEnd}</span>
+            <span className="filmo-stat-label">KARİYER ARALIĞI</span>
+          </div>
+          <div className="filmo-stat">
+            <span className="filmo-stat-value">{stats.platformCount}</span>
+            <span className="filmo-stat-label">PLATFORM</span>
+          </div>
+        </div>
+
         <div style={{ maxWidth: '750px', margin: '0 auto 1.5rem auto', display: 'flex', flexDirection: 'column', gap: '0.5rem', textAlign: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.8rem' }}>
             <span className="archive-badge" style={{ backgroundColor: 'var(--accent-dark)', color: 'var(--bg-main)' }}>// VİDEO ARŞİVİ</span>
@@ -255,84 +463,31 @@ function Filmography() {
             Tarayıcınız video oynatmayı desteklemiyor.
           </video>
         </div>
-        {/* -------------------------------------- */}
 
-        {/* PROJELER LİSTESİ (IZGARA DÜZENİ) */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '3rem' }}>
-          
-          {filmographyList.map((project) => (
-            <div key={project.id} className="filmo-card">
-              
-              {/* Fotoğraf Alanı */}
-              <div style={{ height: '200px', backgroundColor: 'rgba(220, 204, 172, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderBottom: '1px solid rgba(84, 107, 65, 0.1)' }}>
-                {project.image ? (
-                  <img src={project.image} alt={project.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                ) : (
-                  <span style={{ fontFamily: 'var(--font-heading)', opacity: 0.4, fontSize: '0.8rem', letterSpacing: '2px' }}>GÖRSEL BEKLENİYOR</span>
-                )}
-              </div>
-
-              {/* Metin ve Bilgi Alanı */}
-              <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-                
-                {/* ÜST BİLGİ SATIRI */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', fontFamily: 'var(--font-heading)', fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent-light)' }}>
-                  <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center' }}>
-                    <span style={{ backgroundColor: 'rgba(84, 107, 65, 0.1)', padding: '0.2rem 0.6rem', borderRadius: '4px' }}>{project.year}</span>
-                    <span>BÖLÜM: {project.episodes}</span>
-                  </div>
-                  <span style={{ opacity: 0.6 }}>{project.platform}</span>
-                </div>
-                
-                {/* DİZİ/FİLM ADI */}
-                <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.4rem', color: 'var(--accent-dark)', margin: '0 0 0.5rem 0' }}>
-                  {project.title.toLocaleUpperCase('tr-TR')}
-                </h3>
-                
-                <p style={{ margin: '0 0 1.5rem 0', fontSize: '0.9rem', fontWeight: 'bold', opacity: 0.8 }}>
-                  Karakter: <span style={{ color: 'var(--accent-dark)' }}>{project.character}</span>
-                </p>
-                
-                <p style={{ fontSize: '0.9rem', lineHeight: 1.6, opacity: 0.7, marginBottom: '2rem' }}>
-                  {project.summary}
-                </p>
-
-                {/* DİNAMİK LİNK/BUTON MANTIĞI */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: 'auto' }}>
-                  {project.urls && project.urls.length > 0 ? (
-                    project.urls.map((u, index) => (
-                      <a 
-                        key={index}
-                        href={u.link} 
-                        target="_blank" 
-                        rel="noreferrer" 
-                        className="filmo-btn"
-                      >
-                        {u.label}
-                      </a>
-                    ))
-                  ) : project.url && project.url !== "#" ? (
-                    <a 
-                      href={project.url} 
-                      target="_blank" 
-                      rel="noreferrer" 
-                      className="filmo-btn"
-                    >
-                      İZLEME LİNKİ & DETAYLAR ↗
-                    </a>
-                  ) : (
-                    // Link yoksa
-                    <button disabled className="filmo-btn">
-                      LİNK YAKINDA EKLENECEK
-                    </button>
-                  )}
-                </div>
-
-              </div>
-            </div>
+        <div className="filmo-filter-bar">
+          {platforms.map(p => (
+            <button
+              key={p}
+              className={`filmo-chip ${activePlatform === p ? 'active' : ''}`}
+              onClick={() => setActivePlatform(p)}
+            >
+              {p}
+            </button>
           ))}
-
         </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '3rem' }}>
+          {filteredList.map((project, index) => (
+            <FilmoCard key={project.id} project={project} index={index} />
+          ))}
+        </div>
+
+        {filteredList.length === 0 && (
+          <p style={{ textAlign: 'center', opacity: 0.6, marginTop: '2rem' }}>
+            Bu platformda henüz proje listelenmedi.
+          </p>
+        )}
+
       </div>
     </div>
   );

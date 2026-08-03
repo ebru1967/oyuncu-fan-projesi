@@ -531,10 +531,11 @@ function CharacterTest() {
                   TESTİ TEKRARLA ⟲
                 </button>
               </div>
-
-              <button className="back-link" style={{ marginTop: "1.5rem" }} onClick={handleBack}>
+{/* ---<button className="back-link" style={{ marginTop: "1.5rem" }} onClick={handleBack}>
                 ← son cevabımı değiştir
               </button>
+                --- */}
+              
             </div>
           </div>
         ) : (

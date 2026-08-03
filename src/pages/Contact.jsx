@@ -2,31 +2,40 @@ import React, { useState, useRef } from 'react';
 import { FaTwitter, FaEnvelope, FaPen } from 'react-icons/fa';
 import emailjs from '@emailjs/browser';
 
+const MAX_MESSAGE_LENGTH = 500;
+
 function Contact() {
   const [isSent, setIsSent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [messageLength, setMessageLength] = useState(0);
   const form = useRef();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsLoading(true);
 
-    emailjs.sendForm(
-      'service_7ext7hb',          
-      'template_nj0wswr', 
-      form.current, 
-      'A1Pr_6f81H0k0CkPr'    
-    )
+    // Honeypot: botlar bu gizli alanı doldurur, gerçek kullanıcılar görmez bile
+    if (form.current.elements['website']?.value) {
+      return;
+    }
+
+    setIsLoading(true);
+    setErrorMsg(null);
+
+    emailjs
+      .sendForm('service_7ext7hb', 'template_nj0wswr', form.current, 'A1Pr_6f81H0k0CkPr')
       .then((result) => {
-          console.log("Mesaj başarıyla uçtu:", result.text);
-          setIsSent(true);
-          setIsLoading(false);
-          form.current.reset(); 
-          setTimeout(() => setIsSent(false), 3000); 
-      }, (error) => {
-          console.log("Bir hata oluştu:", error.text);
-          setIsLoading(false);
-          alert("Mesaj gönderilemedi, lütfen tekrar deneyin.");
+        console.log('Mesaj başarıyla uçtu:', result.text);
+        setIsSent(true);
+        setIsLoading(false);
+        form.current.reset();
+        setMessageLength(0);
+        setTimeout(() => setIsSent(false), 3000);
+      })
+      .catch((error) => {
+        console.log('Bir hata oluştu:', error.text);
+        setIsLoading(false);
+        setErrorMsg('Mesaj gönderilemedi. Bağlantını kontrol edip tekrar dener misin?');
       });
   };
 
@@ -34,7 +43,7 @@ function Contact() {
     <div className="press-editorial-wrapper contact-wrapper animate-fade">
       <style>{`
         .contact-wrapper {
-          padding: 0 0 4rem 0; /* Üst padding sıfırlandı */
+          padding: 0 0 4rem 0;
         }
         
         .contact-grid {
@@ -67,10 +76,27 @@ function Contact() {
         
         .contact-input, .contact-textarea {
           width: 100%; background: transparent; border: 1px solid rgba(84, 107, 65, 0.3);
-          color: inherit; padding: 1rem; margin-bottom: 1.5rem; border-radius: 4px;
+          color: inherit; padding: 1rem; margin-bottom: 0.4rem; border-radius: 4px;
           font-family: inherit; transition: border-color 0.3s ease;
         }
         .contact-input:focus, .contact-textarea:focus { outline: none; border-color: var(--accent-dark); }
+
+        .char-counter {
+          text-align: right;
+          font-size: 0.75rem;
+          color: var(--accent-light);
+          opacity: 0.6;
+          margin-bottom: 1.1rem;
+        }
+        .char-counter.near-limit { color: #b85c5c; opacity: 1; }
+
+        .honeypot-field {
+          position: absolute;
+          left: -9999px;
+          width: 1px;
+          height: 1px;
+          overflow: hidden;
+        }
         
         .submit-btn {
           background: transparent; color: var(--accent-dark); border: 1px solid var(--accent-dark);
@@ -80,8 +106,8 @@ function Contact() {
         }
         .submit-btn:hover:not(:disabled) { background: var(--accent-dark); color: #fff; }
         .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; border-color: var(--accent-dark); }
+        .submit-btn.sent { background: var(--accent-dark); color: #fff; }
         
-        /* Yapay Zeka Uyarısı İçin Ekstra Stil */
         .disclaimer-box {
           background: rgba(184, 92, 92, 0.05);
           border-left: 3px solid #b85c5c;
@@ -101,10 +127,20 @@ function Contact() {
           display: block;
           margin-bottom: 0.3rem;
         }
+
+        .form-error-box {
+          background: rgba(184, 92, 92, 0.08);
+          border-left: 3px solid #b85c5c;
+          padding: 0.8rem 1rem;
+          margin-bottom: 1rem;
+          border-radius: 0 4px 4px 0;
+          font-size: 0.85rem;
+          color: #b85c5c;
+        }
         
         @media (max-width: 768px) { 
           .contact-header {
-            margin-top: -3.5rem !important; /* Mobilde başlığı daha da yukarı çektik */
+            margin-top: -3.5rem !important;
           }
           .contact-grid { 
             grid-template-columns: 1fr; 
@@ -159,25 +195,44 @@ function Contact() {
           <div className="contact-box">
             <h3><FaPen /> SORU & ÖNERİLER</h3>
             <p className="credits-text" style={{ marginBottom: '1.5rem' }}>Arşivle ilgili geri bildirimlerini buraya bırakabilirsin:</p>
-            
+
+            {errorMsg && <div className="form-error-box" role="alert">{errorMsg}</div>}
+
             <form ref={form} onSubmit={handleSubmit}>
-              <input 
-                type="text" 
-                name="user_name" 
-                className="contact-input" 
-                placeholder="İsim / Rumuz" 
-                required 
-              />
-              <textarea 
-                name="message" 
-                className="contact-textarea" 
-                placeholder="Sorun veya önerin..." 
-                rows="4" 
+              <input
+                type="text"
+                name="user_name"
+                className="contact-input"
+                placeholder="İsim / Rumuz"
                 required
+              />
+
+              {/* Botlara karşı görünmez tuzak alan — gerçek kullanıcılar bunu hiç görmez */}
+              <div className="honeypot-field" aria-hidden="true">
+                <label htmlFor="website">Website</label>
+                <input type="text" id="website" name="website" tabIndex={-1} autoComplete="off" />
+              </div>
+
+              <textarea
+                name="message"
+                className="contact-textarea"
+                placeholder="Sorun veya önerin..."
+                rows="4"
+                maxLength={MAX_MESSAGE_LENGTH}
+                required
+                onChange={(e) => setMessageLength(e.target.value.length)}
               ></textarea>
-              
-              <button type="submit" className="submit-btn" disabled={isLoading || isSent}>
-                {isLoading ? 'GÖNDERİLİYOR...' : (isSent ? 'GÖNDERİLDİ!' : 'GÖNDER →')}
+              <div className={`char-counter ${messageLength > MAX_MESSAGE_LENGTH * 0.9 ? 'near-limit' : ''}`}>
+                {messageLength} / {MAX_MESSAGE_LENGTH}
+              </div>
+
+              <button
+                type="submit"
+                className={`submit-btn ${isSent ? 'sent' : ''}`}
+                disabled={isLoading || isSent}
+                aria-live="polite"
+              >
+                {isLoading ? 'GÖNDERİLİYOR...' : isSent ? 'GÖNDERİLDİ!' : 'GÖNDER →'}
               </button>
             </form>
           </div>
