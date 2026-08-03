@@ -55,8 +55,11 @@ const DOWN_CLUES = [
   { num: 12, text: "Kararlarıyla kalabalıkları peşinden sürükleyebilen biri." }
 ];
 
+const MAX_HINTS = 3;
+
 function Crossword() {
   const [inputs, setInputs] = useState({});
+  const [hintsUsed, setHintsUsed] = useState(0);
   const inputRefs = useRef({});
 
   const focusCell = (r, c) => {
@@ -114,6 +117,8 @@ function Crossword() {
 
   const isWon = totalCells > 0 && totalCells === correctCells;
   const progressPercent = totalCells > 0 ? Math.round((correctCells / totalCells) * 100) : 0;
+  const hintsLeft = MAX_HINTS - hintsUsed;
+  const hintsExhausted = hintsLeft <= 0;
 
   const focusFirstPlayableCell = useCallback(() => {
     for (let r = 0; r < GRID.length; r++) {
@@ -132,10 +137,12 @@ function Crossword() {
 
   const handleClear = () => {
     setInputs({});
+    setHintsUsed(0);
     focusFirstPlayableCell();
   };
 
   const handleHint = () => {
+    if (hintsExhausted) return;
     const emptyOrWrongCells = [];
     GRID.forEach((row, r) => {
       row.forEach((cell, c) => {
@@ -147,6 +154,7 @@ function Crossword() {
     if (emptyOrWrongCells.length === 0) return;
     const [r, c] = emptyOrWrongCells[Math.floor(Math.random() * emptyOrWrongCells.length)];
     setInputs((prev) => ({ ...prev, [`${r}-${c}`]: GRID[r][c] }));
+    setHintsUsed((prev) => prev + 1);
     focusCell(r, c);
   };
 
@@ -191,6 +199,17 @@ function Crossword() {
           font-size: 0.85rem; transition: all 0.2s ease;
         }
         .hint-btn:hover { background: rgba(84, 107, 65, 0.08); }
+        .hint-btn:disabled {
+          border-style: solid; border-color: rgba(84, 107, 65, 0.2); color: rgba(84, 107, 65, 0.4);
+          cursor: not-allowed; background: transparent;
+        }
+
+        .hint-dots { display: inline-flex; gap: 4px; margin-left: 0.5rem; vertical-align: middle; }
+        .hint-dot {
+          width: 7px; height: 7px; border-radius: 50%; background: var(--accent-dark);
+          transition: background 0.2s, opacity 0.2s;
+        }
+        .hint-dot.spent { background: transparent; border: 1px solid rgba(84, 107, 65, 0.4); }
         
         .badge-reward-container {
           background: #2ecc71;
@@ -364,8 +383,13 @@ function Crossword() {
                 >
                   BULMACAYI TEMİZLE ⟲
                 </button>
-                <button onClick={handleHint} className="hint-btn">
-                  💡 BİR HARF GÖSTER
+                <button onClick={handleHint} className="hint-btn" disabled={hintsExhausted}>
+                  💡 {hintsExhausted ? 'İPUÇLARI TÜKENDİ' : `BİR HARF GÖSTER (${hintsLeft} HAK KALDI)`}
+                  <span className="hint-dots" aria-hidden="true">
+                    {Array.from({ length: MAX_HINTS }).map((_, i) => (
+                      <span key={i} className={`hint-dot ${i < hintsUsed ? 'spent' : ''}`} />
+                    ))}
+                  </span>
                 </button>
               </>
             )}

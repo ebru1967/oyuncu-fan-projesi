@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 const theaterList = [
   { 
@@ -117,9 +117,126 @@ const theaterList = [
   }
 ];
 
+const SUMMARY_LIMIT = 260;
+
+function StatusBadge({ meta }) {
+  const isOnStage = meta.includes("Sahnede");
+  return (
+    <span
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '0.4rem',
+        fontFamily: 'var(--font-heading)',
+        fontSize: '0.7rem',
+        fontWeight: 700,
+        letterSpacing: '0.5px',
+        padding: '0.25rem 0.7rem',
+        borderRadius: '999px',
+        marginLeft: '0.8rem',
+        verticalAlign: 'middle',
+        color: isOnStage ? 'var(--accent-dark)' : 'inherit',
+        opacity: isOnStage ? 1 : 0.5,
+        border: `1px solid ${isOnStage ? 'var(--accent-dark)' : 'rgba(84, 107, 65, 0.3)'}`,
+        background: isOnStage ? 'rgba(84, 107, 65, 0.08)' : 'transparent'
+      }}
+    >
+      {isOnStage && (
+        <span
+          style={{
+            width: '6px',
+            height: '6px',
+            borderRadius: '50%',
+            background: 'var(--accent-dark)',
+            display: 'inline-block',
+            animation: 'stagePulse 1.4s ease-in-out infinite'
+          }}
+        />
+      )}
+      {isOnStage ? 'ŞU AN SAHNEDE' : 'SONA ERDİ'}
+    </span>
+  );
+}
+
+function PlaySummary({ summary }) {
+  const [expanded, setExpanded] = useState(false);
+  const isLong = summary.length > SUMMARY_LIMIT;
+  const shown = expanded || !isLong
+    ? summary
+    : summary.slice(0, SUMMARY_LIMIT).trimEnd() + '…';
+
+  return (
+    <p className="record-summary">
+      <strong>OYUN ÖZETİ:</strong> {shown}{' '}
+      {isLong && (
+        <button
+          onClick={() => setExpanded(prev => !prev)}
+          style={{
+            background: 'none',
+            border: 'none',
+            padding: 0,
+            marginLeft: '0.3rem',
+            fontFamily: 'var(--font-heading)',
+            fontSize: '0.75rem',
+            fontWeight: 700,
+            color: 'var(--accent-dark)',
+            cursor: 'pointer',
+            textDecoration: 'underline',
+            whiteSpace: 'nowrap'
+          }}
+        >
+          {expanded ? 'DAHA AZ GÖSTER' : 'DEVAMINI OKU'}
+        </button>
+      )}
+    </p>
+  );
+}
+
 function Theater() {
+  const [lightbox, setLightbox] = useState(null); // { photos, index, title }
+
+  const openLightbox = (photos, index, title) => {
+    setLightbox({ photos, index, title });
+  };
+
+  const closeLightbox = useCallback(() => setLightbox(null), []);
+
+  const showRelative = useCallback((delta) => {
+    setLightbox(prev => {
+      if (!prev) return prev;
+      const len = prev.photos.length;
+      const nextIndex = (prev.index + delta + len) % len;
+      return { ...prev, index: nextIndex };
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!lightbox) return;
+    const onKey = (e) => {
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') showRelative(1);
+      if (e.key === 'ArrowLeft') showRelative(-1);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [lightbox, closeLightbox, showRelative]);
+
   return (
     <div className="press-editorial-wrapper animate-fade" lang="tr">
+      <style>{`
+        @keyframes stagePulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.4; transform: scale(1.4); }
+        }
+        .theater-thumb {
+          cursor: zoom-in;
+        }
+        @keyframes lightboxFadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+      `}</style>
+
       <div className="container">
         
         <div className="section-header-editorial" style={{ paddingTop: '0', marginTop: '-3rem', marginBottom: '3rem' }}>
@@ -128,7 +245,6 @@ function Theater() {
           <p className="editorial-subtitle">2014 Bilkent mezuniyetinden bugüne aktif sahne performansları, oyun özetleri ve sahne kareleri.</p>
         </div>
 
-        {/* DİNAMİK LİSTE */}
         <div className="inventory-list-full">
           
           {theaterList.map((play) => (
@@ -137,7 +253,10 @@ function Theater() {
               <div className="record-year">{play.year}</div>
               
               <div className="record-details">
-                <h4 className="record-title" style={{ textTransform: 'none' }}>{play.title}</h4>
+                <h4 className="record-title" style={{ textTransform: 'none' }}>
+                  {play.title}
+                  <StatusBadge meta={play.meta} />
+                </h4>
                 <span className="record-role" style={{ textTransform: 'none' }}>{play.role}</span>
                 <span className="record-meta" style={{ textTransform: 'none' }}>{play.meta}</span>
                 
@@ -148,6 +267,8 @@ function Theater() {
                       src={play.photos[0]} 
                       alt={`${play.title} Ana Sahne`} 
                       loading="lazy"
+                      className="theater-thumb"
+                      onClick={() => openLightbox(play.photos, 0, play.title)}
                       style={{ 
                         width: '100%', 
                         aspectRatio: '16/9', 
@@ -166,6 +287,8 @@ function Theater() {
                             src={photoUrl} 
                             alt={`${play.title} Sahne Detay ${index + 1}`} 
                             loading="lazy"
+                            className="theater-thumb"
+                            onClick={() => openLightbox(play.photos, index + 1, play.title)}
                             style={{ 
                               width: '100%', 
                               aspectRatio: '16/9', 
@@ -188,13 +311,9 @@ function Theater() {
                     <span>[ {play.title} SAHNE FOTOĞRAFI EKLENECEK ]</span>
                   </div>
                 )}
-                {/* --------------------------------- */}
                 
-                <p className="record-summary">
-                  <strong>OYUN ÖZETİ:</strong> {play.summary}
-                </p>
+                <PlaySummary summary={play.summary} />
                 
-                {/* --- LİNK VE BUTON MANTIĞI --- */}
                 {play.link && play.link !== "#" ? (
                   <a href={play.link} target="_blank" rel="noreferrer" className="record-action-link" style={{ textTransform: 'none', display: 'inline-block', marginTop: '1rem' }}>
                     TANITIM / BİLET LİNKİ ↗
@@ -211,6 +330,106 @@ function Theater() {
 
         </div>
       </div>
+
+      {lightbox && (
+        <div
+          onClick={closeLightbox}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(20, 20, 18, 0.92)',
+            zIndex: 1000,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '2rem',
+            animation: 'lightboxFadeIn 0.2s ease'
+          }}
+        >
+          <button
+            onClick={closeLightbox}
+            aria-label="Kapat"
+            style={{
+              position: 'absolute',
+              top: '1.5rem',
+              right: '1.5rem',
+              background: 'transparent',
+              border: '1px solid rgba(255,255,255,0.4)',
+              color: '#fff',
+              borderRadius: '50%',
+              width: '38px',
+              height: '38px',
+              fontSize: '1.1rem',
+              cursor: 'pointer'
+            }}
+          >
+            ✕
+          </button>
+
+          {lightbox.photos.length > 1 && (
+            <button
+              onClick={(e) => { e.stopPropagation(); showRelative(-1); }}
+              aria-label="Önceki fotoğraf"
+              style={{
+                position: 'absolute',
+                left: '1.5rem',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                background: 'transparent',
+                border: '1px solid rgba(255,255,255,0.4)',
+                color: '#fff',
+                borderRadius: '50%',
+                width: '42px',
+                height: '42px',
+                fontSize: '1.3rem',
+                cursor: 'pointer'
+              }}
+            >
+              ‹
+            </button>
+          )}
+
+          <img
+            src={lightbox.photos[lightbox.index]}
+            alt={`${lightbox.title} sahne fotoğrafı ${lightbox.index + 1}`}
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              maxWidth: '90vw',
+              maxHeight: '78vh',
+              objectFit: 'contain',
+              borderRadius: '6px'
+            }}
+          />
+
+          {lightbox.photos.length > 1 && (
+            <button
+              onClick={(e) => { e.stopPropagation(); showRelative(1); }}
+              aria-label="Sonraki fotoğraf"
+              style={{
+                position: 'absolute',
+                right: '1.5rem',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                background: 'transparent',
+                border: '1px solid rgba(255,255,255,0.4)',
+                color: '#fff',
+                borderRadius: '50%',
+                width: '42px',
+                height: '42px',
+                fontSize: '1.3rem',
+                cursor: 'pointer'
+              }}
+            >
+              ›
+            </button>
+          )}
+
+          <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', marginTop: '1rem', fontFamily: 'var(--font-heading)', letterSpacing: '1px' }}>
+            {lightbox.title.toLocaleUpperCase('tr-TR')} — {lightbox.index + 1} / {lightbox.photos.length}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

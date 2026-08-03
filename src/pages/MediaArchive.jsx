@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { archivePhotos, wallpapers, headers, gifs, stickers, profilePics, btsVideos, btsPhotos } from '../data/photoData';
 
 function MediaArchive() {
   const location = useLocation();
   const [activeTab, setActiveTab] = useState('karakter-kesitleri');
-  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(null);
+  const [sceneSearch, setSceneSearch] = useState('');
+  const [copiedId, setCopiedId] = useState(null);
 
   useEffect(() => {
     if (location.hash === '#karakter-kesitleri') setActiveTab('karakter-kesitleri');
@@ -59,6 +61,47 @@ function MediaArchive() {
     { id: 3, bolum: "3. Part", sure: "49:29", url: "https://x.com/chicolw/status/2026684583899533414?s=46" }
   ];
 
+  // Bölüm numarasına göre arama (örn: "12" yazınca "12. Bölüm" bulunur)
+  const filterKesitler = (list) => {
+    if (!sceneSearch.trim()) return list;
+    const q = sceneSearch.trim().toLocaleLowerCase('tr-TR');
+    return list.filter(k => k.bolum.toLocaleLowerCase('tr-TR').includes(q));
+  };
+
+  const filteredDizi1 = useMemo(() => filterKesitler(dizi1Kesitleri), [sceneSearch]);
+  const filteredDizi2 = useMemo(() => filterKesitler(dizi2Kesitleri), [sceneSearch]);
+
+  const handleCopyLink = (url, id) => {
+    navigator.clipboard?.writeText(url).then(() => {
+      setCopiedId(id);
+      setTimeout(() => setCopiedId(null), 1500);
+    }).catch(() => {});
+  };
+
+  const openLightbox = (index) => setSelectedPhotoIndex(index);
+  const closeLightbox = useCallback(() => setSelectedPhotoIndex(null), []);
+
+  const showRelativePhoto = useCallback((delta) => {
+    setSelectedPhotoIndex(prev => {
+      if (prev === null) return prev;
+      const len = archivePhotos.length;
+      return (prev + delta + len) % len;
+    });
+  }, []);
+
+  useEffect(() => {
+    if (selectedPhotoIndex === null) return;
+    const onKey = (e) => {
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') showRelativePhoto(1);
+      if (e.key === 'ArrowLeft') showRelativePhoto(-1);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [selectedPhotoIndex, closeLightbox, showRelativePhoto]);
+
+  const selectedPhoto = selectedPhotoIndex !== null ? archivePhotos[selectedPhotoIndex] : null;
+
   return (
     <div className="media-wrapper animate-fade">
       
@@ -76,7 +119,6 @@ function MediaArchive() {
           margin-bottom: 3rem;
           overflow-x: auto;
           padding-bottom: 1rem;
-          /* Sadece scrollbar alanını gösterir, alt çizgi kaldırıldı */
         }
 
         .media-tab-btn {
@@ -126,6 +168,49 @@ function MediaArchive() {
           border-color: rgba(84, 107, 65, 0.3);
         }
 
+        .scene-actions { display: flex; gap: 0.5rem; align-items: center; }
+
+        .copy-link-btn {
+          background: transparent;
+          border: 1px solid rgba(84, 107, 65, 0.3);
+          color: var(--accent-dark);
+          border-radius: 30px;
+          font-family: var(--font-heading);
+          font-size: 0.7rem;
+          font-weight: 700;
+          padding: 0.5rem 0.9rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          white-space: nowrap;
+        }
+
+        .copy-link-btn:hover { border-color: var(--accent-dark); background: rgba(84, 107, 65, 0.05); }
+        .copy-link-btn.copied { background: var(--accent-dark); color: var(--bg-main); border-color: var(--accent-dark); }
+
+        .scene-search-input {
+          width: 100%;
+          max-width: 320px;
+          padding: 0.7rem 1.1rem;
+          border-radius: 30px;
+          border: 1px dashed rgba(84, 107, 65, 0.4);
+          background: transparent;
+          font-family: var(--font-body);
+          font-size: 0.85rem;
+          color: var(--accent-dark);
+          outline: none;
+          transition: border-color 0.2s ease;
+        }
+
+        .scene-search-input:focus { border-color: var(--accent-dark); border-style: solid; }
+        .scene-search-input::placeholder { color: rgba(84, 107, 65, 0.5); }
+
+        .tab-count-badge {
+          font-size: 0.75rem;
+          opacity: 0.6;
+          font-family: monospace;
+          margin-left: 0.6rem;
+        }
+
         /* ARŞİV KARTLARI (Fotoğraf & Görseller) */
         .media-grid-card {
           border: 1px solid rgba(84, 107, 65, 0.15);
@@ -162,6 +247,20 @@ function MediaArchive() {
           background-color: var(--accent-dark);
           color: var(--bg-main);
         }
+
+        .lightbox-nav-btn {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          background: transparent;
+          border: 1px solid rgba(255,255,255,0.4);
+          color: #fff;
+          border-radius: 50%;
+          width: 44px;
+          height: 44px;
+          font-size: 1.4rem;
+          cursor: pointer;
+        }
       `}</style>
 
       <div className="container" style={{ paddingBottom: '4rem' }}>
@@ -190,8 +289,20 @@ function MediaArchive() {
           {/* 1. KARAKTER KESİTLERİ */}
           {activeTab === 'karakter-kesitleri' && (
             <div className="animate-fade">
-              <h2 style={{ fontFamily: 'var(--font-heading)', color: 'var(--accent-dark)', marginBottom: '1rem', fontSize: '1.5rem' }}>KARAKTER KESİTLERİ (ONLY SCENES)</h2>
-              <p style={{ opacity: 0.8, marginBottom: '3rem', fontSize: '0.95rem' }}>Dizilerin tamamını izlemek yerine sadece favori karakterinizin sahnelerini arayanlar için bölüm bölüm derlenmiş X (Twitter) arşiv listesi.</p>
+              <h2 style={{ fontFamily: 'var(--font-heading)', color: 'var(--accent-dark)', marginBottom: '1rem', fontSize: '1.5rem' }}>
+                KARAKTER KESİTLERİ (ONLY SCENES)
+                <span className="tab-count-badge">{filteredDizi1.length + filteredDizi2.length} kayıt</span>
+              </h2>
+              <p style={{ opacity: 0.8, marginBottom: '1.5rem', fontSize: '0.95rem' }}>Dizilerin tamamını izlemek yerine sadece favori karakterinizin sahnelerini arayanlar için bölüm bölüm derlenmiş X (Twitter) arşiv listesi.</p>
+
+              <input
+                type="text"
+                className="scene-search-input"
+                placeholder="Bölüm ara (örn. 12)"
+                value={sceneSearch}
+                onChange={(e) => setSceneSearch(e.target.value)}
+                style={{ marginBottom: '2.5rem' }}
+              />
               
               <div style={{ marginBottom: '4rem' }}>
                 <div style={{ borderBottom: '2px dashed rgba(84, 107, 65, 0.3)', paddingBottom: '0.5rem', marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
@@ -200,17 +311,27 @@ function MediaArchive() {
                 </div>
                 
                 <div className="custom-scroll" style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', maxHeight: '400px', overflowY: 'auto', paddingRight: '1rem' }}>
-                  {dizi1Kesitleri.map((kesit) => (
+                  {filteredDizi1.length > 0 ? filteredDizi1.map((kesit) => (
                     <div key={kesit.id} className="scene-card">
                       <div>
                         <strong style={{ color: 'var(--accent-dark)', display: 'block', marginBottom: '0.3rem', fontFamily: 'var(--font-heading)' }}>{kesit.bolum} - Tüm Sahneler</strong>
                         <span style={{ fontSize: '0.8rem', opacity: 0.7, fontFamily: 'monospace' }}>Ekran Süresi: {kesit.sure} dk</span>
                       </div>
-                      <a href={kesit.url} target="_blank" rel="noreferrer" className="action-link-btn">
-                        X'TE İZLE ↗
-                      </a>
+                      <div className="scene-actions">
+                        <button
+                          className={`copy-link-btn ${copiedId === `d1-${kesit.id}` ? 'copied' : ''}`}
+                          onClick={() => handleCopyLink(kesit.url, `d1-${kesit.id}`)}
+                        >
+                          {copiedId === `d1-${kesit.id}` ? 'KOPYALANDI ✓' : 'LİNKİ KOPYALA'}
+                        </button>
+                        <a href={kesit.url} target="_blank" rel="noreferrer" className="action-link-btn">
+                          X'TE İZLE ↗
+                        </a>
+                      </div>
                     </div>
-                  ))}
+                  )) : (
+                    <p style={{ opacity: 0.6, fontFamily: 'monospace', fontSize: '0.85rem' }}>// Aramanızla eşleşen bölüm bulunamadı.</p>
+                  )}
                 </div>
               </div>
 
@@ -221,17 +342,27 @@ function MediaArchive() {
                 </div>
                 
                 <div className="custom-scroll" style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', maxHeight: '400px', overflowY: 'auto', paddingRight: '1rem' }}>
-                  {dizi2Kesitleri.map((kesit) => (
+                  {filteredDizi2.length > 0 ? filteredDizi2.map((kesit) => (
                     <div key={kesit.id} className="scene-card">
                       <div>
                         <strong style={{ color: 'var(--accent-dark)', display: 'block', marginBottom: '0.3rem', fontFamily: 'var(--font-heading)' }}>{kesit.bolum} - Tüm Sahneler</strong>
                         <span style={{ fontSize: '0.8rem', opacity: 0.7, fontFamily: 'monospace' }}>Ekran Süresi: {kesit.sure} dk</span>
                       </div>
-                      <a href={kesit.url} target="_blank" rel="noreferrer" className="action-link-btn">
-                        X'TE İZLE ↗
-                      </a>
+                      <div className="scene-actions">
+                        <button
+                          className={`copy-link-btn ${copiedId === `d2-${kesit.id}` ? 'copied' : ''}`}
+                          onClick={() => handleCopyLink(kesit.url, `d2-${kesit.id}`)}
+                        >
+                          {copiedId === `d2-${kesit.id}` ? 'KOPYALANDI ✓' : 'LİNKİ KOPYALA'}
+                        </button>
+                        <a href={kesit.url} target="_blank" rel="noreferrer" className="action-link-btn">
+                          X'TE İZLE ↗
+                        </a>
+                      </div>
                     </div>
-                  ))}
+                  )) : (
+                    <p style={{ opacity: 0.6, fontFamily: 'monospace', fontSize: '0.85rem' }}>// Aramanızla eşleşen bölüm bulunamadı.</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -240,15 +371,18 @@ function MediaArchive() {
           {/* 2. FOTOĞRAF ARŞİVİ */}
           {activeTab === 'fotograflar' && (
             <div className="animate-fade">
-              <h2 style={{ fontFamily: 'var(--font-heading)', color: 'var(--accent-dark)', marginBottom: '1rem', fontSize: '1.5rem' }}>DİJİTAL KARANLIK ODA</h2>
-              <p style={{ opacity: 0.8, marginBottom: '2rem', fontSize: '0.95rem' }}>Kariyer duraklarından, set hallerinden ve profesyonel çekimlerden oluşan geniş kapsamlı fotoğraf arşivi. Büyütmek için fotoğrafların üzerine tıklayın.</p>
+              <h2 style={{ fontFamily: 'var(--font-heading)', color: 'var(--accent-dark)', marginBottom: '1rem', fontSize: '1.5rem' }}>
+                DİJİTAL KARANLIK ODA
+                <span className="tab-count-badge">{archivePhotos.length} fotoğraf</span>
+              </h2>
+              <p style={{ opacity: 0.8, marginBottom: '2rem', fontSize: '0.95rem' }}>Kariyer duraklarından, set hallerinden ve profesyonel çekimlerden oluşan geniş kapsamlı fotoğraf arşivi. Büyütmek için fotoğrafların üzerine tıklayın, oklarla gezinin.</p>
               
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1.5rem' }}>
-                {archivePhotos.map((photo) => (
+                {archivePhotos.map((photo, index) => (
                   <div 
                     key={photo.id} 
                     className="media-grid-card"
-                    onClick={() => setSelectedPhoto(photo)}
+                    onClick={() => openLightbox(index)}
                     style={{ cursor: 'zoom-in' }}
                   >
                     <div style={{ aspectRatio: '1/1', borderRadius: '4px', overflow: 'hidden', backgroundColor: 'rgba(84, 107, 65, 0.05)' }}>
@@ -418,25 +552,54 @@ function MediaArchive() {
             flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
             padding: '2rem', backdropFilter: 'blur(5px)'
           }}
-          onClick={() => setSelectedPhoto(null)} 
+          onClick={closeLightbox} 
         >
           <button 
-            onClick={() => setSelectedPhoto(null)}
+            onClick={closeLightbox}
             style={{ position: 'absolute', top: '20px', right: '30px', background: 'transparent', color: '#fff', border: 'none', fontSize: '3rem', cursor: 'pointer', opacity: 0.8 }}
           >
             ×
           </button>
+
+          {archivePhotos.length > 1 && (
+            <button
+              onClick={(e) => { e.stopPropagation(); showRelativePhoto(-1); }}
+              className="lightbox-nav-btn"
+              style={{ left: '20px' }}
+              aria-label="Önceki fotoğraf"
+            >
+              ‹
+            </button>
+          )}
+
           <img 
             src={selectedPhoto.url} 
             alt="Büyütülmüş Görsel" 
             style={{ maxHeight: '75vh', maxWidth: '90vw', objectFit: 'contain', borderRadius: '4px', boxShadow: '0 10px 40px rgba(0,0,0,0.5)', cursor: 'default' }} 
             onClick={(e) => e.stopPropagation()} 
           />
+
+          {archivePhotos.length > 1 && (
+            <button
+              onClick={(e) => { e.stopPropagation(); showRelativePhoto(1); }}
+              className="lightbox-nav-btn"
+              style={{ right: '20px' }}
+              aria-label="Sonraki fotoğraf"
+            >
+              ›
+            </button>
+          )}
+
+          <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', marginTop: '1.5rem', fontFamily: 'monospace' }}>
+            {selectedPhotoIndex + 1} / {archivePhotos.length}
+          </div>
+
           <a 
             href={selectedPhoto.url} 
             download={`Arsiv_${selectedPhoto.id}.jpeg`}
             className="action-link-btn"
-            style={{ marginTop: '2.5rem', color: 'var(--bg-main)', borderColor: 'var(--bg-main)' }}
+            style={{ marginTop: '1.5rem', color: 'var(--bg-main)', borderColor: 'var(--bg-main)' }}
+            onClick={(e) => e.stopPropagation()}
             onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'var(--bg-main)'; e.currentTarget.style.color = '#000'; }}
             onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = 'var(--bg-main)'; }}
           >
