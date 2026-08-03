@@ -318,12 +318,7 @@ function MediaArchive() {
                         <span style={{ fontSize: '0.8rem', opacity: 0.7, fontFamily: 'monospace' }}>Ekran Süresi: {kesit.sure} dk</span>
                       </div>
                       <div className="scene-actions">
-                        <button
-                          className={`copy-link-btn ${copiedId === `d1-${kesit.id}` ? 'copied' : ''}`}
-                          onClick={() => handleCopyLink(kesit.url, `d1-${kesit.id}`)}
-                        >
-                          {copiedId === `d1-${kesit.id}` ? 'KOPYALANDI ✓' : 'LİNKİ KOPYALA'}
-                        </button>
+                        
                         <a href={kesit.url} target="_blank" rel="noreferrer" className="action-link-btn">
                           X'TE İZLE ↗
                         </a>
