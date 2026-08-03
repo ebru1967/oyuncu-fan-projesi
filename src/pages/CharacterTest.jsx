@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 const CHARACTERS = {
   MERT: { name: "MERT", project: "46 Yok Olan", image: "/46dizi.jpeg", desc: "Cesur, mücadeleci ve fedakârsın. Senin için hayat, ne pahasına olursa olsun doğru olanı yapma mücadelesidir." },
@@ -200,7 +200,7 @@ const QUESTIONS = [
 
   question("Eğer hayatın bir kelimeyle özetlenecek olsaydı hangisi olurdu?", [
     option("Mücadele.", ["BOZAN", "ATTILA", "LAIS", "SAHBAZ"]),
-    option("Sadakat.", ["SERIF", "SARP", "IMAM", "SERIF"]),
+    option("Sadakat.", ["SERIF", "SARP", "IMAM", "FIRAT"]),
     option("Adalet.", ["GURKAN", "MERT", "KURSAT", "RUSTEM"]),
     option("Hedef.", ["FIRAT", "BEHIC", "TURAHAN", "ALI"])
   ])
@@ -214,49 +214,115 @@ const createInitialScores = () =>
     return scores;
   }, {});
 
+// En yüksek iki skoru (kazanan + en yakın ikinci) döndürür
+const getTopTwo = (finalScores) => {
+  const sorted = [...CHARACTER_KEYS].sort((a, b) => finalScores[b] - finalScores[a]);
+  return { winnerKey: sorted[0], runnerUpKey: sorted[1] };
+};
+
 function CharacterTest() {
   const [currentQ, setCurrentQ] = useState(0);
   const [result, setResult] = useState(null);
+  const [runnerUp, setRunnerUp] = useState(null);
   const [scores, setScores] = useState(createInitialScores);
+  const [history, setHistory] = useState([]); // geri dönüş için verilen cevapların geçmişi
+  const [copyFeedback, setCopyFeedback] = useState(false);
 
-  const getHighestScoreKey = (finalScores) =>
-    CHARACTER_KEYS.reduce((bestKey, key) =>
-      finalScores[key] > finalScores[bestKey] ? key : bestKey
-    );
-
-  const handleAnswer = (pointsTo) => {
-    const nextScores = { ...scores };
-
-    pointsTo.forEach((key) => {
-      nextScores[key] += 1;
-    });
-
-    setScores(nextScores);
-
-    if (currentQ + 1 < QUESTIONS.length) {
-      setCurrentQ((prev) => prev + 1);
-      return;
-    }
-
-    const winnerKey = getHighestScoreKey(nextScores);
+  const finishTest = useCallback((finalScores) => {
+    const { winnerKey, runnerUpKey } = getTopTwo(finalScores);
     setResult(CHARACTERS[winnerKey]);
-  };
+    setRunnerUp(CHARACTERS[runnerUpKey]);
+  }, []);
+
+  const handleAnswer = useCallback(
+    (pointsTo) => {
+      const nextScores = { ...scores };
+      pointsTo.forEach((key) => {
+        nextScores[key] += 1;
+      });
+
+      setScores(nextScores);
+      setHistory((prev) => [...prev, { questionIndex: currentQ, pointsTo }]);
+
+      if (currentQ + 1 < QUESTIONS.length) {
+        setCurrentQ((prev) => prev + 1);
+        return;
+      }
+
+      finishTest(nextScores);
+    },
+    [scores, currentQ, finishTest]
+  );
+
+  const handleBack = useCallback(() => {
+    setHistory((prev) => {
+      if (prev.length === 0) return prev;
+      const last = prev[prev.length - 1];
+
+      setScores((prevScores) => {
+        const reverted = { ...prevScores };
+        last.pointsTo.forEach((key) => {
+          reverted[key] -= 1;
+        });
+        return reverted;
+      });
+
+      setResult(null);
+      setRunnerUp(null);
+      setCurrentQ(last.questionIndex);
+
+      return prev.slice(0, -1);
+    });
+  }, []);
+
+  // Sayı tuşlarıyla (1-4) hızlı cevaplama
+  useEffect(() => {
+    if (result) return;
+    const onKeyDown = (e) => {
+      const num = parseInt(e.key, 10);
+      const activeQuestion = QUESTIONS[currentQ];
+      if (num >= 1 && num <= activeQuestion.options.length) {
+        handleAnswer(activeQuestion.options[num - 1].pointsTo);
+      } else if (e.key === 'Backspace') {
+        handleBack();
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [currentQ, result, handleAnswer, handleBack]);
 
   const resetTest = () => {
     setCurrentQ(0);
     setScores(createInitialScores());
     setResult(null);
+    setRunnerUp(null);
+    setHistory([]);
+    setCopyFeedback(false);
+  };
+
+  const buildShareText = () => {
+    if (!result) return '';
+    return `Aytek Şayan Evreninde ben "%100 ${result.name}" çıktım!\n\nKarakter Analizi: "${result.desc.substring(0, 75)}..."\n\n16 farklı karakterden sen hangisisin? Testi çöz:`;
   };
 
   const shareOnX = () => {
     if (!result) return;
-
-    const text = `Aytek Şayan Evreninde ben "%100 ${result.name}" çıktım!\n\nKarakter Analizi: "${result.desc.substring(0, 75)}..."\n\n16 farklı karakterden sen hangisisin? Testi çöz:`;
-
+    const text = buildShareText();
     const siteUrl = "https://ayteksayan.com/hangi-karaktersin";
     const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(siteUrl)}`;
-
     window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  const copyResultLink = async () => {
+    if (!result) return;
+    const text = `${buildShareText()}\nhttps://ayteksayan.com/hangi-karaktersin`;
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopyFeedback(true);
+      setTimeout(() => setCopyFeedback(false), 2000);
+    } catch {
+      // Panoya erişim engellenmişse sessizce yok say
+    }
   };
 
   const progressPercent = Math.round(((currentQ + 1) / QUESTIONS.length) * 100);
@@ -265,7 +331,6 @@ function CharacterTest() {
   return (
     <div className="press-editorial-wrapper animate-fade" style={{ minHeight: "80vh", paddingBottom: "4rem" }}>
       <style>{`
-        /* Soru Metni ve Mobil Uyumu */
         .question-text {
           font-size: 1.5rem;
           line-height: 1.5;
@@ -289,21 +354,46 @@ function CharacterTest() {
           transition: all 0.3s ease;
         }
 
-        .test-option-btn:hover {
+        .test-option-btn:hover,
+        .test-option-btn:focus-visible {
           background: rgba(84, 107, 65, 0.1);
           border-color: var(--accent-dark);
           transform: translateX(5px);
+          outline: none;
         }
 
-        /* MOBİL MEDYA SORGUSU */
+        .option-key-hint {
+          display: inline-block;
+          min-width: 1.4em;
+          margin-right: 0.6em;
+          font-family: var(--font-heading);
+          font-size: 0.8em;
+          opacity: 0.5;
+        }
+
+        .back-link {
+          background: transparent;
+          border: none;
+          color: var(--accent-dark);
+          font-family: var(--font-body);
+          font-size: 0.85rem;
+          opacity: 0.7;
+          cursor: pointer;
+          margin-bottom: 1rem;
+          padding: 0;
+        }
+
+        .back-link:hover { opacity: 1; text-decoration: underline; }
+        .back-link:disabled { opacity: 0.25; cursor: default; text-decoration: none; }
+
         @media (max-width: 600px) {
           .question-text {
-            font-size: 1.15rem; /* Boyut küçültüldü */
+            font-size: 1.15rem;
             line-height: 1.4;
             margin-bottom: 1.5rem;
           }
           .test-option-btn {
-            font-size: 0.95rem; /* Şık boyutu küçültüldü */
+            font-size: 0.95rem;
             padding: 1rem;
           }
         }
@@ -331,6 +421,13 @@ function CharacterTest() {
           height: 100%;
           object-fit: cover;
           opacity: 0.9;
+        }
+
+        .runner-up-note {
+          font-family: var(--font-body);
+          font-size: 0.85rem;
+          opacity: 0.65;
+          margin-bottom: 1.5rem;
         }
 
         .progress-bar-container {
@@ -375,9 +472,15 @@ function CharacterTest() {
                 {result.name}
               </h2>
 
-              <p style={{ fontSize: "1.1rem", lineHeight: "1.8", opacity: 0.9, marginBottom: "2.5rem" }}>
+              <p style={{ fontSize: "1.1rem", lineHeight: "1.8", opacity: 0.9, marginBottom: "1.5rem" }}>
                 {result.desc}
               </p>
+
+              {runnerUp && (
+                <p className="runner-up-note">
+                  En yakın ikinci karakterin: <strong>{runnerUp.name}</strong> ({runnerUp.project})
+                </p>
+              )}
 
               <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
                 <button
@@ -397,6 +500,22 @@ function CharacterTest() {
                 </button>
 
                 <button
+                  onClick={copyResultLink}
+                  style={{
+                    backgroundColor: "transparent",
+                    color: "var(--text-main)",
+                    border: "1px solid rgba(84, 107, 65, 0.4)",
+                    padding: "1rem 2rem",
+                    borderRadius: "30px",
+                    fontFamily: "var(--font-heading)",
+                    fontWeight: "bold",
+                    cursor: "pointer"
+                  }}
+                >
+                  {copyFeedback ? "KOPYALANDI ✓" : "METNİ KOPYALA"}
+                </button>
+
+                <button
                   onClick={resetTest}
                   style={{
                     backgroundColor: "transparent",
@@ -412,6 +531,10 @@ function CharacterTest() {
                   TESTİ TEKRARLA ⟲
                 </button>
               </div>
+
+              <button className="back-link" style={{ marginTop: "1.5rem" }} onClick={handleBack}>
+                ← son cevabımı değiştir
+              </button>
             </div>
           </div>
         ) : (
@@ -421,11 +544,15 @@ function CharacterTest() {
               <span>% {progressPercent}</span>
             </div>
 
-            <div className="progress-bar-container">
+            <div className="progress-bar-container" role="progressbar" aria-valuenow={progressPercent} aria-valuemin={0} aria-valuemax={100}>
               <div className="progress-bar-fill" style={{ width: `${progressPercent}%` }} />
             </div>
 
-            <h3 className="question-text">
+            <button className="back-link" onClick={handleBack} disabled={history.length === 0}>
+              ← önceki soru
+            </button>
+
+            <h3 className="question-text" key={currentQ}>
               {activeQuestion.question}
             </h3>
 
@@ -435,6 +562,7 @@ function CharacterTest() {
                 className="test-option-btn"
                 onClick={() => handleAnswer(answer.pointsTo)}
               >
+                <span className="option-key-hint">{index + 1}</span>
                 {answer.text}
               </button>
             ))}

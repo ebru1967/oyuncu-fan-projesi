@@ -225,7 +225,8 @@ function AytekBulmaca() {
       >
         {[0, 1, 2].map((cardId) => {
           const currentPosIndex = positions.indexOf(cardId);
-          const isTargetReveal = (gameState === 'showing' || gameState === 'gameover') && cardId === targetCard;
+          const isTargetReveal =
+            (gameState === 'showing' || gameState === 'gameover' || gameState === 'correct') && cardId === targetCard;
           const isWrongPick = gameState === 'gameover' && cardId === wrongCard;
           const isCorrectFlash = gameState === 'correct' && cardId === targetCard;
 
