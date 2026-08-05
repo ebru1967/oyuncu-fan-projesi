@@ -1,48 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { FaTwitter, FaInstagram, FaEnvelope, FaTiktok, FaUserShield } from 'react-icons/fa';
 
 function FCChannels() {
-  const tweetContainerRef = useRef(null);
-  const [tweetRendered, setTweetRendered] = useState(false);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    const renderTweet = () => {
-      if (!window.twttr?.widgets || !tweetContainerRef.current) return;
-      window.twttr.widgets.load(tweetContainerRef.current).then(() => {
-        if (!cancelled) setTweetRendered(true);
-      });
-    };
-
-    // Widgets.js sadece kendi ilk çalıştığı anda DOM'da bulunan blockquote'ları
-    // otomatik işler. Bu sayfa istemci tarafı (SPA) yönlendirmeyle sonradan
-    // açıldığında -- script daha önce başka bir sayfada zaten yüklenmiş olsa bile --
-    // bu tweet hiç render edilmeyebilir. Bu yüzden her mount'ta widgets.load()'u
-    // elle tetikliyoruz.
-    if (window.twttr?.widgets) {
-      renderTweet();
-    } else {
-      const existingScript = document.querySelector('script[src="https://platform.twitter.com/widgets.js"]');
-      if (existingScript) {
-        existingScript.addEventListener('load', renderTweet);
-      } else {
-        const script = document.createElement('script');
-        script.src = 'https://platform.twitter.com/widgets.js';
-        script.async = true;
-        script.charset = 'utf-8';
-        script.onload = renderTweet;
-        document.body.appendChild(script);
-      }
-    }
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
   return (
     <div className="press-editorial-wrapper animate-fade" style={{ paddingBottom: '4rem' }}>
+      
       <style>{`
         .channel-grid {
           display: grid;
@@ -91,6 +53,7 @@ function FCChannels() {
           color: var(--bg-main);
         }
 
+        /* ÖZEL TEŞEKKÜR VİDEOSU ALANI CSS */
         .special-thanks-container {
           max-width: 600px;
           margin: 0 auto 5rem auto;
@@ -103,6 +66,7 @@ function FCChannels() {
           box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
+        /* BAŞLIK KÜÇÜLTÜLDÜ VE TOPARLANDI */
         .thanks-title {
           font-family: var(--font-heading);
           font-size: clamp(1.2rem, 5vw, 1.6rem);
@@ -118,22 +82,18 @@ function FCChannels() {
           opacity: 0.8;
           margin-bottom: 1.5rem;
         }
-
-        .tweet-loading-placeholder {
-          font-family: var(--font-body);
-          font-size: 0.85rem;
-          opacity: 0.5;
-          padding: 1.5rem 0;
-        }
       `}</style>
 
       <div className="container">
+        
+        {/* SAYFA BAŞLIĞI */}
         <div className="section-header-editorial" style={{ textAlign: 'center', marginBottom: '4rem', paddingTop: '0', marginTop: '-3rem' }}>
           <span className="archive-badge" style={{ display: 'inline-block', marginBottom: '1rem' }}>// HAYRAN TOPLULUĞU AĞI</span>
           <h1 className="editorial-title" style={{ fontSize: '3rem' }}>FC — KANALLAR</h1>
           <p className="editorial-subtitle">Aytek Şayan hayran topluluğuna dair tüm dijital iletişim noktaları.</p>
         </div>
 
+        {/* --- ÖZEL TEŞEKKÜR KÖŞESİ --- */}
         <div className="special-thanks-container animate-fade">
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem', color: 'var(--accent-dark)' }}>
             <span style={{ fontSize: '2rem' }}>★</span>
@@ -142,20 +102,24 @@ function FCChannels() {
           <p className="thanks-desc">
             Bu dijital arşivin kuruluş aşamasında, projeyi bizzat inceleyerek samimi düşüncelerini ve teşekkürlerini bir video ile paylaşan Aytek Şayan'a FC ailesi olarak sonsuz minnettarız. 
           </p>
-
-          <div ref={tweetContainerRef} style={{ display: 'flex', justifyContent: 'center', minHeight: tweetRendered ? 'auto' : '60px' }}>
-            {!tweetRendered && <div className="tweet-loading-placeholder">Tweet yükleniyor...</div>}
+          
+          {/* X (TWITTER) VİDEO EMBED KODU */}
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
             <blockquote className="twitter-tweet" data-media-max-width="560">
               <p lang="tr" dir="ltr">
               </p>&mdash; X (@chicolw) 
               <a href="https://twitter.com/chicolw/status/2068762476846485524?ref_src=twsrc%5Etfw">
                 Mayıs 18, 2026
               </a>
-            </blockquote>
+            </blockquote> 
+            <script async src="https://platform.twitter.com/widgets.js" charSet="utf-8"></script>
           </div>
         </div>
+        {/* -------------------------------------- */}
 
         <div className="channel-grid">
+          
+          {/* X (TWITTER) TOPLULUK */}
           <div className="channel-card">
             <FaTwitter size={30} style={{ color: 'var(--accent-dark)', marginBottom: '1rem' }} />
             <h3 style={{ color: 'var(--accent-dark)', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)' }}>AYTEKOFC TOPLULUK</h3>
@@ -167,6 +131,7 @@ function FCChannels() {
             </a>
           </div>
 
+          {/* FC X (TWITTER) HESABI */}
           <div className="channel-card">
             <FaTwitter size={30} style={{ color: 'var(--accent-dark)', marginBottom: '1rem' }} />
             <h3 style={{ color: 'var(--accent-dark)', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)' }}>X FAN SAYFASI</h3>
@@ -178,6 +143,7 @@ function FCChannels() {
             </a>
           </div>
 
+          {/* INSTAGRAM HESABI */}
           <div className="channel-card">
             <FaInstagram size={30} style={{ color: 'var(--accent-dark)', marginBottom: '1rem' }} />
             <h3 style={{ color: 'var(--accent-dark)', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)' }}>INSTAGRAM HUB</h3>
@@ -189,6 +155,7 @@ function FCChannels() {
             </a>
           </div>
           
+          {/* E-Mail */}
           <div className="channel-card">
             <FaEnvelope size={30} style={{ color: 'var(--accent-dark)', marginBottom: '1rem' }} />
             <h3 style={{ color: 'var(--accent-dark)', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)' }}>TOPLULUK İLETİŞİMİ</h3>
@@ -200,6 +167,7 @@ function FCChannels() {
             </a>
           </div>
 
+          {/* ANA X (TWITTER) HESABI */}
           <div className="channel-card">
             <FaTwitter size={30} style={{ color: 'var(--accent-dark)', marginBottom: '1rem' }} />
             <h3 style={{ color: 'var(--accent-dark)', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)' }}>X ANA HESAP</h3>
@@ -211,6 +179,7 @@ function FCChannels() {
             </a>
           </div>
           
+          {/* YÖNETİM - ITTSMIIAA */}
           <div className="channel-card">
             <FaUserShield size={30} style={{ color: 'var(--accent-dark)', marginBottom: '1rem' }} />
             <h3 style={{ color: 'var(--accent-dark)', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)' }}>OFC YÖNETİMİ</h3>
@@ -222,6 +191,7 @@ function FCChannels() {
             </a>
           </div>
 
+          {/* TIKTOK HESABI */}
           <div className="channel-card">
             <FaTiktok size={30} style={{ color: 'var(--accent-dark)', marginBottom: '1rem' }} />
             <h3 style={{ color: 'var(--accent-dark)', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)' }}>TIKTOK VİDEO & EDİT</h3>
@@ -232,6 +202,7 @@ function FCChannels() {
               TIKTOK'A GİT ↗
             </a>
           </div>
+
         </div>
       </div>
     </div>
