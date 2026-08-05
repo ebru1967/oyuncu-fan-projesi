@@ -1,178 +1,208 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+
+const quotes = [
+  "ederuk bi tövbe anacum dertlenme",
+  "he valla yüreğim sıkıştı",
+  "naber kankaa",
+  "ula ölmedi ki ne güzel kalktı gitti amerikalara -ha",
+  "ne yarabbi",
+  "ula ölmedi ki",
+  "oha ne diyosun olaya bak",
+  "shipledum sizi",
+  "nee yiğenumla gelinumu almışlar geri de mi almayum",
+  "en sevduğun kankan",
+  "ama bezdum ya valla bezdum hakikaten bezdum",
+  "seni sinsiii çavuş",
+  "koçari sempatizanı furtunalılar",
+  "ama boyle daha güzel oldu he saçu esme peri kızı gibi değil miydi düğünde",
+  "he onuda ben ettum köyü ben zehirledum",
+  "ne benim yüzünden ya ne sevcan uyku ilacını fazla koymuş o da mı benim suçum",
+  "naber ula fadime",
+  "en sevduğum yeğenum",
+  "boşanmaya kalkmasan vurmazdımki",
+  "hani şey diyorlardı ya neydi o empati",
+  "adili vuracaktumm",
+  "bismillahirrahmanirrahim",
+  "sen bu ara bana çok yanlış yapaysun diyisun yanlış yapaysun",
+  "nereye teslim edeyim kendimi",
+  "yeni kankan hayırlı olsun",
+  "sana da geçmiş olsun eski savcım",
+  "hadi pasta ye",
+  "iso kuru pastalar çok güzel he",
+  "ben napayım nereye koyayım kendimi",
+  "affettum sizi he hepinizi affettum valla affettum",
+  "ama bu benim hayalimdeki manzara",
+  "Allah Allah enteresan enteresan",
+  "noldu ula fadime abinle mi kavga ettun, ne diyosun ya bayuldum bayuldum",
+  "diyelim ki sen adil koçarisin kusura kalma",
+  "ula harbilikte suç oldu he",
+  "la bakma baa şöyle iştahımı kaçıraysun",
+  "mutlu yıllar saaağa",
+  "soğalasın kız hadi kapatum",
+  "ana sen eleniyi mi kaçırdın sen neler edeysun oyle valla ben şok",
+  "ula ne türkçe biliyosun ne çay demlemeyi biliyosun",
+  "o geldiğinde de parti yaparuz",
+  "kankamı kaybettuk",
+  "ula çepçakusuu",
+  "ergenler",
+  "yok canum o kadarda değil hala ondan öğrenecek birkaç şeyumuz var",
+  "sen ne biçim bi adamsın be",
+  "hadi şimdi naş naş",
+  "ahır mı burası",
+  "ooohhoho sakin olun",
+  "üçümüzde gebercez burda",
+  "umrumda değil",
+  "hadi durma vız gelir tırıs gider",
+  "hayrola ahır mı burası",
+  "topla ağzını",
+  "yine gebertemedik şunları",
+  "iftira, iftira atarsınız bana",
+  "gelip gidip bana iftira atarsınız artık sizin yaptıklarınız yetti",
+  "hayvan herifler",
+  "kendimle yarışayrum",
+  "afferun la saa yani öyle böyle değil şov yapaysun",
+  "ula kendi kendime rakip oldum",
+  "o yüzden söylemicem merak edin",
+  "ouy benum şerifum vallahi gurur duyayrum ha seninle",
+  "ha bu kızın kafası zehir zehir",
+  "ne benim yüzümden ya ne",
+  "sevcan ben yine bişey etmişum ne etmişum acaba",
+  "ben çevreye verdiğim rahatsızlıktan dolayı çok özür dilerim",
+  "ana o nerden bilecek ben bilmiyrum",
+  "sesli düşüneyrum",
+  "çok selam söyledi sağa",
+  "ouy sen hareketlere bak bide kalktı boyle dimdik",
+  "yuksek maas isteyn varsa gelsun benu bulsun",
+  "hadi la ordan",
+  "lan sen peygamber mi kesildin lan benim başıma",
+  "ben de biraz malım",
+  "nasıl diyodun sen ilahi adalet",
+  "ben nasıl olayım ben yengecum ha boyle burda sırtımın bu tarafında bi ihanet acısı var ama neyse",
+  "ya adam burda sıkıntıdan hamamböceği yarıştırıyor",
+  "Allah'la kankasın ya",
+  "Bi mesaj Allahım bu Serhat'ı çarp",
+  "kuzenim yeni manikür yaptırdım gelmem imkan dahilinde değil",
+  "Mevlamı arıyorum Alicemal sen",
+  "sağda solda böyle konuşma manitamsın sanırlar he",
+  "sen bugün yine ahirete havale işlerinle uğraşmışsın",
+  "Allah aşkına başlama felsefeye",
+  "maşallah bedensel bişey değil ruh sağlığıyla alakalı",
+  "bi sal beni ya",
+  "Allah aşkına onla mı konuştun bu mu yaptın anam mısın babam mısın bırak peşimi ya",
+  "biraz para harcadum evet",
+  "taş yağıcak başımıza taş",
+  "he o sıfatundan bellu",
+  "ilacını aldın mı sen",
+  "hemen al götür haydi gitmiyoki ben napayum",
+  "kafayı yiyecem kafayı yiyecem",
+  "diyusun niçin",
+  "ama bezdum ya valla bezdum hakikaten bezdum",
+  "ayaklarumla",
+  "he anacum içerdeydum",
+  "o neydu oyle he ya ne alakaydı",
+  "şş napaysun bide doktor olucaksın",
+  "bebeğide sokağa atmadum oruç çöpe atmadum iyi bir aileye verdum",
+  "paraya ihtiyacın olursa beni ara ben hallederum",
+  "gittum adalete teslim oldum",
+  "bence reislik öğren",
+  "suikastten şüpheleniyorum",
+  "furtunada seni bekliyordu",
+  "ama sen de ne desem tehdid ne desem tehdid",
+  "bende esmeyi eleniyle tehdit etmiş olabilirim ettum da ettum",
+  "Rabbim o aklı sağa boşuna mı vermiş kullanda yengem",
+  "benim arkamdan iş çevirmesen ben neden savcı hanımı işinden edeyim valla etmem",
+  "bir musibet bin nasihatten daha iyi",
+  "neyse ilk benden duy saa da geçmiş olsun",
+  "benimde kumda oynayacak halim yok",
+  "çıkalum bakalum sahalara",
+  "dünyanın çivisini çıkarayrum",
+  "sen naptın gittun düşmanın yarasını sardın, aferun sana..",
+  "bu mu la senin reisliğin",
+  "ana başa taç imiş, her derde ilaç imiş demişler ne kadar doğru demişler. Eleni'yi benim için kaçırmak çok iyi fikirdi ana. Seni affettim.",
+  "iyi ki doğdun eleniii",
+  "amin... de",
+  "ulan sen koymuşsun ya beni hapse seni sinsi çavuş seni",
+  "ha sen bu iki balıkçıdan mı medet umdun oy kıyamam ben sağa",
+  "iso kuru pasta taze bak rizeden geturttum",
+  "doğum gününü kutlamadık diye de evi patlatman bilema ağırdı",
+  "ha iyi fuşki yedun",
+  "hani o bir daha göremeyeceğin oruç var ya...",
+  "eleni bak beni yalancı çıkarttun al sağa oruç",
+  "şeytan diyor ki bak burda şeytan ben olayrum",
+  "kanka sen yaklaşmak yok konuşmak yok dedin ama hiç söz dinlemedim bak ben nereye geldim"
+];
+
+const MIN_HITS_TO_BURST = 2;
+const MAX_HITS_TO_BURST = 4;
+
+function getRandomThreshold() {
+  return MIN_HITS_TO_BURST + Math.floor(Math.random() * (MAX_HITS_TO_BURST - MIN_HITS_TO_BURST + 1));
+}
 
 function Interactive() {
-  const quotes = [
-    "ederuk bi tövbe anacum dertlenme",
-    "he valla yüreğim sıkıştı",
-    "naber kankaa",
-    "ula ölmedi ki ne güzel kalktı gitti amerikalara -ha",
-    "ne yarabbi",
-    "ula ölmedi ki",
-    "oha ne diyosun olaya bak",
-    "shipledum sizi",
-    "nee yiğenumla gelinumu almışlar geri de mi almayum",
-    "en sevduğun kankan",
-    "ama bezdum ya valla bezdum hakikaten bezdum",
-    "seni sinsiii çavuş",
-    "koçari sempatizanı furtunalılar",
-    "ama boyle daha güzel oldu he saçu esme peri kızı gibi değil miydi düğünde",
-    "he onuda ben ettum köyü ben zehirledum",
-    "ne benim yüzünden ya ne sevcan uyku ilacını fazla koymuş o da mı benim suçum",
-    "naber ula fadime",
-    "en sevduğum yeğenum",
-    "boşanmaya kalkmasan vurmazdımki",
-    "hani şey diyorlardı ya neydi o empati",
-    "adili vuracaktumm",
-    "bismillahirrahmanirrahim",
-    "sen bu ara bana çok yanlış yapaysun diyisun yanlış yapaysun",
-    "nereye teslim edeyim kendimi",
-    "yeni kankan hayırlı olsun",
-    "sana da geçmiş olsun eski savcım",
-    "hadi pasta ye",
-    "iso kuru pastalar çok güzel he",
-    "ben napayım nereye koyayım kendimi",
-    "affettum sizi he hepinizi affettum valla affettum",
-    "ama bu benim hayalimdeki manzara",
-    "Allah Allah enteresan enteresan",
-    "noldu ula fadime abinle mi kavga ettun, ne diyosun ya bayuldum bayuldum",
-    "diyelim ki sen adil koçarisin kusura kalma",
-    "ula harbilikte suç oldu he",
-    "la bakma baa şöyle iştahımı kaçıraysun",
-    "mutlu yıllar saaağa",
-    "soğalasın kız hadi kapatum",
-    "ana sen eleniyi mi kaçırdın sen neler edeysun oyle valla ben şok",
-    "ula ne türkçe biliyosun ne çay demlemeyi biliyosun",
-    "o geldiğinde de parti yaparuz",
-    "kankamı kaybettuk",
-    "ula çepçakusuu",
-    "ergenler",
-    "yok canum o kadarda değil hala ondan öğrenecek birkaç şeyumuz var",
-    "sen ne biçim bi adamsın be",
-    "hadi şimdi naş naş",
-    "ahır mı burası",
-    "ooohhoho sakin olun",
-    "üçümüzde gebercez burda",
-    "umrumda değil",
-    "hadi durma vız gelir tırıs gider",
-    "hayrola ahır mı burası",
-    "topla ağzını",
-    "yine gebertemedik şunları",
-    "iftira, iftira atarsınız bana",
-    "gelip gidip bana iftira atarsınız artık sizin yaptıklarınız yetti",
-    "hayvan herifler",
-    "kendimle yarışayrum",
-    "afferun la saa yani öyle böyle değil şov yapaysun",
-    "ula kendi kendime rakip oldum",
-    "o yüzden söylemicem merak edin",
-    "ouy benum şerifum vallahi gurur duyayrum ha seninle",
-    "ha bu kızın kafası zehir zehir",
-    "ne benim yüzümden ya ne",
-    "sevcan ben yine bişey etmişum ne etmişum acaba",
-    "ben çevreye verdiğim rahatsızlıktan dolayı çok özür dilerim",
-    "ana o nerden bilecek ben bilmiyrum",
-    "sesli düşüneyrum",
-    "çok selam söyledi sağa",
-    "ouy sen hareketlere bak bide kalktı boyle dimdik",
-    "yuksek maas isteyn varsa gelsun benu bulsun",
-    "hadi la ordan",
-    "lan sen peygamber mi kesildin lan benim başıma",
-    "ben de biraz malım",
-    "nasıl diyodun sen ilahi adalet",
-    "ben nasıl olayım ben yengecum ha boyle burda sırtımın bu tarafında bi ihanet acısı var ama neyse",
-    "ya adam burda sıkıntıdan hamamböceği yarıştırıyor",
-    "Allah'la kankasın ya",
-    "Bi mesaj Allahım bu Serhat'ı çarp",
-    "kuzenim yeni manikür yaptırdım gelmem imkan dahilinde değil",
-    "Mevlamı arıyorum Alicemal sen",
-    "sağda solda böyle konuşma manitamsın sanırlar he",
-    "sen bugün yine ahirete havale işlerinle uğraşmışsın",
-    "Allah aşkına başlama felsefeye",
-    "maşallah bedensel bişey değil ruh sağlığıyla alakalı",
-    "bi sal beni ya",
-    "Allah aşkına onla mı konuştun bu mu yaptın anam mısın babam mısın bırak peşimi ya",
-    "biraz para harcadum evet",
-    "taş yağıcak başımıza taş",
-    "he o sıfatundan bellu",
-    "ilacını aldın mı sen",
-    "hemen al götür haydi gitmiyoki ben napayum",
-    "kafayı yiyecem kafayı yiyecem",
-    "diyusun niçin",
-    "ama bezdum ya valla bezdum hakikaten bezdum",
-    "ayaklarumla",
-    "he anacum içerdeydum",
-    "o neydu oyle he ya ne alakaydı",
-    "şş napaysun bide doktor olucaksın",
-    "bebeğide sokağa atmadum oruç çöpe atmadum iyi bir aileye verdum",
-    "paraya ihtiyacın olursa beni ara ben hallederum",
-    "gittum adalete teslim oldum",
-    "bence reislik öğren",
-    "suikastten şüpheleniyorum",
-    "furtunada seni bekliyordu",
-    "ama sen de ne desem tehdid ne desem tehdid",
-    "bende esmeyi eleniyle tehdit etmiş olabilirim ettum da ettum",
-    "Rabbim o aklı sağa boşuna mı vermiş kullanda yengem",
-    "benim arkamdan iş çevirmesen ben neden savcı hanımı işinden edeyim valla etmem",
-    "bir musibet bin nasihatten daha iyi",
-    "neyse ilk benden duy saa da geçmiş olsun",
-    "benimde kumda oynayacak halim yok",
-    "çıkalum bakalum sahalara",
-    "dünyanın çivisini çıkarayrum",
-    "sen naptın gittun düşmanın yarasını sardın, aferun sana..",
-    "bu mu la senin reisliğin",
-    "ana başa taç imiş, her derde ilaç imiş demişler ne kadar doğru demişler. Eleni'yi benim için kaçırmak çok iyi fikirdi ana. Seni affettim.",
-    "iyi ki doğdun eleniii",
-    "amin... de",
-    "ulan sen koymuşsun ya beni hapse seni sinsi çavuş seni",
-    "ha sen bu iki balıkçıdan mı medet umdun oy kıyamam ben sağa",
-    "iso kuru pasta taze bak rizeden geturttum",
-    "doğum gününü kutlamadık diye de evi patlatman bilema ağırdı",
-    "ha iyi fuşki yedun",
-    "hani o bir daha göremeyeceğin oruç var ya...",
-    "eleni bak beni yalancı çıkarttun al sağa oruç",
-    "şeytan diyor ki bak burda şeytan ben olayrum",
-    "kanka sen yaklaşmak yok konuşmak yok dedin ama hiç söz dinlemedim bak ben nereye geldim"
-  ];
-
   const [currentQuote, setCurrentQuote] = useState(null);
   const [isBurst, setIsBurst] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
-  
   const [hits, setHits] = useState(0);
+
+  const burstThresholdRef = useRef(getRandomThreshold());
+  const lastQuoteRef = useRef(null);
+  const shakeTimeoutRef = useRef(null);
+
+  useEffect(() => {
+    return () => clearTimeout(shakeTimeoutRef.current);
+  }, []);
+
+  const pickQuote = () => {
+    let quote = quotes[Math.floor(Math.random() * quotes.length)];
+    if (quotes.length > 1) {
+      while (quote === lastQuoteRef.current) {
+        quote = quotes[Math.floor(Math.random() * quotes.length)];
+      }
+    }
+    lastQuoteRef.current = quote;
+    return quote;
+  };
 
   const handlePinataHit = () => {
     if (isShaking || isBurst) return;
-    
+
     setIsShaking(true);
     const newHits = hits + 1;
     setHits(newHits);
-    
-    setTimeout(() => {
+
+    shakeTimeoutRef.current = setTimeout(() => {
       setIsShaking(false);
-      
-      if (newHits >= 3) {
+
+      if (newHits >= burstThresholdRef.current) {
         setIsBurst(true);
-        const randomIndex = Math.floor(Math.random() * quotes.length);
-        setCurrentQuote(quotes[randomIndex]);
+        setCurrentQuote(pickQuote());
       }
-    }, 400); 
+    }, 400);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handlePinataHit();
+    }
   };
 
   const resetGame = () => {
     setIsBurst(false);
     setCurrentQuote(null);
     setHits(0);
+    burstThresholdRef.current = getRandomThreshold();
   };
 
   const getPromptText = () => {
-    if (hits === 0) return "tic tac";
-    if (hits === 1) return "tic tac";
-    if (hits === 2) return "tic tac";
-    return "";
+    if (hits === 0) return 'tic tac';
+    if (hits === 1) return 'tic... tac...';
+    return 'tic... tac... TIC...';
   };
 
   return (
     <div className="press-editorial-wrapper animate-fade" style={{ paddingBottom: '4rem' }} lang="tr">
-      
       <style>
         {`
           @keyframes cinematicFloat {
@@ -223,6 +253,7 @@ function Interactive() {
             user-select: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
           }
           .mystic-pinata:hover:not(.is-shaking) { transform: scale(1.15) translateY(-5px); }
+          .mystic-pinata:focus-visible { outline: 3px solid var(--accent-dark); outline-offset: 8px; border-radius: 50%; }
           .status-floating { animation: cinematicFloat 4s ease-in-out infinite; }
           .is-shaking { animation: intenseShake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
 
@@ -262,8 +293,6 @@ function Interactive() {
       </style>
 
       <div className="container">
-        
-        {/* HİZALAMA DÜZELTİLDİ: paddingTop: '0', marginTop: '-3rem' eklendi */}
         <div className="section-header-editorial" style={{ paddingTop: '0', marginTop: '-3rem', marginBottom: '3rem', textAlign: 'center' }}>
           <span className="archive-badge" style={{ display: 'inline-block', marginBottom: '1rem' }}>// KADERİNİ ÇEK</span>
           <h1 className="editorial-title">REPLİK PİNYATASI</h1>
@@ -271,31 +300,37 @@ function Interactive() {
         </div>
 
         <div className="game-arena">
-          
-          <div 
+          <div
             onClick={handlePinataHit}
-            className={`mystic-pinata ${isShaking ? 'is-shaking' : (isBurst ? '' : 'status-floating')}`}
-            style={{ 
+            onKeyDown={handleKeyDown}
+            role="button"
+            tabIndex={isBurst ? -1 : 0}
+            aria-label="Pinyataya vur"
+            className={`mystic-pinata ${isShaking ? 'is-shaking' : isBurst ? '' : 'status-floating'}`}
+            style={{
               marginBottom: isBurst ? '0' : '2rem',
               display: isBurst ? 'none' : 'inline-block',
-              transform: !isShaking && !isBurst && hits > 0 ? `rotate(${hits * 10}deg) scale(0.95)` : 'none'
+              transform: !isShaking && !isBurst && hits > 0 ? `rotate(${hits * 10}deg) scale(0.95)` : 'none',
             }}
           >
             🪅
           </div>
 
           {!isBurst && !isShaking && (
-            <p style={{ 
-              fontFamily: 'var(--font-heading)', 
-              color: hits > 0 ? 'var(--accent-dark)' : 'rgba(4, 4, 4, 0.4)', 
-              fontSize: hits > 0 ? '1rem' : '0.8rem', 
-              letterSpacing: '4px',
-              marginTop: '1rem',
-              position: 'relative',
-              zIndex: 10,
-              fontWeight: hits > 0 ? 'bold' : 'normal',
-              transition: '0.3s'
-            }}>
+            <p
+              aria-live="polite"
+              style={{
+                fontFamily: 'var(--font-heading)',
+                color: hits > 0 ? 'var(--accent-dark)' : 'rgba(4, 4, 4, 0.4)',
+                fontSize: hits > 0 ? '1rem' : '0.8rem',
+                letterSpacing: '4px',
+                marginTop: '1rem',
+                position: 'relative',
+                zIndex: 10,
+                fontWeight: hits > 0 ? 'bold' : 'normal',
+                transition: '0.3s',
+              }}
+            >
               {getPromptText()}
             </p>
           )}
@@ -309,25 +344,26 @@ function Interactive() {
                   <span>🍬</span>
                 </div>
 
-                <p style={{ 
-                  fontFamily: 'var(--font-heading)', 
-                  fontSize: '1.8rem', 
-                  fontWeight: '600',
-                  lineHeight: '1.5',
-                  color: '#eaeaea',
-                  margin: 0,
-                  textShadow: '0 2px 10px rgba(0,0,0,0.8)'
-                }}>
+                <p
+                  style={{
+                    fontFamily: 'var(--font-heading)',
+                    fontSize: '1.8rem',
+                    fontWeight: '600',
+                    lineHeight: '1.5',
+                    color: '#eaeaea',
+                    margin: 0,
+                    textShadow: '0 2px 10px rgba(0,0,0,0.8)',
+                  }}
+                >
                   {currentQuote}
                 </p>
-                
+
                 <button className="reset-btn" onClick={resetGame}>
-                  YENİ PİNYATA AS 
+                  YENİ PİNYATA AS
                 </button>
               </div>
             </div>
           )}
-
         </div>
       </div>
     </div>

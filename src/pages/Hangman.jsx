@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 const WORDS = [
   // Karakterler & Roller
@@ -77,44 +77,77 @@ function Hangman() {
   const [guessedLetters, setGuessedLetters] = useState([]);
   const [mistakes, setMistakes] = useState(0);
   const [endQuote, setEndQuote] = useState('');
+  const [winCount, setWinCount] = useState(0);
+  const [loseCount, setLoseCount] = useState(0);
+  const lastWordRef = useRef(null);
   const maxMistakes = 6;
 
   const isGameOver = mistakes >= maxMistakes;
-  const isGameWon = word && word.split('').every(letter => letter === ' ' || guessedLetters.includes(letter));
+  const isGameWon = word && word.split('').every((letter) => letter === ' ' || guessedLetters.includes(letter));
 
   useEffect(() => {
     startNewGame();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const startNewGame = () => {
-    const randomWord = WORDS[Math.floor(Math.random() * WORDS.length)];
+    // Aynı kelimenin art arda iki kez gelmesini engelle (liste 1'den uzunsa)
+    let randomWord = WORDS[Math.floor(Math.random() * WORDS.length)];
+    if (WORDS.length > 1) {
+      while (randomWord === lastWordRef.current) {
+        randomWord = WORDS[Math.floor(Math.random() * WORDS.length)];
+      }
+    }
+    lastWordRef.current = randomWord;
+
     setWord(randomWord);
     setGuessedLetters([]);
     setMistakes(0);
     setEndQuote('');
   };
 
-  const handleGuess = useCallback((letter) => {
-    if (guessedLetters.includes(letter) || isGameOver || isGameWon) return;
+  const handleGuess = useCallback(
+    (letter) => {
+      setGuessedLetters((prevGuessed) => {
+        if (prevGuessed.includes(letter) || mistakes >= maxMistakes) return prevGuessed;
 
-    const newGuessedLetters = [...guessedLetters, letter];
-    setGuessedLetters(newGuessedLetters);
-    
-    let newMistakes = mistakes;
-    if (!word.includes(letter)) {
-      newMistakes += 1;
-      setMistakes(newMistakes);
-    }
+        const nextGuessed = [...prevGuessed, letter];
+        const stillMissesWord = !word.includes(letter);
 
-    const isNowLost = newMistakes >= maxMistakes;
-    const isNowWon = word && word.split('').every(char => char === ' ' || newGuessedLetters.includes(char));
+        setMistakes((prevMistakes) => {
+          const nextMistakes = stillMissesWord ? prevMistakes + 1 : prevMistakes;
 
-    if (isNowLost) {
-      setEndQuote(LOSE_QUOTES[Math.floor(Math.random() * LOSE_QUOTES.length)]);
-    } else if (isNowWon) {
-      setEndQuote(WIN_QUOTES[Math.floor(Math.random() * WIN_QUOTES.length)]);
-    }
-  }, [guessedLetters, isGameOver, isGameWon, mistakes, word]);
+          const isNowLost = nextMistakes >= maxMistakes;
+          const isNowWon = word && word.split('').every((char) => char === ' ' || nextGuessed.includes(char));
+
+          if (isNowLost && !isNowWon) {
+            setEndQuote(LOSE_QUOTES[Math.floor(Math.random() * LOSE_QUOTES.length)]);
+            setLoseCount((c) => c + 1);
+          } else if (isNowWon) {
+            setEndQuote(WIN_QUOTES[Math.floor(Math.random() * WIN_QUOTES.length)]);
+            setWinCount((c) => c + 1);
+          }
+
+          return nextMistakes;
+        });
+
+        return nextGuessed;
+      });
+    },
+    [word, mistakes]
+  );
+
+  const handleHint = () => {
+    // İpucu bir hata hakkına mal olur; son can kaldığında riske girmemek için engellenir
+    if (isGameOver || isGameWon || mistakes >= maxMistakes - 1) return;
+    const unguessedCorrect = word
+      .split('')
+      .filter((char) => char !== ' ' && !guessedLetters.includes(char));
+    if (unguessedCorrect.length === 0) return;
+    const letter = unguessedCorrect[Math.floor(Math.random() * unguessedCorrect.length)];
+    setGuessedLetters((prev) => [...prev, letter]);
+    setMistakes((prev) => prev + 1);
+  };
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -130,8 +163,6 @@ function Hangman() {
 
   return (
     <div className="press-editorial-wrapper animate-fade" lang="tr" style={{ paddingBottom: '4rem' }}>
-      
-      {/* OYUN İÇİN ÖZEL CSS STİLLERİ EKLENDİ */}
       <style>{`
         .hangman-status {
           text-align: center;
@@ -152,12 +183,21 @@ function Hangman() {
           height: 100%;
           transition: width 0.3s ease, background-color 0.3s ease;
         }
+        .session-stats {
+          display: flex;
+          justify-content: center;
+          gap: 1.5rem;
+          font-family: var(--font-body);
+          font-size: 0.8rem;
+          opacity: 0.65;
+          margin-top: 0.6rem;
+        }
         .word-display {
           display: flex;
           flex-wrap: wrap;
           justify-content: center;
           gap: 1.5rem;
-          margin-bottom: 3rem;
+          margin-bottom: 2rem;
         }
         .word-letter {
           display: inline-flex;
@@ -172,6 +212,20 @@ function Hangman() {
           color: var(--text-main);
           font-family: var(--font-heading);
         }
+        .hint-btn {
+          background: transparent;
+          border: 1px dashed rgba(84, 107, 65, 0.5);
+          color: var(--accent-dark);
+          padding: 0.5rem 1.2rem;
+          border-radius: 20px;
+          cursor: pointer;
+          font-family: var(--font-body);
+          font-size: 0.85rem;
+          margin-bottom: 2rem;
+          transition: background 0.2s ease;
+        }
+        .hint-btn:hover:not(:disabled) { background: rgba(84, 107, 65, 0.08); }
+        .hint-btn:disabled { opacity: 0.35; cursor: not-allowed; }
         .keyboard {
           display: flex;
           flex-wrap: wrap;
@@ -214,8 +268,6 @@ function Hangman() {
       `}</style>
 
       <div className="container">
-        
-        {/* HİZALAMA DÜZELTİLDİ: Diğer sayfalarla aynı hizada */}
         <div className="section-header-editorial" style={{ paddingTop: '0', marginTop: '-3rem', marginBottom: '3rem', textAlign: 'center' }}>
           <span className="archive-badge" style={{ display: 'inline-block', marginBottom: '1rem' }}>// İNTERAKTİF ARŞİV PROTOKOLÜ</span>
           <h1 className="editorial-title" style={{ textTransform: 'none' }}>ADAM ASMACA</h1>
@@ -223,12 +275,20 @@ function Hangman() {
         </div>
 
         <div className="game-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          
-          <div className="hangman-status">
+          <div className="hangman-status" aria-live="polite">
             <h3>SİSTEM GÜVENLİĞİ: {maxMistakes - mistakes} HATA PAYI KALDI</h3>
             <div className="mistake-bar">
-              <div className="mistake-fill" style={{ width: `${(mistakes / maxMistakes) * 100}%`, backgroundColor: mistakes > 4 ? 'rgba(200, 50, 50, 0.8)' : 'var(--accent-dark)' }}></div>
+              <div
+                className="mistake-fill"
+                style={{ width: `${(mistakes / maxMistakes) * 100}%`, backgroundColor: mistakes > 4 ? 'rgba(200, 50, 50, 0.8)' : 'var(--accent-dark)' }}
+              ></div>
             </div>
+            {(winCount > 0 || loseCount > 0) && (
+              <div className="session-stats">
+                <span>ÇÖZÜLEN: {winCount}</span>
+                <span>KİLİTLİ KALAN: {loseCount}</span>
+              </div>
+            )}
           </div>
 
           <div className="word-display">
@@ -243,26 +303,62 @@ function Hangman() {
             ))}
           </div>
 
+          {!isGameOver && !isGameWon && (
+            <button className="hint-btn" onClick={handleHint} disabled={mistakes >= maxMistakes - 1}>
+              💡 İPUCU AL (1 hata hakkına mal olur)
+            </button>
+          )}
+
           {isGameOver && (
-            <div className="game-message error" style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', padding: '1.5rem', backgroundColor: 'rgba(200, 50, 50, 0.05)', border: '1px solid rgba(200, 50, 50, 0.3)', borderRadius: '8px', marginBottom: '2rem', maxWidth: '500px', textAlign: 'center' }}>
+            <div
+              className="game-message error"
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.8rem',
+                padding: '1.5rem',
+                backgroundColor: 'rgba(200, 50, 50, 0.05)',
+                border: '1px solid rgba(200, 50, 50, 0.3)',
+                borderRadius: '8px',
+                marginBottom: '2rem',
+                maxWidth: '500px',
+                textAlign: 'center',
+              }}
+            >
               <strong style={{ color: 'rgba(200, 50, 50, 0.9)' }}>ARŞİVE ERİŞİM REDDEDİLDİ! KELİME: {word}</strong>
               <span style={{ fontStyle: 'italic', fontSize: '1rem', opacity: 0.9, fontFamily: 'var(--font-heading)' }}>
-                "{endQuote}" <br/><span style={{ fontSize: '0.8rem', opacity: 0.7, fontStyle: 'normal' }}>— Şerif Furtuna</span>
+                "{endQuote}" <br />
+                <span style={{ fontSize: '0.8rem', opacity: 0.7, fontStyle: 'normal' }}>— Şerif Furtuna</span>
               </span>
             </div>
           )}
 
           {isGameWon && (
-            <div className="game-message success" style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', padding: '1.5rem', backgroundColor: 'rgba(84, 107, 65, 0.05)', border: '1px solid var(--accent-dark)', borderRadius: '8px', marginBottom: '2rem', maxWidth: '500px', textAlign: 'center' }}>
+            <div
+              className="game-message success"
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.8rem',
+                padding: '1.5rem',
+                backgroundColor: 'rgba(84, 107, 65, 0.05)',
+                border: '1px solid var(--accent-dark)',
+                borderRadius: '8px',
+                marginBottom: '2rem',
+                maxWidth: '500px',
+                textAlign: 'center',
+              }}
+            >
               <strong style={{ color: 'var(--accent-dark)' }}>ŞİFRE ÇÖZÜLDÜ! ARŞİV ERİŞİMİ ONAYLANDI.</strong>
               <span style={{ fontStyle: 'italic', fontSize: '1rem', opacity: 0.9, fontFamily: 'var(--font-heading)' }}>
-                "{endQuote}" <br/><span style={{ fontSize: '0.8rem', opacity: 0.7, fontStyle: 'normal' }}>— Şerif Furtuna</span>
+                "{endQuote}" <br />
+                <span style={{ fontSize: '0.8rem', opacity: 0.7, fontStyle: 'normal' }}>— Şerif Furtuna</span>
               </span>
             </div>
           )}
 
           <div className="keyboard">
-            {ALPHABET.map(letter => (
+            {ALPHABET.map((letter) => (
               <button
                 key={letter}
                 className={`key-btn ${guessedLetters.includes(letter) ? (word.includes(letter) ? 'correct' : 'wrong') : ''}`}
@@ -280,7 +376,6 @@ function Hangman() {
             </button>
           )}
         </div>
-
       </div>
     </div>
   );
