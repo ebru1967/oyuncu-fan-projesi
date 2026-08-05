@@ -34,6 +34,27 @@ import BackToTop from './components/BackToTop';
 import ScrollToTop from './components/ScrollToTop';
 import './App.css';
 
+// Eşleşen rota bulunamadığında gösterilen, site temasına uygun basit bir "kayıp dosya" sayfası
+function NotFound() {
+  return (
+    <div className="container animate-fade" style={{ padding: '6rem 2rem', textAlign: 'center' }}>
+      <span className="archive-badge" style={{ display: 'inline-block', marginBottom: '1rem' }}>
+        // KAYIT BULUNAMADI
+      </span>
+      <h1 className="editorial-title" style={{ marginBottom: '1rem' }}>404 — DOSYA ARŞİVDE YOK</h1>
+      <p className="editorial-subtitle" style={{ maxWidth: '480px', margin: '0 auto 2rem' }}>
+        Aradığınız kayıt taşınmış, silinmiş ya da hiç var olmamış olabilir.
+      </p>
+      <Link
+        to="/"
+        className="editorial-link"
+        style={{ display: 'inline-block', fontSize: '0.9rem', padding: '0.8rem 2rem', border: '1px solid var(--accent-dark)' }}
+      >
+        ANA SAYFAYA DÖN
+      </Link>
+    </div>
+  );
+}
 
 function App() {
   const [timeLeft, setTimeLeft] = useState('');
@@ -43,11 +64,6 @@ function App() {
 
   useEffect(() => {
     const calculateCountdown = () => {
-      
-      if (isSeasonBreak) {
-        return 'SEZON ARASI';
-      }
-
       const now = new Date();
       const currentDay = now.getDay(); 
       
@@ -85,6 +101,13 @@ function App() {
       
       return countdownString;
     };
+
+    // Sezon arasındayken sabit metni bir kez göster, saniyede bir gereksiz
+    // hesaplama/re-render yapan interval'ı hiç kurma.
+    if (isSeasonBreak) {
+      setTimeLeft('SEZON ARASI');
+      return;
+    }
 
     setTimeLeft(calculateCountdown());
 
@@ -138,6 +161,7 @@ function App() {
             <Route path="/haber-bulteni" element={<Newsletter />} />
             <Route path="/proje-destek" element={<Support />} />
             <Route path="/iletisim" element={<Contact />} /> 
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
 <BackToTop />

@@ -88,7 +88,11 @@ function Quiz() {
 
   const answerLockRef = useRef(false);
   const advanceTimeoutRef = useRef(null);
-  const clearTimeoutRef = useRef(null);
+
+  // GÜVENLİK KİLİDİ: renk hangi sorunun cevabına aitse onu takip eder.
+  // getButtonStyle bu değer ile ekrandaki soru eşleşmiyorsa ASLA boyamaz —
+  // herhangi bir zamanlama/animasyon garipliğinden bağımsız kesin çözüm.
+  const answeredForRef = useRef(null);
 
   useEffect(() => {
     try {
@@ -99,11 +103,10 @@ function Quiz() {
     }
   }, []);
 
-  // Bileşen kapanırken bekleyen zamanlayıcıları temizle
+  // Bileşen kapanırken bekleyen zamanlayıcıyı temizle
   useEffect(() => {
     return () => {
       if (advanceTimeoutRef.current) clearTimeout(advanceTimeoutRef.current);
-      if (clearTimeoutRef.current) clearTimeout(clearTimeoutRef.current);
     };
   }, []);
 
@@ -111,11 +114,14 @@ function Quiz() {
     // Eğer bir cevap seçildiyse ve bekleniyorsa, diğer butonlara tıklamayı engeller
     if (isWaiting) return;
 
+    const currentQuestion = questions[currentQ];
+    const answeredIndex = currentQ;
+
     setSelectedAnswer(selectedOption);
     setIsWaiting(true);
     answerLockRef.current = true;
+    answeredForRef.current = answeredIndex;
 
-    const currentQuestion = questions[currentQ];
     const isCorrect = selectedOption === currentQuestion.answer;
     
     if (isCorrect) {
@@ -131,22 +137,20 @@ function Quiz() {
       ]);
     }
     
-    // 1. AŞAMA: Renkleri temizle (soru HENÜZ değişmiyor)
+    // Tek aşamada: renk sıfırlama + soru ilerletme AYNI callback'te,
+    // böylece React tek bir render'da ikisini birden uygular —
+    // eski rengin ekranda tek kare bile kalma ihtimali yok.
     advanceTimeoutRef.current = setTimeout(() => {
       setSelectedAnswer(null);
       setIsWaiting(false);
+      answerLockRef.current = false;
+      answeredForRef.current = null;
 
-      // 2. AŞAMA: Renkler temizlendikten SONRA, bir sonraki karede soruyu değiştir.
-      // Bu küçük gecikme, eski renklerin yeni soruya sızmasını kesin olarak engeller.
-      clearTimeoutRef.current = setTimeout(() => {
-        answerLockRef.current = false;
-
-        if (currentQ + 1 < questions.length) {
-          setCurrentQ(currentQ + 1);
-        } else {
-          finishQuiz(isCorrect ? score + 1 : score);
-        }
-      }, 50);
+      if (currentQ + 1 < questions.length) {
+        setCurrentQ(currentQ + 1);
+      } else {
+        finishQuiz(isCorrect ? score + 1 : score);
+      }
     }, 1200);
   };
 
@@ -167,7 +171,6 @@ function Quiz() {
 
   const resetQuiz = () => {
     if (advanceTimeoutRef.current) clearTimeout(advanceTimeoutRef.current);
-    if (clearTimeoutRef.current) clearTimeout(clearTimeoutRef.current);
     setQuestions(buildShuffledQuestions());
     setCurrentQ(0);
     setScore(0);
@@ -177,6 +180,7 @@ function Quiz() {
     setMissedQuestions([]);
     setIsNewRecord(false);
     answerLockRef.current = false;
+    answeredForRef.current = null;
   };
 
   // Klavye kısayolları: 1-4 veya A-D ile cevap seçimi
@@ -234,8 +238,10 @@ function Quiz() {
     }
   };
 
+  // GÜVENLİK KİLİDİ burada devrede: cevap, ekrandaki soruya ait değilse
+  // (answeredForRef.current !== currentQ), asla renk uygulanmaz.
   const getButtonStyle = (option) => {
-    if (!selectedAnswer) return {}; 
+    if (!selectedAnswer || answeredForRef.current !== currentQ) return {};
 
     const isCorrectAnswer = option === questions[currentQ].answer;
     const isSelected = option === selectedAnswer;
@@ -388,7 +394,7 @@ function Quiz() {
                     className="quiz-option-btn"
                     onClick={() => handleAnswer(option)}
                     disabled={isWaiting} 
-                    style={{ ...getButtonStyle(option), transition: 'all 0.3s' }} 
+                    style={getButtonStyle(option)} 
                   >
                     <span className="option-letter">{['A', 'B', 'C', 'D'][idx]}</span>
                     {option}
