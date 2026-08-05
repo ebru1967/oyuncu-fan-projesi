@@ -4,39 +4,53 @@ import { activeNews } from '../data/newsData';
 
 function useDailyStreak() {
   const [streak, setStreak] = useState(0);
+  const [totalVisits, setTotalVisits] = useState(0);
 
   useEffect(() => {
-    const today = new Date().toDateString(); 
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    const yesterdayStr = yesterday.toDateString();
+    try {
+      const today = new Date().toDateString(); 
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yesterdayStr = yesterday.toDateString();
 
-    const lastVisit = localStorage.getItem('fc_lastVisitDate');
-    let currentStreak = parseInt(localStorage.getItem('fc_streakCount') || '0', 10);
+      const lastVisit = localStorage.getItem('fc_lastVisitDate');
+      let currentStreak = parseInt(localStorage.getItem('fc_streakCount') || '0', 10);
+      let currentTotal = parseInt(localStorage.getItem('fc_totalVisits') || '0', 10);
 
-    if (lastVisit === today) {
-      // Bugün zaten girilmiş, seriyi sabit tut
-      setStreak(currentStreak);
-    } else {
-      if (lastVisit === yesterdayStr) {
-        // Dün girilmiş, seriyi artır
-        currentStreak += 1;
+      if (lastVisit === today) {
+        // Bugün zaten girilmiş, seriyi ve toplamı sabit tut
+        setStreak(currentStreak);
+        setTotalVisits(currentTotal);
       } else {
-        // Seri bozulmuş veya ilk giriş, 1'den başlat
-        currentStreak = 1;
+        if (lastVisit === yesterdayStr) {
+          // Dün girilmiş, seriyi artır
+          currentStreak += 1;
+        } else {
+          // Seri bozulmuş veya ilk giriş, 1'den başlat
+          currentStreak = 1;
+        }
+        currentTotal += 1;
+
+        localStorage.setItem('fc_lastVisitDate', today);
+        localStorage.setItem('fc_streakCount', currentStreak.toString());
+        localStorage.setItem('fc_totalVisits', currentTotal.toString());
+
+        setStreak(currentStreak);
+        setTotalVisits(currentTotal);
       }
-      localStorage.setItem('fc_lastVisitDate', today);
-      localStorage.setItem('fc_streakCount', currentStreak.toString());
-      setStreak(currentStreak);
+    } catch (e) {
+      // localStorage erişilemezse (gizli sekme vb.) sessizce yok say
+      setStreak(0);
+      setTotalVisits(0);
     }
   }, []);
 
-  return streak;
+  return { streak, totalVisits };
 }
 
 function Home() {
   const location = useLocation();
-  const streakCount = useDailyStreak(); 
+  const { streak: streakCount, totalVisits } = useDailyStreak(); 
 
   useEffect(() => {
     if (location.hash === '#kronoloji') {
@@ -58,16 +72,20 @@ function Home() {
     15: '/yepyenii.jpeg', 
   };
 
+  // Doğum günü sayacı: saat/dakika farkının gün-atlama hatası yaratmaması için
+  // her iki tarih de gece yarısına (saatsiz) normalize ediliyor.
   const today = new Date();
-  const nextBirthday = new Date(today.getFullYear(), 9, 9); 
+  const todayDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
-  if (today > nextBirthday) {
-    nextBirthday.setFullYear(today.getFullYear() + 1);
+  let nextBirthday = new Date(todayDateOnly.getFullYear(), 9, 9);
+  if (todayDateOnly > nextBirthday) {
+    nextBirthday = new Date(todayDateOnly.getFullYear() + 1, 9, 9);
   }
 
-  const daysLeft = Math.ceil(
-    (nextBirthday - today) / (1000 * 60 * 60 * 24)
+  const daysLeft = Math.round(
+    (nextBirthday - todayDateOnly) / (1000 * 60 * 60 * 24)
   );
+  const isBirthdayToday = daysLeft === 0;
 
   return (
     <div className="home-wrapper animate-fade">
@@ -91,14 +109,27 @@ function Home() {
                 // DIGITAL MEMORY PROJECT
               </span>
 
-              <span className="archive-badge">
-                🎂 {daysLeft} GÜN KALDI
-              </span>
+              {isBirthdayToday ? (
+                <span className="archive-badge" style={{ backgroundColor: '#c9a35e', color: '#1a1a1a' }}>
+                  🎉 BUGÜN DOĞUM GÜNÜ!
+                </span>
+              ) : (
+                <span className="archive-badge">
+                  🎂 {daysLeft} GÜN KALDI
+                </span>
+              )}
 
               {/*GÜNLÜK SERİ ROZETİ */}
               {streakCount > 0 && (
                 <span className="archive-badge" style={{ backgroundColor: 'var(--accent-dark)', color: 'var(--bg-main)' }}>
                   🔥 {streakCount} GÜNLÜK SERİ
+                </span>
+              )}
+
+              {/* TOPLAM ZİYARET SİCİLİ */}
+              {totalVisits > 1 && (
+                <span className="archive-badge" style={{ opacity: 0.7 }}>
+                  📁 {totalVisits}. KAYIT ZİYARETİ
                 </span>
               )}
             </div>
