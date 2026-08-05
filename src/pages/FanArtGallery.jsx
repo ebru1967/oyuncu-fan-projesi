@@ -1,338 +1,356 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { FaPlay, FaTwitter, FaTiktok } from 'react-icons/fa';
 
+const artworks = [
+  { 
+    id: 1,
+    title: "Haktan & Aytek benzerliği.", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan", "Haktan Akarçeşme"],
+    coverImage: "/haktan.jpeg",
+    url: "https://x.com/i/status/2040734409280639229" 
+  },
+  { 
+    id: 2,
+    title: "Haktan & Aytek benzerliği vol2", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan", "Haktan Akarçeşme"],
+    coverImage: "/haktan2.jpeg",
+    url: "https://x.com/i/status/2061053121829200270" 
+  },
+  { 
+    id: 3,
+    title: "cıvıl cıvıl şerif psikolojik vakaya dönüşüyor.", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/psikolojikvaka.jpeg",
+    url: "https://x.com/i/status/2015398515061497897" 
+  },
+  { 
+    id: 4,
+    title: "abartılması gereken bir sahne.", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/abartilmasigerekensahne.jpeg",
+    url: "https://x.com/i/status/1995918721424990387" 
+  },
+  { 
+    id: 5,
+    title: "Şerif Furtuna tanıtım sahnesi.", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/tanitim.jpeg",
+    url: "https://x.com/i/status/2007423704167243996" 
+  },
+  { 
+    id: 6,
+    title: "Kaliteli oyuncu.", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/kaliteli.jpeg",
+    url: "https://x.com/i/status/2024070681986560381" 
+  },
+  { 
+    id: 7,
+    title: "Şerif Furtuna kaçış.", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/kacis.jpeg",
+    url: "https://x.com/i/status/2030022864431091722" 
+  },
+  { 
+    id: 8,
+    title: "Komik Şerif Furtuna kesitleri.", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/komik.jpeg",
+    url: "https://x.com/i/status/2004848306992849253" 
+  },
+  { 
+    id: 9,
+    title: "Şerif'in en büyük savaşı kendisi.'", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/enbuyuksavasi.jpeg",
+    url: "https://x.com/i/status/2002481223067972005" 
+  },
+  { 
+    id: 10,
+    title: "Humor", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/humor.jpeg",
+    url: "https://x.com/i/status/2004899100622545049" 
+  },
+  { 
+    id: 11,
+    title: "Kendine iyi bak.", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/iyibak.jpeg",
+    url: "https://x.com/i/status/2005593054887952852" 
+  },
+  { 
+    id: 12,
+    title: "Şerif Furtuna fictional bir karakter.", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/fic.jpeg",
+    url: "https://x.com/i/status/2006710350092087329" 
+  },
+  { 
+    id: 13,
+    title: "different fonts.", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/dif.jpeg",
+    url: "https://x.com/i/status/2007830234448466401" 
+  },
+  { 
+    id: 14,
+    title: "heathens.", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/heathens.jpeg",
+    url: "https://x.com/i/status/2008636494764708149" 
+  },
+  { 
+    id: 15,
+    title: "Ghetto Şerif Furtuna.", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/savas.jpeg",
+    url: "https://x.com/i/status/2009939462537564226" 
+  },
+  { 
+    id: 16,
+    title: "Vuruldum ama ölmedumki.", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/vuruldum.jpeg",
+    url: "https://x.com/i/status/2009999415973655005" 
+  },
+  { 
+    id: 17,
+    title: "Bir şehir sanki karşında ⛓️💥", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/sehir.jpeg",
+    url: "https://x.com/LunarisOne/status/2043014450945446061" 
+  },
+  { 
+    id: 18,
+    title: "yalnızlık.", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/yalniz.jpeg",
+    url: "https://x.com/LunarisOne/status/2040200706276171836" 
+  },
+  { 
+    id: 19,
+    title: "sabaha kadar namaz kıl ne fayda..", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/namaz.jpeg",
+    url: "https://x.com/chicolw/status/2040006537016435055" 
+  },
+  { 
+    id: 20,
+    title: "kuyuya atılınca hakkını helal etmediği annesini sayıklıyor 🥲", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/kuyu.jpeg",
+    url: "https://x.com/chicolw/status/2048077231046471823" 
+  },
+  { 
+    id: 21,
+    title: "şerif furtuna geliyor 🚶🏻şerif furtuna gidiyor 🚶🏻‍➡️", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/geliyor.jpeg",
+    url: "https://x.com/chicolw/status/2048434533008060601" 
+  },
+  { 
+    id: 22,
+    title: "inadına inadına darbuka.", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/durak.jpeg",
+    url: "https://x.com/chicolw/status/2052468338274574821" 
+  },
+  { 
+    id: 23,
+    title: "çay.", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/cay.jpeg",
+    url: "https://x.com/chicolw/status/2057368402587512846" 
+  },
+  { 
+    id: 24,
+    title: "Aytek Şayan resitali.", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/omg.jpeg",
+    url: "https://x.com/chicolw/status/2061118089786179832" 
+  },
+  { 
+    id: 25,
+    title: "bordo gömlek.", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/gomlek.jpeg",
+    url: "https://x.com/chicolw/status/2061526675251237038" 
+  },
+  { 
+    id: 26,
+    title: "şerif furtuna core", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/core.jpeg",
+    url: "https://x.com/chicolw/status/2040354168334950852" 
+  },
+  { 
+    id: 27,
+    title: "resital.", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/resital.jpeg",
+    url: "https://x.com/ittsmiiaa/status/2050590625096184252" 
+  },
+  { 
+    id: 28,
+    title: "cehenneme çevireceğim hayatınızı…", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/cehennem.jpeg",
+    url: "https://x.com/ittsmiiaa/status/2043311920325726392" 
+  },
+  { 
+    id: 29,
+    title: "Tiyatro Günü.", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/tiyatro.jpeg",
+    url: "https://x.com/ittsmiiaa/status/2037492224167190921" 
+  },
+  { 
+    id: 30,
+    title: "AYTEK ŞAYAN.", 
+    platform: "X",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/aytek.jpeg",
+    url: "https://x.com/ittsmiiaa/status/2022585339202933183" 
+  },
+  { 
+    id: 31,
+    title: "Şerif & Eleni", 
+    platform: "TikTok",
+    tags: ["Şerif Furtuna", "Eleni"],
+    coverImage: "/oyy.jpeg",
+    url: "https://vt.tiktok.com/ZSQ8Vb6JR/" 
+  },
+  { 
+    id: 32,
+    title: "harmony.", 
+    platform: "TikTok",
+    tags: ["Şerif Furtuna", "Eleni"],
+    coverImage: "/harmony.jpeg",
+    url: "https://vt.tiktok.com/ZSQ8V4X5x/" 
+  },
+  { 
+    id: 33,
+    title: "Şerif Karizma Furtuna.", 
+    platform: "TikTok",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/karizma2.jpeg",
+    url: "https://vt.tiktok.com/ZSQ8VGK8q/" 
+  },
+  { 
+    id: 34,
+    title: "Göz kırpma.", 
+    platform: "TikTok",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/goz.jpeg",
+    url: "https://vt.tiktok.com/ZSQ8VWmtB/" 
+  },
+  { 
+    id: 35,
+    title: "Haktan & Aytek", 
+    platform: "TikTok",
+    tags: ["Şerif Furtuna", "Aytek Şayan" , "Haktan Akarçeşme"],
+    coverImage: "/2haktan.jpeg",
+    url: "https://vt.tiktok.com/ZSQ8Vqe2A/" 
+  },
+  { 
+    id: 36,
+    title: "Şerif & Eleni", 
+    platform: "TikTok",
+    tags: ["Şerif Furtuna", "Aytek Şayan" , "Eleni"],
+    coverImage: "/eleni.jpeg",
+    url: "https://vt.tiktok.com/ZSQ8V5qAL/" 
+  },
+   { 
+    id: 37,
+    title: "darbuka", 
+    platform: "TikTok",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/darbuka.jpeg",
+    url: "https://vt.tiktok.com/ZSQ8q2wnA/" 
+  },
+   { 
+    id: 38,
+    title: "hadi la ordan", 
+    platform: "TikTok",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/hadi.jpeg",
+    url: "https://vt.tiktok.com/ZSQ8VEAag/" 
+  },
+   { 
+    id: 39,
+    title: "Karizma.", 
+    platform: "TikTok",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/karizma.jpeg",
+    url: "https://vt.tiktok.com/ZSQ8qNegS/" 
+  },
+   { 
+    id: 40,
+    title: "Sadece sevilmek istedim.", 
+    platform: "TikTok",
+    tags: ["Şerif Furtuna", "Aytek Şayan"],
+    coverImage: "/sadece.jpeg",
+    url: "https://vt.tiktok.com/ZSQ8qddaq/" 
+  }
+];
+
+// Doğru (yansız) karıştırma: sort(() => Math.random() - 0.5) yaygın bir hatadır —
+// tarayıcının sıralama algoritmasına bağlı olarak bazı öğeleri sistematik olarak
+// öne/arkaya iter, gerçekten eşit olasılıklı bir karışım vermez. Fisher-Yates kullanıyoruz.
+function shuffleArray(array) {
+  const result = [...array];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+const PLATFORM_FILTERS = ['TÜMÜ', 'X', 'TikTok'];
+
 function FanArtGallery() {
-  const artworks = [
-    { 
-      id: 1,
-      title: "Haktan & Aytek benzerliği.", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan", "Haktan Akarçeşme"],
-      coverImage: "/haktan.jpeg",
-      url: "https://x.com/i/status/2040734409280639229" 
-    },
-    { 
-      id: 2,
-      title: "Haktan & Aytek benzerliği vol2", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan", "Haktan Akarçeşme"],
-      coverImage: "/haktan2.jpeg",
-      url: "https://x.com/i/status/2061053121829200270" 
-    },
-    { 
-      id: 3,
-      title: "cıvıl cıvıl şerif psikolojik vakaya dönüşüyor.", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/psikolojikvaka.jpeg",
-      url: "https://x.com/i/status/2015398515061497897" 
-    },
-    { 
-      id: 4,
-      title: "abartılması gereken bir sahne.", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/abartilmasigerekensahne.jpeg",
-      url: "https://x.com/i/status/1995918721424990387" 
-    },
-    { 
-      id: 5,
-      title: "Şerif Furtuna tanıtım sahnesi.", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/tanitim.jpeg",
-      url: "https://x.com/i/status/2007423704167243996" 
-    },
-    { 
-      id: 6,
-      title: "Kaliteli oyuncu.", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/kaliteli.jpeg",
-      url: "https://x.com/i/status/2024070681986560381" 
-    },
-    { 
-      id: 7,
-      title: "Şerif Furtuna kaçış.", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/kacis.jpeg",
-      url: "https://x.com/i/status/2030022864431091722" 
-    },
-    { 
-      id: 8,
-      title: "Komik Şerif Furtuna kesitleri.", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/komik.jpeg",
-      url: "https://x.com/i/status/2004848306992849253" 
-    },
-    { 
-      id: 9,
-      title: "Şerif'in en büyük savaşı kendisi.'", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/enbuyuksavasi.jpeg",
-      url: "https://x.com/i/status/2002481223067972005" 
-    },
-    { 
-      id: 10,
-      title: "Humor", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/humor.jpeg",
-      url: "https://x.com/i/status/2004899100622545049" 
-    },
-    { 
-      id: 11,
-      title: "Kendine iyi bak.", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/iyibak.jpeg",
-      url: "https://x.com/i/status/2005593054887952852" 
-    },
-    { 
-      id: 12,
-      title: "Şerif Furtuna fictional bir karakter.", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/fic.jpeg",
-      url: "https://x.com/i/status/2006710350092087329" 
-    },
-    { 
-      id: 13,
-      title: "different fonts.", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/dif.jpeg",
-      url: "https://x.com/i/status/2007830234448466401" 
-    },
-    { 
-      id: 14,
-      title: "heathens.", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/heathens.jpeg",
-      url: "https://x.com/i/status/2008636494764708149" 
-    },
-    { 
-      id: 15,
-      title: "Ghetto Şerif Furtuna.", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/savas.jpeg",
-      url: "https://x.com/i/status/2009939462537564226" 
-    },
-    { 
-      id: 16,
-      title: "Vuruldum ama ölmedumki.", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/vuruldum.jpeg",
-      url: "https://x.com/i/status/2009999415973655005" 
-    },
-    { 
-      id: 17,
-      title: "Bir şehir sanki karşında ⛓️💥", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/sehir.jpeg",
-      url: "https://x.com/LunarisOne/status/2043014450945446061" 
-    },
-    { 
-      id: 18,
-      title: "yalnızlık.", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/yalniz.jpeg",
-      url: "https://x.com/LunarisOne/status/2040200706276171836" 
-    },
-    { 
-      id: 19,
-      title: "sabaha kadar namaz kıl ne fayda..", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/namaz.jpeg",
-      url: "https://x.com/chicolw/status/2040006537016435055" 
-    },
-    { 
-      id: 20,
-      title: "kuyuya atılınca hakkını helal etmediği annesini sayıklıyor 🥲", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/kuyu.jpeg",
-      url: "https://x.com/chicolw/status/2048077231046471823" 
-    },
-    { 
-      id: 21,
-      title: "şerif furtuna geliyor 🚶🏻şerif furtuna gidiyor 🚶🏻‍➡️", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/geliyor.jpeg",
-      url: "https://x.com/chicolw/status/2048434533008060601" 
-    },
-    { 
-      id: 22,
-      title: "inadına inadına darbuka.", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/durak.jpeg",
-      url: "https://x.com/chicolw/status/2052468338274574821" 
-    },
-    { 
-      id: 23,
-      title: "çay.", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/cay.jpeg",
-      url: "https://x.com/chicolw/status/2057368402587512846" 
-    },
-    { 
-      id: 24,
-      title: "Aytek Şayan resitali.", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/omg.jpeg",
-      url: "https://x.com/chicolw/status/2061118089786179832" 
-    },
-    { 
-      id: 25,
-      title: "bordo gömlek.", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/gomlek.jpeg",
-      url: "https://x.com/chicolw/status/2061526675251237038" 
-    },
-    { 
-      id: 26,
-      title: "şerif furtuna core", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/core.jpeg",
-      url: "https://x.com/chicolw/status/2040354168334950852" 
-    },
-    { 
-      id: 27,
-      title: "resital.", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/resital.jpeg",
-      url: "https://x.com/ittsmiiaa/status/2050590625096184252" 
-    },
-    { 
-      id: 28,
-      title: "cehenneme çevireceğim hayatınızı…", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/cehennem.jpeg",
-      url: "https://x.com/ittsmiiaa/status/2043311920325726392" 
-    },
-    { 
-      id: 29,
-      title: "Tiyatro Günü.", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/tiyatro.jpeg",
-      url: "https://x.com/ittsmiiaa/status/2037492224167190921" 
-    },
-    { 
-      id: 30,
-      title: "AYTEK ŞAYAN.", 
-      platform: "X",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/aytek.jpeg",
-      url: "https://x.com/ittsmiiaa/status/2022585339202933183" 
-    },
-    { 
-      id: 31,
-      title: "Şerif & Eleni", 
-      platform: "TikTok",
-      tags: ["Şerif Furtuna", "Eleni"],
-      coverImage: "/oyy.jpeg",
-      url: "https://vt.tiktok.com/ZSQ8Vb6JR/" 
-    },
-    { 
-      id: 32,
-      title: "harmony.", 
-      platform: "TikTok",
-      tags: ["Şerif Furtuna", "Eleni"],
-      coverImage: "/harmony.jpeg",
-      url: "https://vt.tiktok.com/ZSQ8V4X5x/" 
-    },
-    { 
-      id: 33,
-      title: "Şerif Karizma Furtuna.", 
-      platform: "TikTok",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/karizma2.jpeg",
-      url: "https://vt.tiktok.com/ZSQ8VGK8q/" 
-    },
-    { 
-      id: 34,
-      title: "Göz kırpma.", 
-      platform: "TikTok",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/goz.jpeg",
-      url: "https://vt.tiktok.com/ZSQ8VWmtB/" 
-    },
-    { 
-      id: 35,
-      title: "Haktan & Aytek", 
-      platform: "TikTok",
-      tags: ["Şerif Furtuna", "Aytek Şayan" , "Haktan Akarçeşme"],
-      coverImage: "/2haktan.jpeg",
-      url: "https://vt.tiktok.com/ZSQ8Vqe2A/" 
-    },
-    { 
-      id: 36,
-      title: "Şerif & Eleni", 
-      platform: "TikTok",
-      tags: ["Şerif Furtuna", "Aytek Şayan" , "Eleni"],
-      coverImage: "/eleni.jpeg",
-      url: "https://vt.tiktok.com/ZSQ8V5qAL/" 
-    },
-     { 
-      id: 37,
-      title: "darbuka", 
-      platform: "TikTok",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/darbuka.jpeg",
-      url: "https://vt.tiktok.com/ZSQ8q2wnA/" 
-    },
-     { 
-      id: 38,
-      title: "hadi la ordan", 
-      platform: "TikTok",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/hadi.jpeg",
-      url: "https://vt.tiktok.com/ZSQ8VEAag/" 
-    },
-     { 
-      id: 39,
-      title: "Karizma.", 
-      platform: "TikTok",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/karizma.jpeg",
-      url: "https://vt.tiktok.com/ZSQ8qNegS/" 
-    },
-     { 
-      id: 40,
-      title: "Sadece sevilmek istedim.", 
-      platform: "TikTok",
-      tags: ["Şerif Furtuna", "Aytek Şayan"],
-      coverImage: "/sadece.jpeg",
-      url: "https://vt.tiktok.com/ZSQ8qddaq/" 
-    }
-  ];
+  // useEffect yerine lazy state initializer: ilk render'da boş/karışmamış
+  // liste görünüp hemen ardından karışmış haliyle değişmesi (flash) önlenir.
+  const [shuffledArtworks] = useState(() => shuffleArray(artworks));
+  const [activeFilter, setActiveFilter] = useState('TÜMÜ');
+  const [brokenImages, setBrokenImages] = useState({});
 
-  // Kartları karıştırmak için State oluşturuyoruz
-  const [shuffledArtworks, setShuffledArtworks] = useState([]);
+  const visibleArtworks =
+    activeFilter === 'TÜMÜ' ? shuffledArtworks : shuffledArtworks.filter((art) => art.platform === activeFilter);
 
-  // Sayfa yüklendiğinde artworks listesini rastgele karıştırır
-  useEffect(() => {
-    const shuffled = [...artworks].sort(() => Math.random() - 0.5);
-    setShuffledArtworks(shuffled);
-  }, []);
+  const handleImageError = (id) => {
+    setBrokenImages((prev) => ({ ...prev, [id]: true }));
+  };
 
   return (
     <div className="container animate-fade" style={{ padding: '4rem 0', minHeight: '80vh' }}>
@@ -385,6 +403,21 @@ function FanArtGallery() {
           height: 100%;
           object-fit: cover; 
           transition: transform 0.5s ease, filter 0.5s ease;
+        }
+
+        .cover-image-fallback {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: var(--font-heading);
+          font-size: 0.75rem;
+          letter-spacing: 1px;
+          opacity: 0.5;
+          color: var(--accent-dark);
+          text-align: center;
+          padding: 0 1rem;
         }
 
         .play-overlay {
@@ -440,7 +473,6 @@ function FanArtGallery() {
           color: var(--bg-main);
         }
 
-        /* Updated Card Title CSS */
         .art-card h3 {
           color: var(--accent-dark);
           margin-bottom: 1.5rem;
@@ -520,6 +552,31 @@ function FanArtGallery() {
           margin-left: 8px;
           animation: pulseLive 1.5s infinite;
         }
+
+        .filter-row {
+          display: flex;
+          justify-content: center;
+          gap: 0.8rem;
+          margin-top: 2rem;
+          flex-wrap: wrap;
+        }
+        .filter-btn {
+          background: transparent;
+          border: 1px solid rgba(84, 107, 65, 0.3);
+          color: var(--text-main);
+          padding: 0.5rem 1.4rem;
+          border-radius: 20px;
+          font-family: var(--font-heading);
+          font-size: 0.85rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+        .filter-btn:hover { border-color: var(--accent-dark); }
+        .filter-btn.active {
+          background: var(--accent-dark);
+          border-color: var(--accent-dark);
+          color: var(--bg-main);
+        }
       `}</style>
 
       <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
@@ -530,40 +587,62 @@ function FanArtGallery() {
         <p style={{ opacity: 0.8, maxWidth: '600px', margin: '0 auto', lineHeight: '1.6' }}>
           Topluluğumuzun yaratıcı gözünden Aytek Şayan editleri ve video kurguları.
         </p>
+
+        <div className="filter-row">
+          {PLATFORM_FILTERS.map((f) => (
+            <button
+              key={f}
+              className={`filter-btn ${activeFilter === f ? 'active' : ''}`}
+              onClick={() => setActiveFilter(f)}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
       </div>
       
       <div className="gallery-grid">
-        
-      {/* 1. SIRADA HER ZAMAN NO CONTEXT AYTEK KARTI OLACAK */}
-        <div className="art-card no-context-card">
-          {/* KAPAK FOTOĞRAFI */}
-          <div className="cover-image-container">
-            <img 
-              src="/kapak.jpeg" 
-              alt="No Context Aytek" 
-              className="cover-image" 
-              style={{ objectPosition: 'center' }}
-            />
+        {activeFilter === 'TÜMÜ' && (
+          <div className="art-card no-context-card">
+            <div className="cover-image-container">
+              <img 
+                src="/kapak.jpeg" 
+                alt="No Context Aytek" 
+                className="cover-image" 
+                style={{ objectPosition: 'center' }}
+                loading="lazy"
+              />
+            </div>
+
+            <h3 style={{ color: 'var(--accent-dark)', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)', fontSize: '1.2rem', minHeight: 'auto', display: 'block' }}>
+              NO CONTEXT AYTEK
+            </h3>
+            <p style={{ fontSize: '0.85rem', opacity: 0.8, marginBottom: '1.5rem', lineHeight: '1.5', minHeight: '40px' }}>
+              Aytek Şayan'ın en ikonik anlarının kesitleri. 
+            </p>
+            <a href="https://x.com/nocontextaytek" target="_blank" rel="noreferrer" className="watch-link" style={{ marginTop: 'auto' }}>
+              <button className="play-btn" style={{ borderStyle: 'dashed' }}>
+                <FaTwitter size={14} /> SAYFAYA GİT
+              </button>
+            </a>
           </div>
+        )}
 
-          <h3 style={{ color: 'var(--accent-dark)', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)', fontSize: '1.2rem', minHeight: 'auto', display: 'block' }}>
-            NO CONTEXT AYTEK
-          </h3>
-          <p style={{ fontSize: '0.85rem', opacity: 0.8, marginBottom: '1.5rem', lineHeight: '1.5', minHeight: '40px' }}>
-            Aytek Şayan'ın en ikonik anlarının kesitleri. 
-          </p>
-          <a href="https://x.com/nocontextaytek" target="_blank" rel="noreferrer" className="watch-link" style={{ marginTop: 'auto' }}>
-            <button className="play-btn" style={{ borderStyle: 'dashed' }}>
-              <FaTwitter size={14} /> SAYFAYA GİT
-            </button>
-          </a>
-        </div>
-
-        {/* 2. SIRADAN İTİBAREN DİĞER KARTLAR KARIŞIK OLARAK LİSTELENECEK */}
-        {shuffledArtworks.map((art) => (
+        {visibleArtworks.map((art) => (
           <div key={art.id} className="art-card">
             <div className="cover-image-container">
-              <img src={art.coverImage} alt={art.title} className="cover-image" />
+              {brokenImages[art.id] ? (
+                <div className="cover-image-fallback">{art.title}</div>
+              ) : (
+                <img
+                  src={art.coverImage}
+                  alt={art.title}
+                  className="cover-image"
+                  loading="lazy"
+                  decoding="async"
+                  onError={() => handleImageError(art.id)}
+                />
+              )}
               <div className="play-overlay">
                 <FaPlay size={16} style={{ marginLeft: '4px' }} />
               </div>
@@ -587,7 +666,6 @@ function FanArtGallery() {
             </a>
           </div>
         ))}
-
       </div>
     </div>
   );

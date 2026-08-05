@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { archivePhotos } from '../data/photoData'; 
+import { archivePhotos } from '../data/photoData';
+
+// Doğru (yansız) karıştırma: sort(() => Math.random() - 0.5) sistematik olarak
+// bazı öğeleri kayırır, gerçekten eşit olasılıklı bir karışım vermez.
+function shuffleArray(array) {
+  const result = [...array];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
 
 function GorselHafiza() {
   const [cards, setCards] = useState([]);
@@ -9,20 +20,20 @@ function GorselHafiza() {
   const [disabled, setDisabled] = useState(false);
   const [matches, setMatches] = useState(0);
   const [isWin, setIsWin] = useState(false);
+  const [bestTurns, setBestTurns] = useState(null);
 
-  // Kartları karıştır ve oyunu başlat
   const shuffleCards = () => {
-    // 1. archivePhotos içindeki fotoğraflardan rastgele 8 tanesini seçiyoruz
-    const shuffledPool = [...archivePhotos].sort(() => Math.random() - 0.5);
-    const selectedImages = shuffledPool.slice(0, 8).map(img => ({ 
-      src: img.url, 
-      matched: false 
+    const poolSize = Math.min(8, archivePhotos.length);
+    const shuffledPool = shuffleArray(archivePhotos);
+    const selectedImages = shuffledPool.slice(0, poolSize).map((img) => ({
+      src: img.url,
+      matched: false,
     }));
 
-    // 2. Seçilen 8 fotoğrafı ikiyle çarp (16 kart yap) ve tekrar karıştır
-    const shuffledCards = [...selectedImages, ...selectedImages]
-      .sort(() => Math.random() - 0.5)
-      .map((card) => ({ ...card, id: Math.random() }));
+    const shuffledCards = shuffleArray([...selectedImages, ...selectedImages]).map((card) => ({
+      ...card,
+      id: Math.random(),
+    }));
 
     setChoiceOne(null);
     setChoiceTwo(null);
@@ -32,73 +43,78 @@ function GorselHafiza() {
     setIsWin(false);
   };
 
-  // Oyun sayfaya ilk girildiğinde başlasın
   useEffect(() => {
     shuffleCards();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Kart seçimi
   const handleChoice = (card) => {
     if (!disabled && !card.matched && card.id !== choiceOne?.id) {
       choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
     }
   };
 
-  // İki kart seçildiğinde eşleşmeyi kontrol et
+  const handleKeyDown = (e, card) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleChoice(card);
+    }
+  };
+
   useEffect(() => {
     if (choiceOne && choiceTwo) {
       setDisabled(true);
 
       if (choiceOne.src === choiceTwo.src) {
-        // EŞLEŞTİ!
-        setCards((prevCards) => {
-          return prevCards.map((card) => {
+        setCards((prevCards) =>
+          prevCards.map((card) => {
             if (card.src === choiceOne.src) {
               return { ...card, matched: true, isJustMatched: true };
             }
             return card;
-          });
-        });
+          })
+        );
         setMatches((prev) => prev + 1);
         setTimeout(() => resetTurn(), 1000);
       } else {
-        // EŞLEŞMEDİ!
-        setCards((prevCards) => {
-          return prevCards.map(card => {
+        setCards((prevCards) =>
+          prevCards.map((card) => {
             if (card.id === choiceOne.id || card.id === choiceTwo.id) {
               return { ...card, isShake: true };
             }
             return card;
-          });
-        });
+          })
+        );
 
         setTimeout(() => resetTurn(), 1200);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [choiceOne, choiceTwo]);
 
-  // Turu sıfırla ve animasyon sınıflarını temizle
   const resetTurn = () => {
-    setCards(prevCards => prevCards.map(card => ({ ...card, isJustMatched: false, isShake: false })));
+    setCards((prevCards) => prevCards.map((card) => ({ ...card, isJustMatched: false, isShake: false })));
     setChoiceOne(null);
     setChoiceTwo(null);
     setTurns((prevTurns) => prevTurns + 1);
     setDisabled(false);
   };
 
-  // Kazanma Durumunu Kontrol Et
   useEffect(() => {
     if (matches === 8) {
       setTimeout(() => {
         setIsWin(true);
+        setTurns((currentTurns) => {
+          setBestTurns((prevBest) => (prevBest === null ? currentTurns : Math.min(prevBest, currentTurns)));
+          return currentTurns;
+        });
       }, 500);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [matches]);
 
   return (
     <div className="press-editorial-wrapper animate-fade" style={{ paddingBottom: '4rem' }} lang="tr">
-      
-      {/* ÖZEL CSS STİLLERİ */}
       <style>{`
         .memory-grid {
           display: grid;
@@ -122,6 +138,7 @@ function GorselHafiza() {
         .memory-card.flipped .card-inner { transform: rotateY(180deg); }
         .memory-card.matched-pulse { animation: pulseMatch 0.5s ease-in-out; }
         .memory-card.mismatch-shake { animation: shakeError 0.5s ease-in-out; }
+        .memory-card:focus-visible { outline: 2px solid var(--accent-dark); outline-offset: 4px; border-radius: 8px; }
 
         .card-inner {
           position: absolute;
@@ -176,8 +193,6 @@ function GorselHafiza() {
       `}</style>
 
       <div className="container">
-        
-        {/* HİZALAMA DÜZELTİLDİ: paddingTop: '0', marginTop: '-3rem' EKLENDİ */}
         <div className="section-header-editorial" style={{ paddingTop: '0', marginTop: '-3rem', marginBottom: '3rem', textAlign: 'center' }}>
           <span className="archive-badge" style={{ display: 'inline-block', marginBottom: '1rem' }}>// İNTERAKTİF ARŞİV</span>
           <h1 className="editorial-title" style={{ textTransform: 'none' }}>GÖRSEL HAFIZA</h1>
@@ -185,10 +200,12 @@ function GorselHafiza() {
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '3rem', marginBottom: '2rem', fontFamily: 'var(--font-heading)', fontWeight: 'bold' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '3rem', marginBottom: '2rem', fontFamily: 'var(--font-heading)', fontWeight: 'bold', flexWrap: 'wrap' }}>
             <div style={{ fontSize: '1.2rem', color: 'var(--text-main)' }}>HAMLE: <span style={{ fontSize: '1.8rem' }}>{turns}</span></div>
             <div style={{ fontSize: '1.2rem', color: 'var(--accent-dark)' }}>EŞLEŞME: <span style={{ fontSize: '1.8rem' }}>{matches}/8</span></div>
+            {bestTurns !== null && (
+              <div style={{ fontSize: '1.2rem', color: 'var(--accent-dark)', opacity: 0.7 }}>EN İYİ: <span style={{ fontSize: '1.8rem' }}>{bestTurns}</span></div>
+            )}
           </div>
 
           {isWin && (
@@ -198,25 +215,30 @@ function GorselHafiza() {
             </div>
           )}
 
-          {/* KARTLARIN GRID YAPISI */}
           <div className="memory-grid" style={{ width: '100%', marginBottom: '3rem' }}>
             {cards.map((card) => {
-              const isFlipped = card === choiceOne || card === choiceTwo || card.matched;
+              // Referans eşitliği yerine id ile karşılaştırıyoruz: eşleşmeyen kartlara
+              // isShake eklerken kart nesneleri yeniden oluşturuluyor (spread ile kopya),
+              // bu da choiceOne/choiceTwo referanslarını "eskitir" ve kartlar sallanma
+              // animasyonu sırasında anında kapanırdı. id karşılaştırması bunu düzeltir.
+              const isFlipped = card.id === choiceOne?.id || card.id === choiceTwo?.id || card.matched;
               return (
-                <div 
-                  className={`memory-card ${isFlipped ? 'flipped' : ''} ${card.isJustMatched ? 'matched-pulse' : ''} ${card.isShake ? 'mismatch-shake' : ''}`} 
-                  key={card.id} 
+                <div
+                  className={`memory-card ${isFlipped ? 'flipped' : ''} ${card.isJustMatched ? 'matched-pulse' : ''} ${card.isShake ? 'mismatch-shake' : ''}`}
+                  key={card.id}
+                  role="button"
+                  tabIndex={disabled || card.matched ? -1 : 0}
+                  aria-label="Arşiv kartı"
                   onClick={() => handleChoice(card)}
+                  onKeyDown={(e) => handleKeyDown(e, card)}
                   style={{ cursor: disabled || card.matched ? 'default' : 'pointer' }}
                 >
                   <div className="card-inner">
-                    {/* ÖN YÜZ (FOTOĞRAF) */}
                     <div className="card-front">
                       <img src={card.src} alt="Aytek Arşiv" style={{ width: '100%', height: '100%', objectFit: 'cover' }} draggable="false" />
                       {card.matched && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)' }}></div>}
                     </div>
 
-                    {/* ARKA YÜZ (KAPALI HALİ) */}
                     <div className="card-back">
                       <div style={{ width: '3px', height: '40%', backgroundColor: 'var(--accent-dark)', opacity: 0.3, borderRadius: '5px' }}></div>
                     </div>
@@ -229,7 +251,6 @@ function GorselHafiza() {
           <button onClick={shuffleCards} className="editorial-link-btn-anchor reset-btn">
             YENİDEN BAŞLAT ⟲
           </button>
-
         </div>
       </div>
     </div>
