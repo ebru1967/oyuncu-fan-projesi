@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 function PressInterviews() {
   const [filter, setFilter] = useState('all'); 
   const [expandedId, setExpandedId] = useState(null); 
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortOrder, setSortOrder] = useState('newest'); // 'newest' | 'oldest'
+  const cardRefs = useRef({});
 
   const interviewData = [
     {
@@ -690,27 +693,55 @@ function PressInterviews() {
     return new Date(0); 
   };
 
+  const getReadingTime = (item) => {
+    if (item.type !== 'written' || !item.qaList) return null;
+    const wordCount = item.qaList.reduce((sum, block) => {
+      const qWords = block.q ? block.q.split(/\s+/).length : 0;
+      const aWords = block.a ? block.a.split(/\s+/).length : 0;
+      return sum + qWords + aWords;
+    }, 0);
+    return Math.max(1, Math.round(wordCount / 200));
+  };
+
+  const matchesSearch = (item, query) => {
+    if (!query.trim()) return true;
+    const q = query.trim().toLocaleLowerCase('tr-TR');
+    return (
+      item.title.toLocaleLowerCase('tr-TR').includes(q) ||
+      item.summary.toLocaleLowerCase('tr-TR').includes(q) ||
+      item.source.toLocaleLowerCase('tr-TR').includes(q)
+    );
+  };
+
   const filteredInterviews = interviewData
     .filter(item => {
-      if (filter === 'all') return true;
-      return item.type === filter;
+      if (filter !== 'all' && item.type !== filter) return false;
+      return matchesSearch(item, searchQuery);
     })
-    .sort((a, b) => parseDate(b.date) - parseDate(a.date));
+    .sort((a, b) => {
+      const diff = parseDate(b.date) - parseDate(a.date);
+      return sortOrder === 'newest' ? diff : -diff;
+    });
 
   const toggleExpand = (id) => {
-    setExpandedId(expandedId === id ? null : id);
+    const willExpand = expandedId !== id;
+    setExpandedId(willExpand ? id : null);
+    if (willExpand) {
+      setTimeout(() => {
+        cardRefs.current[id]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
   };
 
   return (
     <div className="press-editorial-wrapper animate-fade">
       
-      {/* YENİ EKLENEN CSS BLOĞU: PREMIUM SİCİL ODASI TASARIMI */}
       <style>{`
         .press-filters {
           display: flex;
           justify-content: center;
           gap: 1rem;
-          margin-bottom: 3rem;
+          margin-bottom: 2rem;
           flex-wrap: wrap;
         }
 
@@ -742,6 +773,63 @@ function PressInterviews() {
           box-shadow: 0 5px 15px rgba(84, 107, 65, 0.2);
         }
 
+        .press-toolbar {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          align-items: center;
+          gap: 1rem;
+          margin-bottom: 2.5rem;
+        }
+
+        .press-search-input {
+          width: 100%;
+          max-width: 340px;
+          padding: 0.7rem 1.1rem;
+          border-radius: 30px;
+          border: 1px dashed rgba(84, 107, 65, 0.4);
+          background: transparent;
+          font-family: var(--font-body);
+          font-size: 0.85rem;
+          color: var(--accent-dark);
+          outline: none;
+          transition: border-color 0.2s ease;
+        }
+
+        .press-search-input:focus { border-color: var(--accent-dark); border-style: solid; }
+        .press-search-input::placeholder { color: rgba(84, 107, 65, 0.5); }
+
+        .sort-toggle-btn {
+          background: transparent;
+          border: 1px solid rgba(84, 107, 65, 0.3);
+          color: var(--accent-dark);
+          padding: 0.6rem 1.1rem;
+          font-family: var(--font-heading);
+          font-size: 0.75rem;
+          font-weight: 700;
+          border-radius: 30px;
+          cursor: pointer;
+          white-space: nowrap;
+          transition: all 0.2s ease;
+        }
+
+        .sort-toggle-btn:hover { border-color: var(--accent-dark); background: rgba(84, 107, 65, 0.05); }
+
+        .press-result-count {
+          text-align: center;
+          font-size: 0.8rem;
+          opacity: 0.6;
+          font-family: monospace;
+          margin-bottom: 2rem;
+        }
+
+        .reading-time-badge {
+          font-size: 0.72rem;
+          opacity: 0.6;
+          font-family: monospace;
+          margin-left: 0.7rem;
+        }
+
         .press-archive-grid {
           display: grid;
           grid-template-columns: 1fr;
@@ -750,7 +838,6 @@ function PressInterviews() {
           margin: 0 auto;
         }
 
-        /* 3D KART HİSSİYATI */
         .press-archive-card {
           position: relative;
           background: linear-gradient(145deg, var(--bg-main) 0%, rgba(84, 107, 65, 0.02) 100%);
@@ -760,6 +847,7 @@ function PressInterviews() {
           border-left: 5px solid var(--accent-dark);
           transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
           overflow: hidden;
+          scroll-margin-top: 100px;
         }
 
         .press-archive-card:hover {
@@ -779,7 +867,6 @@ function PressInterviews() {
           padding-bottom: 0.8rem;
         }
 
-        /* ROZET (BADGE) TASARIMI */
         .press-source {
           background: rgba(84, 107, 65, 0.1);
           color: var(--accent-dark);
@@ -812,7 +899,6 @@ function PressInterviews() {
           margin-bottom: 2rem;
         }
 
-        /* MODERN BUTONLAR */
         .editorial-link-btn {
           background: transparent;
           border: 1px solid var(--accent-dark);
@@ -856,7 +942,6 @@ function PressInterviews() {
           box-shadow: 0 6px 15px rgba(84, 107, 65, 0.25);
         }
 
-        /* YENİ RÖPORTAJ OKUMA ALANI (Transcript Style) */
         .press-full-text-area {
           margin-top: 2rem;
           padding: 2rem;
@@ -885,7 +970,7 @@ function PressInterviews() {
           line-height: 1.7;
           opacity: 0.9;
           padding-left: 1.4rem;
-          border-left: 3px solid transparent; /* Soru ile hizalama için */
+          border-left: 3px solid transparent;
         }
       `}</style>
 
@@ -903,16 +988,49 @@ function PressInterviews() {
           <button className={filter === 'video' ? 'filter-link active' : 'filter-link'} onClick={() => { setFilter('video'); setExpandedId(null); }}>VİDEO KAYITLARI</button>
         </div>
 
+        <div className="press-toolbar">
+          <input
+            type="text"
+            className="press-search-input"
+            placeholder="Başlık, kaynak veya konu ara..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button
+            className="sort-toggle-btn"
+            onClick={() => setSortOrder(prev => prev === 'newest' ? 'oldest' : 'newest')}
+          >
+            {sortOrder === 'newest' ? '↓ EN YENİ' : '↑ EN ESKİ'}
+          </button>
+        </div>
+
+        <p className="press-result-count">{filteredInterviews.length} kayıt bulundu</p>
+
         <div className="press-archive-grid">
-          {filteredInterviews.map((item) => (
-            <div key={item.id} className={`press-archive-card ${item.type}`}>
+          {filteredInterviews.length === 0 && (
+            <p style={{ textAlign: 'center', opacity: 0.6, fontFamily: 'monospace' }}>
+              // Aramanızla eşleşen bir kayıt bulunamadı.
+            </p>
+          )}
+
+          {filteredInterviews.map((item) => {
+            const readingTime = getReadingTime(item);
+            return (
+            <div
+              key={item.id}
+              className={`press-archive-card ${item.type}`}
+              ref={(el) => (cardRefs.current[item.id] = el)}
+            >
               
               <div className="press-card-meta">
                 <span className="press-source">{item.source}</span>
                 <span className="press-date">{item.date}</span>
               </div>
               
-              <h3 className="press-card-title">{item.title}</h3>
+              <h3 className="press-card-title">
+                {item.title}
+                {readingTime && <span className="reading-time-badge">~{readingTime} dk okuma</span>}
+              </h3>
               <p className="press-archive-summary">{item.summary}</p>
 
               {item.type === 'written' ? (
@@ -953,7 +1071,7 @@ function PressInterviews() {
               )}
 
             </div>
-          ))}
+          );})}
         </div>
 
       </div>

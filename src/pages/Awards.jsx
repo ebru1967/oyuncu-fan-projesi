@@ -348,7 +348,8 @@ function Awards() {
                   <strong>ÖDÜL NEDENİ:</strong> "DasDas'ta sahnelenen 'Ayna' adlı tiyatro oyunundaki üstün performansı, sahne hakimiyeti ve karaktere kattığı derinlik sebebiyle seyirciler tarafından bu ödüle layık görülmüştür."
                 </div>
 {/* ---
-                <span className="verified-tag"></span>  sonradan eklenebilecek cümle --- */}
+                <span className="verified-tag"></span>  sonradan eklenebilecek cümle 
+                --- */}
               </div>
             </div>
 

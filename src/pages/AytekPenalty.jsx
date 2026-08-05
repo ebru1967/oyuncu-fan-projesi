@@ -336,7 +336,7 @@ function AytekPenalty() {
       <div className="section-header-editorial" style={{ textAlign: 'center', marginBottom: '2rem' }}>
         <span className="archive-badge">// İNTERAKTİF ARENA</span>
         <h1 className="editorial-title">AYTEK vs. JIM CARREY</h1>
-        <p className="editorial-subtitle">İdolüne karşı bir meydan okuma! Onu ters köşeye yatırabilecek misin?</p>
+        <p className="editorial-subtitle">İdolüne karşı bir meydan okuma! Bakalım onu ters köşeye yatırabilecek misin?</p>
       </div>
 
       <div className="stadium-bg">
