@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { FaEraser, FaTrash, FaCheckCircle, FaRedo } from 'react-icons/fa';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { FaEraser, FaTrash, FaCheckCircle, FaRedo, FaArrowRight } from 'react-icons/fa';
 
 const levels = [
   {
@@ -63,42 +63,92 @@ function JimCarreyPixel() {
   const [grid, setGrid] = useState(Array(100).fill(0));
   const [selectedColor, setSelectedColor] = useState(1);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
+  const [shakeIndex, setShakeIndex] = useState(null);
+
+  const winTimeoutRef = useRef(null);
+  const shakeTimeoutRef = useRef(null);
+  const isPaintingRef = useRef(false);
 
   const activeData = levels[currentLevel];
 
-  // Oyunun bitip bitmediğini kontrol et
   useEffect(() => {
     const checkWin = activeData.targetGrid.every((val, index) => val === grid[index]);
-    if (checkWin && grid.some(val => val !== 0)) {
-      setTimeout(() => setIsCompleted(true), 300);
+    if (checkWin && grid.some((val) => val !== 0)) {
+      winTimeoutRef.current = setTimeout(() => setIsCompleted(true), 300);
     }
+    return () => clearTimeout(winTimeoutRef.current);
   }, [grid, activeData]);
+
+  useEffect(() => {
+    return () => clearTimeout(shakeTimeoutRef.current);
+  }, []);
 
   const changeLevel = (levelId) => {
     setCurrentLevel(levelId);
     setGrid(Array(100).fill(0));
     setIsCompleted(false);
     setSelectedColor(1);
+    setShowClearConfirm(false);
   };
 
-  const handlePixelClick = (index) => {
-    if (isCompleted) return;
-
-    if (selectedColor === 0) {
-      const newGrid = [...grid];
-      newGrid[index] = 0;
-      setGrid(newGrid);
-    } else if (selectedColor === activeData.targetGrid[index]) {
-      const newGrid = [...grid];
-      newGrid[index] = selectedColor;
-      setGrid(newGrid);
-    }
+  const goToNextLevel = () => {
+    const nextId = (currentLevel + 1) % levels.length;
+    changeLevel(nextId);
   };
 
-  const clearCanvas = () => {
-    if (window.confirm('Tüm tuvali temizlemek istediğine emin misin?')) {
+  const handlePixelClick = useCallback(
+    (index) => {
+      if (isCompleted) return;
+
+      if (selectedColor === 0) {
+        setGrid((prev) => {
+          const next = [...prev];
+          next[index] = 0;
+          return next;
+        });
+      } else if (selectedColor === activeData.targetGrid[index]) {
+        setGrid((prev) => {
+          const next = [...prev];
+          next[index] = selectedColor;
+          return next;
+        });
+      } else if (activeData.targetGrid[index] !== 0 && grid[index] === 0) {
+        // Yanlış renk seçiliyken tıklandığında sessizce hiçbir şey olmasın diye
+        // kısa bir "sarsılma" ile tıklamanın algılandığını ama rengin yanlış olduğunu belirt
+        setShakeIndex(index);
+        clearTimeout(shakeTimeoutRef.current);
+        shakeTimeoutRef.current = setTimeout(() => setShakeIndex(null), 300);
+      }
+    },
+    [isCompleted, selectedColor, activeData, grid]
+  );
+
+  const requestClear = () => {
+    const hasProgress = grid.some((val) => val !== 0);
+    if (!hasProgress) {
       setGrid(Array(100).fill(0));
       setIsCompleted(false);
+      return;
+    }
+    setShowClearConfirm(true);
+  };
+
+  const confirmClear = () => {
+    setGrid(Array(100).fill(0));
+    setIsCompleted(false);
+    setShowClearConfirm(false);
+  };
+
+  // Dokunmatik cihazlarda sürükleyerek boyama: parmağın altındaki hücreyi bulup boyar
+  const handleTouchMove = (e) => {
+    if (isCompleted) return;
+    const touch = e.touches[0];
+    if (!touch) return;
+    const el = document.elementFromPoint(touch.clientX, touch.clientY);
+    const index = el?.dataset?.index;
+    if (index !== undefined) {
+      handlePixelClick(Number(index));
     }
   };
 
@@ -113,9 +163,16 @@ function JimCarreyPixel() {
           background-color: rgba(84, 107, 65, 0.05);
           border: 2px solid var(--accent-dark);
           margin: 0 auto;
+          touch-action: none;
         }
         .pixel-cell { border: 0.5px solid rgba(84, 107, 65, 0.1); cursor: pointer; transition: 0.1s; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-weight: bold; font-size: 1.2rem; color: rgba(84, 107, 65, 0.3); user-select: none; }
         .pixel-cell:hover { transform: scale(1.1); z-index: 2; box-shadow: 0 0 5px rgba(0,0,0,0.2); }
+        .pixel-cell.shake { animation: cellShake 0.3s ease; }
+        @keyframes cellShake {
+          0%, 100% { transform: translateX(0); }
+          25% { transform: translateX(-3px); }
+          75% { transform: translateX(3px); }
+        }
         .reveal-container { perspective: 1000px; width: 100%; max-width: 400px; margin: 0 auto; position: relative; aspect-ratio: 1/1; }
         .reveal-inner { position: relative; width: 100%; height: 100%; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
         .reveal-inner.flipped { transform: rotateY(180deg); }
@@ -124,13 +181,21 @@ function JimCarreyPixel() {
         .palette-container { display: inline-flex; gap: 0.8rem; justify-content: center; margin: 0 0 2rem 0; flex-wrap: wrap; background: rgba(84, 107, 65, 0.05); padding: 1rem 2rem; border-radius: 30px; border: 1px solid rgba(84, 107, 65, 0.2); }
         .palette-btn { width: 45px; height: 45px; border-radius: 50%; border: 3px solid transparent; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-family: var(--font-heading); font-weight: bold; color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
         .palette-btn.active { border-color: var(--accent-dark); transform: scale(1.15); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .success-banner { background: var(--accent-dark); color: #fff; padding: 1rem 2rem; border-radius: 8px; font-family: var(--font-heading); font-size: 1.2rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin: 0 auto 2rem auto; max-width: 400px; }
+        .success-banner { background: var(--accent-dark); color: #fff; padding: 1rem 2rem; border-radius: 8px; font-family: var(--font-heading); font-size: 1.2rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; flex-wrap: wrap; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin: 0 auto 2rem auto; max-width: 450px; }
         @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+        .confirm-overlay {
+          position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 50;
+          display: flex; align-items: center; justify-content: center; padding: 1rem;
+        }
+        .confirm-box {
+          background: var(--bg-main); border: 2px solid var(--accent-dark); border-radius: 8px;
+          padding: 2rem; max-width: 360px; text-align: center; font-family: var(--font-body);
+        }
+        .confirm-actions { display: flex; gap: 1rem; margin-top: 1.5rem; justify-content: center; }
       `}</style>
 
       <div className="container">
-        
-        {/* HİZALAMA DÜZELTİLDİ: Diğer sayfalarla aynı hizada */}
         <div className="section-header-editorial" style={{ paddingTop: '0', marginTop: '-3rem', marginBottom: '3rem', textAlign: 'center' }}>
           <span className="archive-badge" style={{ display: 'inline-block', marginBottom: '1rem' }}>// DİJİTAL TUVAL</span>
           <h1 className="editorial-title">PİKSEL BOYAMA GALERİSİ</h1>
@@ -146,30 +211,46 @@ function JimCarreyPixel() {
         </div>
 
         <div style={{ textAlign: 'center' }}>
-
           {isCompleted && (
             <div className="success-banner">
               <FaCheckCircle size={24} /> HARİKA! {activeData.name} TAMAMLANDI!
+              <button
+                onClick={goToNextLevel}
+                style={{
+                  background: 'rgba(255,255,255,0.15)',
+                  border: '1px solid rgba(255,255,255,0.4)',
+                  color: '#fff',
+                  borderRadius: '20px',
+                  padding: '0.4rem 1rem',
+                  fontSize: '0.85rem',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                  cursor: 'pointer',
+                  marginLeft: '0.5rem',
+                }}
+              >
+                SIRADAKİ KARAKTER <FaArrowRight size={12} />
+              </button>
             </div>
           )}
 
-          {/* Renk Paleti (Oyun bitmediği sürece görünür) */}
           {!isCompleted && (
             <div className="palette-container">
               {Object.entries(activeData.colors).map(([keyNum, hexCode]) => (
-                <button 
+                <button
                   key={keyNum}
-                  className={`palette-btn ${selectedColor === Number(keyNum) ? 'active' : ''}`} 
-                  style={{ backgroundColor: hexCode }} 
+                  className={`palette-btn ${selectedColor === Number(keyNum) ? 'active' : ''}`}
+                  style={{ backgroundColor: hexCode }}
                   onClick={() => setSelectedColor(Number(keyNum))}
                 >
                   {keyNum}
                 </button>
               ))}
               <div style={{ width: '2px', backgroundColor: 'rgba(84, 107, 65, 0.2)', margin: '0 0.5rem' }}></div>
-              <button 
-                className={`palette-btn ${selectedColor === 0 ? 'active' : ''}`} 
-                style={{ backgroundColor: '#fff', border: '1px solid #ccc', color: '#555', textShadow: 'none' }} 
+              <button
+                className={`palette-btn ${selectedColor === 0 ? 'active' : ''}`}
+                style={{ backgroundColor: '#fff', border: '1px solid #ccc', color: '#555', textShadow: 'none' }}
                 onClick={() => setSelectedColor(0)}
                 title="Silgi"
               >
@@ -178,23 +259,23 @@ function JimCarreyPixel() {
             </div>
           )}
 
-          {/* Oyun alanı ve 3D Kart */}
           <div className="reveal-container">
             <div className={`reveal-inner ${isCompleted ? 'flipped' : ''}`}>
-              
               <div className="reveal-front">
-                <div className="pixel-board">
+                <div className="pixel-board" onTouchMove={handleTouchMove}>
                   {grid.map((cellColor, index) => {
                     const showHint = cellColor === 0 && activeData.targetGrid[index] !== 0;
                     return (
-                      <div 
-                        key={index} 
-                        className="pixel-cell"
+                      <div
+                        key={index}
+                        data-index={index}
+                        className={`pixel-cell ${shakeIndex === index ? 'shake' : ''}`}
                         style={{ backgroundColor: cellColor === 0 ? 'transparent' : activeData.colors[cellColor] }}
                         onMouseDown={() => handlePixelClick(index)}
                         onMouseEnter={(e) => {
-                          if (e.buttons === 1) handlePixelClick(index); 
+                          if (e.buttons === 1) handlePixelClick(index);
                         }}
+                        onTouchStart={() => handlePixelClick(index)}
                       >
                         {showHint ? activeData.targetGrid[index] : ''}
                       </div>
@@ -204,24 +285,41 @@ function JimCarreyPixel() {
               </div>
 
               <div className="reveal-back">
-                <img 
-                  src={activeData.revealImage} 
-                  alt={`Gerçek ${activeData.name}`} 
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-                />
+                <img src={activeData.revealImage} alt={`Gerçek ${activeData.name}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
-
             </div>
           </div>
 
           <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
-            <button onClick={clearCanvas} className="editorial-link-btn" style={{ borderColor: '#e74c3c', color: '#e74c3c', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <button onClick={isCompleted ? confirmClear : requestClear} className="editorial-link-btn" style={{ borderColor: '#e74c3c', color: '#e74c3c', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               {isCompleted ? <><FaRedo /> YENİDEN OYNA</> : <><FaTrash /> SIFIRLA</>}
             </button>
           </div>
-
         </div>
       </div>
+
+      {showClearConfirm && (
+        <div className="confirm-overlay" onClick={() => setShowClearConfirm(false)}>
+          <div className="confirm-box" onClick={(e) => e.stopPropagation()}>
+            <p style={{ marginBottom: '0.5rem', fontWeight: 'bold', color: 'var(--accent-dark)' }}>Tuvali temizle</p>
+            <p style={{ opacity: 0.8, fontSize: '0.9rem' }}>Şu ana kadarki ilerlemen silinecek. Emin misin?</p>
+            <div className="confirm-actions">
+              <button
+                onClick={() => setShowClearConfirm(false)}
+                style={{ background: 'transparent', border: '1px solid rgba(84,107,65,0.4)', color: 'var(--text-main)', padding: '0.5rem 1.2rem', borderRadius: '20px', cursor: 'pointer' }}
+              >
+                VAZGEÇ
+              </button>
+              <button
+                onClick={confirmClear}
+                style={{ background: '#e74c3c', border: 'none', color: '#fff', padding: '0.5rem 1.2rem', borderRadius: '20px', cursor: 'pointer', fontWeight: 'bold' }}
+              >
+                TEMİZLE
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
